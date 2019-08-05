@@ -1,0 +1,41 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyName>EntityFrameworkCore.Testing.Moq</AssemblyName>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>1.0.0</Version>
+    <Authors>rgvlee</Authors>
+    <Company />
+    <Description>EntityFrameworkCore DbContext, DbSet, DbQuery, FromSql and ExecuteSqlCommand mocking library.
+
+If you need to mock the FromSql/ExecuteSqlCommand/ExecuteSqlCommandAsync extensions, a Query, or simply want the benefits of using a mocking framework (e.g., the ability to verify method invocation) this library will sort you out.
+
+Designed to be used with the in-memory provider to provide a complete DbContext that you can include in your tests. Have your cake and eat it too!</Description>
+    <PackageProjectUrl>https://github.com/rgvlee/EntityFrameworkCore.Testing</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/rgvlee/EntityFrameworkCore.Testing</RepositoryUrl>
+    <PackageTags>moq mock EntityFrameworkCore efcore entity framework core EntityFramework InMemory In-Memory DbContext Context testing test tests FromSql ExecuteSqlCommand DbQuery</PackageTags>
+    <PackageLicenseUrl>https://github.com/rgvlee/EntityFrameworkCore.Testing/blob/master/LICENSE</PackageLicenseUrl>
+    <Copyright>Copyright (c) 2019 Lee Anderson</Copyright>
+    <PackageId>EntityFrameworkCore.Testing.Moq</PackageId>
+    <Product>EntityFrameworkCore.Testing.Moq</Product>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>EntityFrameworkCore.Testing.Moq.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="DbSetMockBuilder.cs" />
+    <Compile Remove="QueryableMockBuilderBase.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="2.1.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.1.0" />
+    <PackageReference Include="Moq" Version="4.9.0" />
+  </ItemGroup>
+
+</Project>
