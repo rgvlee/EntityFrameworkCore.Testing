@@ -1,5 +1,5 @@
 # EntityFrameworkCore.Testing
-__*The Moq and NSubstitute mocking libraries for EntityFrameworkCore*__
+__*Moq and NSubstitute mocking libraries for EntityFrameworkCore*__
 
 EntityFrameworkCore.Testing allows you to create a mock DbContext and have it backed by an actual DbContext.
 
