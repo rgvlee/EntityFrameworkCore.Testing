@@ -6,7 +6,6 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using EntityFrameworkCore.Testing.Moq.Extensions;
-using Moq;
 
 namespace EntityFrameworkCore.Testing.Moq.Tests {
     [TestFixture]
