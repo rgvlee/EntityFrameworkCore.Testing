@@ -13,7 +13,7 @@ namespace EntityFrameworkCore.Testing.Moq.Tests {
             var commandText = "";
             var expectedResult = 1;
 
-            var builder = new DbContextMockBuilder<TestContext>();
+            var builder = new DbContextMockBuilder<TestDbContext>();
             builder.AddExecuteSqlCommandResult(commandText, new List<SqlParameter>(), expectedResult);
             var mockedContext = builder.GetMockedDbContext();
 
@@ -31,7 +31,7 @@ namespace EntityFrameworkCore.Testing.Moq.Tests {
             var commandText = "";
             var expectedResult = 1;
 
-            var builder = new DbContextMockBuilder<TestContext>();
+            var builder = new DbContextMockBuilder<TestDbContext>();
             builder.AddExecuteSqlCommandResult(commandText, new List<SqlParameter>(), expectedResult);
 
             var mockedContext = builder.GetMockedDbContext();
@@ -50,7 +50,7 @@ namespace EntityFrameworkCore.Testing.Moq.Tests {
             var commandText = "sp_NoParams";
             var expectedResult = 1;
 
-            var builder = new DbContextMockBuilder<TestContext>();
+            var builder = new DbContextMockBuilder<TestDbContext>();
             builder.AddExecuteSqlCommandResult(commandText, new List<SqlParameter>(), expectedResult);
             var mockedContext = builder.GetMockedDbContext();
 
@@ -68,7 +68,7 @@ namespace EntityFrameworkCore.Testing.Moq.Tests {
             var commandText = "sp_NoParams";
             var expectedResult = 1;
 
-            var builder = new DbContextMockBuilder<TestContext>();
+            var builder = new DbContextMockBuilder<TestDbContext>();
             builder.AddExecuteSqlCommandResult(commandText, new List<SqlParameter>(), expectedResult);
             var mockedContext = builder.GetMockedDbContext();
 
@@ -87,7 +87,7 @@ namespace EntityFrameworkCore.Testing.Moq.Tests {
             var sqlParameters = new List<SqlParameter>() {new SqlParameter("@SomeParameter2", "Value2")};
             var expectedResult = 1;
 
-            var builder = new DbContextMockBuilder<TestContext>();
+            var builder = new DbContextMockBuilder<TestDbContext>();
             builder.AddExecuteSqlCommandResult(commandText, sqlParameters, expectedResult);
             var mockedContext = builder.GetMockedDbContext();
 
@@ -106,7 +106,7 @@ namespace EntityFrameworkCore.Testing.Moq.Tests {
             var sqlParameters = new List<SqlParameter>() { new SqlParameter("@SomeParameter2", "Value2") };
             var expectedResult = 1;
 
-            var builder = new DbContextMockBuilder<TestContext>();
+            var builder = new DbContextMockBuilder<TestDbContext>();
             builder.AddExecuteSqlCommandResult(commandText, sqlParameters, expectedResult);
             var mockedContext = builder.GetMockedDbContext();
 
@@ -124,7 +124,7 @@ namespace EntityFrameworkCore.Testing.Moq.Tests {
             var commandText = "asdf";
             var expectedResult = 1;
 
-            var builder = new DbContextMockBuilder<TestContext>();
+            var builder = new DbContextMockBuilder<TestDbContext>();
             builder.AddExecuteSqlCommandResult(commandText, new List<SqlParameter>(), expectedResult);
 
             var mockedContext = builder.GetMockedDbContext();
@@ -139,7 +139,7 @@ namespace EntityFrameworkCore.Testing.Moq.Tests {
             var commandText = "asdf";
             var expectedResult = 1;
 
-            var builder = new DbContextMockBuilder<TestContext>();
+            var builder = new DbContextMockBuilder<TestDbContext>();
             builder.AddExecuteSqlCommandResult(commandText, new List<SqlParameter>(), expectedResult);
 
             var mockedContext = builder.GetMockedDbContext();

@@ -1,5 +1,6 @@
 using EntityFrameworkCore.DbContextBackedMock.Moq;
 using EntityFrameworkCore.DbContextBackedMock.Moq.Extensions;
+using EntityFrameworkCore.Testing.Moq.Tests;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using NUnit.Framework;
@@ -16,7 +17,7 @@ namespace EntityFrameworkCore.Testing.Moq.PackageVerification.Tests {
 
         [Test]
         public void Add_NewEntity_Persists() {
-            var builder = new DbContextMockBuilder<TestContext>();
+            var builder = new DbContextMockBuilder<TestDbContext>();
             var mockContext = builder.GetDbContextMock();
             var mockedContext = builder.GetMockedDbContext();
             var testEntity1 = new TestEntity1();
@@ -34,8 +35,8 @@ namespace EntityFrameworkCore.Testing.Moq.PackageVerification.Tests {
 
         [Test]
         public void AddWithSpecifiedDbContextAndDbSetSetUp_NewEntity_PersistsToBothDbSetAndDbContextDbSetProperty() {
-            var contextToMock = new TestContext(new DbContextOptionsBuilder<TestContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
-            var builder = new DbContextMockBuilder<TestContext>(contextToMock, false);
+            var contextToMock = new TestDbContext(new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
+            var builder = new DbContextMockBuilder<TestDbContext>(contextToMock, false);
             builder.AddSetUpFor(x => x.TestEntities);
             var mockedContext = builder.GetMockedDbContext();
 
@@ -52,7 +53,7 @@ namespace EntityFrameworkCore.Testing.Moq.PackageVerification.Tests {
         public void SetUpFromSql_AnyStoredProcedureWithNoParameters_ReturnsExpectedResult() {
             var expectedResult = new List<TestEntity1> { new TestEntity1() };
 
-            var builder = new DbContextMockBuilder<TestContext>();
+            var builder = new DbContextMockBuilder<TestDbContext>();
             builder.AddFromSqlResultFor(x => x.TestEntities, expectedResult);
             var mockedContext = builder.GetMockedDbContext();
 
@@ -70,7 +71,7 @@ namespace EntityFrameworkCore.Testing.Moq.PackageVerification.Tests {
             var sqlParameters = new List<SqlParameter>() { new SqlParameter("@SomeParameter2", "Value2") };
             var expectedResult = new List<TestEntity1> { new TestEntity1() };
 
-            var builder = new DbContextMockBuilder<TestContext>();
+            var builder = new DbContextMockBuilder<TestDbContext>();
             builder.AddFromSqlResultFor(x => x.TestEntities, "sp_Specified", sqlParameters, expectedResult);
             var mockedContext = builder.GetMockedDbContext();
 
@@ -91,7 +92,7 @@ namespace EntityFrameworkCore.Testing.Moq.PackageVerification.Tests {
             var sqlParameter = new SqlParameter("@SomeParameter2", "Value2");
             mockQueryProvider.SetUpFromSql("sp_Specified", new List<SqlParameter> { sqlParameter }, expectedResult);
 
-            var builder = new DbContextMockBuilder<TestContext>();
+            var builder = new DbContextMockBuilder<TestDbContext>();
             builder.AddQueryProviderMockFor(x => x.TestEntities, mockQueryProvider);
             var mockedContext = builder.GetMockedDbContext();
 
@@ -108,7 +109,7 @@ namespace EntityFrameworkCore.Testing.Moq.PackageVerification.Tests {
         public void SetUpQuery_ReturnsEnumeration() {
             var list1 = new List<TestEntity2>() { new TestEntity2(), new TestEntity2() };
 
-            var builder = new DbContextMockBuilder<TestContext>();
+            var builder = new DbContextMockBuilder<TestDbContext>();
             builder.AddSetUpFor(x => x.TestView, list1);
             var mockedContext = builder.GetMockedDbContext();
 
@@ -122,7 +123,7 @@ namespace EntityFrameworkCore.Testing.Moq.PackageVerification.Tests {
         public void FromSql_SpecifiedStoredProcedureWithParameters_ReturnsExpectedResult() {
             var list1 = new List<TestEntity2> { new TestEntity2() };
 
-            var builder = new DbContextMockBuilder<TestContext>();
+            var builder = new DbContextMockBuilder<TestDbContext>();
 
             var mockQueryProvider = new Mock<IQueryProvider>();
             var sqlParameter = new SqlParameter("@SomeParameter2", "Value2");
@@ -142,7 +143,7 @@ namespace EntityFrameworkCore.Testing.Moq.PackageVerification.Tests {
 
         [Test]
         public void Execute_SetUpSpecifiedQuery_ReturnsExpectedResult() {
-            var builder = new DbContextMockBuilder<TestContext>();
+            var builder = new DbContextMockBuilder<TestDbContext>();
 
             var commandText = "sp_NoParams";
             var expectedResult = 1;
@@ -158,7 +159,7 @@ namespace EntityFrameworkCore.Testing.Moq.PackageVerification.Tests {
 
         [Test]
         public void Execute_SetUpSpecifiedQueryWithSqlParameters_ReturnsExpectedResult() {
-            var builder = new DbContextMockBuilder<TestContext>();
+            var builder = new DbContextMockBuilder<TestDbContext>();
 
             var commandText = "sp_WithParams";
             var sqlParameters = new List<SqlParameter>() { new SqlParameter("@SomeParameter2", "Value2") };

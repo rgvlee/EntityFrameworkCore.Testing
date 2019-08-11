@@ -4,80 +4,6 @@
         <name>EntityFrameworkCore.Testing.Moq</name>
     </assembly>
     <members>
-        <member name="T:EntityFrameworkCore.Testing.Moq.AsyncEnumerable`1">
-            <inheritdoc cref="T:System.Collections.Generic.IAsyncEnumerable`1" />
-        </member>
-        <member name="M:EntityFrameworkCore.Testing.Moq.AsyncEnumerable`1.#ctor(System.Linq.Expressions.Expression)">
-            <summary>
-            Constructor.
-            </summary>
-            <param name="expression">The expression.</param>
-        </member>
-        <member name="M:EntityFrameworkCore.Testing.Moq.AsyncEnumerable`1.#ctor(System.Collections.Generic.IEnumerable{`0})">
-            <summary>
-            Constructor.
-            </summary>
-            <param name="enumerable">The enumerable.</param>
-        </member>
-        <member name="M:EntityFrameworkCore.Testing.Moq.AsyncEnumerable`1.GetEnumerator">
-            <inheritdoc />
-        </member>
-        <member name="T:EntityFrameworkCore.Testing.Moq.AsyncEnumerator`1">
-            <inheritdoc />
-        </member>
-        <member name="P:EntityFrameworkCore.Testing.Moq.AsyncEnumerator`1.Current">
-            <inheritdoc />
-        </member>
-        <member name="M:EntityFrameworkCore.Testing.Moq.AsyncEnumerator`1.#ctor(System.Collections.Generic.IEnumerator{`0})">
-            <summary>
-            Constructor.
-            </summary>
-            <param name="enumerator">The enumerator.</param>
-        </member>
-        <member name="M:EntityFrameworkCore.Testing.Moq.AsyncEnumerator`1.MoveNext(System.Threading.CancellationToken)">
-            <inheritdoc />
-        </member>
-        <member name="M:EntityFrameworkCore.Testing.Moq.AsyncEnumerator`1.Dispose">
-            <summary>
-            Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-            </summary>
-        </member>
-        <member name="M:EntityFrameworkCore.Testing.Moq.AsyncEnumerator`1.Dispose(System.Boolean)">
-            <summary>
-            Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-            </summary>
-            <param name="disposing">Provides disposal context; true if invoked by the instance, false if invoked by the finalizer.</param>
-        </member>
-        <member name="T:EntityFrameworkCore.Testing.Moq.AsyncQueryProvider`1">
-            <summary>
-            Provides an asynchronous query provider for an enumerable sequence.
-            </summary>
-            <typeparam name="T">The enumerable sequence element type.</typeparam>
-        </member>
-        <member name="M:EntityFrameworkCore.Testing.Moq.AsyncQueryProvider`1.#ctor(System.Collections.Generic.IEnumerable{`0})">
-            <summary>
-            Constructor.
-            </summary>
-            <param name="sequence">The sequence to create an asynchronous query provider for.</param>
-        </member>
-        <member name="M:EntityFrameworkCore.Testing.Moq.AsyncQueryProvider`1.CreateQuery(System.Linq.Expressions.Expression)">
-            <inheritdoc />
-        </member>
-        <member name="M:EntityFrameworkCore.Testing.Moq.AsyncQueryProvider`1.CreateQuery``1(System.Linq.Expressions.Expression)">
-            <inheritdoc />
-        </member>
-        <member name="M:EntityFrameworkCore.Testing.Moq.AsyncQueryProvider`1.Execute(System.Linq.Expressions.Expression)">
-            <inheritdoc />
-        </member>
-        <member name="M:EntityFrameworkCore.Testing.Moq.AsyncQueryProvider`1.Execute``1(System.Linq.Expressions.Expression)">
-            <inheritdoc />
-        </member>
-        <member name="M:EntityFrameworkCore.Testing.Moq.AsyncQueryProvider`1.ExecuteAsync``1(System.Linq.Expressions.Expression)">
-            <inheritdoc />
-        </member>
-        <member name="M:EntityFrameworkCore.Testing.Moq.AsyncQueryProvider`1.ExecuteAsync``1(System.Linq.Expressions.Expression,System.Threading.CancellationToken)">
-            <inheritdoc />
-        </member>
         <member name="T:EntityFrameworkCore.Testing.Moq.DbContextMockBuilder`1">
             <summary>
             A builder that creates a DbContext mock.
@@ -458,20 +384,6 @@
             <param name="sqlParameters">The FromSql sql parameters. Mock set up supports case insensitive partial sql parameter sequence matching.</param>
             <param name="expectedFromSqlResult">The sequence to return when FromSql is invoked.</param>
             <returns>The query provider mock.</returns>
-        </member>
-        <member name="T:EntityFrameworkCore.Testing.Moq.Extensions.StringExtensions">
-            <summary>
-            Extensions for strings.
-            </summary>
-        </member>
-        <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.StringExtensions.Contains(System.String,System.String,System.StringComparison)">
-            <summary>
-            Checks to see if the target string contains the search for string using the specified string comparison..
-            </summary>
-            <param name="target">The string to search.</param>
-            <param name="searchFor">The string to find within the target</param>
-            <param name="comparer">The string comparison.</param>
-            <returns>True if the target string contains the search for string using the specified string comparison.</returns>
         </member>
         <member name="T:EntityFrameworkCore.Testing.Moq.Helpers.DbQueryHelper">
             <summary>

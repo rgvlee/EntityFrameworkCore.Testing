@@ -16,7 +16,7 @@ namespace EntityFrameworkCore.Testing.Moq.Tests {
         public void AddAndPersist_Entity_Persists() {
             var testEntity1 = new TestEntity1();
 
-            var builder = new DbContextMockBuilder<TestContext>();
+            var builder = new DbContextMockBuilder<TestDbContext>();
             var mockedContext = builder.GetMockedDbContext();
             
             mockedContext.Set<TestEntity1>().Add(testEntity1);
@@ -33,8 +33,8 @@ namespace EntityFrameworkCore.Testing.Moq.Tests {
         public void AddAndPersistWithSpecifiedDbContextAndDbSetSetUp_Entity_Persists() {
             var testEntity1 = new TestEntity1();
 
-            var contextToMock = new TestContext(new DbContextOptionsBuilder<TestContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
-            var builder = new DbContextMockBuilder<TestContext>(contextToMock, false);
+            var contextToMock = new TestDbContext(new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
+            var builder = new DbContextMockBuilder<TestDbContext>(contextToMock, false);
             builder.AddSetUpFor(x => x.TestEntities);
             var mockedContext = builder.GetMockedDbContext();
 
@@ -52,7 +52,7 @@ namespace EntityFrameworkCore.Testing.Moq.Tests {
         public async Task AddAndPersistAsync_Enumeration_Persists() {
             var testEntities = new List<TestEntity1>() { new TestEntity1(), new TestEntity1() };
 
-            var builder = new DbContextMockBuilder<TestContext>();
+            var builder = new DbContextMockBuilder<TestDbContext>();
             var mockedContext = builder.GetMockedDbContext();
 
             await mockedContext.Set<TestEntity1>().AddRangeAsync(testEntities);
@@ -70,7 +70,7 @@ namespace EntityFrameworkCore.Testing.Moq.Tests {
         public void SetUpSet_ToList_ReturnsEnumeration() {
             var expectedResult = new List<TestEntity1>() { new TestEntity1(), new TestEntity1() };
 
-            var builder = new DbContextMockBuilder<TestContext>();
+            var builder = new DbContextMockBuilder<TestDbContext>();
             var mockedContext = builder.GetMockedDbContext();
             mockedContext.Set<TestEntity1>().AddRange(expectedResult);
             mockedContext.SaveChanges();
@@ -90,7 +90,7 @@ namespace EntityFrameworkCore.Testing.Moq.Tests {
         public async Task SetUpSet_ToListAsync_ReturnsEnumeration() {
             var expectedResult = new List<TestEntity1>() { new TestEntity1(), new TestEntity1() };
 
-            var builder = new DbContextMockBuilder<TestContext>();
+            var builder = new DbContextMockBuilder<TestDbContext>();
             var mockedContext = builder.GetMockedDbContext();
             mockedContext.Set<TestEntity1>().AddRange(expectedResult);
             mockedContext.SaveChanges();
@@ -110,7 +110,7 @@ namespace EntityFrameworkCore.Testing.Moq.Tests {
         public void SetUpSet_Any_ReturnsEnumeration() {
             var testEntities = new List<TestEntity1>() { new TestEntity1(), new TestEntity1() };
 
-            var builder = new DbContextMockBuilder<TestContext>();
+            var builder = new DbContextMockBuilder<TestDbContext>();
             var mockedContext = builder.GetMockedDbContext();
             mockedContext.Set<TestEntity1>().AddRange(testEntities);
             mockedContext.SaveChanges();
@@ -128,7 +128,7 @@ namespace EntityFrameworkCore.Testing.Moq.Tests {
         public async Task SetUpSet_AnyAsync_ReturnsEnumeration() {
             var testEntities = new List<TestEntity1>() { new TestEntity1(), new TestEntity1() };
 
-            var builder = new DbContextMockBuilder<TestContext>();
+            var builder = new DbContextMockBuilder<TestDbContext>();
             var mockedContext = builder.GetMockedDbContext();
             mockedContext.Set<TestEntity1>().AddRange(testEntities);
             mockedContext.SaveChanges();
@@ -146,7 +146,7 @@ namespace EntityFrameworkCore.Testing.Moq.Tests {
         public void SetUpFromSql_AnyStoredProcedureWithNoParametersToList_ReturnsExpectedResult() {
             var expectedResult = new List<TestEntity1> { new TestEntity1() };
 
-            var builder = new DbContextMockBuilder<TestContext>();
+            var builder = new DbContextMockBuilder<TestDbContext>();
             builder.AddFromSqlResultFor(x => x.TestEntities, expectedResult);
             var mockedContext = builder.GetMockedDbContext();
 
@@ -164,7 +164,7 @@ namespace EntityFrameworkCore.Testing.Moq.Tests {
             var expectedResult = new List<TestEntity1> { new TestEntity1() };
             var sqlParameters = new List<SqlParameter>() { new SqlParameter("@SomeParameter2", "Value2") };
             
-            var builder = new DbContextMockBuilder<TestContext>();
+            var builder = new DbContextMockBuilder<TestDbContext>();
             builder.AddFromSqlResultFor(x => x.TestEntities, "sp_Specified", sqlParameters, expectedResult);
             var mockedContext = builder.GetMockedDbContext();
 
@@ -185,7 +185,7 @@ namespace EntityFrameworkCore.Testing.Moq.Tests {
             var mockQueryProvider = new Mock<IQueryProvider>();
             mockQueryProvider.SetUpFromSql("sp_Specified", sqlParameters, expectedResult);
 
-            var builder = new DbContextMockBuilder<TestContext>();
+            var builder = new DbContextMockBuilder<TestDbContext>();
             builder.AddQueryProviderMockFor(x => x.TestEntities, mockQueryProvider);
             var mockedContext = builder.GetMockedDbContext();
 
@@ -209,7 +209,7 @@ namespace EntityFrameworkCore.Testing.Moq.Tests {
                 new SqlParameter("@xxxidsSeparator", ',')
             };
             
-            var builder = new DbContextMockBuilder<TestContext>();
+            var builder = new DbContextMockBuilder<TestDbContext>();
             builder.AddFromSqlResultFor(x => x.TestEntities, "ById", sqlParameters, new List<TestEntity1> { testEntity1 });
             var mockedContext = builder.GetMockedDbContext();
 
@@ -234,7 +234,7 @@ namespace EntityFrameworkCore.Testing.Moq.Tests {
             var expectedResult = new List<TestEntity1> { new TestEntity1() };
             var sqlParameters = new List<SqlParameter>() { new SqlParameter("@SomeParameter2", SqlDbType.DateTime) };
             
-            var builder = new DbContextMockBuilder<TestContext>();
+            var builder = new DbContextMockBuilder<TestDbContext>();
             builder.AddFromSqlResultFor(x => x.TestEntities, "sp_Specified", sqlParameters, expectedResult);
             var mockedContext = builder.GetMockedDbContext();
 
@@ -251,7 +251,7 @@ namespace EntityFrameworkCore.Testing.Moq.Tests {
         public void GetDbSetMock_ByType_ReturnsDbSetMock() {
             var expectedResult = new List<TestEntity1>() { new TestEntity1(), new TestEntity1() };
 
-            var builder = new DbContextMockBuilder<TestContext>();
+            var builder = new DbContextMockBuilder<TestDbContext>();
             var mockedContext = builder.GetMockedDbContext();
             mockedContext.Set<TestEntity1>().AddRange(expectedResult);
             mockedContext.SaveChanges();
@@ -265,7 +265,7 @@ namespace EntityFrameworkCore.Testing.Moq.Tests {
         public void GetDbSetMock_ByExpression_ReturnsDbSetMock() {
             var expectedResult = new List<TestEntity1>() { new TestEntity1(), new TestEntity1() };
 
-            var builder = new DbContextMockBuilder<TestContext>();
+            var builder = new DbContextMockBuilder<TestDbContext>();
             var mockedContext = builder.GetMockedDbContext();
             mockedContext.Set<TestEntity1>().AddRange(expectedResult);
             mockedContext.SaveChanges();
@@ -279,7 +279,7 @@ namespace EntityFrameworkCore.Testing.Moq.Tests {
         public void GetMockedDbSet_ByType_ReturnsDbSetMock() {
             var expectedResult = new List<TestEntity1>() { new TestEntity1(), new TestEntity1() };
 
-            var builder = new DbContextMockBuilder<TestContext>();
+            var builder = new DbContextMockBuilder<TestDbContext>();
             var mockedContext = builder.GetMockedDbContext();
             mockedContext.Set<TestEntity1>().AddRange(expectedResult);
             mockedContext.SaveChanges();
@@ -293,7 +293,7 @@ namespace EntityFrameworkCore.Testing.Moq.Tests {
         public void GetMockedDbSet_ByExpression_ReturnsDbSetMock() {
             var expectedResult = new List<TestEntity1>() { new TestEntity1(), new TestEntity1() };
 
-            var builder = new DbContextMockBuilder<TestContext>();
+            var builder = new DbContextMockBuilder<TestDbContext>();
             var mockedContext = builder.GetMockedDbContext();
             mockedContext.Set<TestEntity1>().AddRange(expectedResult);
             mockedContext.SaveChanges();

@@ -11,8 +11,8 @@ namespace EntityFrameworkCore.Testing.Moq.Tests {
         public void AddAndPersist_Entity_Persists() {
             var testEntity1 = new TestEntity1();
 
-            var options = new DbContextOptionsBuilder<TestContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
-            var dbContext = new TestContext(options);
+            var options = new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
+            var dbContext = new TestDbContext(options);
             var dbSet = dbContext.Set<TestEntity1>();
 
             dbSet.Add(testEntity1);
@@ -28,8 +28,8 @@ namespace EntityFrameworkCore.Testing.Moq.Tests {
         public async Task AddAndPersistAsync_Entity_Persists() {
             var testEntity1 = new TestEntity1();
 
-            var options = new DbContextOptionsBuilder<TestContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
-            var dbContext = new TestContext(options);
+            var options = new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
+            var dbContext = new TestDbContext(options);
             var dbSet = dbContext.Set<TestEntity1>();
 
             await dbSet.AddAsync(testEntity1);

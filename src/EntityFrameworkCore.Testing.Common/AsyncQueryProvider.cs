@@ -5,7 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore.Query.Internal;
 
-namespace EntityFrameworkCore.Testing.Moq {
+namespace EntityFrameworkCore.Testing.Common {
     /// <summary>
     /// Provides an asynchronous query provider for an enumerable sequence.
     /// </summary>

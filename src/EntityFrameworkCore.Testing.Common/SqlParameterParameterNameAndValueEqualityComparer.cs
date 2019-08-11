@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 
-namespace EntityFrameworkCore.Testing.Moq {
-    internal class SqlParameterParameterNameAndValueEqualityComparer : EqualityComparer<SqlParameter> {
+namespace EntityFrameworkCore.Testing.Common {
+    public class SqlParameterParameterNameAndValueEqualityComparer : EqualityComparer<SqlParameter> {
         public override bool Equals(SqlParameter x, SqlParameter y) {
             var parameterNamesAreEqual = false;
             if (x.ParameterName == null && y.ParameterName == null)

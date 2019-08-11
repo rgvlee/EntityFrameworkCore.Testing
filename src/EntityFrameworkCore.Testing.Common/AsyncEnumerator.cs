@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace EntityFrameworkCore.Testing.Moq {
+namespace EntityFrameworkCore.Testing.Common {
     /// <inheritdoc />
     public class AsyncEnumerator<T> : IAsyncEnumerator<T> {
         private bool _disposed;

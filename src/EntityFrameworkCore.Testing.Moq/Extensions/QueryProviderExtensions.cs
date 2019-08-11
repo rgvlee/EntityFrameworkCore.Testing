@@ -6,6 +6,8 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
+using EntityFrameworkCore.Testing.Common;
+using EntityFrameworkCore.Testing.Common.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 
@@ -23,7 +25,7 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions {
         /// <returns>The query provider mock.</returns>
         public static Mock<IQueryProvider> SetUpFromSql<TEntity>(this Mock<IQueryProvider> queryProviderMock, IEnumerable<TEntity> expectedFromSqlResult) where TEntity : class {
 
-            var createQueryResult = new EntityFrameworkCore.Testing.Moq.AsyncEnumerable<TEntity>(expectedFromSqlResult);
+            var createQueryResult = new AsyncEnumerable<TEntity>(expectedFromSqlResult);
 
             queryProviderMock.Setup(p => p.CreateQuery<TEntity>(It.IsAny<MethodCallExpression>()))
                 .Returns(createQueryResult);
@@ -62,7 +64,7 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions {
 
             //return source.Provider.CreateQuery<TEntity>((Expression) Expression.Call((Expression) null, RelationalQueryableExtensions.FromSqlMethodInfo.MakeGenericMethod(typeof (TEntity)), source.Expression, (Expression) Expression.Constant((object) sql), (Expression) Expression.Constant((object) parameters)));
 
-            var createQueryResult = new EntityFrameworkCore.Testing.Moq.AsyncEnumerable<TEntity>(expectedFromSqlResult);
+            var createQueryResult = new AsyncEnumerable<TEntity>(expectedFromSqlResult);
 
             queryProviderMock.Setup(
                     p => p.CreateQuery<TEntity>(It.Is<MethodCallExpression>(mce => SpecifiedParametersMatchMethodCallExpression(mce, sql, sqlParameters)))

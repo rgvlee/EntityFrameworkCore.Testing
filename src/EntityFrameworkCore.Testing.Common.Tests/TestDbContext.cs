@@ -1,16 +1,16 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
 namespace EntityFrameworkCore.Testing.Moq.Tests {
-    public class TestContext : DbContext {
+    public class TestDbContext : DbContext {
 
         public virtual DbSet<TestEntity1> TestEntities { get; set; }
         public virtual DbQuery<TestEntity2> TestView { get; set; }
 
-        public TestContext() {
+        public TestDbContext() {
 
         }
 
-        public TestContext(DbContextOptions<TestContext> options) : base(options) {
+        public TestDbContext(DbContextOptions<TestDbContext> options) : base(options) {
 
         }
 

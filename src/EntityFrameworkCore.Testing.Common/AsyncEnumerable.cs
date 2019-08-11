@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace EntityFrameworkCore.Testing.Moq {
+namespace EntityFrameworkCore.Testing.Common {
     /// <inheritdoc cref="IAsyncEnumerable{T}" />
     public class AsyncEnumerable<T> : EnumerableQuery<T>, IAsyncEnumerable<T> {
         /// <summary>
