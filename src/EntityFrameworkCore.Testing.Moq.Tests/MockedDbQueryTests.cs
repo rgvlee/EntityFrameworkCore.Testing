@@ -5,11 +5,12 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
+using EntityFrameworkCore.Testing.Common.Tests;
 using EntityFrameworkCore.Testing.Moq.Extensions;
 
 namespace EntityFrameworkCore.Testing.Moq.Tests {
     [TestFixture]
-    public class MockedDbQueryTests {
+    public class MockedDbQueryTests : TestBase {
         [Test]
         public void SetUpFromSql_AnyStoredProcedureWithNoParametersToList_ReturnsExpectedResult() {
             var expectedResult = new List<TestEntity2>() { new TestEntity2(), new TestEntity2() };

@@ -30,24 +30,24 @@ namespace EntityFrameworkCore.Testing.Moq.Helpers
             dbQueryMock.As<IAsyncEnumerableAccessor<TQuery>>().Setup(m => m.AsyncEnumerable)
                 .Returns(queryableSequence.ToAsyncEnumerable());
             dbQueryMock.As<IQueryable<TQuery>>().Setup(m => m.ElementType)
-                .Returns(queryableSequence.ElementType); //.Callback(() => Console.WriteLine("ElementType invoked"));
+                .Returns(queryableSequence.ElementType); //.Callback(() => Logger.LogDebug("ElementType invoked"));
             dbQueryMock.As<IQueryable<TQuery>>().Setup(m => m.Expression)
-                .Returns(queryableSequence.Expression); //.Callback(() => Console.WriteLine("Expression invoked"));
+                .Returns(queryableSequence.Expression); //.Callback(() => Logger.LogDebug("Expression invoked"));
             dbQueryMock.As<IEnumerable>().Setup(m => m.GetEnumerator())
                 .Returns(queryableSequence
-                    .GetEnumerator()); //.Callback(() => Console.WriteLine("IEnumerable.GetEnumerator invoked"));
+                    .GetEnumerator()); //.Callback(() => Logger.LogDebug("IEnumerable.GetEnumerator invoked"));
             dbQueryMock.As<IEnumerable<TQuery>>().Setup(m => m.GetEnumerator())
                 .Returns(queryableSequence
-                    .GetEnumerator()); //.Callback(() => Console.WriteLine("IEnumerable<TQuery>.GetEnumerator invoked"));
+                    .GetEnumerator()); //.Callback(() => Logger.LogDebug("IEnumerable<TQuery>.GetEnumerator invoked"));
 
             dbQueryMock.As<IInfrastructure<IServiceProvider>>().Setup(m => m.Instance).Returns(() =>
                 ((IInfrastructure<IServiceProvider>) dbQueryMock.Object)
-                .Instance); //.Callback(() => Console.WriteLine("Instance invoked"));
+                .Instance); //.Callback(() => Logger.LogDebug("Instance invoked"));
 
             //We need to provide a provider that implement IAsyncQueryProvider
             dbQueryMock.As<IQueryable<TQuery>>().Setup(m => m.Provider)
                 .Returns(new AsyncQueryProvider<TQuery>(
-                    queryableSequence)); //.Callback(() => Console.WriteLine("Provider invoked"));
+                    queryableSequence)); //.Callback(() => Logger.LogDebug("Provider invoked"));
 
             return dbQueryMock;
         }

@@ -4,10 +4,11 @@ using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
+using EntityFrameworkCore.Testing.Common.Tests;
 
 namespace EntityFrameworkCore.Testing.Moq.Tests {
     [TestFixture]
-    public class MockedExecuteSqlCommandTests {
+    public class MockedExecuteSqlCommandTests : TestBase {
         [Test]
         public void Execute_AnySqlWithNoParameters_ReturnsExpectedResult() {
             var commandText = "";

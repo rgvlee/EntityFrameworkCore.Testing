@@ -11,9 +11,10 @@ using System.Linq;
 
 namespace EntityFrameworkCore.Testing.Moq.PackageVerification.Tests {
     public class Tests {
-        [SetUp]
-        public void Setup() {
-        }
+        //[SetUp]
+        //public virtual void SetUp() {
+        //    LoggerHelper.LoggerFactory.AddConsole(LogLevel.Debug);
+        //}
 
         [Test]
         public void Add_NewEntity_Persists() {

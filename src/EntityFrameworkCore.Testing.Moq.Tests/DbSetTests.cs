@@ -3,10 +3,11 @@ using NUnit.Framework;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using EntityFrameworkCore.Testing.Common.Tests;
 
 namespace EntityFrameworkCore.Testing.Moq.Tests {
     [TestFixture]
-    public class DbSetTests {
+    public class DbSetTests : TestBase {
         [Test]
         public void AddAndPersist_Entity_Persists() {
             var testEntity1 = new TestEntity1();

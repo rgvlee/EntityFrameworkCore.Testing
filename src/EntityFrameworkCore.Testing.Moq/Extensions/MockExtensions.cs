@@ -8,11 +8,13 @@ using System.Threading;
 using System.Threading.Tasks;
 using EntityFrameworkCore.Testing.Common;
 using EntityFrameworkCore.Testing.Common.Extensions;
+using EntityFrameworkCore.Testing.Common.Helpers;
 using EntityFrameworkCore.Testing.Moq.Helpers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.Extensions.Logging;
 using Moq;
 
 namespace EntityFrameworkCore.Testing.Moq.Extensions
@@ -22,6 +24,8 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
     /// </summary>
     public static class MockExtensions
     {
+        private static readonly ILogger Logger = LoggerHelper.CreateLogger(typeof(MockExtensions));
+
         /// <summary>
         /// Sets up the provider for a DbQuery mock.
         /// </summary>
@@ -190,22 +194,28 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
                     )))
                 .Returns(rawSqlCommand.Object)
                 .Callback((string sql, IEnumerable<object> parameters) => {
-                    var sb = new StringBuilder();
-                    sb.Append(sql.GetType().Name);
-                    sb.Append(" sql: ");
-                    sb.AppendLine(sql);
+                    var sb1 = new StringBuilder();
+                    sb1.Append(sql.GetType().Name);
+                    sb1.Append(" sql: ");
+                    sb1.AppendLine(sql);
 
-                    sb.AppendLine("Parameters:");
-                    foreach (var sqlParameter in parameters.Select(p => (SqlParameter)p)) {
-                        sb.Append(sqlParameter.ParameterName);
-                        sb.Append(": ");
+                    sb1.AppendLine("Parameters:");
+
+                    var parts = new List<string>();
+                    foreach (var sqlParameter in sqlParameters) {
+                        var sb2 = new StringBuilder();
+                        sb2.Append(sqlParameter.ParameterName);
+                        sb2.Append(": ");
                         if (sqlParameter.Value == null)
-                            sb.AppendLine("null");
+                            sb2.Append("null");
                         else
-                            sb.AppendLine(sqlParameter.Value.ToString());
+                            sb2.Append(sqlParameter.Value);
+                        parts.Add(sb2.ToString());
                     }
 
-                    Console.WriteLine(sb.ToString());
+                    if (parts.Any()) sb1.Append(string.Join(Environment.NewLine, parts));
+
+                    Logger.LogDebug(sb1.ToString());
                 });
 
             var databaseFacade = new Mock<DatabaseFacade>(MockBehavior.Strict, new Mock<TDbContext>().Object);

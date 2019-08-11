@@ -8,7 +8,9 @@ using System.Linq.Expressions;
 using System.Text;
 using EntityFrameworkCore.Testing.Common;
 using EntityFrameworkCore.Testing.Common.Extensions;
+using EntityFrameworkCore.Testing.Common.Helpers;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Moq;
 
 namespace EntityFrameworkCore.Testing.Moq.Extensions {
@@ -16,6 +18,8 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions {
     /// Extensions for query provider mocks.
     /// </summary>
     public static class QueryProviderExtensions {
+        private static readonly ILogger Logger = LoggerHelper.CreateLogger(typeof(QueryProviderExtensions));
+
         /// <summary>
         /// Sets up FromSql invocations to return a specified result.
         /// </summary>
@@ -71,36 +75,45 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions {
                 )
                 .Returns(createQueryResult)
                 .Callback((MethodCallExpression mce) => {
-                    Console.WriteLine("FromSql inputs:");
-                    Console.WriteLine(StringifyFromSqlMethodCallExpression(mce));
+                    var parts = new List<string>();
+                    parts.Add("FromSql inputs:");
+                    parts.Add(StringifyFromSqlMethodCallExpression(mce));
+
+                    Logger.LogDebug(string.Join(Environment.NewLine, parts));
                 });
 
             return queryProviderMock;
         }
 
         private static bool SqlMatchesMethodCallExpression(MethodCallExpression mce, string sql) {
+            var parts = new List<string>();
+
             var mceRawSqlString = (RawSqlString)((ConstantExpression)mce.Arguments[1]).Value;
+            
+            parts.Add($"Invocation RawSqlString: {mceRawSqlString.Format}");
+            parts.Add($"Set up sql: {sql}");
 
-            var result = mceRawSqlString.Format.Contains(sql, StringComparison.CurrentCultureIgnoreCase);
-            if (result) return mceRawSqlString.Format.Contains(sql, StringComparison.CurrentCultureIgnoreCase);
-            Console.WriteLine($"mceRawSqlString: {mceRawSqlString.Format}");
-            Console.WriteLine($"sql: {sql}");
-
+            Logger.LogDebug(string.Join(Environment.NewLine, parts));
+            
             return mceRawSqlString.Format.Contains(sql, StringComparison.CurrentCultureIgnoreCase);
         }
 
         private static bool SqlParametersMatchMethodCallExpression(MethodCallExpression mce, IEnumerable<SqlParameter> sqlParameters) {
+            var parts = new List<string>();
+
             var mceParameters = ((object[])((ConstantExpression)mce.Arguments[2]).Value);
             var mceSqlParameters = GetSqlParameters(mceParameters).ToList();
 
-            Console.WriteLine("mceSqlParameters:");
+            parts.Add("Invocation SqlParameters:");
             foreach (var parameter in mceSqlParameters) {
-                Console.WriteLine($"'{parameter.ParameterName}': '{parameter.Value}'");
+                parts.Add($"'{parameter.ParameterName}': '{parameter.Value}'");
             }
-            Console.WriteLine("sqlParameters:");
+            parts.Add("Set up sqlParameters:");
             foreach (var parameter in sqlParameters) {
-                Console.WriteLine($"'{parameter.ParameterName}': '{parameter.Value}'");
+                parts.Add($"'{parameter.ParameterName}': '{parameter.Value}'");
             }
+            
+            Logger.LogDebug(string.Join(Environment.NewLine, parts));
 
             return !sqlParameters.Except(mceSqlParameters, new SqlParameterParameterNameAndValueEqualityComparer()).Any();
         }
@@ -123,29 +136,35 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions {
         }
 
         private static string StringifyFromSqlMethodCallExpression(MethodCallExpression mce) {
-            var sb = new StringBuilder();
+            var sb1 = new StringBuilder();
 
             var rawSqlString = ((RawSqlString)((ConstantExpression)mce.Arguments[1]).Value);
 
-            sb.Append(nameof(RawSqlString));
-            sb.Append(" sql: ");
-            sb.AppendLine(rawSqlString.Format);
+            sb1.Append(nameof(RawSqlString));
+            sb1.Append(" sql: ");
+            sb1.AppendLine(rawSqlString.Format);
 
             var parameters = (object[])((ConstantExpression)mce.Arguments[2]).Value;
-            if (!parameters.Any()) return sb.ToString();
+            if (!parameters.Any()) return sb1.ToString();
 
             var sqlParameters = GetSqlParameters(parameters);
-            sb.AppendLine("Parameters:");
+            sb1.AppendLine("Parameters:");
+
+            var parts = new List<string>();
             foreach (var sqlParameter in sqlParameters) {
-                sb.Append(sqlParameter.ParameterName);
-                sb.Append(": ");
+                var sb2 = new StringBuilder();
+                sb2.Append(sqlParameter.ParameterName);
+                sb2.Append(": ");
                 if (sqlParameter.Value == null)
-                    sb.AppendLine("null");
+                    sb2.Append("null");
                 else
-                    sb.AppendLine(sqlParameter.Value.ToString());
+                    sb2.Append(sqlParameter.Value);
+                parts.Add(sb2.ToString());
             }
 
-            return sb.ToString();
+            if(parts.Any()) sb1.Append(string.Join(Environment.NewLine, parts));
+
+            return sb1.ToString();
         }
     }
 }

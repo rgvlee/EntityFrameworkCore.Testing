@@ -5,13 +5,14 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
+using EntityFrameworkCore.Testing.Common.Tests;
 using EntityFrameworkCore.Testing.Moq.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 
 namespace EntityFrameworkCore.Testing.Moq.Tests {
     [TestFixture]
-    public class MockedDbSetTests {
+    public class MockedDbSetTests : TestBase {
         [Test]
         public void AddAndPersist_Entity_Persists() {
             var testEntity1 = new TestEntity1();
