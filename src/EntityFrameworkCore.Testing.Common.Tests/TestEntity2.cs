@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 
-namespace EntityFrameworkCore.Testing.Moq.Tests {
+namespace EntityFrameworkCore.Testing.Common.Tests {
     [DebuggerDisplay("{nameof(Id)}: {Id}")]
     public class TestEntity2 {
         public Guid Id { get; set; }

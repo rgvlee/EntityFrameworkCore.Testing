@@ -1,6 +1,5 @@
 using EntityFrameworkCore.DbContextBackedMock.Moq;
 using EntityFrameworkCore.DbContextBackedMock.Moq.Extensions;
-using EntityFrameworkCore.Testing.Moq.Tests;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using NUnit.Framework;
@@ -8,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
+using EntityFrameworkCore.Testing.Common.Tests;
 
 namespace EntityFrameworkCore.Testing.Moq.PackageVerification.Tests {
     public class Tests {

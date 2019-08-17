@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace EntityFrameworkCore.Testing.Moq.Tests {
+namespace EntityFrameworkCore.Testing.Common.Tests {
     public class TestDbContext : DbContext {
 
         public virtual DbSet<TestEntity1> TestEntities { get; set; }

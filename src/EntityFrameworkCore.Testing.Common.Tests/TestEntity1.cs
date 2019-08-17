@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 
-namespace EntityFrameworkCore.Testing.Moq.Tests {
+namespace EntityFrameworkCore.Testing.Common.Tests {
     [DebuggerDisplay("{nameof(Id)}: {Id}")]
     public class TestEntity1 {
         [Key]
