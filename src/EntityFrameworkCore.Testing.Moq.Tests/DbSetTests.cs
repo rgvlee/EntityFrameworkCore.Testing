@@ -1,9 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using EntityFrameworkCore.Testing.Common.Tests;
+using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using EntityFrameworkCore.Testing.Common.Tests;
 
 namespace EntityFrameworkCore.Testing.Moq.Tests {
     [TestFixture]
