@@ -28,8 +28,12 @@ Designed to be used with the in-memory provider to provide a complete DbContext 
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="DbSetMockBuilder.cs" />
     <Compile Remove="QueryableMockBuilderBase.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Extensions\QueryProviderExtensions.cs~RF92c9f824.TMP" />
+    <None Remove="Helpers\Create.cs~RF934332b0.TMP" />
   </ItemGroup>
 
   <ItemGroup>

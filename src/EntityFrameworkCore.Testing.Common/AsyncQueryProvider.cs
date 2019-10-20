@@ -1,53 +1,118 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
+using EntityFrameworkCore.Testing.Common.Helpers;
 using Microsoft.EntityFrameworkCore.Query.Internal;
+using Microsoft.Extensions.Logging;
 
-namespace EntityFrameworkCore.Testing.Common {
-    /// <summary>
-    /// Provides an asynchronous query provider for an enumerable sequence.
-    /// </summary>
-    /// <typeparam name="T">The enumerable sequence element type.</typeparam>
-    public class AsyncQueryProvider<T> : IAsyncQueryProvider {
-        private readonly IQueryable _sequence;
+namespace EntityFrameworkCore.Testing.Common
+{
+    /// <inheritdoc />
+    public class AsyncQueryProvider<T> : IAsyncQueryProvider
+    {
+        private static readonly ILogger Logger = LoggerHelper.CreateLogger(typeof(AsyncQueryProvider<T>));
 
         /// <summary>
-        /// Constructor.
+        ///     The query provider source.
         /// </summary>
-        /// <param name="sequence">The sequence to create an asynchronous query provider for.</param>
-        public AsyncQueryProvider(IEnumerable<T> sequence) {
-            _sequence = sequence.AsQueryable();
-        }
+        public virtual IQueryable<T> Source { get; set; }
 
         /// <inheritdoc />
-        public IQueryable CreateQuery(Expression expression) {
+        public virtual IQueryable CreateQuery(Expression expression)
+        {
             return new AsyncEnumerable<T>(expression);
         }
 
         /// <inheritdoc />
-        public IQueryable<TElement> CreateQuery<TElement>(Expression expression) {
+        public virtual IQueryable<TElement> CreateQuery<TElement>(Expression expression)
+        {
+            //Why is this done here? Primarily because we can't change the Moq mock interface once we have started using the mocked instance.
+            //It is not possible to set up every possible interface as the method can be invoked with an anonymous type.
+            //We don't lose anything doing it this way. We can still verify invocations and we don't have to duplicate the functionality for each project.
+            if (expression is MethodCallExpression methodCallExpression)
+            {
+                if (methodCallExpression.Method.Name.Equals(nameof(Queryable.Select)))
+                {
+                    Logger.LogDebug($"{methodCallExpression.Method.Name} invoked; expression: '{methodCallExpression}'");
+
+                    var unaryExpression = (UnaryExpression) methodCallExpression.Arguments[1];
+                    var predicateExpression = unaryExpression.Operand;
+                    var funcType = predicateExpression.Type;
+                    if (funcType.GetGenericArguments().ToList().Count.Equals(3))
+                    {
+                        var predicate = ((Expression<Func<T, int, TElement>>) predicateExpression).Compile();
+                        return Source.Cast<T>().ToList().Select((x, i) => predicate(x, i)).AsQueryable();
+                    }
+                    else
+                    {
+                        var predicate = ((Expression<Func<T, TElement>>) predicateExpression).Compile();
+                        return Source.Cast<T>().ToList().Select(x => predicate(x)).AsQueryable();
+                    }
+                }
+
+                if (methodCallExpression.Method.Name.Equals(nameof(Queryable.SkipWhile)) ||
+                    methodCallExpression.Method.Name.Equals(nameof(Queryable.TakeWhile)))
+                {
+                    var unaryExpression = (UnaryExpression) methodCallExpression.Arguments[1];
+                    var predicateExpression = unaryExpression.Operand;
+                    var funcType = predicateExpression.Type;
+                    if (funcType.GetGenericArguments().ToList().Count.Equals(3))
+                    {
+                        var predicate = ((Expression<Func<TElement, int, bool>>) predicateExpression).Compile();
+                        return methodCallExpression.Method.Name.Equals(nameof(Queryable.SkipWhile))
+                            ? Source.Cast<TElement>().ToList().SkipWhile((x, i) => predicate(x, i)).AsQueryable()
+                            : Source.Cast<TElement>().ToList().TakeWhile((x, i) => predicate(x, i)).AsQueryable();
+                    }
+                    else
+                    {
+                        var predicate = ((Expression<Func<TElement, bool>>) predicateExpression).Compile();
+                        return methodCallExpression.Method.Name.Equals(nameof(Queryable.SkipWhile))
+                            ? Source.Cast<TElement>().ToList().SkipWhile(x => predicate(x)).AsQueryable()
+                            : Source.Cast<TElement>().ToList().TakeWhile(x => predicate(x)).AsQueryable();
+                    }
+                }
+            }
+
             return new AsyncEnumerable<TElement>(expression);
         }
 
         /// <inheritdoc />
-        public object Execute(Expression expression) {
-            return _sequence.Provider.Execute(expression);
+        public virtual object Execute(Expression expression)
+        {
+            return Source.Provider.Execute(expression);
         }
 
         /// <inheritdoc />
-        public TResult Execute<TResult>(Expression expression) {
-            return _sequence.Provider.Execute<TResult>(expression);
+        public virtual TResult Execute<TResult>(Expression expression)
+        {
+            if (expression is MethodCallExpression methodCallExpression)
+                if (
+                    methodCallExpression.Method.Name.Equals(nameof(Queryable.ElementAt)) ||
+                    methodCallExpression.Method.Name.Equals(nameof(Queryable.ElementAtOrDefault))
+                )
+                {
+                    var mce = methodCallExpression;
+                    var index = (int) ((ConstantExpression) mce.Arguments[1]).Value;
+                    return mce.Method.Name.Equals(nameof(Queryable.ElementAt))
+                        ? Source.Cast<TResult>().ToList().ElementAt(index)
+                        : Source.Cast<TResult>().ToList().ElementAtOrDefault(index);
+                }
+
+            return Source.Provider.Execute<TResult>(expression);
         }
 
         /// <inheritdoc />
-        public IAsyncEnumerable<TResult> ExecuteAsync<TResult>(Expression expression) {
+        public virtual IAsyncEnumerable<TResult> ExecuteAsync<TResult>(Expression expression)
+        {
             return Task.FromResult(Execute<TResult>(expression)).ToAsyncEnumerable();
         }
 
         /// <inheritdoc />
-        public Task<TResult> ExecuteAsync<TResult>(Expression expression, CancellationToken cancellationToken) {
+        public virtual Task<TResult> ExecuteAsync<TResult>(Expression expression, CancellationToken cancellationToken)
+        {
             return Task.FromResult(Execute<TResult>(expression));
         }
     }

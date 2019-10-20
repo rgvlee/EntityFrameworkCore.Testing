@@ -1,15 +1,17 @@
 ﻿using System;
 using Microsoft.Extensions.Logging;
 
-namespace EntityFrameworkCore.Testing.Common.Helpers {
+namespace EntityFrameworkCore.Testing.Common.Helpers
+{
     /// <summary>
-    /// Helper for creating logger instances.
+    ///     A helper for creating loggers.
     /// </summary>
-    public static class LoggerHelper {
+    public static class LoggerHelper
+    {
         private static ILoggerFactory _factory;
-        
+
         /// <summary>
-        /// Gets or sets the logger factory.
+        ///     Gets or sets the logger factory used to create loggers.
         /// </summary>
         public static ILoggerFactory LoggerFactory {
             get => _factory ?? (_factory = new LoggerFactory());
@@ -17,24 +19,37 @@ namespace EntityFrameworkCore.Testing.Common.Helpers {
         }
 
         /// <summary>
-        /// Creates a new ILogger instance using the full name of the specified type.
+        ///     Creates a new logger instance using the full name of the specified type.
         /// </summary>
         /// <typeparam name="T">The type.</typeparam>
-        /// <returns>A new <see cref="ILogger{T}"/> instance.</returns>
-        public static ILogger<T> CreateLogger<T>() => LoggerFactory.CreateLogger<T>();
+        /// <returns>A new logger instance.</returns>
+        public static ILogger<T> CreateLogger<T>()
+        {
+            return LoggerFactory.CreateLogger<T>();
+        }
 
         /// <summary>
-        /// Creates a new <see cref="ILogger"/> instance.
+        ///     Creates a new logger instance.
         /// </summary>
         /// <param name="categoryName">The category name for messages produced by the logger.</param>
-        /// <returns>A new <see cref="ILogger"/> instance.</returns>
-        public static ILogger CreateLogger(string categoryName) => LoggerFactory.CreateLogger(categoryName);
+        /// <returns>A new logger instance.</returns>
+        public static ILogger CreateLogger(string categoryName)
+        {
+            EnsureArgument.IsNotNullOrEmpty(categoryName, nameof(categoryName));
+
+            return LoggerFactory.CreateLogger(categoryName);
+        }
 
         /// <summary>
-        /// Creates a new ILogger instance using the full name of the specified type.
+        ///     Creates a new logger instance using the full name of the specified type.
         /// </summary>
         /// <param name="type">The type.</param>
-        /// <returns>A new <see cref="ILogger"/> instance.</returns>
-        public static ILogger CreateLogger(Type type) => LoggerFactory.CreateLogger(type);
+        /// <returns>A new logger instance.</returns>
+        public static ILogger CreateLogger(Type type)
+        {
+            EnsureArgument.IsNotNull(type, nameof(type));
+
+            return LoggerFactory.CreateLogger(type);
+        }
     }
 }

@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>EntityFrameworkCore.Testing.Moq</id>
+    <version>1.0.0</version>
+    <authors>rgvlee</authors>
+    <owners>rgvlee</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <licenseUrl>https://github.com/rgvlee/EntityFrameworkCore.Testing/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/rgvlee/EntityFrameworkCore.Testing</projectUrl>
+    <description>EntityFrameworkCore DbContext, DbSet, DbQuery, FromSql and ExecuteSqlCommand mocking library.
+
+If you need to mock the FromSql/ExecuteSqlCommand/ExecuteSqlCommandAsync extensions, a Query, or simply want the benefits of using a mocking framework (e.g., the ability to verify method invocation) this library will sort you out.
+
+Designed to be used with the in-memory provider to provide a complete DbContext that you can include in your tests. Have your cake and eat it too!</description>
+    <copyright>Copyright (c) 2019 Lee Anderson</copyright>
+    <tags>moq mock EntityFrameworkCore efcore entity framework core EntityFramework InMemory In-Memory DbContext Context testing test tests FromSql ExecuteSqlCommand DbQuery</tags>
+    <repository url="https://github.com/rgvlee/EntityFrameworkCore.Testing" />
+    <dependencies>
+      <group targetFramework=".NETStandard2.0">
+        <dependency id="Microsoft.EntityFrameworkCore.InMemory" version="2.1.0" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.EntityFrameworkCore.SqlServer" version="2.1.0" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Extensions.Logging" version="2.1.0" exclude="Build,Analyzers" />
+        
+        <dependency id="Moq" version="4.9.0" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="src\EntityFrameworkCore.Testing.Common\bin\Release\netstandard2.0\EntityFrameworkCore.Testing.Common.dll" target="lib\netstandard2.0" />
+    <file src="src\EntityFrameworkCore.Testing.Moq\bin\Release\netstandard2.0\EntityFrameworkCore.Testing.Moq.dll" target="lib\netstandard2.0" />
+  </files>
+</package>

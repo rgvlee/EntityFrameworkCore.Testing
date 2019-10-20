@@ -1,15 +1,22 @@
-﻿using EntityFrameworkCore.Testing.Common.Helpers;
+﻿using AutoFixture;
+using EntityFrameworkCore.Testing.Common.Helpers;
 using Microsoft.Extensions.Logging;
 using NUnit.Framework;
 
-namespace EntityFrameworkCore.Testing.Common.Tests {
+namespace EntityFrameworkCore.Testing.Common.Tests
+{
     [TestFixture]
-    public abstract class TestBase {
-        protected static readonly ILogger Logger = LoggerHelper.CreateLogger(typeof(TestBase));
-        
+    public abstract class TestBase
+    {
         [SetUp]
-        public virtual void SetUp() {
+        public virtual void SetUp()
+        {
             LoggerHelper.LoggerFactory.AddConsole(LogLevel.Debug);
+            Fixture = new Fixture();
         }
+
+        protected Fixture Fixture;
+
+        protected static readonly ILogger Logger = LoggerHelper.CreateLogger(typeof(TestBase));
     }
 }
