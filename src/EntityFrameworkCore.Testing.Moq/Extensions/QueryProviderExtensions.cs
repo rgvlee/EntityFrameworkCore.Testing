@@ -98,8 +98,9 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
                     p => p.CreateQuery<T>(It.Is<MethodCallExpression>(mce => SpecifiedParametersMatchMethodCallExpression(mce, sql, parameters)))
                 )
                 .Returns(() => { return createQueryResult; })
-                .Callback((MethodCallExpression mce) =>
+                .Callback((Expression expression) =>
                 {
+                    var mce = (MethodCallExpression) expression;
                     var parts = new List<string>();
                     parts.Add("FromSql inputs:");
                     parts.Add(StringifyFromSqlMethodCallExpression(mce));
