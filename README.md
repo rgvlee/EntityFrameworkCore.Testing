@@ -12,7 +12,8 @@ EntityFrameworkCore.Testing.Moq is a EntityFrameworkCore mocking library for Moq
 - SkipWhile
 - TakeWhile
 - Indexed TakeWhile (Queryable.Select(Func\<T, int, bool\>))
-- _and probably more..._
+
+There may be more that isn't supported by the Microsoft in-memory provider. I will continue add them as I find them (or if you find one, let me know so I can action it).
 
 In addition to the above you also get all of the benefits of using a mocking framework (e.g., the ability to verify method invocation).
 
