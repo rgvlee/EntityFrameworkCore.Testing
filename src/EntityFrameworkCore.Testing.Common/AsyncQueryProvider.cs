@@ -40,8 +40,7 @@ namespace EntityFrameworkCore.Testing.Common
 
                     var unaryExpression = (UnaryExpression) methodCallExpression.Arguments[1];
                     var predicateExpression = unaryExpression.Operand;
-                    var funcType = predicateExpression.Type;
-                    if (funcType.GetGenericArguments().ToList().Count.Equals(3))
+                    if (predicateExpression.Type.GetGenericArguments().ToList().Count.Equals(3))
                     {
                         var predicate = ((Expression<Func<T, int, TElement>>) predicateExpression).Compile();
                         return Source.Cast<T>().ToList().Select((x, i) => predicate(x, i)).AsQueryable();
@@ -58,8 +57,7 @@ namespace EntityFrameworkCore.Testing.Common
                 {
                     var unaryExpression = (UnaryExpression) methodCallExpression.Arguments[1];
                     var predicateExpression = unaryExpression.Operand;
-                    var funcType = predicateExpression.Type;
-                    if (funcType.GetGenericArguments().ToList().Count.Equals(3))
+                    if (predicateExpression.Type.GetGenericArguments().ToList().Count.Equals(3))
                     {
                         var predicate = ((Expression<Func<TElement, int, bool>>) predicateExpression).Compile();
                         return methodCallExpression.Method.Name.Equals(nameof(Queryable.SkipWhile))
