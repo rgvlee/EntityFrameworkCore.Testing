@@ -36,9 +36,9 @@ namespace EntityFrameworkCore.Testing.Moq.PackageVerification.Tests
 
             Assert.Multiple(() =>
             {
-                Assert.AreNotEqual(default(Guid), testEntity1.Id);
+                Assert.AreNotEqual(default(Guid), testEntity1.Guid);
                 Assert.DoesNotThrow(() => mockedContext.Set<TestEntity1>().Single());
-                Assert.AreEqual(testEntity1, mockedContext.Find<TestEntity1>(testEntity1.Id));
+                Assert.AreEqual(testEntity1, mockedContext.Find<TestEntity1>(testEntity1.Guid));
                 Mock.Get(mockedContext).Verify(m => m.SaveChanges(), Times.Once);
             });
         }
