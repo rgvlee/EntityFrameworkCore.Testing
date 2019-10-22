@@ -55,5 +55,9 @@ namespace EntityFrameworkCore.DefaultBehaviour.Tests
         [Test]
         [Ignore("This is not supported by the in memory database provider.")]
         public override void TakeWhile_TakeFirstItemUsingIndex_ReturnsFirstItem() { }
+
+        [Test]
+        [Ignore("This is not supported by the in memory database provider.")]
+        public virtual void IndexedSelectThenWhereThenAny_TrueCondition_ReturnsTrue() { }
     }
 }

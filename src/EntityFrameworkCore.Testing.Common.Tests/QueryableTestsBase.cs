@@ -567,5 +567,40 @@ namespace EntityFrameworkCore.Testing.Common.Tests
                 Assert.That(actualResult2.First(), Is.EqualTo(firstItem));
             });
         }
+
+        [Test]
+        public virtual void Where_Condition_ReturnsItemsThatSatisfyCondition() {
+            SeedQueryableSource();
+            
+            var actualResult1 = Queryable.Where(x => !x.Id.Equals(default(Guid))).ToList();
+            var actualResult2 = Queryable.Where(x => !x.Id.Equals(default(Guid))).ToList();
+            
+            Assert.Multiple(() => {
+                for (var i = 0; i < ItemsAddedToQueryableSource.Count; i++)
+                {
+                    var item = ItemsAddedToQueryableSource[i];
+                    Assert.That(item.Id, Is.Not.EqualTo(default(Guid)));
+
+                    Assert.That(actualResult1[i], Is.EqualTo(item));
+                    Assert.That(actualResult1[i].Id, Is.Not.EqualTo(default(Guid)));
+
+                    Assert.That(actualResult2[i], Is.EqualTo(item));
+                    Assert.That(actualResult2[i].Id, Is.Not.EqualTo(default(Guid)));
+                }
+            });
+        }
+
+        [Test]
+        public virtual void IndexedSelectThenWhereThenAny_TrueCondition_ReturnsTrue() {
+            SeedQueryableSource();
+
+            var actualResult1 = Queryable.Select((x, i) => new { Index = i, Item = x }).Where(x => !x.Index.Equals(0)).Any();
+            var actualResult2 = Queryable.Select((x, i) => new { Index = i, Item = x }).Where(x => !x.Index.Equals(0)).Any();
+
+            Assert.Multiple(() => {
+                Assert.That(actualResult1, Is.True);
+                Assert.That(actualResult2, Is.True);
+            });
+        }
     }
 }
