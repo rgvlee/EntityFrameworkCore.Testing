@@ -120,7 +120,11 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
             parts.Add($"Set up sql: '{sql}'");
             Logger.LogInformation(string.Join(Environment.NewLine, parts));
 
-            return mceRawSqlString.Format.Contains(sql, StringComparison.CurrentCultureIgnoreCase);
+            var result = mceRawSqlString.Format.Contains(sql, StringComparison.CurrentCultureIgnoreCase);
+
+            Logger.LogDebug($"Match? {result}");
+
+            return result;
         }
 
         private static bool SqlParametersMatchMethodCallExpression(MethodCallExpression mce, IEnumerable<SqlParameter> sqlParameters)
@@ -134,13 +138,22 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
             var mceSqlParameters = GetSqlParameters(mceParameters).ToList();
 
             parts.Add("Invocation SqlParameters:");
-            foreach (var parameter in mceSqlParameters) parts.Add($"'{parameter.ParameterName}': '{parameter.Value}'");
+            parts.AddRange(mceSqlParameters.Select(parameter => $"'{parameter.ParameterName}': '{parameter.Value}'"));
             parts.Add("Set up sqlParameters:");
-            foreach (var parameter in sqlParameters) parts.Add($"'{parameter.ParameterName}': '{parameter.Value}'");
+            parts.AddRange(sqlParameters.Select(parameter => $"'{parameter.ParameterName}': '{parameter.Value}'"));
 
             Logger.LogInformation(string.Join(Environment.NewLine, parts));
 
-            return !sqlParameters.Except(mceSqlParameters, new SqlParameterParameterNameAndValueEqualityComparer()).Any();
+            if (!mceSqlParameters.Any())
+            {
+                return true;
+            }
+
+            var result = !sqlParameters.Except(mceSqlParameters, new SqlParameterParameterNameAndValueEqualityComparer()).Any();
+
+            Logger.LogDebug($"Match? {result}");
+
+            return result;
         }
 
         private static bool SpecifiedParametersMatchMethodCallExpression(MethodCallExpression mce, string sql, IEnumerable<SqlParameter> sqlParameters)
@@ -148,9 +161,13 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
             EnsureArgument.IsNotNull(mce, nameof(mce));
             EnsureArgument.IsNotNull(sqlParameters, nameof(sqlParameters));
 
-            return mce.Method.Name.Equals(nameof(RelationalQueryableExtensions.FromSql))
-                   && SqlMatchesMethodCallExpression(mce, sql)
-                   && SqlParametersMatchMethodCallExpression(mce, sqlParameters);
+            var result = mce.Method.Name.Equals(nameof(RelationalQueryableExtensions.FromSql))
+                         && SqlMatchesMethodCallExpression(mce, sql)
+                         && SqlParametersMatchMethodCallExpression(mce, sqlParameters);
+
+            Logger.LogDebug($"Match? {result}");
+
+            return result;
         }
 
         private static IEnumerable<SqlParameter> GetSqlParameters(object[] parameters)
