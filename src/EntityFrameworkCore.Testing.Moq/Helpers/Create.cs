@@ -4,14 +4,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EntityFrameworkCore.Testing.Moq.Helpers
 {
-    /// <summary>
-    ///     Factory for creating mocked instances.
-    /// </summary>
+    /// <summary>Factory for creating mocked instances.</summary>
     public static class Create
     {
-        /// <summary>
-        ///     Creates a mocked db context.
-        /// </summary>
+        /// <summary>Creates a mocked db context.</summary>
         /// <typeparam name="TDbContext">The db context type.</typeparam>
         /// <param name="dbContextToMock">The db context to mock.</param>
         /// <returns>A mocked db context.</returns>
@@ -23,9 +19,7 @@ namespace EntityFrameworkCore.Testing.Moq.Helpers
             return dbContextToMock.CreateMock();
         }
 
-        /// <summary>
-        ///     Creates a mocked db set.
-        /// </summary>
+        /// <summary>Creates a mocked db set.</summary>
         /// <typeparam name="TEntity">The db set entity type.</typeparam>
         /// <param name="dbSetToMock">The db set to mock.</param>
         /// <returns>A mocked db set.</returns>
@@ -37,9 +31,7 @@ namespace EntityFrameworkCore.Testing.Moq.Helpers
             return dbSetToMock.CreateMock();
         }
 
-        /// <summary>
-        ///     Creates a mocked db query.
-        /// </summary>
+        /// <summary>Creates a mocked db query.</summary>
         /// <typeparam name="TQuery">The db query query type.</typeparam>
         /// <param name="dbQueryToMock">The db query to mock.</param>
         /// <returns>A mocked db query.</returns>
