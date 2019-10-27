@@ -15,7 +15,7 @@
 
   <ItemGroup>
     <PackageReference Include="AutoFixture" Version="4.11.0" />
-    <PackageReference Include="EntityFrameworkCore.Testing.NSubstitute" Version="1.0.2-beta02" />
+    <PackageReference Include="EntityFrameworkCore.Testing.NSubstitute" Version="1.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="2.2.6" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.6" />
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="2.2.0" />
