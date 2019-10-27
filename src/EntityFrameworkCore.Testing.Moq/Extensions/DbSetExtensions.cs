@@ -12,14 +12,10 @@ using Moq;
 
 namespace EntityFrameworkCore.Testing.Moq.Extensions
 {
-    /// <summary>
-    ///     Extensions for the db set type.
-    /// </summary>
+    /// <summary>Extensions for the db set type.</summary>
     public static class DbSetExtensions
     {
-        /// <summary>
-        ///     Creates and sets up a mocked db set.
-        /// </summary>
+        /// <summary>Creates and sets up a mocked db set.</summary>
         /// <typeparam name="TEntity">The entity type.</typeparam>
         /// <param name="dbSet">The db set to mock/proxy.</param>
         /// <returns>A mocked db set.</returns>
@@ -28,52 +24,30 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
             EnsureArgument.IsNotNull(dbSet, nameof(dbSet));
 
             var dbSetMock = new Mock<DbSet<TEntity>>();
-            dbSetMock.SetUp(dbSet);
-            return dbSetMock.Object;
-        }
 
-        /// <summary>
-        ///     Sets up a db set mock.
-        /// </summary>
-        /// <typeparam name="TEntity">The entity type.</typeparam>
-        /// <param name="dbSetMock">The db set mock to set up.</param>
-        /// <param name="dbSet">The db set to mock/proxy.</param>
-        internal static void SetUp<TEntity>(this Mock<DbSet<TEntity>> dbSetMock, DbSet<TEntity> dbSet) where TEntity : class
-        {
-            EnsureArgument.IsNotNull(dbSetMock, nameof(dbSetMock));
-            EnsureArgument.IsNotNull(dbSet, nameof(dbSet));
-
-            dbSetMock.Setup(m => m.Add(It.IsAny<TEntity>())).Returns((TEntity entity) => dbSet.Add(entity));
-
-            dbSetMock.Setup(m => m.AddAsync(It.IsAny<TEntity>(), It.IsAny<CancellationToken>()))
-                .Returns((TEntity entity, CancellationToken cancellationToken) => dbSet.AddAsync(entity, cancellationToken));
-
-            dbSetMock.Setup(m => m.AddRange(It.IsAny<IEnumerable<TEntity>>())).Callback((IEnumerable<TEntity> entities) => dbSet.AddRange(entities));
-            dbSetMock.Setup(m => m.AddRange(It.IsAny<TEntity[]>())).Callback((TEntity[] entities) => dbSet.AddRange(entities));
-
-            dbSetMock.Setup(m => m.AddRangeAsync(It.IsAny<IEnumerable<TEntity>>(), It.IsAny<CancellationToken>()))
-                .Returns((IEnumerable<TEntity> entities, CancellationToken cancellationToken) => dbSet.AddRangeAsync(entities, cancellationToken));
-            dbSetMock.Setup(m => m.AddRangeAsync(It.IsAny<TEntity[]>())).Returns((TEntity[] entities) => dbSet.AddRangeAsync(entities));
+            dbSetMock.Setup(m => m.Add(It.IsAny<TEntity>())).Returns((TEntity providedEntity) => dbSet.Add(providedEntity));
+            dbSetMock.Setup(m => m.AddAsync(It.IsAny<TEntity>(), It.IsAny<CancellationToken>())).Returns((TEntity providedEntity, CancellationToken providedCancellationToken) => dbSet.AddAsync(providedEntity, providedCancellationToken));
+            dbSetMock.Setup(m => m.AddRange(It.IsAny<IEnumerable<TEntity>>())).Callback((IEnumerable<TEntity> providedEntities) => dbSet.AddRange(providedEntities));
+            dbSetMock.Setup(m => m.AddRange(It.IsAny<TEntity[]>())).Callback((TEntity[] providedEntities) => dbSet.AddRange(providedEntities));
+            dbSetMock.Setup(m => m.AddRangeAsync(It.IsAny<IEnumerable<TEntity>>(), It.IsAny<CancellationToken>())).Returns((IEnumerable<TEntity> providedEntities, CancellationToken providedCancellationToken) => dbSet.AddRangeAsync(providedEntities, providedCancellationToken));
+            dbSetMock.Setup(m => m.AddRangeAsync(It.IsAny<TEntity[]>())).Returns((TEntity[] providedEntities) => dbSet.AddRangeAsync(providedEntities));
 
             dbSetMock.As<IAsyncEnumerableAccessor<TEntity>>().Setup(m => m.AsyncEnumerable).Returns(((IAsyncEnumerableAccessor<TEntity>) dbSet).AsyncEnumerable);
 
-            dbSetMock.Setup(m => m.Attach(It.IsAny<TEntity>())).Returns((TEntity entity) => dbSet.Attach(entity));
-            dbSetMock.Setup(m => m.AttachRange(It.IsAny<IEnumerable<TEntity>>())).Callback((IEnumerable<TEntity> entities) => dbSet.AttachRange(entities));
-            dbSetMock.Setup(m => m.AttachRange(It.IsAny<TEntity[]>())).Callback((TEntity[] entities) => dbSet.AttachRange(entities));
+            dbSetMock.Setup(m => m.Attach(It.IsAny<TEntity>())).Returns((TEntity providedEntity) => dbSet.Attach(providedEntity));
+            dbSetMock.Setup(m => m.AttachRange(It.IsAny<IEnumerable<TEntity>>())).Callback((IEnumerable<TEntity> providedEntities) => dbSet.AttachRange(providedEntities));
+            dbSetMock.Setup(m => m.AttachRange(It.IsAny<TEntity[]>())).Callback((TEntity[] providedEntities) => dbSet.AttachRange(providedEntities));
 
             dbSetMock.As<IListSource>().Setup(m => m.ContainsListCollection).Returns(((IListSource) dbSet).ContainsListCollection);
 
             dbSetMock.As<IQueryable<TEntity>>().Setup(m => m.ElementType).Returns(((IQueryable<TEntity>) dbSet).ElementType);
             dbSetMock.As<IQueryable<TEntity>>().Setup(m => m.Expression).Returns(((IQueryable<TEntity>) dbSet).Expression);
 
-            dbSetMock.Setup(m => m.Find(It.IsAny<object[]>())).Returns((object[] keyValues) => dbSet.Find(keyValues));
-
-            dbSetMock.Setup(m => m.FindAsync(It.IsAny<object[]>())).Returns((object[] keyValues) => dbSet.FindAsync(keyValues));
-            dbSetMock.Setup(m => m.FindAsync(It.IsAny<object[]>(), It.IsAny<CancellationToken>()))
-                .Returns((object[] keyValues, CancellationToken cancellationToken) => dbSet.FindAsync(keyValues, cancellationToken));
+            dbSetMock.Setup(m => m.Find(It.IsAny<object[]>())).Returns((object[] providedKeyValues) => dbSet.Find(providedKeyValues));
+            dbSetMock.Setup(m => m.FindAsync(It.IsAny<object[]>())).Returns((object[] providedKeyValues) => dbSet.FindAsync(providedKeyValues));
+            dbSetMock.Setup(m => m.FindAsync(It.IsAny<object[]>(), It.IsAny<CancellationToken>())).Returns((object[] providedKeyValues, CancellationToken providedCancellationToken) => dbSet.FindAsync(providedKeyValues, providedCancellationToken));
 
             dbSetMock.As<IEnumerable>().Setup(m => m.GetEnumerator()).Returns(() => ((IEnumerable) dbSet).GetEnumerator());
-
             dbSetMock.As<IEnumerable<TEntity>>().Setup(m => m.GetEnumerator()).Returns(() => ((IEnumerable<TEntity>) dbSet).GetEnumerator());
 
             /*
@@ -88,15 +62,18 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
 
             dbSetMock.Setup(m => m.Local).Returns(dbSet.Local);
 
-            dbSetMock.Setup(m => m.Remove(It.IsAny<TEntity>())).Returns((TEntity entity) => dbSet.Remove(entity));
-            dbSetMock.Setup(m => m.RemoveRange(It.IsAny<IEnumerable<TEntity>>())).Callback((IEnumerable<TEntity> entities) => dbSet.RemoveRange(entities));
-            dbSetMock.Setup(m => m.RemoveRange(It.IsAny<TEntity[]>())).Callback((TEntity[] entities) => dbSet.RemoveRange(entities));
+            dbSetMock.Setup(m => m.Remove(It.IsAny<TEntity>())).Returns((TEntity providedEntity) => dbSet.Remove(providedEntity));
+            dbSetMock.Setup(m => m.RemoveRange(It.IsAny<IEnumerable<TEntity>>())).Callback((IEnumerable<TEntity> providedEntities) => dbSet.RemoveRange(providedEntities));
+            dbSetMock.Setup(m => m.RemoveRange(It.IsAny<TEntity[]>())).Callback((TEntity[] providedEntities) => dbSet.RemoveRange(providedEntities));
 
-            dbSetMock.Setup(m => m.Update(It.IsAny<TEntity>())).Returns((TEntity entity) => dbSet.Update(entity));
-            dbSetMock.Setup(m => m.UpdateRange(It.IsAny<IEnumerable<TEntity>>())).Callback((IEnumerable<TEntity> entities) => dbSet.UpdateRange(entities));
-            dbSetMock.Setup(m => m.UpdateRange(It.IsAny<TEntity[]>())).Callback((TEntity[] entities) => dbSet.UpdateRange(entities));
+            dbSetMock.Setup(m => m.Update(It.IsAny<TEntity>())).Returns((TEntity providedEntity) => dbSet.Update(providedEntity));
+            dbSetMock.Setup(m => m.UpdateRange(It.IsAny<IEnumerable<TEntity>>())).Callback((IEnumerable<TEntity> providedEntities) => dbSet.UpdateRange(providedEntities));
+            dbSetMock.Setup(m => m.UpdateRange(It.IsAny<TEntity[]>())).Callback((TEntity[] providedEntities) => dbSet.UpdateRange(providedEntities));
 
-            dbSetMock.As<IQueryable<TEntity>>().Setup(m => m.Provider).Returns(((IQueryable<TEntity>) dbSet).Provider.CreateMock(dbSet));
+            var mockedQueryProvider = ((IQueryable<TEntity>) dbSet).Provider.CreateMock(dbSet);
+            dbSetMock.As<IQueryable<TEntity>>().Setup(m => m.Provider).Returns(mockedQueryProvider);
+
+            return dbSetMock.Object;
         }
     }
 }
