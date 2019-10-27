@@ -15,7 +15,9 @@ namespace EntityFrameworkCore.Testing.Moq.Tests
         public override void Select_ReturnsSequence()
         {
             base.Select_ReturnsSequence();
+
             var queryProviderMock = Mock.Get(Queryable.Provider);
+
             queryProviderMock.Verify(
                 m => m.CreateQuery<TestEntity1>(It.IsAny<Expression>()),
                 Times.Exactly(2)
