@@ -5,14 +5,14 @@ using System.Linq;
 using AutoFixture;
 using EntityFrameworkCore.Testing.Common.Helpers;
 using EntityFrameworkCore.Testing.Common.Tests;
-using EntityFrameworkCore.Testing.Moq.Extensions;
-using EntityFrameworkCore.Testing.Moq.Helpers;
+using EntityFrameworkCore.Testing.NSubstitute.Extensions;
+using EntityFrameworkCore.Testing.NSubstitute.Helpers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Moq;
+using NSubstitute;
 using NUnit.Framework;
 
-namespace EntityFrameworkCore.Testing.Moq.PackageVerification.Tests
+namespace EntityFrameworkCore.Testing.NSubstitute.PackageVerification.Tests
 {
     public class Tests
     {
@@ -28,7 +28,7 @@ namespace EntityFrameworkCore.Testing.Moq.PackageVerification.Tests
         public void SetAddAndPersist_Item_Persists()
         {
             var dbContextToMock = new TestDbContext(new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
-            var mockedContext = Create.MockedDbContextFor(dbContextToMock);
+            var mockedContext = Create.SubstituteFor(dbContextToMock);
 
             var testEntity1 = Fixture.Create<TestEntity1>();
 
@@ -40,7 +40,7 @@ namespace EntityFrameworkCore.Testing.Moq.PackageVerification.Tests
                 Assert.AreNotEqual(default(Guid), testEntity1.Guid);
                 Assert.DoesNotThrow(() => mockedContext.Set<TestEntity1>().Single());
                 Assert.AreEqual(testEntity1, mockedContext.Find<TestEntity1>(testEntity1.Guid));
-                Mock.Get(mockedContext).Verify(m => m.SaveChanges(), Times.Once);
+                mockedContext.Received(1).SaveChanges();
             });
         }
 
@@ -48,7 +48,7 @@ namespace EntityFrameworkCore.Testing.Moq.PackageVerification.Tests
         public void SetUpFromSqlResult_AnyStoredProcedureWithNoParameters_ReturnsExpectedResult()
         {
             var dbContextToMock = new TestDbContext(new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
-            var mockedContext = Create.MockedDbContextFor(dbContextToMock);
+            var mockedContext = Create.SubstituteFor(dbContextToMock);
 
             var expectedResult = Fixture.CreateMany<TestEntity1>().ToList();
 
@@ -68,7 +68,7 @@ namespace EntityFrameworkCore.Testing.Moq.PackageVerification.Tests
         public void SetUpFromSql_SpecifiedStoredProcedureAndParameters_ReturnsExpectedResult()
         {
             var dbContextToMock = new TestDbContext(new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
-            var mockedContext = Create.MockedDbContextFor(dbContextToMock);
+            var mockedContext = Create.SubstituteFor(dbContextToMock);
 
             var sqlParameters = new List<SqlParameter> {new SqlParameter("@SomeParameter2", "Value2")};
             var expectedResult = Fixture.CreateMany<TestEntity1>().ToList();
@@ -89,7 +89,7 @@ namespace EntityFrameworkCore.Testing.Moq.PackageVerification.Tests
         public void QueryAddRange_Enumeration_AddsToQuerySource()
         {
             var dbContextToMock = new TestDbContext(new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
-            var mockedContext = Create.MockedDbContextFor(dbContextToMock);
+            var mockedContext = Create.SubstituteFor(dbContextToMock);
 
             var expectedResult = Fixture.CreateMany<TestQuery1>().ToList();
 
@@ -106,7 +106,7 @@ namespace EntityFrameworkCore.Testing.Moq.PackageVerification.Tests
         public void ExecuteSqlCommand_SpecifiedStoredProcedure_ReturnsExpectedResult()
         {
             var dbContextToMock = new TestDbContext(new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
-            var mockedContext = Create.MockedDbContextFor(dbContextToMock);
+            var mockedContext = Create.SubstituteFor(dbContextToMock);
 
             var commandText = "sp_NoParams";
             var expectedResult = 1;
@@ -122,7 +122,7 @@ namespace EntityFrameworkCore.Testing.Moq.PackageVerification.Tests
         public void ExecuteSqlCommand_SpecifiedStoredProcedureAndSqlParameters_ReturnsExpectedResult()
         {
             var dbContextToMock = new TestDbContext(new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
-            var mockedContext = Create.MockedDbContextFor(dbContextToMock);
+            var mockedContext = Create.SubstituteFor(dbContextToMock);
 
             var commandText = "sp_WithParams";
             var sqlParameters = new List<SqlParameter> {new SqlParameter("@SomeParameter2", "Value2")};
