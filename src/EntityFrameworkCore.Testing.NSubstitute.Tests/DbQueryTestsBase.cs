@@ -15,7 +15,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Tests
     {
         protected override TestDbContext CreateMockedDbContext()
         {
-            return Create.MockedDbContextFor(new TestDbContext(new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options));
+            return Create.SubstituteFor(new TestDbContext(new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options));
         }
 
         protected override void AddFromSqlResult(IQueryable<TestQuery1> mockedQueryable, IEnumerable<TestQuery1> expectedResult)
