@@ -19,7 +19,6 @@ namespace EntityFrameworkCore.Testing.Common.Tests
             base.SetUp();
         }
 
-        //protected abstract IQueryable<T> CreateQueryableSource();
         protected abstract IQueryable<T> Queryable { get; }
         protected abstract void SeedQueryableSource();
         protected List<T> ItemsAddedToQueryableSource;

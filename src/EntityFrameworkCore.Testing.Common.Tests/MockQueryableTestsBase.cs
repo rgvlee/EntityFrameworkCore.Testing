@@ -40,29 +40,13 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         }
 
         [Test]
-        public virtual void FromSql_SpecifiedSql_ReturnsExpectedResult()
+        public virtual void FromSql_QueryProviderWithManyFromSqlResults_ReturnsExpectedResults()
         {
-            var sql = "sp_NoParams";
-            var expectedResult = new Fixture().CreateMany<T>().ToList();
-            AddFromSqlResult(Queryable, sql, expectedResult);
-
-            var actualResult1 = Queryable.FromSql("[dbo].[sp_NoParams]").ToList();
-            var actualResult2 = Queryable.FromSql("sp_NoParams").ToList();
-
-            Assert.Multiple(() =>
-            {
-                Assert.That(actualResult1, Is.EquivalentTo(expectedResult));
-                Assert.That(actualResult2, Is.EquivalentTo(actualResult1));
-            });
-        }
-
-        [Test]
-        public virtual void FromSql_QueryProviderWithManyFromSqlResults_ReturnsExpectedResults() {
             var sql1 = "sp_NoParams";
             var expectedResult1 = new Fixture().CreateMany<T>().ToList();
-            
+
             var sql2 = "sp_WithParams";
-            var parameters2 = new List<SqlParameter> { new SqlParameter("@SomeParameter1", "Value1"), new SqlParameter("@SomeParameter2", "Value2") };
+            var parameters2 = new List<SqlParameter> {new SqlParameter("@SomeParameter1", "Value1"), new SqlParameter("@SomeParameter2", "Value2")};
             var expectedResult2 = new Fixture().CreateMany<T>().ToList();
 
             AddFromSqlResult(Queryable, sql1, expectedResult1);
@@ -79,11 +63,12 @@ namespace EntityFrameworkCore.Testing.Common.Tests
             var actualResult4 = Queryable.FromSql("sp_WithParams @SomeParameter1 @SomeParameter2").ToList();
 
             Logger.LogDebug("actualResult5");
-            var actualResult5 = Queryable.FromSql("[dbo].[sp_WithParams]", new List<SqlParameter> { new SqlParameter("@someparameter2", "value2") }).ToList();
+            var actualResult5 = Queryable.FromSql("[dbo].[sp_WithParams]", new List<SqlParameter> {new SqlParameter("@someparameter2", "value2")}).ToList();
             Logger.LogDebug("actualResult6");
-            var actualResult6 = Queryable.FromSql("sp_WithParams @SomeParameter1 @SomeParameter2", new List<SqlParameter> { new SqlParameter("@someparameter2", "value2") }).ToList();
+            var actualResult6 = Queryable.FromSql("sp_WithParams @SomeParameter1 @SomeParameter2", new List<SqlParameter> {new SqlParameter("@someparameter2", "value2")}).ToList();
 
-            Assert.Multiple(() => {
+            Assert.Multiple(() =>
+            {
                 Assert.That(actualResult1, Is.EquivalentTo(expectedResult1));
                 Assert.That(actualResult2, Is.EquivalentTo(actualResult1));
 
@@ -92,6 +77,23 @@ namespace EntityFrameworkCore.Testing.Common.Tests
 
                 Assert.That(actualResult5, Is.EquivalentTo(expectedResult2));
                 Assert.That(actualResult6, Is.EquivalentTo(actualResult5));
+            });
+        }
+
+        [Test]
+        public virtual void FromSql_SpecifiedSql_ReturnsExpectedResult()
+        {
+            var sql = "sp_NoParams";
+            var expectedResult = new Fixture().CreateMany<T>().ToList();
+            AddFromSqlResult(Queryable, sql, expectedResult);
+
+            var actualResult1 = Queryable.FromSql("[dbo].[sp_NoParams]").ToList();
+            var actualResult2 = Queryable.FromSql("sp_NoParams").ToList();
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(actualResult1, Is.EquivalentTo(expectedResult));
+                Assert.That(actualResult2, Is.EquivalentTo(actualResult1));
             });
         }
 
