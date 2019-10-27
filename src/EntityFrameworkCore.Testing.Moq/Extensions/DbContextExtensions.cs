@@ -99,7 +99,7 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
             {
                 typeof(DbContextExtensions)
                     .GetMethod(nameof(CreateAndAttachMockedDbQueryTo), BindingFlags.NonPublic | BindingFlags.Static)
-                    .MakeGenericMethod(typeof(TDbContext), entity.ClrType).Invoke(null, new object[] { dbContextMock, dbContextToMock });
+                    .MakeGenericMethod(typeof(TDbContext), entity.ClrType).Invoke(null, new object[] {dbContextMock, dbContextToMock});
             }
 
             return dbContextMock.Object;

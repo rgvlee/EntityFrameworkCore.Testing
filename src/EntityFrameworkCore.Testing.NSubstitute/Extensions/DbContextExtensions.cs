@@ -112,7 +112,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
             {
                 typeof(DbContextExtensions)
                     .GetMethod(nameof(CreateAndAttachMockedDbQueryTo), BindingFlags.NonPublic | BindingFlags.Static)
-                    .MakeGenericMethod(typeof(TDbContext), entity.ClrType).Invoke(null, new object[] { mockedDbContext, dbContextToMock });
+                    .MakeGenericMethod(typeof(TDbContext), entity.ClrType).Invoke(null, new object[] {mockedDbContext, dbContextToMock});
             }
 
             return mockedDbContext;

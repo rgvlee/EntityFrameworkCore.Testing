@@ -89,7 +89,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
                 .CreateQuery<T>(Arg.Is<MethodCallExpression>(mce => SpecifiedParametersMatchMethodCallExpression(mce, sql, parameters)))
                 .Returns(callInfo =>
                 {
-                    var mce = (MethodCallExpression)callInfo.Arg<Expression>();
+                    var mce = (MethodCallExpression) callInfo.Arg<Expression>();
                     var parts = new List<string>();
                     parts.Add("FromSql inputs:");
                     parts.Add(StringifyFromSqlMethodCallExpression(mce));
