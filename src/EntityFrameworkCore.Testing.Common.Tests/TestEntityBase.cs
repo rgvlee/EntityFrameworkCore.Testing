@@ -1,11 +1,10 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
 
 namespace EntityFrameworkCore.Testing.Common.Tests
 {
     public abstract class TestEntityBase
     {
-        [Key] public Guid Guid { get; set; }
+        public virtual Guid Guid { get; set; }
 
         public string String { get; set; }
 
