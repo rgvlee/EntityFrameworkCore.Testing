@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata>
-    <id>EntityFrameworkCore.Testing.Moq</id>
+    <id>EntityFrameworkCore.Testing.NSubstitute</id>
     <version>1.0.2</version>
     <authors>rgvlee</authors>
     <owners>rgvlee</owners>
@@ -9,23 +9,23 @@
     <licenseUrl>https://github.com/rgvlee/EntityFrameworkCore.Testing/blob/master/LICENSE</licenseUrl>
     <projectUrl>https://github.com/rgvlee/EntityFrameworkCore.Testing</projectUrl>
     <description>
-      A mocking library using Moq that extends the EntityFrameworkCore in-memory provider to provide support for FromSql, ExecuteSqlCommand, Queries and unsupported queryable operations (ElementAt, SkipWhile, TakeWhile etc), giving you a functionally complete DbContext to use in tests.
+      A mocking library using NSubstitute that extends the EntityFrameworkCore in-memory provider to provide support for FromSql, ExecuteSqlCommand, Queries and unsupported queryable operations (ElementAt, SkipWhile, TakeWhile etc), giving you a functionally complete DbContext to use in tests.
     </description>
     <copyright>Copyright (c) 2019 Lee Anderson</copyright>
-    <tags>moq mock EntityFrameworkCore efcore entity framework core EntityFramework InMemory In-Memory DbContext Context testing test tests FromSql ExecuteSqlCommand DbQuery query</tags>
+    <tags>NSubstitute substitute mock EntityFrameworkCore efcore entity framework core EntityFramework InMemory In-Memory DbContext Context testing test tests FromSql ExecuteSqlCommand DbQuery query</tags>
     <repository url="https://github.com/rgvlee/EntityFrameworkCore.Testing" />
     <dependencies>
       <group targetFramework=".NETStandard2.0">
         <dependency id="Microsoft.EntityFrameworkCore.InMemory" version="2.1.0" exclude="Build,Analyzers" />
         <dependency id="Microsoft.EntityFrameworkCore.SqlServer" version="2.1.0" exclude="Build,Analyzers" />
         <dependency id="Microsoft.Extensions.Logging" version="2.1.0" exclude="Build,Analyzers" />
-        
-        <dependency id="Moq" version="4.9.0" exclude="Build,Analyzers" />
+
+        <dependency id="NSubstitute" version="4.1.0" exclude="Build,Analyzers" />
       </group>
     </dependencies>
   </metadata>
   <files>
     <file src="src\EntityFrameworkCore.Testing.Common\bin\Release\netstandard2.0\EntityFrameworkCore.Testing.Common.dll" target="lib\netstandard2.0" />
-    <file src="src\EntityFrameworkCore.Testing.Moq\bin\Release\netstandard2.0\EntityFrameworkCore.Testing.Moq.dll" target="lib\netstandard2.0" />
+    <file src="src\EntityFrameworkCore.Testing.NSubstitute\bin\Release\netstandard2.0\EntityFrameworkCore.Testing.NSubstitute.dll" target="lib\netstandard2.0" />
   </files>
 </package>
