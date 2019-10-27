@@ -4,14 +4,10 @@ using System.Linq;
 
 namespace EntityFrameworkCore.Testing.Common
 {
-    /// <summary>
-    ///     A helper to perform checks on arguments.
-    /// </summary>
+    /// <summary>A helper to perform checks on arguments.</summary>
     public class EnsureArgument
     {
-        /// <summary>
-        ///     Ensures that a string argument is not null or empty.
-        /// </summary>
+        /// <summary>Ensures that a string argument is not null or empty.</summary>
         /// <param name="string">The string argument.</param>
         /// <param name="argumentName">The argument name.</param>
         /// <returns>The string argument.</returns>
@@ -29,9 +25,7 @@ namespace EntityFrameworkCore.Testing.Common
             throw ex;
         }
 
-        /// <summary>
-        ///     Ensures that an argument is not null.
-        /// </summary>
+        /// <summary>Ensures that an argument is not null.</summary>
         /// <typeparam name="T">The argument type.</typeparam>
         /// <param name="argument">The argument.</param>
         /// <param name="argumentName">The argument name.</param>
@@ -48,9 +42,7 @@ namespace EntityFrameworkCore.Testing.Common
             throw ex;
         }
 
-        /// <summary>
-        ///     Ensures that a sequence is not empty.
-        /// </summary>
+        /// <summary>Ensures that a sequence is not empty.</summary>
         /// <typeparam name="T">The enumerable item type.</typeparam>
         /// <param name="enumerable">The enumerable argument.</param>
         /// <param name="argumentName">The enumerable argument name.</param>

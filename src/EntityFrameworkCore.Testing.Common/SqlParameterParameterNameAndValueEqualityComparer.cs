@@ -4,9 +4,7 @@ using System.Data.SqlClient;
 
 namespace EntityFrameworkCore.Testing.Common
 {
-    /// <summary>
-    ///     An equality comparer for sql parameters.
-    /// </summary>
+    /// <summary>An equality comparer for sql parameters.</summary>
     /// <remarks>Uses the sql parameter name and value properties for the equality comparison.</remarks>
     public class SqlParameterParameterNameAndValueEqualityComparer : EqualityComparer<SqlParameter>
     {

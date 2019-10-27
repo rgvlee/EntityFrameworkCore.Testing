@@ -13,9 +13,7 @@ namespace EntityFrameworkCore.Testing.Common
         private readonly IEnumerator<T> _enumerator;
         private bool _disposed;
 
-        /// <summary>
-        ///     Constructor.
-        /// </summary>
+        /// <summary>Constructor.</summary>
         /// <param name="enumerator">The enumerator to create an asynchronous enumerator for.</param>
         public AsyncEnumerator(IEnumerator<T> enumerator)
         {
@@ -31,9 +29,7 @@ namespace EntityFrameworkCore.Testing.Common
             return Task.FromResult(_enumerator.MoveNext());
         }
 
-        /// <summary>
-        ///     Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
+        /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
         public void Dispose()
         {
             Dispose(true);
@@ -41,9 +37,7 @@ namespace EntityFrameworkCore.Testing.Common
             GC.SuppressFinalize(this);
         }
 
-        /// <summary>
-        ///     Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
+        /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
         /// <param name="disposing">Provides disposal context; true if invoked by the instance, false if invoked by the finalizer.</param>
         protected virtual void Dispose(bool disposing)
         {
