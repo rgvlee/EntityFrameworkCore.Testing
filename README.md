@@ -13,7 +13,7 @@ EntityFrameworkCore.Testing is an EntityFrameworkCore mocking library for Moq an
 - TakeWhile
 - Indexed TakeWhile (Queryable.Select(Func\<T, int, bool\>))
 
-There may be more that isn't supported by the Microsoft in-memory provider. I will continue to add support for unsupported operations as I find them (or if you find one, let me know so I can action it).
+There may be more EntityFrameworkCore functionality that isn't supported by the Microsoft in-memory provider; this is what I've discovered/added support for so far. If you come across unsupported functionality, let me know so I can add support for it.
 
 In addition to the above you also get all of the benefits of using a mocking framework (e.g., the ability to verify method invocation).
 
@@ -169,7 +169,7 @@ public void ExecuteSqlCommand_SpecifiedStoredProcedureAndSqlParameters_ReturnsEx
 ```
 
 ### The rest
-LINQ Queryable operations such as ElementAt, indexed Select, SkipWhile etc just work as you would expect so there is no need to provide an example.
+LINQ queryable operations such as ElementAt, indexed Select, SkipWhile etc just work as you would expect so there is no need to provide an example.
 
 ### Performing Verify operations
 The Create factory always returns the mocked object, not the Mock\<TDbContext\> itself, so you'll need to use `Mock.Get<T>(T mocked)` to perform Moq Mock\<T\> specific operations.

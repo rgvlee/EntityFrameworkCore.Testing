@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoFixture;
 using Microsoft.EntityFrameworkCore;
@@ -92,6 +93,37 @@ namespace EntityFrameworkCore.Testing.Common.Tests
             {
                 Assert.That(actualResult, Is.EquivalentTo(expectedResult));
                 Assert.That(DbSet.ToList(), Is.EquivalentTo(actualResult));
+            });
+        }
+
+        [Test]
+        public virtual void AddThenSingleThenAddRangeThenToListThenWhereThenSelect_ReturnsExpectedResults()
+        {
+            var items = Fixture.CreateMany<TEntity>().ToList();
+            DbSet.Add(items[0]);
+            MockedDbContext.SaveChanges();
+
+            var singleResult = DbSet.Single();
+
+            DbSet.AddRange(items.Skip(1));
+            MockedDbContext.SaveChanges();
+
+            var toListResult = DbSet.ToList();
+
+            var selectedItem = items.Last();
+            var whereResult = DbSet.Where(x => x.Equals(selectedItem)).ToList();
+
+            var selectResult = DbSet.Select(x => new {Item = x}).ToList();
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(singleResult, Is.EqualTo(items[0]));
+                Assert.That(toListResult, Is.EquivalentTo(items));
+                Assert.That(whereResult, Is.EquivalentTo(new List<TEntity> {selectedItem}));
+                for (var i = 0; i < items.Count; i++)
+                {
+                    Assert.That(selectResult[i].Item, Is.EqualTo(items[i]));
+                }
             });
         }
 
