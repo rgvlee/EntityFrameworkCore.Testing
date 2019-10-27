@@ -7,14 +7,10 @@
     <Version>1.0.0</Version>
     <Authors>rgvlee</Authors>
     <Company />
-    <Description>EntityFrameworkCore DbContext, DbSet, DbQuery, FromSql and ExecuteSqlCommand mocking library.
-
-If you need to mock the FromSql/ExecuteSqlCommand/ExecuteSqlCommandAsync extensions, a Query, or simply want the benefits of using a mocking framework (e.g., the ability to verify method invocation) this library will sort you out.
-
-Designed to be used with the in-memory provider to provide a complete DbContext that you can include in your tests. Have your cake and eat it too!</Description>
+    <Description>A mocking library using Moq that extends the EntityFrameworkCore in-memory provider to provide support for FromSql, ExecuteSqlCommand, Queries and unsupported queryable operations (ElementAt, SkipWhile, TakeWhile etc), giving you a functionally complete DbContext to use in tests.</Description>
     <PackageProjectUrl>https://github.com/rgvlee/EntityFrameworkCore.Testing</PackageProjectUrl>
     <RepositoryUrl>https://github.com/rgvlee/EntityFrameworkCore.Testing</RepositoryUrl>
-    <PackageTags>moq mock EntityFrameworkCore efcore entity framework core EntityFramework InMemory In-Memory DbContext Context testing test tests FromSql ExecuteSqlCommand DbQuery</PackageTags>
+    <PackageTags>moq mock EntityFrameworkCore efcore entity framework core EntityFramework InMemory In-Memory DbContext Context testing test tests FromSql ExecuteSqlCommand DbQuery query</PackageTags>
     <PackageLicenseUrl>https://github.com/rgvlee/EntityFrameworkCore.Testing/blob/master/LICENSE</PackageLicenseUrl>
     <Copyright>Copyright (c) 2019 Lee Anderson</Copyright>
     <PackageId>EntityFrameworkCore.Testing.Moq</PackageId>
@@ -33,7 +29,6 @@ Designed to be used with the in-memory provider to provide a complete DbContext 
 
   <ItemGroup>
     <None Remove="Extensions\QueryProviderExtensions.cs~RF92c9f824.TMP" />
-    <None Remove="Helpers\Create.cs~RF934332b0.TMP" />
   </ItemGroup>
 
   <ItemGroup>
