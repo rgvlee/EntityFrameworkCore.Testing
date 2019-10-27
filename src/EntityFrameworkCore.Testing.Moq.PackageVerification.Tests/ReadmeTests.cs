@@ -28,19 +28,18 @@ namespace EntityFrameworkCore.Testing.Moq.PackageVerification.Tests
         public void SetAddAndPersist_Item_Persists()
         {
             var dbContextToMock = new TestDbContext(new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
-            var mockedContext = Create.MockedDbContextFor(dbContextToMock);
+            var mockedDbContext = Create.MockedDbContextFor(dbContextToMock);
 
             var testEntity1 = Fixture.Create<TestEntity1>();
 
-            mockedContext.Set<TestEntity1>().Add(testEntity1);
-            mockedContext.SaveChanges();
+            mockedDbContext.Set<TestEntity1>().Add(testEntity1);
+            mockedDbContext.SaveChanges();
 
             Assert.Multiple(() =>
             {
                 Assert.AreNotEqual(default(Guid), testEntity1.Guid);
-                Assert.DoesNotThrow(() => mockedContext.Set<TestEntity1>().Single());
-                Assert.AreEqual(testEntity1, mockedContext.Find<TestEntity1>(testEntity1.Guid));
-                Mock.Get(mockedContext).Verify(m => m.SaveChanges(), Times.Once);
+                Assert.DoesNotThrow(() => mockedDbContext.Set<TestEntity1>().Single());
+                Assert.AreEqual(testEntity1, mockedDbContext.Find<TestEntity1>(testEntity1.Guid));
             });
         }
 
@@ -48,13 +47,13 @@ namespace EntityFrameworkCore.Testing.Moq.PackageVerification.Tests
         public void SetUpFromSqlResult_AnyStoredProcedureWithNoParameters_ReturnsExpectedResult()
         {
             var dbContextToMock = new TestDbContext(new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
-            var mockedContext = Create.MockedDbContextFor(dbContextToMock);
+            var mockedDbContext = Create.MockedDbContextFor(dbContextToMock);
 
             var expectedResult = Fixture.CreateMany<TestEntity1>().ToList();
 
-            mockedContext.Set<TestEntity1>().AddFromSqlResult(expectedResult);
+            mockedDbContext.Set<TestEntity1>().AddFromSqlResult(expectedResult);
 
-            var actualResult = mockedContext.Set<TestEntity1>().FromSql("sp_NoParams").ToList();
+            var actualResult = mockedDbContext.Set<TestEntity1>().FromSql("sp_NoParams").ToList();
 
             Assert.Multiple(() =>
             {
@@ -68,14 +67,14 @@ namespace EntityFrameworkCore.Testing.Moq.PackageVerification.Tests
         public void SetUpFromSql_SpecifiedStoredProcedureAndParameters_ReturnsExpectedResult()
         {
             var dbContextToMock = new TestDbContext(new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
-            var mockedContext = Create.MockedDbContextFor(dbContextToMock);
+            var mockedDbContext = Create.MockedDbContextFor(dbContextToMock);
 
             var sqlParameters = new List<SqlParameter> {new SqlParameter("@SomeParameter2", "Value2")};
             var expectedResult = Fixture.CreateMany<TestEntity1>().ToList();
 
-            mockedContext.Set<TestEntity1>().AddFromSqlResult("sp_Specified", sqlParameters, expectedResult);
+            mockedDbContext.Set<TestEntity1>().AddFromSqlResult("sp_Specified", sqlParameters, expectedResult);
 
-            var actualResult = mockedContext.Set<TestEntity1>().FromSql("[dbo].[sp_Specified] @SomeParameter1 @SomeParameter2", new SqlParameter("@someparameter2", "Value2")).ToList();
+            var actualResult = mockedDbContext.Set<TestEntity1>().FromSql("[dbo].[sp_Specified] @SomeParameter1 @SomeParameter2", new SqlParameter("@someparameter2", "Value2")).ToList();
 
             Assert.Multiple(() =>
             {
@@ -89,16 +88,16 @@ namespace EntityFrameworkCore.Testing.Moq.PackageVerification.Tests
         public void QueryAddRange_Enumeration_AddsToQuerySource()
         {
             var dbContextToMock = new TestDbContext(new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
-            var mockedContext = Create.MockedDbContextFor(dbContextToMock);
+            var mockedDbContext = Create.MockedDbContextFor(dbContextToMock);
 
             var expectedResult = Fixture.CreateMany<TestQuery1>().ToList();
 
-            mockedContext.Query<TestQuery1>().AddRange(expectedResult);
+            mockedDbContext.Query<TestQuery1>().AddRange(expectedResult);
 
             Assert.Multiple(() =>
             {
-                CollectionAssert.AreEquivalent(expectedResult, mockedContext.Query<TestQuery1>().ToList());
-                CollectionAssert.AreEquivalent(mockedContext.Query<TestQuery1>().ToList(), mockedContext.TestView.ToList());
+                CollectionAssert.AreEquivalent(expectedResult, mockedDbContext.Query<TestQuery1>().ToList());
+                CollectionAssert.AreEquivalent(mockedDbContext.Query<TestQuery1>().ToList(), mockedDbContext.TestView.ToList());
             });
         }
 
@@ -106,14 +105,14 @@ namespace EntityFrameworkCore.Testing.Moq.PackageVerification.Tests
         public void ExecuteSqlCommand_SpecifiedStoredProcedure_ReturnsExpectedResult()
         {
             var dbContextToMock = new TestDbContext(new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
-            var mockedContext = Create.MockedDbContextFor(dbContextToMock);
+            var mockedDbContext = Create.MockedDbContextFor(dbContextToMock);
 
             var commandText = "sp_NoParams";
             var expectedResult = 1;
 
-            mockedContext.AddExecuteSqlCommandResult(commandText, new List<SqlParameter>(), expectedResult);
+            mockedDbContext.AddExecuteSqlCommandResult(commandText, new List<SqlParameter>(), expectedResult);
 
-            var result = mockedContext.Database.ExecuteSqlCommand("sp_NoParams");
+            var result = mockedDbContext.Database.ExecuteSqlCommand("sp_NoParams");
 
             Assert.AreEqual(expectedResult, result);
         }
@@ -122,17 +121,44 @@ namespace EntityFrameworkCore.Testing.Moq.PackageVerification.Tests
         public void ExecuteSqlCommand_SpecifiedStoredProcedureAndSqlParameters_ReturnsExpectedResult()
         {
             var dbContextToMock = new TestDbContext(new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
-            var mockedContext = Create.MockedDbContextFor(dbContextToMock);
+            var mockedDbContext = Create.MockedDbContextFor(dbContextToMock);
 
             var commandText = "sp_WithParams";
             var sqlParameters = new List<SqlParameter> {new SqlParameter("@SomeParameter2", "Value2")};
             var expectedResult = 1;
 
-            mockedContext.AddExecuteSqlCommandResult(commandText, sqlParameters, expectedResult);
+            mockedDbContext.AddExecuteSqlCommandResult(commandText, sqlParameters, expectedResult);
 
-            var result = mockedContext.Database.ExecuteSqlCommand("[dbo.[sp_WithParams] @SomeParameter2", sqlParameters);
+            var result = mockedDbContext.Database.ExecuteSqlCommand("[dbo.[sp_WithParams] @SomeParameter2", sqlParameters);
 
             Assert.AreEqual(expectedResult, result);
+        }
+
+        [Test]
+        public void AddRangeThenSaveChanges_CanAssertInvocationCount()
+        {
+            var dbContextToMock = new TestDbContext(new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
+            var mockedDbContext = Create.MockedDbContextFor(dbContextToMock);
+
+            mockedDbContext.Set<TestEntity1>().AddRange(Fixture.CreateMany<TestEntity1>().ToList());
+            mockedDbContext.SaveChanges();
+
+            Assert.Multiple(() =>
+            {
+                var dbContextMock = Mock.Get(mockedDbContext);
+                dbContextMock.Verify(m => m.SaveChanges(), Times.Once);
+
+                //The db set is a mock, so we need to ensure we invoke the verify on the db set mock
+                var byTypeDbSetMock = Mock.Get(mockedDbContext.Set<TestEntity1>());
+                byTypeDbSetMock.Verify(m => m.AddRange(It.IsAny<IEnumerable<TestEntity1>>()), Times.Once);
+
+                //This is the same mock instance as above, just accessed a different way
+                var byPropertyDbSetMock = Mock.Get(mockedDbContext.TestEntities);
+
+                Assert.That(byPropertyDbSetMock, Is.SameAs(byTypeDbSetMock));
+
+                byPropertyDbSetMock.Verify(m => m.AddRange(It.IsAny<IEnumerable<TestEntity1>>()), Times.Once);
+            });
         }
     }
 }
