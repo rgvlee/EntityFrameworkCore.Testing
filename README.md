@@ -1,4 +1,5 @@
 
+
 # EntityFrameworkCore.Testing
 __*Moq and NSubstitute mocking libraries for EntityFrameworkCore*__
 
@@ -16,6 +17,9 @@ EntityFrameworkCore.Testing is an EntityFrameworkCore mocking library for Moq an
 There may be more EntityFrameworkCore functionality that isn't supported by the Microsoft in-memory provider; this is what I've discovered/added support for so far. If you come across unsupported functionality, let me know so I can add support for it.
 
 In addition to the above you also get all of the benefits of using a mocking framework (e.g., the ability to verify method invocation).
+
+## EntityFrameworkCore 3.0.0 support
+I'm working on it! Initial testing has shown the LINQ queryable operations mentioned above are still not supported. FromSql, ExecuteSqlCommand and queries in general have changed in EntityFrameworkCore 3.0.0 so there is a bit of work to do!
 
 ## Resources
 - [Source repository](https://github.com/rgvlee/EntityFrameworkCore.Testing)
