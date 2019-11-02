@@ -10,7 +10,7 @@
     <RepositoryUrl>https://github.com/rgvlee/EntityFrameworkCore.Testing</RepositoryUrl>
 	<PackageTags>moq mock EntityFrameworkCore efcore entity framework core EntityFramework InMemory In-Memory DbContext Context testing test tests FromSql ExecuteSqlCommand DbQuery query</PackageTags>
     <Authors>rgvlee</Authors>
-    <PackageLicenseExpression>https://github.com/rgvlee/EntityFrameworkCore.Testing/blob/master/LICENSE</PackageLicenseExpression>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -23,6 +23,13 @@
 
   <ItemGroup>
     <ProjectReference Include="..\EntityFrameworkCore.Testing.Common\EntityFrameworkCore.Testing.Common.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>
