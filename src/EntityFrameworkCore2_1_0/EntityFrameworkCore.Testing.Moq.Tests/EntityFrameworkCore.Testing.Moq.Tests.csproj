@@ -2,21 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
-    <PackageId>EntityFrameworkCore.Testing.Moq.Tests</PackageId>
-    <Version>1.0.0</Version>
-    <Authors>rgvlee</Authors>
-    <Company />
-    <Description>Tests for the EntityFrameworkCore.Testing.Moq project.</Description>
-    <Product>EntityFrameworkCore.Testing.Moq.Tests</Product>
-    <AssemblyVersion>1.0.0.0</AssemblyVersion>
-    <FileVersion>1.0.0.0</FileVersion>
+    <IsPackable>false</IsPackable>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Remove="DbContextMockBuilderTests\**" />
-    <EmbeddedResource Remove="DbContextMockBuilderTests\**" />
-    <None Remove="DbContextMockBuilderTests\**" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.3.0" />

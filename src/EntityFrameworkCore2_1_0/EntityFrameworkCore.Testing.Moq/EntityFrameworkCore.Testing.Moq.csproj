@@ -24,14 +24,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="QueryableMockBuilderBase.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Remove="Extensions\QueryProviderExtensions.cs~RF92c9f824.TMP" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Moq" Version="4.9.0" />
   </ItemGroup>
 
