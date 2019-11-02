@@ -8,7 +8,7 @@ using NUnit.Framework;
 namespace EntityFrameworkCore.DefaultBehaviour.Tests
 {
     [TestFixture]
-    public class ByTypeDbSetTests : QueryableTestsBase<TestEntity1>
+    public class ByTypeDbSetTests : QueryableTestsBase<TestEntity>
     {
         [SetUp]
         public override void SetUp()
@@ -18,12 +18,15 @@ namespace EntityFrameworkCore.DefaultBehaviour.Tests
         }
 
         protected TestDbContext DbContext;
-        protected override IQueryable<TestEntity1> Queryable => DbContext.Set<TestEntity1>();
+        protected DbSet<TestEntity> DbSet => DbContext.Set<TestEntity>();
+        protected override IQueryable<TestEntity> Queryable => DbSet;
 
         protected override void SeedQueryableSource()
         {
-            var itemsToAdd = Fixture.CreateMany<TestEntity1>().ToList();
-            DbContext.Set<TestEntity1>().AddRange(itemsToAdd);
+            var itemsToAdd = Fixture.Build<TestEntity>()
+                .With(p => p.FixedDateTime, DateTime.Parse("2019-01-01"))
+                .CreateMany().ToList();
+            DbContext.Set<TestEntity>().AddRange(itemsToAdd);
             DbContext.SaveChanges();
             ItemsAddedToQueryableSource = itemsToAdd;
         }
@@ -39,6 +42,15 @@ namespace EntityFrameworkCore.DefaultBehaviour.Tests
         [Test]
         [Ignore("This is not supported by the in memory database provider.")]
         public override void ElementAtOrDefault_WithNoItemsAdded_ReturnsDefault() { }
+
+        [Test]
+        public virtual void FromSql_ThrowsException()
+        {
+            Assert.Throws<NotSupportedException>(() =>
+            {
+                var actualResult = DbSet.FromSql("sp_NoParams").ToList();
+            });
+        }
 
         [Test]
         [Ignore("This is not supported by the in memory database provider.")]
