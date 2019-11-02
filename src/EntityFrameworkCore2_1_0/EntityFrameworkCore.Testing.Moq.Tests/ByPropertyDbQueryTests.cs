@@ -7,6 +7,6 @@ namespace EntityFrameworkCore.Testing.Moq.Tests
     [TestFixture]
     public class ByPropertyDbQueryTests : DbQueryTestsBase
     {
-        protected override IQueryable<TestQuery1> Queryable => MockedDbContext.TestView;
+        protected override IQueryable<TestQuery> Queryable => MockedDbContext.TestView;
     }
 }
