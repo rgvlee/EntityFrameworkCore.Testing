@@ -20,7 +20,7 @@ namespace EntityFrameworkCore.Testing.Moq.Helpers
         }
 
         /// <summary>Creates a mocked db set.</summary>
-        /// <typeparam name="TEntity">The db set entity type.</typeparam>
+        /// <typeparam name="TEntity">The entity type.</typeparam>
         /// <param name="dbSetToMock">The db set to mock.</param>
         /// <returns>A mocked db set.</returns>
         public static DbSet<TEntity> MockedDbSetFor<TEntity>(DbSet<TEntity> dbSetToMock)
@@ -32,7 +32,7 @@ namespace EntityFrameworkCore.Testing.Moq.Helpers
         }
 
         /// <summary>Creates a mocked db query.</summary>
-        /// <typeparam name="TQuery">The db query query type.</typeparam>
+        /// <typeparam name="TQuery">The query type.</typeparam>
         /// <param name="dbQueryToMock">The db query to mock.</param>
         /// <returns>A mocked db query.</returns>
         public static DbQuery<TQuery> MockedDbQueryFor<TQuery>(DbQuery<TQuery> dbQueryToMock)
