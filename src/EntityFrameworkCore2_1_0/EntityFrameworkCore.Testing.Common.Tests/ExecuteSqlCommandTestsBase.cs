@@ -18,7 +18,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         public abstract void AddExecuteSqlCommandResult(TDbContext mockedDbContext, string sql, List<SqlParameter> parameters, int expectedResult);
 
         [Test]
-        public void Execute_AnySql_ReturnsExpectedResult()
+        public void ExecuteSqlCommand_AnySql_ReturnsExpectedResult()
         {
             var expectedResult = 1;
             AddExecuteSqlCommandResult(MockedDbContext, expectedResult);
@@ -34,7 +34,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         }
 
         [Test]
-        public void Execute_SpecifiedSql_ReturnsExpectedResult()
+        public void ExecuteSqlCommand_SpecifiedSql_ReturnsExpectedResult()
         {
             var sql = "sp_NoParams";
             var expectedResult = 1;
@@ -51,7 +51,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         }
 
         [Test]
-        public void Execute_SpecifiedSqlThatDoesNotMatchSetUp_ThrowsException()
+        public void ExecuteSqlCommand_SpecifiedSqlThatDoesNotMatchSetUp_ThrowsException()
         {
             var sql = "asdf";
             var expectedResult = 1;
@@ -64,7 +64,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         }
 
         [Test]
-        public void Execute_SpecifiedSqlWithParameters_ReturnsExpectedResult()
+        public void ExecuteSqlCommand_SpecifiedSqlWithParameters_ReturnsExpectedResult()
         {
             var sql = "sp_WithParams";
             var parameters = new List<SqlParameter> {new SqlParameter("@SomeParameter2", "Value2")};
@@ -82,7 +82,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         }
 
         [Test]
-        public void Execute_WithNoMatchesAdded_ThrowsException()
+        public void ExecuteSqlCommand_WithNoMatchesAdded_ThrowsException()
         {
             Assert.Throws<InvalidOperationException>(() =>
             {
@@ -91,7 +91,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         }
 
         [Test]
-        public async Task ExecuteAsync_AnySql_ReturnsExpectedResult()
+        public async Task ExecuteSqlCommandAsync_AnySql_ReturnsExpectedResult()
         {
             var sql = "";
             var expectedResult = 1;
@@ -108,7 +108,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         }
 
         [Test]
-        public async Task ExecuteAsync_SpecifiedSql_ReturnsExpectedResult()
+        public async Task ExecuteSqlCommandAsync_SpecifiedSql_ReturnsExpectedResult()
         {
             var sql = "sp_NoParams";
             var expectedResult = 1;
@@ -125,7 +125,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         }
 
         [Test]
-        public void ExecuteAsync_SpecifiedSqlThatDoesNotMatchSetUp_ThrowsException()
+        public void ExecuteSqlCommandAsync_SpecifiedSqlThatDoesNotMatchSetUp_ThrowsException()
         {
             var sql = "asdf";
             var expectedResult = 1;
@@ -138,7 +138,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         }
 
         [Test]
-        public async Task ExecuteAsync_SpecifiedSqlWithParameters_ReturnsExpectedResult()
+        public async Task ExecuteSqlCommandAsync_SpecifiedSqlWithParameters_ReturnsExpectedResult()
         {
             var sql = "sp_WithParams";
             var parameters = new List<SqlParameter> {new SqlParameter("@SomeParameter2", "Value2")};
