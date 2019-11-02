@@ -30,16 +30,16 @@ namespace EntityFrameworkCore.Testing.Moq.PackageVerification.Tests
             var dbContextToMock = new TestDbContext(new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
             var mockedDbContext = Create.MockedDbContextFor(dbContextToMock);
 
-            var testEntity1 = Fixture.Create<TestEntity1>();
+            var testEntity = Fixture.Create<TestEntity>();
 
-            mockedDbContext.Set<TestEntity1>().Add(testEntity1);
+            mockedDbContext.Set<TestEntity>().Add(testEntity);
             mockedDbContext.SaveChanges();
 
             Assert.Multiple(() =>
             {
-                Assert.AreNotEqual(default(Guid), testEntity1.Guid);
-                Assert.DoesNotThrow(() => mockedDbContext.Set<TestEntity1>().Single());
-                Assert.AreEqual(testEntity1, mockedDbContext.Find<TestEntity1>(testEntity1.Guid));
+                Assert.AreNotEqual(default(Guid), testEntity.Guid);
+                Assert.DoesNotThrow(() => mockedDbContext.Set<TestEntity>().Single());
+                Assert.AreEqual(testEntity, mockedDbContext.Find<TestEntity>(testEntity.Guid));
             });
         }
 
@@ -49,11 +49,11 @@ namespace EntityFrameworkCore.Testing.Moq.PackageVerification.Tests
             var dbContextToMock = new TestDbContext(new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
             var mockedDbContext = Create.MockedDbContextFor(dbContextToMock);
 
-            var expectedResult = Fixture.CreateMany<TestEntity1>().ToList();
+            var expectedResult = Fixture.CreateMany<TestEntity>().ToList();
 
-            mockedDbContext.Set<TestEntity1>().AddFromSqlResult(expectedResult);
+            mockedDbContext.Set<TestEntity>().AddFromSqlResult(expectedResult);
 
-            var actualResult = mockedDbContext.Set<TestEntity1>().FromSql("sp_NoParams").ToList();
+            var actualResult = mockedDbContext.Set<TestEntity>().FromSql("sp_NoParams").ToList();
 
             Assert.Multiple(() =>
             {
@@ -70,11 +70,11 @@ namespace EntityFrameworkCore.Testing.Moq.PackageVerification.Tests
             var mockedDbContext = Create.MockedDbContextFor(dbContextToMock);
 
             var sqlParameters = new List<SqlParameter> {new SqlParameter("@SomeParameter2", "Value2")};
-            var expectedResult = Fixture.CreateMany<TestEntity1>().ToList();
+            var expectedResult = Fixture.CreateMany<TestEntity>().ToList();
 
-            mockedDbContext.Set<TestEntity1>().AddFromSqlResult("sp_Specified", sqlParameters, expectedResult);
+            mockedDbContext.Set<TestEntity>().AddFromSqlResult("sp_Specified", sqlParameters, expectedResult);
 
-            var actualResult = mockedDbContext.Set<TestEntity1>().FromSql("[dbo].[sp_Specified] @SomeParameter1 @SomeParameter2", new SqlParameter("@someparameter2", "Value2")).ToList();
+            var actualResult = mockedDbContext.Set<TestEntity>().FromSql("[dbo].[sp_Specified] @SomeParameter1 @SomeParameter2", new SqlParameter("@someparameter2", "Value2")).ToList();
 
             Assert.Multiple(() =>
             {
@@ -90,14 +90,14 @@ namespace EntityFrameworkCore.Testing.Moq.PackageVerification.Tests
             var dbContextToMock = new TestDbContext(new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
             var mockedDbContext = Create.MockedDbContextFor(dbContextToMock);
 
-            var expectedResult = Fixture.CreateMany<TestQuery1>().ToList();
+            var expectedResult = Fixture.CreateMany<TestQuery>().ToList();
 
-            mockedDbContext.Query<TestQuery1>().AddRange(expectedResult);
+            mockedDbContext.Query<TestQuery>().AddRange(expectedResult);
 
             Assert.Multiple(() =>
             {
-                CollectionAssert.AreEquivalent(expectedResult, mockedDbContext.Query<TestQuery1>().ToList());
-                CollectionAssert.AreEquivalent(mockedDbContext.Query<TestQuery1>().ToList(), mockedDbContext.TestView.ToList());
+                CollectionAssert.AreEquivalent(expectedResult, mockedDbContext.Query<TestQuery>().ToList());
+                CollectionAssert.AreEquivalent(mockedDbContext.Query<TestQuery>().ToList(), mockedDbContext.TestView.ToList());
             });
         }
 
@@ -140,7 +140,7 @@ namespace EntityFrameworkCore.Testing.Moq.PackageVerification.Tests
             var dbContextToMock = new TestDbContext(new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
             var mockedDbContext = Create.MockedDbContextFor(dbContextToMock);
 
-            mockedDbContext.Set<TestEntity1>().AddRange(Fixture.CreateMany<TestEntity1>().ToList());
+            mockedDbContext.Set<TestEntity>().AddRange(Fixture.CreateMany<TestEntity>().ToList());
             mockedDbContext.SaveChanges();
 
             Assert.Multiple(() =>
@@ -149,15 +149,15 @@ namespace EntityFrameworkCore.Testing.Moq.PackageVerification.Tests
                 dbContextMock.Verify(m => m.SaveChanges(), Times.Once);
 
                 //The db set is a mock, so we need to ensure we invoke the verify on the db set mock
-                var byTypeDbSetMock = Mock.Get(mockedDbContext.Set<TestEntity1>());
-                byTypeDbSetMock.Verify(m => m.AddRange(It.IsAny<IEnumerable<TestEntity1>>()), Times.Once);
+                var byTypeDbSetMock = Mock.Get(mockedDbContext.Set<TestEntity>());
+                byTypeDbSetMock.Verify(m => m.AddRange(It.IsAny<IEnumerable<TestEntity>>()), Times.Once);
 
                 //This is the same mock instance as above, just accessed a different way
                 var byPropertyDbSetMock = Mock.Get(mockedDbContext.TestEntities);
 
                 Assert.That(byPropertyDbSetMock, Is.SameAs(byTypeDbSetMock));
 
-                byPropertyDbSetMock.Verify(m => m.AddRange(It.IsAny<IEnumerable<TestEntity1>>()), Times.Once);
+                byPropertyDbSetMock.Verify(m => m.AddRange(It.IsAny<IEnumerable<TestEntity>>()), Times.Once);
             });
         }
     }
