@@ -65,15 +65,6 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
         /// <returns>The mocked query provider.</returns>
         internal static IQueryProvider AddFromSqlResult<T>(this IQueryProvider mockedQueryProvider, string sql, IEnumerable<SqlParameter> parameters, IEnumerable<T> fromSqlResult) where T : class
         {
-            //Microsoft.EntityFrameworkCore.RelationalQueryableExtensions
-
-            //public static IQueryable<TEntity> FromSql<TEntity>(
-            //  [NotNull] this IQueryable<TEntity> source,
-            //  [NotParameterized] RawSqlString sql,
-            //  [NotNull] params object[] parameters)
-
-            //return source.Provider.CreateQuery<TEntity>((Expression) Expression.Call((Expression) null, RelationalQueryableExtensions.FromSqlMethodInfo.MakeGenericMethod(typeof (TEntity)), source.Expression, (Expression) Expression.Constant((object) sql), (Expression) Expression.Constant((object) parameters)));
-
             EnsureArgument.IsNotNull(mockedQueryProvider, nameof(mockedQueryProvider));
             EnsureArgument.IsNotNull(sql, nameof(sql));
             EnsureArgument.IsNotNull(parameters, nameof(parameters));
