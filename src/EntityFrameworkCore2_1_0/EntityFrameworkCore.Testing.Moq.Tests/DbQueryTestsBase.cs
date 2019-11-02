@@ -11,7 +11,7 @@ using NUnit.Framework;
 namespace EntityFrameworkCore.Testing.Moq.Tests
 {
     [TestFixture]
-    public abstract class DbQueryTestsBase : DbQueryTestsBase<TestQuery>
+    public abstract class DbQueryTestsBase<T> : Common.Tests.DbQueryTestsBase<T> where T : TestEntityBase
     {
         [SetUp]
         public override void SetUp()
@@ -23,32 +23,32 @@ namespace EntityFrameworkCore.Testing.Moq.Tests
 
         protected TestDbContext MockedDbContext;
 
-        protected override void AddFromSqlResult(IQueryable<TestQuery> mockedQueryable, IEnumerable<TestQuery> expectedResult)
+        protected override void AddFromSqlResult(IQueryable<T> mockedQueryable, IEnumerable<T> expectedResult)
         {
             mockedQueryable.AddFromSqlResult(expectedResult);
         }
 
-        protected override void AddFromSqlResult(IQueryable<TestQuery> mockedQueryable, string sql, IEnumerable<TestQuery> expectedResult)
+        protected override void AddFromSqlResult(IQueryable<T> mockedQueryable, string sql, IEnumerable<T> expectedResult)
         {
             mockedQueryable.AddFromSqlResult(sql, expectedResult);
         }
 
-        protected override void AddFromSqlResult(IQueryable<TestQuery> mockedQueryable, string sql, List<SqlParameter> parameters, IEnumerable<TestQuery> expectedResult)
+        protected override void AddFromSqlResult(IQueryable<T> mockedQueryable, string sql, List<SqlParameter> parameters, IEnumerable<T> expectedResult)
         {
             mockedQueryable.AddFromSqlResult(sql, parameters, expectedResult);
         }
 
-        protected override void AddToReadOnlySource(DbQuery<TestQuery> mockedDbQuery, TestQuery item)
+        protected override void AddToReadOnlySource(DbQuery<T> mockedDbQuery, T item)
         {
             mockedDbQuery.AddToReadOnlySource(item);
         }
 
-        protected override void AddRangeToReadOnlySource(DbQuery<TestQuery> mockedDbQuery, IEnumerable<TestQuery> enumerable)
+        protected override void AddRangeToReadOnlySource(DbQuery<T> mockedDbQuery, IEnumerable<T> enumerable)
         {
             mockedDbQuery.AddRangeToReadOnlySource(enumerable);
         }
 
-        protected override void ClearReadOnlySource(DbQuery<TestQuery> mockedDbQuery)
+        protected override void ClearReadOnlySource(DbQuery<T> mockedDbQuery)
         {
             mockedDbQuery.ClearReadOnlySource();
         }

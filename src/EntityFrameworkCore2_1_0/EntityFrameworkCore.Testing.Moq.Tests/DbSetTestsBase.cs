@@ -11,24 +11,24 @@ using NUnit.Framework;
 namespace EntityFrameworkCore.Testing.Moq.Tests
 {
     [TestFixture]
-    public abstract class DbSetTestsBase : DbSetTestsBase<TestDbContext, TestEntity>
+    public abstract class DbSetTestsBase<T> : DbSetTestsBase<TestDbContext, T> where T : TestEntityBase
     {
         protected override TestDbContext CreateMockedDbContext()
         {
             return Create.MockedDbContextFor(new TestDbContext(new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options));
         }
 
-        protected override void AddFromSqlResult(IQueryable<TestEntity> queryable, IEnumerable<TestEntity> expectedResult)
+        protected override void AddFromSqlResult(IQueryable<T> queryable, IEnumerable<T> expectedResult)
         {
             queryable.AddFromSqlResult(expectedResult);
         }
 
-        protected override void AddFromSqlResult(IQueryable<TestEntity> queryable, string sql, IEnumerable<TestEntity> expectedResult)
+        protected override void AddFromSqlResult(IQueryable<T> queryable, string sql, IEnumerable<T> expectedResult)
         {
             queryable.AddFromSqlResult(sql, expectedResult);
         }
 
-        protected override void AddFromSqlResult(IQueryable<TestEntity> queryable, string sql, List<SqlParameter> parameters, IEnumerable<TestEntity> expectedResult)
+        protected override void AddFromSqlResult(IQueryable<T> queryable, string sql, List<SqlParameter> parameters, IEnumerable<T> expectedResult)
         {
             queryable.AddFromSqlResult(sql, parameters, expectedResult);
         }
