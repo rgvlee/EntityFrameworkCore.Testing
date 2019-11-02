@@ -2,12 +2,14 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Authors>rgvlee</Authors>
     <Description>Common library for EntityFrameworkCore.Testing.* libraries.</Description>
-    <Copyright>Copyright (c) 2019 Lee Anderson</Copyright>
-    <PackageLicenseUrl>https://github.com/rgvlee/EntityFrameworkCore.Testing/blob/master/LICENSE</PackageLicenseUrl>
+    <Copyright>Copyright (c) 2019 Lee Anderson</Copyright>	
+	<Company>rgvlee</Company>    
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>    
     <PackageProjectUrl>https://github.com/rgvlee/EntityFrameworkCore.Testing</PackageProjectUrl>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <RepositoryUrl>https://github.com/rgvlee/EntityFrameworkCore.Testing</RepositoryUrl>
+    <Authors>rgvlee</Authors>
+    <PackageLicenseExpression>https://github.com/rgvlee/EntityFrameworkCore.Testing/blob/master/LICENSE</PackageLicenseExpression>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
