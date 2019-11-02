@@ -105,13 +105,14 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
         {
             EnsureArgument.IsNotNull(mce, nameof(mce));
 
-            var parts = new List<string>();
             var mceRawSqlString = (RawSqlString) ((ConstantExpression) mce.Arguments[1]).Value;
-            parts.Add($"Invocation RawSqlString: '{mceRawSqlString.Format}'");
+            var mceSql = mceRawSqlString.Format;
+            var parts = new List<string>();
+            parts.Add($"Invocation sql: '{mceSql}'");
             parts.Add($"Set up sql: '{sql}'");
             Logger.LogDebug(string.Join(Environment.NewLine, parts));
 
-            var result = mceRawSqlString.Format.Contains(sql, StringComparison.CurrentCultureIgnoreCase);
+            var result = mceSql.Contains(sql, StringComparison.CurrentCultureIgnoreCase);
 
             Logger.LogDebug($"Match? {result}");
 
@@ -123,11 +124,9 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
             EnsureArgument.IsNotNull(mce, nameof(mce));
             EnsureArgument.IsNotNull(sqlParameters, nameof(sqlParameters));
 
-            var parts = new List<string>();
-
             var mceParameters = (object[]) ((ConstantExpression) mce.Arguments[2]).Value;
             var mceSqlParameters = GetSqlParameters(mceParameters).ToList();
-
+            var parts = new List<string>();
             parts.Add("Invocation SqlParameters:");
             parts.AddRange(mceSqlParameters.Select(parameter => $"'{parameter.ParameterName}': '{parameter.Value}'"));
             parts.Add("Set up sqlParameters:");
@@ -189,15 +188,13 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
         {
             EnsureArgument.IsNotNull(mce, nameof(mce));
 
+            var mceRawSqlString = (RawSqlString) ((ConstantExpression) mce.Arguments[1]).Value;
+            var mceSql = mceRawSqlString.Format;
+            var mceParameters = (object[]) ((ConstantExpression) mce.Arguments[2]).Value;
             var parts = new List<string>();
-
-            var rawSqlString = (RawSqlString) ((ConstantExpression) mce.Arguments[1]).Value;
-            var parameters = (object[]) ((ConstantExpression) mce.Arguments[2]).Value;
-
-            parts.Add($"{nameof(RawSqlString)} sql: '{rawSqlString.Format}'");
-
-            parts.Add("Parameters:");
-            foreach (var sqlParameter in GetSqlParameters(parameters))
+            parts.Add($"Invocation sql: '{mceSql}'");
+            parts.Add("Invocation Parameters:");
+            foreach (var sqlParameter in GetSqlParameters(mceParameters))
             {
                 var sb2 = new StringBuilder();
                 sb2.Append(sqlParameter.ParameterName);
