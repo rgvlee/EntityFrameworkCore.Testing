@@ -384,15 +384,6 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         }
 
         [Test]
-        public virtual void FromSql_ThrowsException()
-        {
-            Assert.Throws<NotSupportedException>(() =>
-            {
-                var actualResult = Queryable.FromSql("sp_NoParams").ToList();
-            });
-        }
-
-        [Test]
         public virtual void IndexedSelectThenWhereThenAny_TrueCondition_ReturnsTrue()
         {
             SeedQueryableSource();
@@ -795,8 +786,8 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         {
             SeedQueryableSource();
 
-            var actualResult1 = Queryable.Where(x => !x.Guid.Equals(default(Guid))).ToList();
-            var actualResult2 = Queryable.Where(x => !x.Guid.Equals(default(Guid))).ToList();
+            var actualResult1 = Queryable.Where(x => !x.Guid.Equals(default)).ToList();
+            var actualResult2 = Queryable.Where(x => !x.Guid.Equals(default)).ToList();
 
             Assert.Multiple(() =>
             {

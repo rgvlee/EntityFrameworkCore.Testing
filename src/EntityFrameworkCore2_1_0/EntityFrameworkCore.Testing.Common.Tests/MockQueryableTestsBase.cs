@@ -26,7 +26,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         [Test]
         public virtual void FromSql_AnySql_ReturnsExpectedResult()
         {
-            var expectedResult = new Fixture().CreateMany<T>().ToList();
+            var expectedResult = Fixture.CreateMany<T>().ToList();
             AddFromSqlResult(Queryable, expectedResult);
 
             var actualResult1 = Queryable.FromSql("sp_NoParams").ToList();
@@ -43,11 +43,11 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         public virtual void FromSql_QueryProviderWithManyFromSqlResults_ReturnsExpectedResults()
         {
             var sql1 = "sp_NoParams";
-            var expectedResult1 = new Fixture().CreateMany<T>().ToList();
+            var expectedResult1 = Fixture.CreateMany<T>().ToList();
 
             var sql2 = "sp_WithParams";
             var parameters2 = new List<SqlParameter> {new SqlParameter("@SomeParameter1", "Value1"), new SqlParameter("@SomeParameter2", "Value2")};
-            var expectedResult2 = new Fixture().CreateMany<T>().ToList();
+            var expectedResult2 = Fixture.CreateMany<T>().ToList();
 
             AddFromSqlResult(Queryable, sql1, expectedResult1);
             AddFromSqlResult(Queryable, sql2, parameters2, expectedResult2);
@@ -84,7 +84,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         public virtual void FromSql_SpecifiedSql_ReturnsExpectedResult()
         {
             var sql = "sp_NoParams";
-            var expectedResult = new Fixture().CreateMany<T>().ToList();
+            var expectedResult = Fixture.CreateMany<T>().ToList();
             AddFromSqlResult(Queryable, sql, expectedResult);
 
             var actualResult1 = Queryable.FromSql("[dbo].[sp_NoParams]").ToList();
@@ -101,7 +101,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         public virtual void FromSql_SpecifiedSqlThatDoesNotMatchSetUp_ThrowsException()
         {
             var sql = "asdf";
-            var expectedResult = new Fixture().CreateMany<T>().ToList();
+            var expectedResult = Fixture.CreateMany<T>().ToList();
             AddFromSqlResult(Queryable, sql, expectedResult);
 
             Assert.Throws<NotSupportedException>(() =>
@@ -115,7 +115,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         {
             var sql = "sp_WithParams";
             var parameters = new List<SqlParameter> {new SqlParameter("@SomeParameter2", "Value2")};
-            var expectedResult = new Fixture().CreateMany<T>().ToList();
+            var expectedResult = Fixture.CreateMany<T>().ToList();
             AddFromSqlResult(Queryable, sql, parameters, expectedResult);
 
             var actualResult1 = Queryable.FromSql("[dbo].[sp_WithParams] @SomeParameter1 @SomeParameter2", parameters.ToArray()).ToList();
@@ -125,6 +125,15 @@ namespace EntityFrameworkCore.Testing.Common.Tests
             {
                 Assert.That(actualResult1, Is.EquivalentTo(expectedResult));
                 Assert.That(actualResult2, Is.EquivalentTo(actualResult1));
+            });
+        }
+
+        [Test]
+        public virtual void FromSql_ThrowsException()
+        {
+            Assert.Throws<NotSupportedException>(() =>
+            {
+                var actualResult = Queryable.FromSql("sp_NoParams").ToList();
             });
         }
     }
