@@ -12,7 +12,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
 
         public DateTime DateTime { get; set; }
 
-        public DateTime FixedDateTime => DateTime.Parse("2019-01-01");
+        public DateTime FixedDateTime { get; set; }
 
         public override string ToString()
         {
