@@ -18,7 +18,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<TestEntity>().HasKey(c => c.Guid);
-            modelBuilder.Query<TestQuery>().ToView("SomeView");
+            modelBuilder.Query<TestQuery>().ToView("TestQuery");
         }
 
         public override int SaveChanges()
