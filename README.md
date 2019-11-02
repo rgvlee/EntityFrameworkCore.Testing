@@ -19,7 +19,8 @@ There may be more EntityFrameworkCore functionality that isn't supported by the 
 In addition to the above you also get all of the benefits of using a mocking framework (e.g., the ability to verify method invocation).
 
 ## EntityFrameworkCore 3.0.0 support
-I'm working on it! Initial testing has shown the LINQ queryable operations mentioned above are still not supported. FromSql, ExecuteSqlCommand and queries in general have changed in EntityFrameworkCore 3.0.0 so there is a bit of work to do!
+The Moq version is nearly ready to package and deploy. An NSubstitute version will be a little longer.
+In general, testing has shown the LINQ queryable operations mentioned above are still not supported. Relational operations such as FromSql (now FromSqlRaw/FromSqlInterpolated), ExecuteSqlCommand (now ExecuteSqlRaw/ExecuteSqlInterpolated) and queries are also not supported, as you would expect.
 
 ## Resources
 - [Source repository](https://github.com/rgvlee/EntityFrameworkCore.Testing)
