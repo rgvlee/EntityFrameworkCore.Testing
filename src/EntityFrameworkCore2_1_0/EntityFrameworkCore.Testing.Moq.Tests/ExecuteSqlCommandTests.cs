@@ -18,7 +18,6 @@ namespace EntityFrameworkCore.Testing.Moq.Tests
             base.SetUp();
             var dbContextToMock = new TestDbContext(new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
             MockedDbContext = Create.MockedDbContextFor(dbContextToMock);
-            //MockedDbContext = dbContextToMock.CreateMock();
         }
 
         public override void AddExecuteSqlCommandResult(TestDbContext mockedDbContext, int expectedResult)
