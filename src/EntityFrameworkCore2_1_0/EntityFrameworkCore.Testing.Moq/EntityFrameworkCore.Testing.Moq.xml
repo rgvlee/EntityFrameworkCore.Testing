@@ -77,13 +77,13 @@
             <summary>Adds the items of the specified sequence to the end of the mocked db query source.</summary>
             <typeparam name="TQuery">The query type.</typeparam>
             <param name="mockedDbQuery">The mocked db query.</param>
-            <param name="enumerable">The sequence whose items should be added to the end of the mocked db query source.</param>
+            <param name="items">The sequence whose items should be added to the end of the mocked db query source.</param>
         </member>
         <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.DbQueryExtensions.AddRangeToReadOnlySource``1(Microsoft.EntityFrameworkCore.DbQuery{``0},System.Collections.Generic.IEnumerable{``0})">
             <summary>Adds the items of the specified sequence to the end of the mocked db query source.</summary>
             <typeparam name="TQuery">The query type.</typeparam>
             <param name="mockedDbQuery">The mocked db query.</param>
-            <param name="enumerable">The sequence whose items should be added to the end of the mocked db query source.</param>
+            <param name="items">The sequence whose items should be added to the end of the mocked db query source.</param>
         </member>
         <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.DbQueryExtensions.Clear``1(Microsoft.EntityFrameworkCore.DbQuery{``0})">
             <summary>Removes all items from the mocked db query source.</summary>
