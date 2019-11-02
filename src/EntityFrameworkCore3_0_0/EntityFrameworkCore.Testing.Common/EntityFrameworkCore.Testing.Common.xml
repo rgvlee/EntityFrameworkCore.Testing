@@ -1,0 +1,179 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>EntityFrameworkCore.Testing.Common</name>
+    </assembly>
+    <members>
+        <member name="T:EntityFrameworkCore.Testing.Common.AsyncEnumerable`1">
+            <inheritdoc cref="T:System.Collections.Generic.IAsyncEnumerable`1" />
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.Common.AsyncEnumerable`1.#ctor(System.Linq.Expressions.Expression)">
+            <summary>Constructor.</summary>
+            <param name="expression">The expression to create an asynchronous enumerable for.</param>
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.Common.AsyncEnumerable`1.#ctor(System.Collections.Generic.IEnumerable{`0})">
+            <summary>Constructor.</summary>
+            <param name="enumerable">The enumerable to create an asynchronous enumerable for.</param>
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.Common.AsyncEnumerable`1.GetAsyncEnumerator(System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="T:EntityFrameworkCore.Testing.Common.AsyncEnumerator`1">
+            <inheritdoc />
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.Common.AsyncEnumerator`1.#ctor(System.Collections.Generic.IEnumerator{`0})">
+            <summary>Constructor.</summary>
+            <param name="enumerator">The enumerator to create an asynchronous enumerator for.</param>
+        </member>
+        <member name="P:EntityFrameworkCore.Testing.Common.AsyncEnumerator`1.Current">
+            <inheritdoc />
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.Common.AsyncEnumerator`1.MoveNextAsync">
+            <inheritdoc />
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.Common.AsyncEnumerator`1.DisposeAsync">
+            <inheritdoc />
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.Common.AsyncEnumerator`1.Dispose(System.Boolean)">
+            <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
+            <param name="disposing">Provides disposal context; true if invoked by the instance, false if invoked by the finalizer.</param>
+        </member>
+        <member name="T:EntityFrameworkCore.Testing.Common.AsyncQueryProvider`1">
+            <inheritdoc />
+        </member>
+        <member name="P:EntityFrameworkCore.Testing.Common.AsyncQueryProvider`1.Source">
+            <summary>The query provider source.</summary>
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.Common.AsyncQueryProvider`1.CreateQuery(System.Linq.Expressions.Expression)">
+            <inheritdoc />
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.Common.AsyncQueryProvider`1.CreateQuery``1(System.Linq.Expressions.Expression)">
+            <inheritdoc />
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.Common.AsyncQueryProvider`1.Execute(System.Linq.Expressions.Expression)">
+            <inheritdoc />
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.Common.AsyncQueryProvider`1.Execute``1(System.Linq.Expressions.Expression)">
+            <inheritdoc />
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.Common.AsyncQueryProvider`1.ExecuteAsync``1(System.Linq.Expressions.Expression,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="T:EntityFrameworkCore.Testing.Common.EnsureArgument">
+            <summary>A helper to perform checks on arguments.</summary>
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.Common.EnsureArgument.IsNotNullOrEmpty(System.String,System.String)">
+            <summary>Ensures that a string argument is not null or empty.</summary>
+            <param name="string">The string argument.</param>
+            <param name="argumentName">The argument name.</param>
+            <returns>The string argument.</returns>
+            <exception cref="T:System.ArgumentNullException">If the string argument is null.</exception>
+            <exception cref="T:System.ArgumentException">If the string argument is empty.</exception>
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.Common.EnsureArgument.IsNotNull``1(``0,System.String)">
+            <summary>Ensures that an argument is not null.</summary>
+            <typeparam name="T">The argument type.</typeparam>
+            <param name="argument">The argument.</param>
+            <param name="argumentName">The argument name.</param>
+            <returns>The argument.</returns>
+            <exception cref="T:System.ArgumentNullException">If the argument is null.</exception>
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.Common.EnsureArgument.IsNotEmpty``1(System.Collections.Generic.IEnumerable{``0},System.String)">
+            <summary>Ensures that a sequence is not empty.</summary>
+            <typeparam name="T">The enumerable item type.</typeparam>
+            <param name="enumerable">The enumerable argument.</param>
+            <param name="argumentName">The enumerable argument name.</param>
+            <returns>The enumerable argument.</returns>
+        </member>
+        <member name="T:EntityFrameworkCore.Testing.Common.ExceptionMessages">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:EntityFrameworkCore.Testing.Common.ExceptionMessages.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:EntityFrameworkCore.Testing.Common.ExceptionMessages.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:EntityFrameworkCore.Testing.Common.ExceptionMessages.ArgumentNull">
+            <summary>
+              Looks up a localized string similar to Value required for &apos;{0}&apos; (type: &apos;{1}&apos;)..
+            </summary>
+        </member>
+        <member name="P:EntityFrameworkCore.Testing.Common.ExceptionMessages.EnumerationEmpty">
+            <summary>
+              Looks up a localized string similar to Enumeration &apos;{0}&apos; (type: &apos;{1}&apos;) must contain 1 or more elements..
+            </summary>
+        </member>
+        <member name="P:EntityFrameworkCore.Testing.Common.ExceptionMessages.StringNullOrEmpty">
+            <summary>
+              Looks up a localized string similar to Value required for &apos;{0}&apos;..
+            </summary>
+        </member>
+        <member name="T:EntityFrameworkCore.Testing.Common.Extensions.StringExtensions">
+            <summary>Extensions for the <see cref="T:System.String" /> type.</summary>
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.Common.Extensions.StringExtensions.Contains(System.String,System.String,System.StringComparison)">
+            <summary>Checks to see if the target string contains the search for string using the specified string comparer.</summary>
+            <param name="target">The string to search.</param>
+            <param name="searchFor">The string to search for within the target.</param>
+            <param name="comparer">The string comparer.</param>
+            <returns>true if the target string contains the search for string using the specified string comparer.</returns>
+        </member>
+        <member name="T:EntityFrameworkCore.Testing.Common.Extensions.TypeExtensions">
+            <summary>Extensions for the <see cref="T:System.Type" /> type.</summary>
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.Common.Extensions.TypeExtensions.GetDefaultValue(System.Type)">
+            <summary>Gets the default value for the specified type.</summary>
+            <param name="type">The type to get the default value for.</param>
+            <returns>The default value for the specified type.</returns>
+        </member>
+        <member name="T:EntityFrameworkCore.Testing.Common.Helpers.ExpressionHelper">
+            <summary>A helper for creating expressions.</summary>
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.Common.Helpers.ExpressionHelper.CreatePropertyExpression``2(System.Reflection.PropertyInfo)">
+            <summary>Creates a property expression for the specified property.</summary>
+            <typeparam name="TParameter">The expression parameter.</typeparam>
+            <typeparam name="TProperty">The expression property.</typeparam>
+            <param name="propertyInfo">The property info of the property to create the expression for.</param>
+            <returns>A property expression for the specified property.</returns>
+        </member>
+        <member name="T:EntityFrameworkCore.Testing.Common.Helpers.LoggerHelper">
+            <summary>A helper for creating loggers.</summary>
+        </member>
+        <member name="P:EntityFrameworkCore.Testing.Common.Helpers.LoggerHelper.LoggerFactory">
+            <summary>Gets or sets the logger factory used to create loggers.</summary>
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.Common.Helpers.LoggerHelper.CreateLogger``1">
+            <summary>Creates a new logger instance using the full name of the specified type.</summary>
+            <typeparam name="T">The type.</typeparam>
+            <returns>A new logger instance.</returns>
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.Common.Helpers.LoggerHelper.CreateLogger(System.String)">
+            <summary>Creates a new logger instance.</summary>
+            <param name="categoryName">The category name for messages produced by the logger.</param>
+            <returns>A new logger instance.</returns>
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.Common.Helpers.LoggerHelper.CreateLogger(System.Type)">
+            <summary>Creates a new logger instance using the full name of the specified type.</summary>
+            <param name="type">The type.</param>
+            <returns>A new logger instance.</returns>
+        </member>
+        <member name="T:EntityFrameworkCore.Testing.Common.SqlParameterParameterNameAndValueEqualityComparer">
+            <summary>An equality comparer for sql parameters.</summary>
+            <remarks>Uses the sql parameter name and value properties for the equality comparison.</remarks>
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.Common.SqlParameterParameterNameAndValueEqualityComparer.Equals(System.Data.SqlClient.SqlParameter,System.Data.SqlClient.SqlParameter)">
+            <inheritdoc />
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.Common.SqlParameterParameterNameAndValueEqualityComparer.GetHashCode(System.Data.SqlClient.SqlParameter)">
+            <inheritdoc />
+        </member>
+    </members>
+</doc>
