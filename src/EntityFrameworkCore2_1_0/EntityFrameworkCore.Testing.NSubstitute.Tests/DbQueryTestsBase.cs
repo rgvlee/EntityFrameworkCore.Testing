@@ -43,9 +43,9 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Tests
             mockedDbQuery.AddToReadOnlySource(item);
         }
 
-        protected override void AddRangeToReadOnlySource(DbQuery<T> mockedDbQuery, IEnumerable<T> enumerable)
+        protected override void AddRangeToReadOnlySource(DbQuery<T> mockedDbQuery, IEnumerable<T> items)
         {
-            mockedDbQuery.AddRangeToReadOnlySource(enumerable);
+            mockedDbQuery.AddRangeToReadOnlySource(items);
         }
 
         protected override void ClearReadOnlySource(DbQuery<T> mockedDbQuery)
