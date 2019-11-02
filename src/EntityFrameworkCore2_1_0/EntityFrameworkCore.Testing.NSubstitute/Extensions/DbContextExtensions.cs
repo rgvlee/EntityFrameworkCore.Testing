@@ -140,7 +140,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
             }
             else
             {
-                Logger.LogDebug($"Could not find a DbContext DbSet property for type '{typeof(TEntity)}'");
+                Logger.LogDebug($"Could not find a DbContext property for type '{typeof(TEntity)}'");
             }
 
             mockedDbContext.Configure().Set<TEntity>().Returns(callInfo => mockedDbSet);
@@ -186,7 +186,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
             }
             else
             {
-                Logger.LogDebug($"Could not find a DbContext DbQuery property for type '{typeof(TQuery)}'");
+                Logger.LogDebug($"Could not find a DbContext property for type '{typeof(TQuery)}'");
             }
 
             mockedDbContext.Configure().Query<TQuery>().Returns(callInfo => mockedDbQuery);

@@ -128,7 +128,7 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
             }
             else
             {
-                Logger.LogDebug($"Could not find a DbContext DbSet property for type '{typeof(TEntity)}'");
+                Logger.LogDebug($"Could not find a DbContext property for type '{typeof(TEntity)}'");
             }
 
             dbContextMock.Setup(m => m.Set<TEntity>()).Returns(mockedDbSet);
@@ -175,7 +175,7 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
             }
             else
             {
-                Logger.LogDebug($"Could not find a DbContext DbQuery property for type '{typeof(TQuery)}'");
+                Logger.LogDebug($"Could not find a DbContext property for type '{typeof(TQuery)}'");
             }
 
             dbContextMock.Setup(m => m.Query<TQuery>()).Returns(mockedDbQuery);
