@@ -9,7 +9,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Tests
     [TestFixture]
     public class ByTypeDbSetTests : DbSetTestsBase
     {
-        protected override IQueryable<TestEntity1> Queryable => MockedDbContext.Set<TestEntity1>();
+        protected override IQueryable<TestEntity> Queryable => MockedDbContext.Set<TestEntity>();
 
         [Test(Description = "This test ensures that method invoked via CallBase = true are verifiable")]
         public override void Select_ReturnsSequence()
@@ -18,11 +18,11 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Tests
 
             Queryable.Provider
                 .Received(2)
-                .CreateQuery<TestEntity1>(Arg.Any<Expression>());
+                .CreateQuery<TestEntity>(Arg.Any<Expression>());
 
             Queryable.Provider
                 .Received(2)
-                .CreateQuery<TestEntity1>(Arg.Is<MethodCallExpression>(mce => mce.Method.Name.Equals(nameof(System.Linq.Queryable.Select))));
+                .CreateQuery<TestEntity>(Arg.Is<MethodCallExpression>(mce => mce.Method.Name.Equals(nameof(System.Linq.Queryable.Select))));
         }
     }
 }

@@ -7,6 +7,6 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Tests
     [TestFixture]
     public class ByPropertyDbSetTests : DbSetTestsBase
     {
-        protected override IQueryable<TestEntity1> Queryable => MockedDbContext.TestEntities;
+        protected override IQueryable<TestEntity> Queryable => MockedDbContext.TestEntities;
     }
 }
