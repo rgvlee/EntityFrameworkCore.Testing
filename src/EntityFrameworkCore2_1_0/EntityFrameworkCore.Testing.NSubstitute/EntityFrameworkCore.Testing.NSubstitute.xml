@@ -67,13 +67,30 @@
             <param name="mockedDbQuery">The mocked db query.</param>
             <param name="item">The item to be added to the end of the mocked db query source.</param>
         </member>
+        <member name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.DbQueryExtensions.AddToReadOnlySource``1(Microsoft.EntityFrameworkCore.DbQuery{``0},``0)">
+            <summary>Adds an item to the end of the mocked db query source.</summary>
+            <typeparam name="TQuery">The query type.</typeparam>
+            <param name="mockedDbQuery">The mocked db query.</param>
+            <param name="item">The item to be added to the end of the mocked db query source.</param>
+        </member>
         <member name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.DbQueryExtensions.AddRange``1(Microsoft.EntityFrameworkCore.DbQuery{``0},System.Collections.Generic.IEnumerable{``0})">
             <summary>Adds the items of the specified sequence to the end of the mocked db query source.</summary>
             <typeparam name="TQuery">The query type.</typeparam>
             <param name="mockedDbQuery">The mocked db query.</param>
             <param name="enumerable">The sequence whose items should be added to the end of the mocked db query source.</param>
         </member>
+        <member name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.DbQueryExtensions.AddRangeToReadOnlySource``1(Microsoft.EntityFrameworkCore.DbQuery{``0},System.Collections.Generic.IEnumerable{``0})">
+            <summary>Adds the items of the specified sequence to the end of the mocked db query source.</summary>
+            <typeparam name="TQuery">The query type.</typeparam>
+            <param name="mockedDbQuery">The mocked db query.</param>
+            <param name="enumerable">The sequence whose items should be added to the end of the mocked db query source.</param>
+        </member>
         <member name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.DbQueryExtensions.Clear``1(Microsoft.EntityFrameworkCore.DbQuery{``0})">
+            <summary>Removes all items from the mocked db query source.</summary>
+            <typeparam name="TQuery">The query type.</typeparam>
+            <param name="mockedDbQuery">The mocked db query.</param>
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.DbQueryExtensions.ClearReadOnlySource``1(Microsoft.EntityFrameworkCore.DbQuery{``0})">
             <summary>Removes all items from the mocked db query source.</summary>
             <typeparam name="TQuery">The query type.</typeparam>
             <param name="mockedDbQuery">The mocked db query.</param>
@@ -145,13 +162,13 @@
         </member>
         <member name="M:EntityFrameworkCore.Testing.NSubstitute.Helpers.Create.SubstituteFor``1(Microsoft.EntityFrameworkCore.DbSet{``0})">
             <summary>Creates a mocked db set.</summary>
-            <typeparam name="TEntity">The db set entity type.</typeparam>
+            <typeparam name="TEntity">The entity type.</typeparam>
             <param name="dbSetToMock">The db set to mock.</param>
             <returns>A mocked db set.</returns>
         </member>
         <member name="M:EntityFrameworkCore.Testing.NSubstitute.Helpers.Create.SubstituteFor``1(Microsoft.EntityFrameworkCore.DbQuery{``0})">
             <summary>Creates a mocked db query.</summary>
-            <typeparam name="TQuery">The db query query type.</typeparam>
+            <typeparam name="TQuery">The query type.</typeparam>
             <param name="dbQueryToMock">The db query to mock.</param>
             <returns>A mocked db query.</returns>
         </member>
