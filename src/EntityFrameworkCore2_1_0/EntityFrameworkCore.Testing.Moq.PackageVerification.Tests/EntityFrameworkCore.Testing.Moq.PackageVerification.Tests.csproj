@@ -8,9 +8,9 @@
 
   <ItemGroup>
     <Compile Include="..\EntityFrameworkCore.Testing.Common.Tests\TestDbContext.cs" Link="TestDbContext.cs" />
-    <Compile Include="..\EntityFrameworkCore.Testing.Common.Tests\TestEntity1.cs" Link="TestEntity1.cs" />
+    <Compile Include="..\EntityFrameworkCore.Testing.Common.Tests\TestEntity.cs" Link="TestEntity.cs" />
     <Compile Include="..\EntityFrameworkCore.Testing.Common.Tests\TestEntityBase.cs" Link="TestEntityBase.cs" />
-    <Compile Include="..\EntityFrameworkCore.Testing.Common.Tests\TestQuery1.cs" Link="TestQuery1.cs" />
+    <Compile Include="..\EntityFrameworkCore.Testing.Common.Tests\TestQuery.cs" Link="TestQuery.cs" />
   </ItemGroup>
 
   <ItemGroup>
