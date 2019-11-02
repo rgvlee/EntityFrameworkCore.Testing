@@ -11,41 +11,46 @@ using NUnit.Framework;
 namespace EntityFrameworkCore.Testing.Moq.Tests
 {
     [TestFixture]
-    public abstract class DbQueryTestsBase : DbQueryTestsBase<TestDbContext, TestQuery1>
+    public abstract class DbQueryTestsBase : DbQueryTestsBase<TestQuery>
     {
-        protected override TestDbContext CreateMockedDbContext()
+        [SetUp]
+        public override void SetUp()
         {
-            return Create.MockedDbContextFor(new TestDbContext(new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options));
+            base.SetUp();
+            var dbContextToMock = new TestDbContext(new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
+            MockedDbContext = Create.MockedDbContextFor(dbContextToMock);
         }
 
-        protected override void AddFromSqlResult(IQueryable<TestQuery1> mockedQueryable, IEnumerable<TestQuery1> expectedResult)
+        protected TestDbContext MockedDbContext;
+
+        protected override void AddFromSqlResult(IQueryable<TestQuery> mockedQueryable, IEnumerable<TestQuery> expectedResult)
         {
             mockedQueryable.AddFromSqlResult(expectedResult);
         }
 
-        protected override void AddFromSqlResult(IQueryable<TestQuery1> mockedQueryable, string sql, IEnumerable<TestQuery1> expectedResult)
+        protected override void AddFromSqlResult(IQueryable<TestQuery> mockedQueryable, string sql, IEnumerable<TestQuery> expectedResult)
         {
             mockedQueryable.AddFromSqlResult(sql, expectedResult);
         }
 
-        protected override void AddFromSqlResult(IQueryable<TestQuery1> mockedQueryable, string sql, List<SqlParameter> parameters, IEnumerable<TestQuery1> expectedResult)
+        protected override void AddFromSqlResult(IQueryable<TestQuery> mockedQueryable, string sql, List<SqlParameter> parameters, IEnumerable<TestQuery> expectedResult)
         {
             mockedQueryable.AddFromSqlResult(sql, parameters, expectedResult);
         }
 
-        protected override void Add(DbQuery<TestQuery1> mockedDbQuery, TestQuery1 item)
+        protected override void AddToReadOnlySource(DbQuery<TestQuery> mockedDbQuery, TestQuery item)
         {
-            mockedDbQuery.Add(item);
+            mockedDbQuery.AddToReadOnlySource(item);
         }
 
-        protected override void AddRange(DbQuery<TestQuery1> mockedDbQuery, IEnumerable<TestQuery1> sequence)
+        protected override void AddRangeToReadOnlySource(DbQuery<TestQuery> mockedDbQuery, IEnumerable<TestQuery> enumerable)
         {
-            mockedDbQuery.AddRange(sequence);
+            mockedDbQuery.AddRangeToReadOnlySource(enumerable);
         }
 
-        protected override void Clear(DbQuery<TestQuery1> mockedDbQuery)
+        protected override void ClearReadOnlySource(DbQuery<TestQuery> mockedDbQuery)
         {
-            mockedDbQuery.Clear();
+            mockedDbQuery.ClearReadOnlySource();
         }
     }
 }
