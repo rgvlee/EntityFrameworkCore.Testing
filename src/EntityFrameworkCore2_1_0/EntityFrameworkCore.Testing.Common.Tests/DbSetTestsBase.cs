@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoFixture;
@@ -21,7 +22,9 @@ namespace EntityFrameworkCore.Testing.Common.Tests
 
         protected override void SeedQueryableSource()
         {
-            var itemsToAdd = Fixture.CreateMany<TEntity>().ToList();
+            var itemsToAdd = Fixture.Build<TEntity>()
+                .With(p => p.FixedDateTime, DateTime.Parse("2019-01-01"))
+                .CreateMany().ToList();
             DbSet.AddRange(itemsToAdd);
             MockedDbContext.SaveChanges();
             ItemsAddedToQueryableSource = itemsToAdd;
@@ -33,9 +36,9 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         protected abstract TDbContext CreateMockedDbContext();
 
         [Test]
-        public virtual void AddAndPersist_Entity_Persists()
+        public virtual void AddAndPersist_Item_AddsAndPersistsItem()
         {
-            var expectedResult = new Fixture().Create<TEntity>();
+            var expectedResult = Fixture.Create<TEntity>();
 
             DbSet.Add(expectedResult);
             MockedDbContext.SaveChanges();
@@ -48,9 +51,9 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         }
 
         [Test]
-        public virtual void AddAndPersist_Enumeration_Persists()
+        public virtual void AddAndPersist_Items_AddsAndPersistsItems()
         {
-            var expectedResult = new Fixture().CreateMany<TEntity>().ToList();
+            var expectedResult = Fixture.CreateMany<TEntity>().ToList();
 
             DbSet.AddRange(expectedResult);
             MockedDbContext.SaveChanges();
@@ -65,9 +68,9 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         }
 
         [Test]
-        public virtual async Task AddAndPersistAsync_Entity_Persists()
+        public virtual async Task AddAndPersistAsync_Item_AddsAndPersistsItem()
         {
-            var expectedResult = new Fixture().Create<TEntity>();
+            var expectedResult = Fixture.Create<TEntity>();
 
             await DbSet.AddAsync(expectedResult);
             await MockedDbContext.SaveChangesAsync();
@@ -80,9 +83,9 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         }
 
         [Test]
-        public virtual async Task AddAndPersistAsync_Enumeration_Persists()
+        public virtual async Task AddAndPersistAsync_Items_AddsAndPersistsItems()
         {
-            var expectedResult = new Fixture().CreateMany<TEntity>().ToList();
+            var expectedResult = Fixture.CreateMany<TEntity>().ToList();
 
             await DbSet.AddRangeAsync(expectedResult);
             await MockedDbContext.SaveChangesAsync();
@@ -128,7 +131,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         }
 
         [Test]
-        public virtual void AnyThenAddAndPersistThenAny_ReturnsFalseThenTrue()
+        public virtual void AnyThenAddThenPersistThenAny_ReturnsFalseThenTrue()
         {
             var actualResult1 = DbSet.Any();
             DbSet.Add(Fixture.Create<TEntity>());
