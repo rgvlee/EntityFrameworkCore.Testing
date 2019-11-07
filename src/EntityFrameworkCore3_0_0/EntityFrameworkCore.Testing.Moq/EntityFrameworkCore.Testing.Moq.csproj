@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
-    <Description>A mocking library using Moq that extends the EntityFrameworkCore in-memory provider to provide support for FromSql and ExecuteSqlCommand operations, queries (DbQuery&lt;TQuery&gt;) and unsupported queryable operations (ElementAt, SkipWhile, TakeWhile etc), providing you with a functionally complete DbContext to use in tests.</Description>
+    <Description>A mocking library using Moq that extends the EntityFrameworkCore in-memory provider to provide support for FromSqlRaw and ExecuteSqlCommand/ExecuteSqlRaw operations, queries (DbQuery&lt;TQuery&gt; and read only DbSet&lt;TEntity&gt;) and unsupported queryable operations (ElementAt, SkipWhile, TakeWhile etc), providing you with a functionally complete DbContext to use in tests.</Description>
     <Copyright>Copyright (c) 2019 Lee Anderson</Copyright>
 	<Company>rgvlee</Company>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>    
