@@ -13,12 +13,6 @@ namespace EntityFrameworkCore.Testing.Common.Tests
     public abstract class MockedDbSetQueryProviderTestsBase<TEntity> : QueryableTestsBase<TEntity>
         where TEntity : TestEntityBase
     {
-        [SetUp]
-        public override void SetUp()
-        {
-            base.SetUp();
-        }
-
         protected abstract void AddFromSqlRawResult(IQueryable<TEntity> mockedReadOnlyDbSet, IEnumerable<TEntity> expectedResult);
         protected abstract void AddFromSqlRawResult(IQueryable<TEntity> mockedReadOnlyDbSet, string sql, IEnumerable<TEntity> expectedResult);
         protected abstract void AddFromSqlRawResult(IQueryable<TEntity> mockedReadOnlyDbSet, string sql, List<SqlParameter> parameters, IEnumerable<TEntity> expectedResult);

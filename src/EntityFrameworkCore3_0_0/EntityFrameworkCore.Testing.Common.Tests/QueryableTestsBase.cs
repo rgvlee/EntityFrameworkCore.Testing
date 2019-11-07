@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -13,12 +14,6 @@ namespace EntityFrameworkCore.Testing.Common.Tests
     public abstract class QueryableTestsBase<T> : TestBase
         where T : TestEntityBase
     {
-        [SetUp]
-        public override void SetUp()
-        {
-            base.SetUp();
-        }
-
         protected abstract IQueryable<T> Queryable { get; }
         protected abstract void SeedQueryableSource();
         protected List<T> ItemsAddedToQueryableSource;
@@ -803,6 +798,13 @@ namespace EntityFrameworkCore.Testing.Common.Tests
                     Assert.That(actualResult2[i].Guid, Is.Not.EqualTo(default(Guid)));
                 }
             });
+        }
+
+        [Test]
+        public void ContainsListCollection_ReturnsFalse()
+        {
+            var containsListCollection = ((IListSource)Queryable).ContainsListCollection;
+            Assert.That(containsListCollection, Is.False);
         }
     }
 }

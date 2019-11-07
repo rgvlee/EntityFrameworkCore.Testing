@@ -13,12 +13,6 @@ namespace EntityFrameworkCore.Testing.Common.Tests
     public abstract class ReadOnlyDbSetTestsBase<TEntity> : MockedDbSetQueryProviderTestsBase<TEntity>
         where TEntity : TestEntityBase
     {
-        [SetUp]
-        public override void SetUp()
-        {
-            base.SetUp();
-        }
-
         protected override void SeedQueryableSource()
         {
             var itemsToAdd = Fixture.Build<TEntity>()
