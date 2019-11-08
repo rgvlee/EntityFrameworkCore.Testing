@@ -57,7 +57,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
             var expectedResult = 1;
             AddExecuteSqlRawResult(MockedDbContext, sql, expectedResult);
 
-            Assert.Throws<NullReferenceException>(() =>
+            Assert.Throws<InvalidOperationException>(() =>
             {
                 var actualResult = MockedDbContext.Database.ExecuteSqlRaw("sp_NoParams");
             });
@@ -71,13 +71,33 @@ namespace EntityFrameworkCore.Testing.Common.Tests
             var expectedResult = 1;
             AddExecuteSqlRawResult(MockedDbContext, sql, parameters, expectedResult);
 
-            var actualResult1 = MockedDbContext.Database.ExecuteSqlRaw("[dbo.[sp_WithParams] @SomeParameter1 @SomeParameter2", parameters);
-            var actualResult2 = MockedDbContext.Database.ExecuteSqlRaw("[dbo.[sp_WithParams] @SomeParameter1 @SomeParameter2", parameters);
+            var actualResult1 = MockedDbContext.Database.ExecuteSqlRaw("[dbo].[sp_WithParams] @SomeParameter1 @SomeParameter2", parameters);
+            var actualResult2 = MockedDbContext.Database.ExecuteSqlRaw("[dbo].[sp_WithParams] @SomeParameter1 @SomeParameter2", parameters);
 
             Assert.Multiple(() =>
             {
                 Assert.That(actualResult1, Is.EqualTo(expectedResult));
                 Assert.That(actualResult2, Is.EqualTo(actualResult1));
+            });
+        }
+
+        [Test]
+        public void ExecuteSqlRaw_SpecifiedSqlWithParametersThatDoNotMatchSetUp_ThrowsException()
+        {
+            var sql = "sp_WithParams";
+            var setUpParameters = new List<SqlParameter> { new SqlParameter("@SomeParameter3", "Value3") };
+            var invocationParameters = new List<SqlParameter> { new SqlParameter("@SomeParameter1", "Value1"), new SqlParameter("@SomeParameter2", "Value2") };
+            var expectedResult = 1;
+            AddExecuteSqlRawResult(MockedDbContext, sql, setUpParameters, expectedResult);
+
+            Assert.Throws<InvalidOperationException>(() =>
+            {
+                var actualResult1 = MockedDbContext.Database.ExecuteSqlRaw("[dbo].[sp_WithParams] @SomeParameter1 @SomeParameter2", invocationParameters);
+            });
+
+            Assert.Throws<InvalidOperationException>(() =>
+            {
+                var actualResult2 = MockedDbContext.Database.ExecuteSqlRaw("[dbo].[sp_WithParams] @SomeParameter1 @SomeParameter2", invocationParameters);
             });
         }
 
@@ -131,7 +151,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
             var expectedResult = 1;
             AddExecuteSqlRawResult(MockedDbContext, sql, expectedResult);
 
-            Assert.ThrowsAsync<NullReferenceException>(async () =>
+            Assert.ThrowsAsync<InvalidOperationException>(async () =>
             {
                 var actualResult = await MockedDbContext.Database.ExecuteSqlRawAsync("sp_NoParams");
             });
@@ -145,8 +165,8 @@ namespace EntityFrameworkCore.Testing.Common.Tests
             var expectedResult = 1;
             AddExecuteSqlRawResult(MockedDbContext, sql, parameters, expectedResult);
 
-            var actualResult1 = await MockedDbContext.Database.ExecuteSqlRawAsync("[dbo.[sp_WithParams] @SomeParameter2", parameters);
-            var actualResult2 = await MockedDbContext.Database.ExecuteSqlRawAsync("[dbo.[sp_WithParams] @SomeParameter2", parameters);
+            var actualResult1 = await MockedDbContext.Database.ExecuteSqlRawAsync("[dbo].[sp_WithParams] @SomeParameter2", parameters);
+            var actualResult2 = await MockedDbContext.Database.ExecuteSqlRawAsync("[dbo].[sp_WithParams] @SomeParameter2", parameters);
 
             Assert.Multiple(() =>
             {

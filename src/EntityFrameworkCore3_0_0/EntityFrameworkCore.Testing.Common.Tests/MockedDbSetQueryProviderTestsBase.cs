@@ -59,9 +59,9 @@ namespace EntityFrameworkCore.Testing.Common.Tests
             var actualResult4 = DbSet.FromSqlRaw("sp_WithParams @SomeParameter1 @SomeParameter2").ToList();
 
             Logger.LogDebug("actualResult5");
-            var actualResult5 = DbSet.FromSqlRaw("[dbo].[sp_WithParams]", new List<SqlParameter> {new SqlParameter("@someparameter2", "value2")}).ToList();
+            var actualResult5 = DbSet.FromSqlRaw("[dbo].[sp_WithParams]", new List<SqlParameter> {new SqlParameter("@someparameter2", "value2")}.ToArray()).ToList();
             Logger.LogDebug("actualResult6");
-            var actualResult6 = DbSet.FromSqlRaw("sp_WithParams @SomeParameter1 @SomeParameter2", new List<SqlParameter> {new SqlParameter("@someparameter2", "value2")}).ToList();
+            var actualResult6 = DbSet.FromSqlRaw("sp_WithParams @SomeParameter1 @SomeParameter2", new List<SqlParameter> {new SqlParameter("@someparameter2", "value2")}.ToArray()).ToList();
 
             Assert.Multiple(() =>
             {
@@ -121,6 +121,26 @@ namespace EntityFrameworkCore.Testing.Common.Tests
             {
                 Assert.That(actualResult1, Is.EquivalentTo(expectedResult));
                 Assert.That(actualResult2, Is.EquivalentTo(actualResult1));
+            });
+        }
+
+        [Test]
+        public virtual void FromSqlRaw_SpecifiedSqlWithParametersThatDoNotMatchSetUp_ThrowsException()
+        {
+            var sql = "sp_WithParams";
+            var setUpParameters = new List<SqlParameter> { new SqlParameter("@SomeParameter3", "Value3") };
+            var invocationParameters = new List<SqlParameter> { new SqlParameter("@SomeParameter1", "Value1"), new SqlParameter("@SomeParameter2", "Value2") };
+            var expectedResult = Fixture.CreateMany<TEntity>().ToList();
+            AddFromSqlRawResult(DbSet, sql, setUpParameters, expectedResult);
+
+            Assert.Throws<NotSupportedException>(() =>
+            {
+                var actualResult1 = DbSet.FromSqlRaw("[dbo].[sp_WithParams] @SomeParameter1 @SomeParameter2", invocationParameters.ToArray()).ToList();
+            });
+
+            Assert.Throws<NotSupportedException>(() =>
+            {
+                var actualResult2 = DbSet.FromSqlRaw("sp_WithParams @SomeParameter1 @SomeParameter2", invocationParameters.ToArray()).ToList();
             });
         }
 
