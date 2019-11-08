@@ -113,7 +113,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         [Test]
         public async Task ExecuteSqlCommandAsync_AnySql_ReturnsExpectedResult()
         {
-            var sql = "";
+            var sql = string.Empty;
             var expectedResult = 1;
             AddExecuteSqlCommandResult(MockedDbContext, sql, expectedResult);
 
