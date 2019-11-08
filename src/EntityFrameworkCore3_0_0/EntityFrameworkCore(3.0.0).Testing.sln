@@ -22,8 +22,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{5B717CD0
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Package Verification", "Package Verification", "{14FCAAB1-10D9-4211-9389-60310E89D99A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EntityFrameworkCore.Testing.Moq.PackageVerification.Tests", "EntityFrameworkCore.Testing.Moq.PackageVerification.Tests\EntityFrameworkCore.Testing.Moq.PackageVerification.Tests.csproj", "{F55BFDD1-179D-46B4-A780-71818BBC3DA1}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EntityFrameworkCore.Testing.Common", "EntityFrameworkCore.Testing.Common\EntityFrameworkCore.Testing.Common.csproj", "{F2211544-E6EA-439A-9C31-3972B48B9D5E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EntityFrameworkCore.Testing.Common.Tests", "EntityFrameworkCore.Testing.Common.Tests\EntityFrameworkCore.Testing.Common.Tests.csproj", "{4B97C16B-E27D-4900-A535-6D5AC116B893}"
@@ -44,10 +42,6 @@ Global
 		{6567AA47-8E4D-4E69-8075-B8C25DC7F4A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6567AA47-8E4D-4E69-8075-B8C25DC7F4A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6567AA47-8E4D-4E69-8075-B8C25DC7F4A4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F55BFDD1-179D-46B4-A780-71818BBC3DA1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F55BFDD1-179D-46B4-A780-71818BBC3DA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F55BFDD1-179D-46B4-A780-71818BBC3DA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F55BFDD1-179D-46B4-A780-71818BBC3DA1}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F2211544-E6EA-439A-9C31-3972B48B9D5E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F2211544-E6EA-439A-9C31-3972B48B9D5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F2211544-E6EA-439A-9C31-3972B48B9D5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -66,7 +60,6 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{6567AA47-8E4D-4E69-8075-B8C25DC7F4A4} = {5B717CD0-96CD-4862-95EB-80ECCDCD1D07}
-		{F55BFDD1-179D-46B4-A780-71818BBC3DA1} = {14FCAAB1-10D9-4211-9389-60310E89D99A}
 		{4B97C16B-E27D-4900-A535-6D5AC116B893} = {5B717CD0-96CD-4862-95EB-80ECCDCD1D07}
 		{9C08E46C-C902-473F-93E6-FCB89DEC8C97} = {5B717CD0-96CD-4862-95EB-80ECCDCD1D07}
 	EndGlobalSection
