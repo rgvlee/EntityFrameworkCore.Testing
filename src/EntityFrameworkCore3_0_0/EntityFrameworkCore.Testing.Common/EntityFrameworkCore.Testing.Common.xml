@@ -165,15 +165,24 @@
             <param name="type">The type.</param>
             <returns>A new logger instance.</returns>
         </member>
-        <member name="T:EntityFrameworkCore.Testing.Common.SqlParameterParameterNameAndValueEqualityComparer">
-            <summary>An equality comparer for sql parameters.</summary>
-            <remarks>Uses the sql parameter name and value properties for the equality comparison.</remarks>
+        <member name="T:EntityFrameworkCore.Testing.Common.Helpers.ParameterMatchingHelper">
+            <summary>
+                A helper for parameter matching.
+            </summary>
         </member>
-        <member name="M:EntityFrameworkCore.Testing.Common.SqlParameterParameterNameAndValueEqualityComparer.Equals(System.Data.SqlClient.SqlParameter,System.Data.SqlClient.SqlParameter)">
-            <inheritdoc />
-        </member>
-        <member name="M:EntityFrameworkCore.Testing.Common.SqlParameterParameterNameAndValueEqualityComparer.GetHashCode(System.Data.SqlClient.SqlParameter)">
-            <inheritdoc />
+        <member name="M:EntityFrameworkCore.Testing.Common.Helpers.ParameterMatchingHelper.DoInvocationParametersMatchSetUpParameters(System.Collections.Generic.IEnumerable{System.Object},System.Collections.Generic.IEnumerable{System.Object})">
+            <summary>
+                Determines whether the invocation parameters match the set up parameters.
+            </summary>
+            <param name="setUpParameters">The set up parameters.</param>
+            <param name="invocationParameters">The invocation parameters.</param>
+            <returns>true the invocation parameters are a partial or full match of the set up parameters.</returns>
+            <remarks>
+                If the parameters are DbParameters, parameter name and value are compared.
+                Parameter name matching is case insensitive.
+                If the value is a string, the matching is case insensitive.
+                For everything else an exact match is required.
+            </remarks>
         </member>
     </members>
 </doc>
