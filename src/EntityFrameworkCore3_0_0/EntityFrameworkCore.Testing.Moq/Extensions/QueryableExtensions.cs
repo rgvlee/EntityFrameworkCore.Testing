@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Linq;
 using EntityFrameworkCore.Testing.Common;
 
@@ -19,7 +18,8 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
             EnsureArgument.IsNotNull(mockedQueryable, nameof(mockedQueryable));
             EnsureArgument.IsNotNull(fromSqlRawResult, nameof(fromSqlRawResult));
 
-            return mockedQueryable.AddFromSqlRawResult(string.Empty, fromSqlRawResult);
+            mockedQueryable.Provider.AddFromSqlRawResult(string.Empty, new List<object>(), fromSqlRawResult);
+            return mockedQueryable;
         }
 
         /// <summary>Sets up FromSqlRaw invocations containing a specified sql string to return a specified result.</summary>
@@ -35,7 +35,8 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
             EnsureArgument.IsNotNull(sql, nameof(sql));
             EnsureArgument.IsNotNull(fromSqlRawResult, nameof(fromSqlRawResult));
 
-            return mockedQueryable.AddFromSqlRawResult(sql, new List<SqlParameter>(), fromSqlRawResult);
+            mockedQueryable.Provider.AddFromSqlRawResult(sql, new List<object>(), fromSqlRawResult);
+            return mockedQueryable;
         }
 
         /// <summary>Sets up FromSqlRaw invocations containing a specified sql string and sql parameters to return a specified result.</summary>
@@ -45,7 +46,7 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
         /// <param name="parameters">The FromSqlRaw sql parameters. Set up supports case insensitive partial sql parameter sequence matching.</param>
         /// <param name="fromSqlRawResult">The FromSqlRaw result.</param>
         /// <returns>The mocked queryable.</returns>
-        public static IQueryable<T> AddFromSqlRawResult<T>(this IQueryable<T> mockedQueryable, string sql, IEnumerable<SqlParameter> parameters, IEnumerable<T> fromSqlRawResult)
+        public static IQueryable<T> AddFromSqlRawResult<T>(this IQueryable<T> mockedQueryable, string sql, IEnumerable<object> parameters, IEnumerable<T> fromSqlRawResult)
             where T : class
         {
             EnsureArgument.IsNotNull(mockedQueryable, nameof(mockedQueryable));
