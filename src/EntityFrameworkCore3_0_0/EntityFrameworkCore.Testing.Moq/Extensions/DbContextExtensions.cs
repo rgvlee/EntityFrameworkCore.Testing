@@ -6,7 +6,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using EntityFrameworkCore.Testing.Common;
 using EntityFrameworkCore.Testing.Common.Helpers;
-using EntityFrameworkCore.Testing.Moq.Helpers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.EntityFrameworkCore.Infrastructure;

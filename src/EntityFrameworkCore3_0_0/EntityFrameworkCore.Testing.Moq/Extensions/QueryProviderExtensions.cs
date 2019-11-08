@@ -4,7 +4,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using EntityFrameworkCore.Testing.Common;
 using EntityFrameworkCore.Testing.Common.Helpers;
-using EntityFrameworkCore.Testing.Moq.Helpers;
 using Microsoft.Extensions.Logging;
 using Moq;
 
@@ -103,14 +102,14 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
             return result;
         }
 
-        private static bool SpecifiedParametersMatchMethodCallExpression(MethodCallExpression mce, string sql, IEnumerable<SqlParameter> sqlParameters)
+        private static bool SpecifiedParametersMatchMethodCallExpression(MethodCallExpression mce, string sql, IEnumerable<object> parameters)
         {
             EnsureArgument.IsNotNull(mce, nameof(mce));
-            EnsureArgument.IsNotNull(sqlParameters, nameof(sqlParameters));
+            EnsureArgument.IsNotNull(parameters, nameof(parameters));
 
             var result = mce.Method.Name.Equals("FromSqlOnQueryable")
                          && SqlMatchesMethodCallExpression(mce, sql)
-                         && ParameterMatchingHelper.DoInvocationParametersMatchSetUpParameters((object[])((ConstantExpression)mce.Arguments[2]).Value, sqlParameters);
+                         && ParameterMatchingHelper.DoInvocationParametersMatchSetUpParameters((object[])((ConstantExpression)mce.Arguments[2]).Value, parameters);
 
             Logger.LogDebug($"Match? {result}");
 
