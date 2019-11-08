@@ -10,7 +10,7 @@ using NUnit.Framework;
 namespace EntityFrameworkCore.Testing.Moq.Tests
 {
     [TestFixture]
-    public class ExecuteSqlRawCommandTests : ExecuteSqlRawTestsBase<TestDbContext>
+    public class ExecuteSqlRawTests : ExecuteSqlRawTestsBase<TestDbContext>
     {
         [SetUp]
         public override void SetUp()
