@@ -71,8 +71,8 @@ namespace EntityFrameworkCore.Testing.Common.Tests
             var expectedResult = 1;
             AddExecuteSqlCommandResult(MockedDbContext, sql, parameters, expectedResult);
 
-            var actualResult1 = MockedDbContext.Database.ExecuteSqlCommand("[dbo.[sp_WithParams] @SomeParameter1 @SomeParameter2", parameters);
-            var actualResult2 = MockedDbContext.Database.ExecuteSqlCommand("[dbo.[sp_WithParams] @SomeParameter1 @SomeParameter2", parameters);
+            var actualResult1 = MockedDbContext.Database.ExecuteSqlCommand("[dbo].[sp_WithParams] @SomeParameter1 @SomeParameter2", parameters);
+            var actualResult2 = MockedDbContext.Database.ExecuteSqlCommand("[dbo].[sp_WithParams] @SomeParameter1 @SomeParameter2", parameters);
 
             Assert.Multiple(() =>
             {
@@ -145,8 +145,8 @@ namespace EntityFrameworkCore.Testing.Common.Tests
             var expectedResult = 1;
             AddExecuteSqlCommandResult(MockedDbContext, sql, parameters, expectedResult);
 
-            var actualResult1 = await MockedDbContext.Database.ExecuteSqlCommandAsync("[dbo.[sp_WithParams] @SomeParameter2", parameters);
-            var actualResult2 = await MockedDbContext.Database.ExecuteSqlCommandAsync("[dbo.[sp_WithParams] @SomeParameter2", parameters);
+            var actualResult1 = await MockedDbContext.Database.ExecuteSqlCommandAsync("[dbo].[sp_WithParams] @SomeParameter2", parameters);
+            var actualResult2 = await MockedDbContext.Database.ExecuteSqlCommandAsync("[dbo].[sp_WithParams] @SomeParameter2", parameters);
 
             Assert.Multiple(() =>
             {

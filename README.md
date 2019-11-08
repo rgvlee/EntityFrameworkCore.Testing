@@ -167,7 +167,7 @@ public void ExecuteSqlCommand_SpecifiedStoredProcedureAndSqlParameters_ReturnsEx
 
     mockedDbContext.AddExecuteSqlCommandResult(commandText, sqlParameters, expectedResult);
 
-    var result = mockedDbContext.Database.ExecuteSqlCommand("[dbo.[sp_WithParams] @SomeParameter2", sqlParameters);
+    var result = mockedDbContext.Database.ExecuteSqlCommand("[dbo].[sp_WithParams] @SomeParameter2", sqlParameters);
 
     Assert.AreEqual(expectedResult, result);
 }
