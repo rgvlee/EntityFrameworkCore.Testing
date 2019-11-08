@@ -182,32 +182,6 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
             dbContextMock.Setup(m => m.Query<TEntity>()).Returns((DbQuery<TEntity>) mockedReadOnlyDbSet);
         }
 
-        public static TDbContext AddExecuteSqlInterpolatedResult<TDbContext>(this TDbContext mockedDbContext, int executeSqlRawResult)
-            where TDbContext : DbContext
-        {
-            EnsureArgument.IsNotNull(mockedDbContext, nameof(mockedDbContext));
-
-            return mockedDbContext.AddExecuteSqlRawResult(string.Empty, new List<object>(), executeSqlRawResult);
-        }
-
-        public static TDbContext AddExecuteSqlInterpolatedResult<TDbContext>(this TDbContext mockedDbContext, string sql, int executeSqlCommandResult)
-            where TDbContext : DbContext
-        {
-            EnsureArgument.IsNotNull(mockedDbContext, nameof(mockedDbContext));
-            EnsureArgument.IsNotNull(sql, nameof(sql));
-
-            return mockedDbContext.AddExecuteSqlRawResult(sql, new List<object>(), executeSqlCommandResult);
-        }
-
-        public static TDbContext AddExecuteSqlInterpolatedResult<TDbContext>(this TDbContext mockedDbContext, FormattableString sql, int executeSqlRawResult)
-            where TDbContext : DbContext
-        {
-            EnsureArgument.IsNotNull(mockedDbContext, nameof(mockedDbContext));
-            EnsureArgument.IsNotNull(sql, nameof(sql));
-
-            return mockedDbContext.AddExecuteSqlRawResult(sql.Format, sql.GetArguments(), executeSqlRawResult);
-        }
-
         /// <summary>Sets up ExecuteSqlCommand invocations to return a specified result.</summary>
         /// <typeparam name="TDbContext">The db context type.</typeparam>
         /// <param name="mockedDbContext">The mocked db context.</param>
@@ -221,20 +195,7 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
 
             return mockedDbContext.AddExecuteSqlRawResult(string.Empty, new List<object>(), executeSqlCommandResult);
         }
-        
-        /// <summary>Sets up ExecuteSqlRaw invocations to return a specified result.</summary>
-        /// <typeparam name="TDbContext">The db context type.</typeparam>
-        /// <param name="mockedDbContext">The mocked db context.</param>
-        /// <param name="executeSqlRawResult">The integer to return when ExecuteSqlRaw is invoked.</param>
-        /// <returns>The mocked db context.</returns>
-        public static TDbContext AddExecuteSqlRawResult<TDbContext>(this TDbContext mockedDbContext, int executeSqlRawResult)
-            where TDbContext : DbContext
-        {
-            EnsureArgument.IsNotNull(mockedDbContext, nameof(mockedDbContext));
 
-            return mockedDbContext.AddExecuteSqlRawResult(string.Empty, new List<object>(), executeSqlRawResult);
-        }
-        
         /// <summary>Sets up ExecuteSqlCommand invocations containing a specified sql string to return a specified result.</summary>
         /// <typeparam name="TDbContext">The db context type.</typeparam>
         /// <param name="mockedDbContext">The mocked db context.</param>
@@ -250,22 +211,7 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
 
             return mockedDbContext.AddExecuteSqlRawResult(sql, new List<object>(), executeSqlCommandResult);
         }
-        
-        /// <summary>Sets up ExecuteSqlRaw invocations containing a specified sql string and sql parameters to return a specified result.</summary>
-        /// <typeparam name="TDbContext">The db context type.</typeparam>
-        /// <param name="mockedDbContext">The mocked db context.</param>
-        /// <param name="sql">The ExecuteSqlRaw sql string. Set up supports case insensitive partial matches.</param>
-        /// <param name="executeSqlRawResult">The integer to return when ExecuteSqlRaw is invoked.</param>
-        /// <returns>The mocked db context.</returns>
-        public static TDbContext AddExecuteSqlRawResult<TDbContext>(this TDbContext mockedDbContext, string sql, int executeSqlRawResult)
-            where TDbContext : DbContext
-        {
-            EnsureArgument.IsNotNull(mockedDbContext, nameof(mockedDbContext));
-            EnsureArgument.IsNotNull(sql, nameof(sql));
 
-            return mockedDbContext.AddExecuteSqlRawResult(sql, new List<object>(), executeSqlRawResult);
-        }
-        
         /// <summary>Sets up ExecuteSqlCommand invocations containing a specified sql string and sql parameters to return a specified result.</summary>
         /// <typeparam name="TDbContext">The db context type.</typeparam>
         /// <param name="mockedDbContext">The mocked db context.</param>
@@ -282,6 +228,77 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
             EnsureArgument.IsNotNull(parameters, nameof(parameters));
 
             return mockedDbContext.AddExecuteSqlRawResult(sql, parameters, executeSqlCommandResult);
+        }
+
+        /// <summary>Sets up ExecuteSqlInterpolated invocations to return a specified result.</summary>
+        /// <typeparam name="TDbContext">The db context type.</typeparam>
+        /// <param name="mockedDbContext">The mocked db context.</param>
+        /// <param name="executeSqlInterpolatedResult">The integer to return when ExecuteSqlInterpolated is invoked.</param>
+        /// <returns>The mocked db context.</returns>
+        public static TDbContext AddExecuteSqlInterpolatedResult<TDbContext>(this TDbContext mockedDbContext, int executeSqlInterpolatedResult)
+            where TDbContext : DbContext
+        {
+            EnsureArgument.IsNotNull(mockedDbContext, nameof(mockedDbContext));
+
+            return mockedDbContext.AddExecuteSqlRawResult(string.Empty, new List<object>(), executeSqlInterpolatedResult);
+        }
+
+        /// <summary>Sets up ExecuteSqlInterpolated invocations containing a specified sql string to return a specified result.</summary>
+        /// <typeparam name="TDbContext">The db context type.</typeparam>
+        /// <param name="mockedDbContext">The mocked db context.</param>
+        /// <param name="sql">The ExecuteSqlInterpolated sql string. Set up supports case insensitive partial matches.</param>
+        /// <param name="executeSqlInterpolatedResult">The integer to return when ExecuteSqlInterpolated is invoked.</param>
+        /// <returns>The mocked db context.</returns>
+        public static TDbContext AddExecuteSqlInterpolatedResult<TDbContext>(this TDbContext mockedDbContext, string sql, int executeSqlInterpolatedResult)
+            where TDbContext : DbContext
+        {
+            EnsureArgument.IsNotNull(mockedDbContext, nameof(mockedDbContext));
+            EnsureArgument.IsNotNull(sql, nameof(sql));
+
+            return mockedDbContext.AddExecuteSqlRawResult(sql, new List<object>(), executeSqlInterpolatedResult);
+        }
+
+        /// <summary>Sets up ExecuteSqlInterpolated invocations containing a specified sql string to return a specified result.</summary>
+        /// <typeparam name="TDbContext">The db context type.</typeparam>
+        /// <param name="mockedDbContext">The mocked db context.</param>
+        /// <param name="sql">The ExecuteSqlInterpolated sql string. Set up supports case insensitive partial matches.</param>
+        /// <param name="executeSqlInterpolatedResult">The integer to return when ExecuteSqlInterpolated is invoked.</param>
+        /// <returns>The mocked db context.</returns>
+        public static TDbContext AddExecuteSqlInterpolatedResult<TDbContext>(this TDbContext mockedDbContext, FormattableString sql, int executeSqlInterpolatedResult)
+            where TDbContext : DbContext
+        {
+            EnsureArgument.IsNotNull(mockedDbContext, nameof(mockedDbContext));
+            EnsureArgument.IsNotNull(sql, nameof(sql));
+
+            return mockedDbContext.AddExecuteSqlRawResult(sql.Format, sql.GetArguments(), executeSqlInterpolatedResult);
+        }
+
+        /// <summary>Sets up ExecuteSqlRaw invocations to return a specified result.</summary>
+        /// <typeparam name="TDbContext">The db context type.</typeparam>
+        /// <param name="mockedDbContext">The mocked db context.</param>
+        /// <param name="executeSqlRawResult">The integer to return when ExecuteSqlRaw is invoked.</param>
+        /// <returns>The mocked db context.</returns>
+        public static TDbContext AddExecuteSqlRawResult<TDbContext>(this TDbContext mockedDbContext, int executeSqlRawResult)
+            where TDbContext : DbContext
+        {
+            EnsureArgument.IsNotNull(mockedDbContext, nameof(mockedDbContext));
+
+            return mockedDbContext.AddExecuteSqlRawResult(string.Empty, new List<object>(), executeSqlRawResult);
+        }
+
+        /// <summary>Sets up ExecuteSqlRaw invocations containing a specified sql string and sql parameters to return a specified result.</summary>
+        /// <typeparam name="TDbContext">The db context type.</typeparam>
+        /// <param name="mockedDbContext">The mocked db context.</param>
+        /// <param name="sql">The ExecuteSqlRaw sql string. Set up supports case insensitive partial matches.</param>
+        /// <param name="executeSqlRawResult">The integer to return when ExecuteSqlRaw is invoked.</param>
+        /// <returns>The mocked db context.</returns>
+        public static TDbContext AddExecuteSqlRawResult<TDbContext>(this TDbContext mockedDbContext, string sql, int executeSqlRawResult)
+            where TDbContext : DbContext
+        {
+            EnsureArgument.IsNotNull(mockedDbContext, nameof(mockedDbContext));
+            EnsureArgument.IsNotNull(sql, nameof(sql));
+
+            return mockedDbContext.AddExecuteSqlRawResult(sql, new List<object>(), executeSqlRawResult);
         }
 
         /// <summary>Sets up ExecuteSqlRaw invocations containing a specified sql string and sql parameters to return a specified result.</summary>
@@ -323,7 +340,7 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
                         It.IsAny<IEnumerable<object>>())
                 )
                 .Throws<InvalidOperationException>();
-            
+
             rawSqlCommandBuilderMock.Setup(m =>
                     m.Build(
                         It.Is<string>(s => s.Contains(sql, StringComparison.CurrentCultureIgnoreCase)),

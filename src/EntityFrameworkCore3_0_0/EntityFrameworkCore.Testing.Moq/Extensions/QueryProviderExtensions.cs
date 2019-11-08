@@ -109,13 +109,13 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
 
             var result = mce.Method.Name.Equals("FromSqlOnQueryable")
                          && SqlMatchesMethodCallExpression(mce, sql)
-                         && ParameterMatchingHelper.DoInvocationParametersMatchSetUpParameters((object[])((ConstantExpression)mce.Arguments[2]).Value, parameters);
+                         && ParameterMatchingHelper.DoInvocationParametersMatchSetUpParameters((object[]) ((ConstantExpression) mce.Arguments[2]).Value, parameters);
 
             Logger.LogDebug($"Match? {result}");
 
             return result;
         }
-        
+
         private static string StringifyFromSqlMethodCallExpression(MethodCallExpression mce)
         {
             EnsureArgument.IsNotNull(mce, nameof(mce));
