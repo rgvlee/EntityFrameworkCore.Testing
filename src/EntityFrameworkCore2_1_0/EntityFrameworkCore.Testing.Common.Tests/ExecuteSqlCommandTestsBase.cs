@@ -15,7 +15,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
 
         public abstract void AddExecuteSqlCommandResult(TDbContext mockedDbContext, int expectedResult);
         public abstract void AddExecuteSqlCommandResult(TDbContext mockedDbContext, string sql, int expectedResult);
-        public abstract void AddExecuteSqlCommandResult(TDbContext mockedDbContext, string sql, List<SqlParameter> parameters, int expectedResult);
+        public abstract void AddExecuteSqlCommandResult(TDbContext mockedDbContext, string sql, IEnumerable<object> parameters, int expectedResult);
 
         [Test]
         public void ExecuteSqlCommand_AnySql_ReturnsExpectedResult()
@@ -64,10 +64,28 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         }
 
         [Test]
-        public void ExecuteSqlCommand_SpecifiedSqlWithParameters_ReturnsExpectedResult()
+        public void ExecuteSqlCommand_SpecifiedSqlWithSqlParameterParameters_ReturnsExpectedResult()
         {
             var sql = "sp_WithParams";
             var parameters = new List<SqlParameter> {new SqlParameter("@SomeParameter2", "Value2")};
+            var expectedResult = 1;
+            AddExecuteSqlCommandResult(MockedDbContext, sql, parameters, expectedResult);
+
+            var actualResult1 = MockedDbContext.Database.ExecuteSqlCommand("[dbo].[sp_WithParams] @SomeParameter1 @SomeParameter2", parameters);
+            var actualResult2 = MockedDbContext.Database.ExecuteSqlCommand("[dbo].[sp_WithParams] @SomeParameter1 @SomeParameter2", parameters);
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(actualResult1, Is.EqualTo(expectedResult));
+                Assert.That(actualResult2, Is.EqualTo(actualResult1));
+            });
+        }
+
+        [Test]
+        public void ExecuteSqlCommand_SpecifiedSqlWithStringParameterParameters_ReturnsExpectedResult()
+        {
+            var sql = "sp_WithParams";
+            var parameters = new List<string> { "Value2" };
             var expectedResult = 1;
             AddExecuteSqlCommandResult(MockedDbContext, sql, parameters, expectedResult);
 
@@ -138,10 +156,28 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         }
 
         [Test]
-        public async Task ExecuteSqlCommandAsync_SpecifiedSqlWithParameters_ReturnsExpectedResult()
+        public async Task ExecuteSqlCommandAsync_SpecifiedSqlWithSqlParameterParameters_ReturnsExpectedResult()
         {
             var sql = "sp_WithParams";
             var parameters = new List<SqlParameter> {new SqlParameter("@SomeParameter2", "Value2")};
+            var expectedResult = 1;
+            AddExecuteSqlCommandResult(MockedDbContext, sql, parameters, expectedResult);
+
+            var actualResult1 = await MockedDbContext.Database.ExecuteSqlCommandAsync("[dbo].[sp_WithParams] @SomeParameter2", parameters);
+            var actualResult2 = await MockedDbContext.Database.ExecuteSqlCommandAsync("[dbo].[sp_WithParams] @SomeParameter2", parameters);
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(actualResult1, Is.EqualTo(expectedResult));
+                Assert.That(actualResult2, Is.EqualTo(actualResult1));
+            });
+        }
+
+        [Test]
+        public async Task ExecuteSqlCommandAsync_SpecifiedSqlWithStringParameterParameters_ReturnsExpectedResult()
+        {
+            var sql = "sp_WithParams";
+            var parameters = new List<string> {"Value2"};
             var expectedResult = 1;
             AddExecuteSqlCommandResult(MockedDbContext, sql, parameters, expectedResult);
 

@@ -33,7 +33,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Tests
             mockedQueryable.AddFromSqlResult(sql, expectedResult);
         }
 
-        protected override void AddFromSqlResult(IQueryable<T> mockedQueryable, string sql, List<SqlParameter> parameters, IEnumerable<T> expectedResult)
+        protected override void AddFromSqlResult(IQueryable<T> mockedQueryable, string sql, IEnumerable<object> parameters, IEnumerable<T> expectedResult)
         {
             mockedQueryable.AddFromSqlResult(sql, parameters, expectedResult);
         }

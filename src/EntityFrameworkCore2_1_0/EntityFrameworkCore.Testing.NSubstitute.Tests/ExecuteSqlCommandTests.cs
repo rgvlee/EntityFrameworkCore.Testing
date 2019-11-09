@@ -30,7 +30,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Tests
             mockedDbContext.AddExecuteSqlCommandResult(sql, expectedResult);
         }
 
-        public override void AddExecuteSqlCommandResult(TestDbContext mockedDbContext, string sql, List<SqlParameter> parameters, int expectedResult)
+        public override void AddExecuteSqlCommandResult(TestDbContext mockedDbContext, string sql, IEnumerable<object> parameters, int expectedResult)
         {
             mockedDbContext.AddExecuteSqlCommandResult(sql, parameters, expectedResult);
         }

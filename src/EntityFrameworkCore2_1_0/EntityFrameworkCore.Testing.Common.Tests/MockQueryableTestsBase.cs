@@ -21,7 +21,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
 
         protected abstract void AddFromSqlResult(IQueryable<T> mockedQueryable, IEnumerable<T> expectedResult);
         protected abstract void AddFromSqlResult(IQueryable<T> mockedQueryable, string sql, IEnumerable<T> expectedResult);
-        protected abstract void AddFromSqlResult(IQueryable<T> mockedQueryable, string sql, List<SqlParameter> parameters, IEnumerable<T> expectedResult);
+        protected abstract void AddFromSqlResult(IQueryable<T> mockedQueryable, string sql, IEnumerable<object> parameters, IEnumerable<T> expectedResult);
 
         [Test]
         public virtual void FromSql_AnySql_ReturnsExpectedResult()
@@ -111,10 +111,28 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         }
 
         [Test]
-        public virtual void FromSql_SpecifiedSqlWithParameters_ReturnsExpectedResult()
+        public virtual void FromSql_SpecifiedSqlWithSqlParameterParameters_ReturnsExpectedResult()
         {
             var sql = "sp_WithParams";
             var parameters = new List<SqlParameter> {new SqlParameter("@SomeParameter2", "Value2")};
+            var expectedResult = Fixture.CreateMany<T>().ToList();
+            AddFromSqlResult(Queryable, sql, parameters, expectedResult);
+
+            var actualResult1 = Queryable.FromSql("[dbo].[sp_WithParams] @SomeParameter1 @SomeParameter2", parameters.ToArray()).ToList();
+            var actualResult2 = Queryable.FromSql("sp_WithParams @SomeParameter1 @SomeParameter2", parameters.ToArray()).ToList();
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(actualResult1, Is.EquivalentTo(expectedResult));
+                Assert.That(actualResult2, Is.EquivalentTo(actualResult1));
+            });
+        }
+
+        [Test]
+        public virtual void FromSql_SpecifiedSqlWithStringParameterParameters_ReturnsExpectedResult()
+        {
+            var sql = "sp_WithParams";
+            var parameters = new List<string> {"Value2"};
             var expectedResult = Fixture.CreateMany<T>().ToList();
             AddFromSqlResult(Queryable, sql, parameters, expectedResult);
 
