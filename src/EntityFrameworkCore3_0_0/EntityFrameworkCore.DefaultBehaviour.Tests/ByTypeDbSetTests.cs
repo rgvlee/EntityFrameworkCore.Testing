@@ -53,6 +53,15 @@ namespace EntityFrameworkCore.DefaultBehaviour.Tests
         }
 
         [Test]
+        public virtual void FromSqlInterpolated_ThrowsException()
+        {
+            Assert.Throws<NotImplementedException>(() =>
+            {
+                var actualResult = DbSet.FromSqlInterpolated($"sp_NoParams").ToList();
+            });
+        }
+
+        [Test]
         [Ignore("This is not supported by the in memory database provider.")]
         public override void IndexedSelectThenWhereThenAny_TrueCondition_ReturnsTrue() { }
 
