@@ -212,11 +212,11 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
             return mockedDbContext.AddExecuteSqlRawResult(sql, new List<object>(), executeSqlCommandResult);
         }
 
-        /// <summary>Sets up ExecuteSqlCommand invocations containing a specified sql string and sql parameters to return a specified result.</summary>
+        /// <summary>Sets up ExecuteSqlCommand invocations containing a specified sql string and parameters to return a specified result.</summary>
         /// <typeparam name="TDbContext">The db context type.</typeparam>
         /// <param name="mockedDbContext">The mocked db context.</param>
         /// <param name="sql">The ExecuteSqlCommand sql string. Set up supports case insensitive partial matches.</param>
-        /// <param name="parameters">The ExecuteSqlCommand parameters. Set up supports case insensitive partial sql parameter sequence matching.</param>
+        /// <param name="parameters">The ExecuteSqlCommand parameters. Set up supports case insensitive partial parameter sequence matching.</param>
         /// <param name="executeSqlCommandResult">The integer to return when ExecuteSqlCommand is invoked.</param>
         /// <returns>The mocked db context.</returns>
         [Obsolete("This method will remain until EntityFrameworkCore no longer supports DbContext.Database.ExecuteSqlCommand(RawSqlString sql, params object[] parameters) method. Use AddExecuteSqlRawCommandResult instead.")]
@@ -286,7 +286,7 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
             return mockedDbContext.AddExecuteSqlRawResult(string.Empty, new List<object>(), executeSqlRawResult);
         }
 
-        /// <summary>Sets up ExecuteSqlRaw invocations containing a specified sql string and sql parameters to return a specified result.</summary>
+        /// <summary>Sets up ExecuteSqlRaw invocations containing a specified sql string and parameters to return a specified result.</summary>
         /// <typeparam name="TDbContext">The db context type.</typeparam>
         /// <param name="mockedDbContext">The mocked db context.</param>
         /// <param name="sql">The ExecuteSqlRaw sql string. Set up supports case insensitive partial matches.</param>
@@ -301,11 +301,11 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
             return mockedDbContext.AddExecuteSqlRawResult(sql, new List<object>(), executeSqlRawResult);
         }
 
-        /// <summary>Sets up ExecuteSqlRaw invocations containing a specified sql string and sql parameters to return a specified result.</summary>
+        /// <summary>Sets up ExecuteSqlRaw invocations containing a specified sql string and parameters to return a specified result.</summary>
         /// <typeparam name="TDbContext">The db context type.</typeparam>
         /// <param name="mockedDbContext">The mocked db context.</param>
         /// <param name="sql">The ExecuteSqlRaw sql string. Set up supports case insensitive partial matches.</param>
-        /// <param name="parameters">The ExecuteSqlRaw sql parameters. Set up supports case insensitive partial sql parameter sequence matching.</param>
+        /// <param name="parameters">The ExecuteSqlRaw parameters. Set up supports case insensitive partial parameter sequence matching.</param>
         /// <param name="executeSqlRawResult">The integer to return when ExecuteSqlRaw is invoked.</param>
         /// <returns>The mocked db context.</returns>
         public static TDbContext AddExecuteSqlRawResult<TDbContext>(this TDbContext mockedDbContext, string sql, IEnumerable<object> parameters, int executeSqlRawResult)
@@ -339,6 +339,7 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
                         It.IsAny<string>(),
                         It.IsAny<IEnumerable<object>>())
                 )
+                .Callback((string providedSql, IEnumerable<object> providedParameters) => Logger.LogDebug("Catch all exception invoked"))
                 .Throws<InvalidOperationException>();
 
             rawSqlCommandBuilderMock.Setup(m =>

@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using EntityFrameworkCore.Testing.Common;
@@ -15,6 +13,7 @@ using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
+using NSubstitute.ExceptionExtensions;
 using NSubstitute.Extensions;
 
 namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
@@ -202,7 +201,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
         {
             EnsureArgument.IsNotNull(mockedDbContext, nameof(mockedDbContext));
 
-            return mockedDbContext.AddExecuteSqlCommandResult(string.Empty, executeSqlCommandResult);
+            return mockedDbContext.AddExecuteSqlCommandResult(string.Empty, new List<object>(), executeSqlCommandResult);
         }
 
         /// <summary>Sets up ExecuteSqlCommand invocations containing a specified sql string to return a specified result.</summary>
@@ -217,17 +216,17 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
             EnsureArgument.IsNotNull(mockedDbContext, nameof(mockedDbContext));
             EnsureArgument.IsNotNull(sql, nameof(sql));
 
-            return mockedDbContext.AddExecuteSqlCommandResult(sql, new List<SqlParameter>(), executeSqlCommandResult);
+            return mockedDbContext.AddExecuteSqlCommandResult(sql, new List<object>(), executeSqlCommandResult);
         }
 
-        /// <summary>Sets up ExecuteSqlCommand invocations containing a specified sql string and sql parameters to return a specified result.</summary>
+        /// <summary>Sets up ExecuteSqlCommand invocations containing a specified sql string and parameters to return a specified result.</summary>
         /// <typeparam name="TDbContext">The db context type.</typeparam>
         /// <param name="mockedDbContext">The mocked db context.</param>
         /// <param name="sql">The ExecuteSqlCommand sql string. Set up supports case insensitive partial matches.</param>
-        /// <param name="parameters">The ExecuteSqlCommand sql parameters. Set up supports case insensitive partial sql parameter sequence matching.</param>
+        /// <param name="parameters">The ExecuteSqlCommand parameters. Set up supports case insensitive partial parameter sequence matching.</param>
         /// <param name="executeSqlCommandResult">The integer to return when ExecuteSqlCommand is invoked.</param>
         /// <returns>The mocked db context.</returns>
-        public static TDbContext AddExecuteSqlCommandResult<TDbContext>(this TDbContext mockedDbContext, string sql, IEnumerable<SqlParameter> parameters, int executeSqlCommandResult)
+        public static TDbContext AddExecuteSqlCommandResult<TDbContext>(this TDbContext mockedDbContext, string sql, IEnumerable<object> parameters, int executeSqlCommandResult)
             where TDbContext : DbContext
         {
             EnsureArgument.IsNotNull(mockedDbContext, nameof(mockedDbContext));
@@ -243,10 +242,17 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
             rawSqlCommand.ParameterValues.Returns(new Dictionary<string, object>());
 
             var rawSqlCommandBuilder = Substitute.For<IRawSqlCommandBuilder>();
+
+            rawSqlCommandBuilder.Build(Arg.Any<string>(), Arg.Any<IEnumerable<object>>()).Throws(callInfo =>
+            {
+                Logger.LogDebug("Catch all exception invoked");
+                return new InvalidOperationException();
+            });
+
             rawSqlCommandBuilder
                 .Build(
                     Arg.Is<string>(s => s.Contains(sql, StringComparison.CurrentCultureIgnoreCase)),
-                    Arg.Is<IEnumerable<object>>(p => !parameters.Except(p.Select(sp => (SqlParameter) sp), new SqlParameterParameterNameAndValueEqualityComparer()).Any())
+                    Arg.Is<IEnumerable<object>>(p => ParameterMatchingHelper.DoInvocationParametersMatchSetUpParameters(parameters, p))
                 )
                 .Returns(callInfo => rawSqlCommand)
                 .AndDoes(callInfo =>
@@ -255,21 +261,9 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
                     var providedParameters = callInfo.Arg<IEnumerable<object>>();
 
                     var parts = new List<string>();
-                    parts.Add($"{providedSql.GetType().Name} sql: {providedSql}");
-
-                    parts.Add("Parameters:");
-                    foreach (var sqlParameter in providedParameters.Select(sp => (SqlParameter) sp))
-                    {
-                        var sb2 = new StringBuilder();
-                        sb2.Append(sqlParameter.ParameterName);
-                        sb2.Append(": ");
-                        if (sqlParameter.Value == null)
-                            sb2.Append("null");
-                        else
-                            sb2.Append(sqlParameter.Value);
-                        parts.Add(sb2.ToString());
-                    }
-
+                    parts.Add($"Invocation sql: {providedSql}");
+                    parts.Add("Invocation Parameters:");
+                    parts.Add(ParameterMatchingHelper.StringifyParameters(providedParameters));
                     Logger.LogDebug(string.Join(Environment.NewLine, parts));
                 });
 
