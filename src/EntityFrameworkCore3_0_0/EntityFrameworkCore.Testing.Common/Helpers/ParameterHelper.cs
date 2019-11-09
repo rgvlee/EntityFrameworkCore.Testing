@@ -2,17 +2,14 @@
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
+using System.Text;
 
 namespace EntityFrameworkCore.Testing.Common.Helpers
 {
-    /// <summary>
-    ///     A helper for parameter matching.
-    /// </summary>
+    /// <summary>A helper for parameter matching.</summary>
     public class ParameterMatchingHelper
     {
-        /// <summary>
-        ///     Determines whether the invocation parameters match the set up parameters.
-        /// </summary>
+        /// <summary>Determines whether the invocation parameters match the set up parameters.</summary>
         /// <param name="setUpParameters">The set up parameters.</param>
         /// <param name="invocationParameters">The invocation parameters.</param>
         /// <returns>true the invocation parameters are a partial or full match of the set up parameters.</returns>
@@ -77,9 +74,53 @@ namespace EntityFrameworkCore.Testing.Common.Helpers
             return matches.Count == setUpParametersAsList.Count;
         }
 
+        /// <summary>Converts a sequence of invocation parameters to a string of parameter names and values.</summary>
+        /// <param name="invocationParameters">The invocation parameters.</param>
+        /// <returns>A string of parameter names and values.</returns>
         public static string StringifyParameters(IEnumerable<object> invocationParameters)
         {
-            return string.Empty;
+            var invocationParametersAsList = invocationParameters.ToList();
+            var parts = new List<string>();
+            for (var i = 0; i < invocationParametersAsList.Count; i++)
+            {
+                var invocationParameter = invocationParametersAsList[i];
+
+                var sb = new StringBuilder();
+                switch (invocationParameter)
+                {
+                    case DbParameter dbInvocationParameter:
+                        {
+                            sb.Append(dbInvocationParameter.ParameterName);
+                            sb.Append(": ");
+                            if (dbInvocationParameter.Value == null)
+                            {
+                                sb.Append("null");
+                            }
+                            else
+                            {
+                                sb.Append(dbInvocationParameter.Value);
+                            }
+                            break;
+                        }
+
+                    case null:
+                        sb.Append("Parameter ");
+                        sb.Append(i);
+                        sb.Append(": null");
+                        break;
+
+                    default:
+                        sb.Append("Parameter ");
+                        sb.Append(i);
+                        sb.Append(": ");
+                        sb.Append(invocationParameter);
+                        break;
+                }
+
+                parts.Add(sb.ToString());
+            }
+
+            return string.Join(Environment.NewLine, parts);
         }
     }
 }
