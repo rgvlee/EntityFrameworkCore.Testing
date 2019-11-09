@@ -57,7 +57,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
             var expectedResult = 1;
             AddExecuteSqlCommandResult(MockedDbContext, sql, expectedResult);
 
-            Assert.Throws<NullReferenceException>(() =>
+            Assert.Throws<InvalidOperationException>(() =>
             {
                 var actualResult = MockedDbContext.Database.ExecuteSqlCommand("sp_NoParams");
             });
@@ -131,7 +131,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
             var expectedResult = 1;
             AddExecuteSqlCommandResult(MockedDbContext, sql, expectedResult);
 
-            Assert.ThrowsAsync<NullReferenceException>(async () =>
+            Assert.ThrowsAsync<InvalidOperationException>(async () =>
             {
                 var actualResult = await MockedDbContext.Database.ExecuteSqlCommandAsync("sp_NoParams");
             });
