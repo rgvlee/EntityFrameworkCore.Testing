@@ -89,11 +89,11 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
             return mockedQueryable;
         }
 
-        /// <summary>Sets up FromSqlRaw invocations containing a specified sql string and sql parameters to return a specified result.</summary>
+        /// <summary>Sets up FromSqlRaw invocations containing a specified sql string and parameters to return a specified result.</summary>
         /// <typeparam name="T">The queryable source type.</typeparam>
         /// <param name="mockedQueryable">The mocked queryable.</param>
         /// <param name="sql">The FromSqlRaw sql string. Set up supports case insensitive partial matches.</param>
-        /// <param name="parameters">The FromSqlRaw sql parameters. Set up supports case insensitive partial sql parameter sequence matching.</param>
+        /// <param name="parameters">The FromSqlRaw parameters. Set up supports case insensitive partial parameter sequence matching.</param>
         /// <param name="fromSqlRawResult">The FromSqlRaw result.</param>
         /// <returns>The mocked queryable.</returns>
         public static IQueryable<T> AddFromSqlRawResult<T>(this IQueryable<T> mockedQueryable, string sql, IEnumerable<object> parameters, IEnumerable<T> fromSqlRawResult)
