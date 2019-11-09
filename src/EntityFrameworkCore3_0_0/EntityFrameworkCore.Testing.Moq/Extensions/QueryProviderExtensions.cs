@@ -50,11 +50,11 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
             queryProviderMock.Setup(m => m.Source).Returns(queryable);
         }
 
-        /// <summary>Sets up FromSqlRaw invocations containing a specified sql string and sql parameters to return a specified result.</summary>
+        /// <summary>Sets up FromSqlRaw invocations containing a specified sql string and parameters to return a specified result.</summary>
         /// <typeparam name="T">The queryable source type.</typeparam>
         /// <param name="mockedQueryProvider">The mocked query provider.</param>
         /// <param name="sql">The FromSqlRaw sql string. Set up supports case insensitive partial matches.</param>
-        /// <param name="parameters">The FromSqlRaw sql parameters. Set up supports case insensitive partial sql parameter sequence matching.</param>
+        /// <param name="parameters">The FromSqlRaw parameters. Set up supports case insensitive partial parameter sequence matching.</param>
         /// <param name="fromSqlResult">The sequence to return when FromSqlRaw is invoked.</param>
         /// <returns>The mocked query provider.</returns>
         internal static IQueryProvider AddFromSqlRawResult<T>(this IQueryProvider mockedQueryProvider, string sql, IEnumerable<object> parameters, IEnumerable<T> fromSqlResult) where T : class

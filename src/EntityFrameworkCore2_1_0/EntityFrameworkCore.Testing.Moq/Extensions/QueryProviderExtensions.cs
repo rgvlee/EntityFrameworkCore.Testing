@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 using EntityFrameworkCore.Testing.Common;
 using EntityFrameworkCore.Testing.Common.Extensions;
 using EntityFrameworkCore.Testing.Common.Helpers;
@@ -54,14 +52,14 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
             queryProviderMock.Setup(m => m.Source).Returns(queryable);
         }
 
-        /// <summary>Sets up FromSql invocations containing a specified sql string and sql parameters to return a specified result.</summary>
+        /// <summary>Sets up FromSql invocations containing a specified sql string and parameters to return a specified result.</summary>
         /// <typeparam name="T">The queryable source type.</typeparam>
         /// <param name="mockedQueryProvider">The mocked query provider.</param>
         /// <param name="sql">The FromSql sql string. Set up supports case insensitive partial matches.</param>
-        /// <param name="parameters">The FromSql sql parameters. Set up supports case insensitive partial sql parameter sequence matching.</param>
+        /// <param name="parameters">The FromSql parameters. Set up supports case insensitive partial parameter sequence matching.</param>
         /// <param name="fromSqlResult">The sequence to return when FromSql is invoked.</param>
         /// <returns>The mocked query provider.</returns>
-        internal static IQueryProvider AddFromSqlResult<T>(this IQueryProvider mockedQueryProvider, string sql, IEnumerable<SqlParameter> parameters, IEnumerable<T> fromSqlResult) where T : class
+        internal static IQueryProvider AddFromSqlResult<T>(this IQueryProvider mockedQueryProvider, string sql, IEnumerable<object> parameters, IEnumerable<T> fromSqlResult) where T : class
         {
             EnsureArgument.IsNotNull(mockedQueryProvider, nameof(mockedQueryProvider));
             EnsureArgument.IsNotNull(sql, nameof(sql));
@@ -107,63 +105,16 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
             return result;
         }
 
-        private static bool SqlParametersMatchMethodCallExpression(MethodCallExpression mce, IEnumerable<SqlParameter> sqlParameters)
+        private static bool SpecifiedParametersMatchMethodCallExpression(MethodCallExpression mce, string sql, IEnumerable<object> parameters)
         {
             EnsureArgument.IsNotNull(mce, nameof(mce));
-            EnsureArgument.IsNotNull(sqlParameters, nameof(sqlParameters));
-
-            var mceParameters = (object[]) ((ConstantExpression) mce.Arguments[2]).Value;
-            var mceSqlParameters = GetSqlParameters(mceParameters).ToList();
-            var parts = new List<string>();
-            parts.Add("Invocation SqlParameters:");
-            parts.AddRange(mceSqlParameters.Select(parameter => $"'{parameter.ParameterName}': '{parameter.Value}'"));
-            parts.Add("Set up sqlParameters:");
-            parts.AddRange(sqlParameters.Select(parameter => $"'{parameter.ParameterName}': '{parameter.Value}'"));
-
-            Logger.LogDebug(string.Join(Environment.NewLine, parts));
-
-            if (!mceSqlParameters.Any())
-            {
-                return true;
-            }
-
-            var result = !sqlParameters.Except(mceSqlParameters, new SqlParameterParameterNameAndValueEqualityComparer()).Any();
-
-            Logger.LogDebug($"Match? {result}");
-
-            return result;
-        }
-
-        private static bool SpecifiedParametersMatchMethodCallExpression(MethodCallExpression mce, string sql, IEnumerable<SqlParameter> sqlParameters)
-        {
-            EnsureArgument.IsNotNull(mce, nameof(mce));
-            EnsureArgument.IsNotNull(sqlParameters, nameof(sqlParameters));
+            EnsureArgument.IsNotNull(parameters, nameof(parameters));
 
             var result = mce.Method.Name.Equals(nameof(RelationalQueryableExtensions.FromSql))
                          && SqlMatchesMethodCallExpression(mce, sql)
-                         && SqlParametersMatchMethodCallExpression(mce, sqlParameters);
+                         && ParameterMatchingHelper.DoInvocationParametersMatchSetUpParameters((object[]) ((ConstantExpression) mce.Arguments[2]).Value, parameters);
 
             Logger.LogDebug($"Match? {result}");
-
-            return result;
-        }
-
-        private static IEnumerable<SqlParameter> GetSqlParameters(object[] parameters)
-        {
-            EnsureArgument.IsNotNull(parameters, nameof(parameters));
-
-            var result = new List<SqlParameter>();
-
-            if (!parameters.Any())
-            {
-                return result;
-            }
-
-            foreach (var parameter in parameters)
-                if (parameter is SqlParameter sqlParameter)
-                {
-                    result.Add(sqlParameter);
-                }
 
             return result;
         }
@@ -178,23 +129,7 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
             var parts = new List<string>();
             parts.Add($"Invocation sql: '{mceSql}'");
             parts.Add("Invocation Parameters:");
-            foreach (var sqlParameter in GetSqlParameters(mceParameters))
-            {
-                var sb2 = new StringBuilder();
-                sb2.Append(sqlParameter.ParameterName);
-                sb2.Append(": ");
-                if (sqlParameter.Value == null)
-                {
-                    sb2.Append("null");
-                }
-                else
-                {
-                    sb2.Append(sqlParameter.Value);
-                }
-
-                parts.Add(sb2.ToString());
-            }
-
+            parts.Add(ParameterMatchingHelper.StringifyParameters(mceParameters));
             return string.Join(Environment.NewLine, parts);
         }
     }
