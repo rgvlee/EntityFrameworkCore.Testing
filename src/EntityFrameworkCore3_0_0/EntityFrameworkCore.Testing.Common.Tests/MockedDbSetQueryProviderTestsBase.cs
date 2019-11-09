@@ -15,7 +15,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
     {
         protected abstract void AddFromSqlRawResult(IQueryable<TEntity> mockedReadOnlyDbSet, IEnumerable<TEntity> expectedResult);
         protected abstract void AddFromSqlRawResult(IQueryable<TEntity> mockedReadOnlyDbSet, string sql, IEnumerable<TEntity> expectedResult);
-        protected abstract void AddFromSqlRawResult(IQueryable<TEntity> mockedReadOnlyDbSet, string sql, List<SqlParameter> parameters, IEnumerable<TEntity> expectedResult);
+        protected abstract void AddFromSqlRawResult(IQueryable<TEntity> mockedReadOnlyDbSet, string sql, IEnumerable<object> parameters, IEnumerable<TEntity> expectedResult);
 
         protected DbSet<TEntity> DbSet => (DbSet<TEntity>) Queryable;
 
@@ -107,10 +107,28 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         }
 
         [Test]
-        public virtual void FromSqlRaw_SpecifiedSqlWithParameters_ReturnsExpectedResult()
+        public virtual void FromSqlRaw_SpecifiedSqlWithSqlParameterParameters_ReturnsExpectedResult()
         {
             var sql = "sp_WithParams";
             var parameters = new List<SqlParameter> {new SqlParameter("@SomeParameter2", "Value2")};
+            var expectedResult = Fixture.CreateMany<TEntity>().ToList();
+            AddFromSqlRawResult(DbSet, sql, parameters, expectedResult);
+
+            var actualResult1 = DbSet.FromSqlRaw("[dbo].[sp_WithParams] @SomeParameter1 @SomeParameter2", parameters.ToArray()).ToList();
+            var actualResult2 = DbSet.FromSqlRaw("sp_WithParams @SomeParameter1 @SomeParameter2", parameters.ToArray()).ToList();
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(actualResult1, Is.EquivalentTo(expectedResult));
+                Assert.That(actualResult2, Is.EquivalentTo(actualResult1));
+            });
+        }
+
+        [Test]
+        public virtual void FromSqlRaw_SpecifiedSqlWithStringParameterParameters_ReturnsExpectedResult()
+        {
+            var sql = "sp_WithParams";
+            var parameters = new List<string> { "Value2" };
             var expectedResult = Fixture.CreateMany<TEntity>().ToList();
             AddFromSqlRawResult(DbSet, sql, parameters, expectedResult);
 

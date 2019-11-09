@@ -33,7 +33,7 @@ namespace EntityFrameworkCore.Testing.Moq.Tests
             mockedQueryable.AddFromSqlRawResult(sql, expectedResult);
         }
 
-        protected override void AddFromSqlRawResult(IQueryable<T> mockedQueryable, string sql, List<SqlParameter> parameters, IEnumerable<T> expectedResult)
+        protected override void AddFromSqlRawResult(IQueryable<T> mockedQueryable, string sql, IEnumerable<object> parameters, IEnumerable<T> expectedResult)
         {
             mockedQueryable.AddFromSqlRawResult(sql, parameters, expectedResult);
         }

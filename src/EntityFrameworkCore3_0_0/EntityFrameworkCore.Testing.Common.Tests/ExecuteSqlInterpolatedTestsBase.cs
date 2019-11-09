@@ -64,9 +64,27 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         }
 
         [Test]
-        public void ExecuteSqlInterpolated_SpecifiedSqlWithParameters_ReturnsExpectedResult()
+        public void ExecuteSqlInterpolated_SpecifiedSqlWithSqlParameterParameters_ReturnsExpectedResult()
         {
             var parameters = new List<SqlParameter> { new SqlParameter("@SomeParameter2", "Value2") };
+            var sql = (FormattableString)$"[sp_WithParams] {parameters[0]}";
+            var expectedResult = 1;
+            AddExecuteSqlInterpolatedResult(MockedDbContext, sql, expectedResult);
+
+            var actualResult1 = MockedDbContext.Database.ExecuteSqlInterpolated($"[dbo].[sp_WithParams] {parameters[0]}");
+            var actualResult2 = MockedDbContext.Database.ExecuteSqlInterpolated($"[dbo].[sp_WithParams] {parameters[0]}");
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(actualResult1, Is.EqualTo(expectedResult));
+                Assert.That(actualResult2, Is.EqualTo(actualResult1));
+            });
+        }
+
+        [Test]
+        public void ExecuteSqlInterpolated_SpecifiedSqlWithStringParameterParameters_ReturnsExpectedResult()
+        {
+            var parameters = new List<string> { "Value2" };
             var sql = (FormattableString)$"[sp_WithParams] {parameters[0]}";
             var expectedResult = 1;
             AddExecuteSqlInterpolatedResult(MockedDbContext, sql, expectedResult);
@@ -158,9 +176,27 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         }
 
         [Test]
-        public async Task ExecuteSqlInterpolatedAsync_SpecifiedSqlWithParameters_ReturnsExpectedResult()
+        public async Task ExecuteSqlInterpolatedAsync_SpecifiedSqlWithSqlParameterParameters_ReturnsExpectedResult()
         {
             var parameters = new List<SqlParameter> { new SqlParameter("@SomeParameter2", "Value2") };
+            var sql = (FormattableString)$"[sp_WithParams] {parameters[0]}";
+            var expectedResult = 1;
+            AddExecuteSqlInterpolatedResult(MockedDbContext, sql, expectedResult);
+
+            var actualResult1 = await MockedDbContext.Database.ExecuteSqlInterpolatedAsync($"[dbo].[sp_WithParams] {parameters[0]}");
+            var actualResult2 = await MockedDbContext.Database.ExecuteSqlInterpolatedAsync($"[dbo].[sp_WithParams] {parameters[0]}");
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(actualResult1, Is.EqualTo(expectedResult));
+                Assert.That(actualResult2, Is.EqualTo(actualResult1));
+            });
+        }
+
+        [Test]
+        public async Task ExecuteSqlInterpolatedAsync_SpecifiedSqlWithStringParameterParameters_ReturnsExpectedResult()
+        {
+            var parameters = new List<string> { "Value2" };
             var sql = (FormattableString)$"[sp_WithParams] {parameters[0]}";
             var expectedResult = 1;
             AddExecuteSqlInterpolatedResult(MockedDbContext, sql, expectedResult);

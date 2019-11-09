@@ -28,7 +28,7 @@ namespace EntityFrameworkCore.Testing.Moq.Tests
             queryable.AddFromSqlRawResult(sql, expectedResult);
         }
 
-        protected override void AddFromSqlRawResult(IQueryable<T> queryable, string sql, List<SqlParameter> parameters, IEnumerable<T> expectedResult)
+        protected override void AddFromSqlRawResult(IQueryable<T> queryable, string sql, IEnumerable<object> parameters, IEnumerable<T> expectedResult)
         {
             queryable.AddFromSqlRawResult(sql, parameters, expectedResult);
         }

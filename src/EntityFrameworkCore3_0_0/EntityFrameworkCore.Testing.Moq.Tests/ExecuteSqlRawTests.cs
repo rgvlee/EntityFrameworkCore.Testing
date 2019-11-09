@@ -30,7 +30,7 @@ namespace EntityFrameworkCore.Testing.Moq.Tests
             mockedDbContext.AddExecuteSqlRawResult(sql, expectedResult);
         }
 
-        public override void AddExecuteSqlRawResult(TestDbContext mockedDbContext, string sql, List<SqlParameter> parameters, int expectedResult)
+        public override void AddExecuteSqlRawResult(TestDbContext mockedDbContext, string sql, IEnumerable<object> parameters, int expectedResult)
         {
             mockedDbContext.AddExecuteSqlRawResult(sql, parameters, expectedResult);
         }
