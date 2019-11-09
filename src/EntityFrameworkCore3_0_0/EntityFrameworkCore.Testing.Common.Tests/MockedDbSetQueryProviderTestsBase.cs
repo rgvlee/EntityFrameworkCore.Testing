@@ -152,5 +152,14 @@ namespace EntityFrameworkCore.Testing.Common.Tests
                 var actualResult = DbSet.FromSqlRaw("sp_NoParams").ToList();
             });
         }
+
+        [Test]
+        public virtual void FromSqlInterpolated_ThrowsException()
+        {
+            Assert.Throws<NotSupportedException>(() =>
+            {
+                var actualResult = DbSet.FromSqlInterpolated($"sp_NoParams").ToList();
+            });
+        }
     }
 }
