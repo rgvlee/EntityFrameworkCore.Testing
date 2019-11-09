@@ -15,7 +15,7 @@
             <summary>Constructor.</summary>
             <param name="enumerable">The enumerable to create an asynchronous enumerable for.</param>
         </member>
-        <member name="M:EntityFrameworkCore.Testing.Common.AsyncEnumerable`1.GetAsyncEnumerator(System.Threading.CancellationToken)">
+        <member name="M:EntityFrameworkCore.Testing.Common.AsyncEnumerable`1.GetEnumerator">
             <inheritdoc />
         </member>
         <member name="T:EntityFrameworkCore.Testing.Common.AsyncEnumerator`1">
@@ -28,11 +28,11 @@
         <member name="P:EntityFrameworkCore.Testing.Common.AsyncEnumerator`1.Current">
             <inheritdoc />
         </member>
-        <member name="M:EntityFrameworkCore.Testing.Common.AsyncEnumerator`1.MoveNextAsync">
+        <member name="M:EntityFrameworkCore.Testing.Common.AsyncEnumerator`1.MoveNext(System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:EntityFrameworkCore.Testing.Common.AsyncEnumerator`1.DisposeAsync">
-            <inheritdoc />
+        <member name="M:EntityFrameworkCore.Testing.Common.AsyncEnumerator`1.Dispose">
+            <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
         </member>
         <member name="M:EntityFrameworkCore.Testing.Common.AsyncEnumerator`1.Dispose(System.Boolean)">
             <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
@@ -54,6 +54,9 @@
             <inheritdoc />
         </member>
         <member name="M:EntityFrameworkCore.Testing.Common.AsyncQueryProvider`1.Execute``1(System.Linq.Expressions.Expression)">
+            <inheritdoc />
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.Common.AsyncQueryProvider`1.ExecuteAsync``1(System.Linq.Expressions.Expression)">
             <inheritdoc />
         </member>
         <member name="M:EntityFrameworkCore.Testing.Common.AsyncQueryProvider`1.ExecuteAsync``1(System.Linq.Expressions.Expression,System.Threading.CancellationToken)">

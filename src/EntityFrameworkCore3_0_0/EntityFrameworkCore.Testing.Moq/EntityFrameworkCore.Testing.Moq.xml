@@ -44,11 +44,11 @@
             <returns>The mocked db context.</returns>
         </member>
         <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.DbContextExtensions.AddExecuteSqlCommandResult``1(``0,System.String,System.Collections.Generic.IEnumerable{System.Object},System.Int32)">
-            <summary>Sets up ExecuteSqlCommand invocations containing a specified sql string and sql parameters to return a specified result.</summary>
+            <summary>Sets up ExecuteSqlCommand invocations containing a specified sql string and parameters to return a specified result.</summary>
             <typeparam name="TDbContext">The db context type.</typeparam>
             <param name="mockedDbContext">The mocked db context.</param>
             <param name="sql">The ExecuteSqlCommand sql string. Set up supports case insensitive partial matches.</param>
-            <param name="parameters">The ExecuteSqlCommand parameters. Set up supports case insensitive partial sql parameter sequence matching.</param>
+            <param name="parameters">The ExecuteSqlCommand parameters. Set up supports case insensitive partial parameter sequence matching.</param>
             <param name="executeSqlCommandResult">The integer to return when ExecuteSqlCommand is invoked.</param>
             <returns>The mocked db context.</returns>
         </member>
@@ -83,7 +83,7 @@
             <returns>The mocked db context.</returns>
         </member>
         <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.DbContextExtensions.AddExecuteSqlRawResult``1(``0,System.String,System.Int32)">
-            <summary>Sets up ExecuteSqlRaw invocations containing a specified sql string and sql parameters to return a specified result.</summary>
+            <summary>Sets up ExecuteSqlRaw invocations containing a specified sql string and parameters to return a specified result.</summary>
             <typeparam name="TDbContext">The db context type.</typeparam>
             <param name="mockedDbContext">The mocked db context.</param>
             <param name="sql">The ExecuteSqlRaw sql string. Set up supports case insensitive partial matches.</param>
@@ -91,11 +91,11 @@
             <returns>The mocked db context.</returns>
         </member>
         <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.DbContextExtensions.AddExecuteSqlRawResult``1(``0,System.String,System.Collections.Generic.IEnumerable{System.Object},System.Int32)">
-            <summary>Sets up ExecuteSqlRaw invocations containing a specified sql string and sql parameters to return a specified result.</summary>
+            <summary>Sets up ExecuteSqlRaw invocations containing a specified sql string and parameters to return a specified result.</summary>
             <typeparam name="TDbContext">The db context type.</typeparam>
             <param name="mockedDbContext">The mocked db context.</param>
             <param name="sql">The ExecuteSqlRaw sql string. Set up supports case insensitive partial matches.</param>
-            <param name="parameters">The ExecuteSqlRaw sql parameters. Set up supports case insensitive partial sql parameter sequence matching.</param>
+            <param name="parameters">The ExecuteSqlRaw parameters. Set up supports case insensitive partial parameter sequence matching.</param>
             <param name="executeSqlRawResult">The integer to return when ExecuteSqlRaw is invoked.</param>
             <returns>The mocked db context.</returns>
         </member>
@@ -150,11 +150,11 @@
             <returns>The mocked queryable.</returns>
         </member>
         <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.QueryableExtensions.AddFromSqlRawResult``1(System.Linq.IQueryable{``0},System.String,System.Collections.Generic.IEnumerable{System.Object},System.Collections.Generic.IEnumerable{``0})">
-            <summary>Sets up FromSqlRaw invocations containing a specified sql string and sql parameters to return a specified result.</summary>
+            <summary>Sets up FromSqlRaw invocations containing a specified sql string and parameters to return a specified result.</summary>
             <typeparam name="T">The queryable source type.</typeparam>
             <param name="mockedQueryable">The mocked queryable.</param>
             <param name="sql">The FromSqlRaw sql string. Set up supports case insensitive partial matches.</param>
-            <param name="parameters">The FromSqlRaw sql parameters. Set up supports case insensitive partial sql parameter sequence matching.</param>
+            <param name="parameters">The FromSqlRaw parameters. Set up supports case insensitive partial parameter sequence matching.</param>
             <param name="fromSqlRawResult">The FromSqlRaw result.</param>
             <returns>The mocked queryable.</returns>
         </member>
@@ -170,11 +170,11 @@
             <remarks>Extends queryProviderToMock if it is a mock.</remarks>
         </member>
         <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.QueryProviderExtensions.AddFromSqlRawResult``1(System.Linq.IQueryProvider,System.String,System.Collections.Generic.IEnumerable{System.Object},System.Collections.Generic.IEnumerable{``0})">
-            <summary>Sets up FromSqlRaw invocations containing a specified sql string and sql parameters to return a specified result.</summary>
+            <summary>Sets up FromSqlRaw invocations containing a specified sql string and parameters to return a specified result.</summary>
             <typeparam name="T">The queryable source type.</typeparam>
             <param name="mockedQueryProvider">The mocked query provider.</param>
             <param name="sql">The FromSqlRaw sql string. Set up supports case insensitive partial matches.</param>
-            <param name="parameters">The FromSqlRaw sql parameters. Set up supports case insensitive partial sql parameter sequence matching.</param>
+            <param name="parameters">The FromSqlRaw parameters. Set up supports case insensitive partial parameter sequence matching.</param>
             <param name="fromSqlResult">The sequence to return when FromSqlRaw is invoked.</param>
             <returns>The mocked query provider.</returns>
         </member>
