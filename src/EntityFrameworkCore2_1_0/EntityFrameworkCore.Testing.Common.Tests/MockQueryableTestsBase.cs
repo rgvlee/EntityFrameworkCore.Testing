@@ -63,9 +63,9 @@ namespace EntityFrameworkCore.Testing.Common.Tests
             var actualResult4 = Queryable.FromSql("sp_WithParams @SomeParameter1 @SomeParameter2").ToList();
 
             Logger.LogDebug("actualResult5");
-            var actualResult5 = Queryable.FromSql("[dbo].[sp_WithParams]", new List<SqlParameter> {new SqlParameter("@someparameter2", "value2")}).ToList();
+            var actualResult5 = Queryable.FromSql("[dbo].[sp_WithParams]", new List<SqlParameter> {new SqlParameter("@someparameter2", "value2")}.ToArray()).ToList();
             Logger.LogDebug("actualResult6");
-            var actualResult6 = Queryable.FromSql("sp_WithParams @SomeParameter1 @SomeParameter2", new List<SqlParameter> {new SqlParameter("@someparameter2", "value2")}).ToList();
+            var actualResult6 = Queryable.FromSql("sp_WithParams @SomeParameter1 @SomeParameter2", new List<SqlParameter> {new SqlParameter("@someparameter2", "value2")}.ToArray()).ToList();
 
             Assert.Multiple(() =>
             {
