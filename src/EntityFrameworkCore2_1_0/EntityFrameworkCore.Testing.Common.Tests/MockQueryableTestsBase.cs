@@ -114,6 +114,26 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         }
 
         [Test]
+        public virtual void FromSql_SpecifiedSqlWithSqlParameterParametersThatDoNotMatchSetUp_ThrowsException()
+        {
+            var sql = "sp_WithParams";
+            var setUpParameters = new List<SqlParameter> { new SqlParameter("@SomeParameter3", "Value3") };
+            var invocationParameters = new List<SqlParameter> { new SqlParameter("@SomeParameter1", "Value1"), new SqlParameter("@SomeParameter2", "Value2") };
+            var expectedResult = Fixture.CreateMany<T>().ToList();
+            AddFromSqlResult(Queryable, sql, setUpParameters, expectedResult);
+
+            Assert.Throws<NotSupportedException>(() =>
+            {
+                var actualResult1 = Queryable.FromSql("[dbo].[sp_WithParams] @SomeParameter1 @SomeParameter2", invocationParameters.ToArray()).ToList();
+            });
+
+            Assert.Throws<NotSupportedException>(() =>
+            {
+                var actualResult2 = Queryable.FromSql("sp_WithParams @SomeParameter1 @SomeParameter2", invocationParameters.ToArray()).ToList();
+            });
+        }
+
+        [Test]
         public virtual void FromSql_SpecifiedSqlWithStringParameterParameters_ReturnsExpectedResult()
         {
             var sql = "sp_WithParams";
