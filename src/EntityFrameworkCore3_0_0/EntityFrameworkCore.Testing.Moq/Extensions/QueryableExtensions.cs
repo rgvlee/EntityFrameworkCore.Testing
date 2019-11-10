@@ -22,24 +22,7 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
             mockedQueryable.Provider.AddFromSqlRawResult(string.Empty, new List<object>(), fromSqlInterpolatedResult);
             return mockedQueryable;
         }
-
-        /// <summary>Sets up FromSqlInterpolated invocations to return a specified result.</summary>
-        /// <typeparam name="T">The queryable source type.</typeparam>
-        /// <param name="mockedQueryable">The mocked queryable.</param>
-        /// <param name="sql">The FromSqlInterpolated sql string. Set up supports case insensitive partial matches.</param>
-        /// <param name="fromSqlInterpolatedResult">The FromSqlInterpolated result.</param>
-        /// <returns>The mocked queryable.</returns>
-        public static IQueryable<T> AddFromSqlInterpolatedResult<T>(this IQueryable<T> mockedQueryable, string sql, IEnumerable<T> fromSqlInterpolatedResult)
-            where T : class
-        {
-            EnsureArgument.IsNotNull(mockedQueryable, nameof(mockedQueryable));
-            EnsureArgument.IsNotNull(sql, nameof(sql));
-            EnsureArgument.IsNotNull(fromSqlInterpolatedResult, nameof(fromSqlInterpolatedResult));
-
-            mockedQueryable.Provider.AddFromSqlRawResult(sql, new List<object>(), fromSqlInterpolatedResult);
-            return mockedQueryable;
-        }
-
+        
         /// <summary>Sets up FromSqlInterpolated invocations to return a specified result.</summary>
         /// <typeparam name="T">The queryable source type.</typeparam>
         /// <param name="mockedQueryable">The mocked queryable.</param>

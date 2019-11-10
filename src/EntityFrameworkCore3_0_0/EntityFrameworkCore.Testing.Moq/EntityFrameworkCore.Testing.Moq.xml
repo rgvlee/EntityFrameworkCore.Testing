@@ -118,14 +118,6 @@
             <param name="fromSqlInterpolatedResult">The FromSqlInterpolated result.</param>
             <returns>The mocked queryable.</returns>
         </member>
-        <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.QueryableExtensions.AddFromSqlInterpolatedResult``1(System.Linq.IQueryable{``0},System.String,System.Collections.Generic.IEnumerable{``0})">
-            <summary>Sets up FromSqlInterpolated invocations to return a specified result.</summary>
-            <typeparam name="T">The queryable source type.</typeparam>
-            <param name="mockedQueryable">The mocked queryable.</param>
-            <param name="sql">The FromSqlInterpolated sql string. Set up supports case insensitive partial matches.</param>
-            <param name="fromSqlInterpolatedResult">The FromSqlInterpolated result.</param>
-            <returns>The mocked queryable.</returns>
-        </member>
         <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.QueryableExtensions.AddFromSqlInterpolatedResult``1(System.Linq.IQueryable{``0},System.FormattableString,System.Collections.Generic.IEnumerable{``0})">
             <summary>Sets up FromSqlInterpolated invocations to return a specified result.</summary>
             <typeparam name="T">The queryable source type.</typeparam>

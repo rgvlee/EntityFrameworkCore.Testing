@@ -37,12 +37,7 @@ namespace EntityFrameworkCore.Testing.Moq.Tests
         {
             mockedDbSet.AddFromSqlInterpolatedResult(expectedResult);
         }
-
-        protected override void AddFromSqlInterpolatedResult(DbSet<T> mockedDbSet, string sql, IEnumerable<T> expectedResult)
-        {
-            mockedDbSet.AddFromSqlInterpolatedResult(sql, expectedResult);
-        }
-
+        
         protected override void AddFromSqlInterpolatedResult(DbSet<T> mockedDbSet, FormattableString sql, IEnumerable<T> expectedResult)
         {
             mockedDbSet.AddFromSqlInterpolatedResult(sql, expectedResult);
