@@ -100,6 +100,26 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         }
 
         [Test]
+        public void ExecuteSqlCommand_SpecifiedSqlWithSqlParameterParametersThatDoNotMatchSetUp_ThrowsException()
+        {
+            var sql = "sp_WithParams";
+            var setUpParameters = new List<SqlParameter> { new SqlParameter("@SomeParameter3", "Value3") };
+            var invocationParameters = new List<SqlParameter> { new SqlParameter("@SomeParameter1", "Value1"), new SqlParameter("@SomeParameter2", "Value2") };
+            var expectedResult = 1;
+            AddExecuteSqlCommandResult(MockedDbContext, sql, setUpParameters, expectedResult);
+
+            Assert.Throws<InvalidOperationException>(() =>
+            {
+                var actualResult1 = MockedDbContext.Database.ExecuteSqlCommand("[dbo].[sp_WithParams] @SomeParameter1 @SomeParameter2", invocationParameters);
+            });
+
+            Assert.Throws<InvalidOperationException>(() =>
+            {
+                var actualResult2 = MockedDbContext.Database.ExecuteSqlCommand("[dbo].[sp_WithParams] @SomeParameter1 @SomeParameter2", invocationParameters);
+            });
+        }
+
+        [Test]
         public void ExecuteSqlCommand_WithNoMatchesAdded_ThrowsException()
         {
             Assert.Throws<InvalidOperationException>(() =>
