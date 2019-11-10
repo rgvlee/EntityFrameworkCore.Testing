@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using EntityFrameworkCore.Testing.Common;
 using EntityFrameworkCore.Testing.Moq.Extensions;
 using Microsoft.EntityFrameworkCore;
@@ -55,6 +56,20 @@ namespace EntityFrameworkCore.Testing.Moq.Helpers
             EnsureArgument.IsNotNull(readOnlyDbSet, nameof(readOnlyDbSet));
 
             return readOnlyDbSet.CreateMock();
+        }
+
+        /// <summary>
+        /// Creates a mocked query provider.
+        /// </summary>
+        /// <typeparam name="T">The queryable type.</typeparam>
+        /// <param name="queryable">The query provider source.</param>
+        /// <returns>A mocked query provider.</returns>
+        public static IQueryProvider MockedQueryProviderFor<T>(IQueryable<T> queryable)
+            where T : class
+        {
+            EnsureArgument.IsNotNull(queryable, nameof(queryable));
+
+            return queryable.Provider.CreateMock(queryable);
         }
     }
 }

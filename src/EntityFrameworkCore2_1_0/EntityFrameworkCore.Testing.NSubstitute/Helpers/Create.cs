@@ -1,3 +1,4 @@
+using System.Linq;
 using EntityFrameworkCore.Testing.Common;
 using EntityFrameworkCore.Testing.NSubstitute.Extensions;
 using Microsoft.EntityFrameworkCore;
@@ -41,6 +42,20 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Helpers
             EnsureArgument.IsNotNull(dbQueryToMock, nameof(dbQueryToMock));
 
             return dbQueryToMock.CreateMock();
+        }
+
+        /// <summary>
+        /// Creates a mocked query provider.
+        /// </summary>
+        /// <typeparam name="T">The queryable type.</typeparam>
+        /// <param name="queryable">The query provider source.</param>
+        /// <returns>A mocked query provider.</returns>
+        public static IQueryProvider SubstituteFor<T>(IQueryable<T> queryable)
+            where T : class
+        {
+            EnsureArgument.IsNotNull(queryable, nameof(queryable));
+
+            return queryable.Provider.CreateMock(queryable);
         }
     }
 }

@@ -172,5 +172,13 @@
             <param name="dbQueryToMock">The db query to mock.</param>
             <returns>A mocked db query.</returns>
         </member>
+        <member name="M:EntityFrameworkCore.Testing.Moq.Helpers.Create.MockedQueryProviderFor``1(System.Linq.IQueryable{``0})">
+            <summary>
+            Creates a mocked query provider.
+            </summary>
+            <typeparam name="T">The queryable type.</typeparam>
+            <param name="queryable">The query provider source.</param>
+            <returns>A mocked query provider.</returns>
+        </member>
     </members>
 </doc>
