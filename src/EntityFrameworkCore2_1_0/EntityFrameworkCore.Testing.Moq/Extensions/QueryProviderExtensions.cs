@@ -112,7 +112,7 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
 
             var result = mce.Method.Name.Equals(nameof(RelationalQueryableExtensions.FromSql))
                          && SqlMatchesMethodCallExpression(mce, sql)
-                         && ParameterMatchingHelper.DoInvocationParametersMatchSetUpParameters((object[]) ((ConstantExpression) mce.Arguments[2]).Value, parameters);
+                         && ParameterMatchingHelper.DoInvocationParametersMatchSetUpParameters(parameters, (object[]) ((ConstantExpression) mce.Arguments[2]).Value);
 
             Logger.LogDebug($"Match? {result}");
 
