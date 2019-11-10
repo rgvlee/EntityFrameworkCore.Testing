@@ -25,6 +25,117 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         protected DbSet<TEntity> DbSet => (DbSet<TEntity>) Queryable;
 
         [Test]
+        public virtual void FromSqlInterpolated_AnySql_ReturnsExpectedResult()
+        {
+            var expectedResult = Fixture.CreateMany<TEntity>().ToList();
+            AddFromSqlInterpolatedResult(DbSet, expectedResult);
+
+            var actualResult1 = DbSet.FromSqlInterpolated($"sp_NoParams").ToList();
+            var actualResult2 = DbSet.FromSqlInterpolated($"sp_NoParams").ToList();
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(actualResult1, Is.EquivalentTo(expectedResult));
+                Assert.That(actualResult2, Is.EquivalentTo(actualResult1));
+            });
+        }
+
+        [Test]
+        public virtual void FromSqlInterpolated_SpecifiedSql_ReturnsExpectedResult()
+        {
+            var sql = "sp_NoParams";
+            var expectedResult = Fixture.CreateMany<TEntity>().ToList();
+            AddFromSqlInterpolatedResult(DbSet, sql, expectedResult);
+
+            var actualResult1 = DbSet.FromSqlInterpolated($"[dbo].[sp_NoParams]").ToList();
+            var actualResult2 = DbSet.FromSqlInterpolated($"sp_NoParams").ToList();
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(actualResult1, Is.EquivalentTo(expectedResult));
+                Assert.That(actualResult2, Is.EquivalentTo(actualResult1));
+            });
+        }
+
+        [Test]
+        public virtual void FromSqlInterpolated_SpecifiedSqlThatDoesNotMatchSetUp_ThrowsException()
+        {
+            var sql = "asdf";
+            var expectedResult = Fixture.CreateMany<TEntity>().ToList();
+            AddFromSqlInterpolatedResult(DbSet, sql, expectedResult);
+
+            Assert.Throws<NotSupportedException>(() =>
+            {
+                var actualResult = DbSet.FromSqlInterpolated($"sp_NoParams").ToList();
+            });
+        }
+
+        [Test]
+        public virtual void FromSqlInterpolated_SpecifiedSqlWithSqlParameterParameters_ReturnsExpectedResult()
+        {
+            var sql = "sp_WithParams";
+            var parameters = new List<SqlParameter> {new SqlParameter("@SomeParameter2", "Value2")};
+            var expectedResult = Fixture.CreateMany<TEntity>().ToList();
+            AddFromSqlInterpolatedResult(DbSet, sql, parameters, expectedResult);
+
+            var actualResult1 = DbSet.FromSqlInterpolated($"[dbo].[sp_WithParams] {Fixture.Create<string>()}, {parameters[0]}").ToList();
+            var actualResult2 = DbSet.FromSqlInterpolated($"sp_WithParams {Fixture.Create<string>()}, {parameters[0]}").ToList();
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(actualResult1, Is.EquivalentTo(expectedResult));
+                Assert.That(actualResult2, Is.EquivalentTo(actualResult1));
+            });
+        }
+
+        [Test]
+        public virtual void FromSqlInterpolated_SpecifiedSqlWithSqlParameterParametersThatDoNotMatchSetUp_ThrowsException()
+        {
+            var sql = "sp_WithParams";
+            var setUpParameters = new List<SqlParameter> {new SqlParameter("@SomeParameter3", "Value3")};
+            var invocationParameters = new List<SqlParameter> {new SqlParameter("@SomeParameter1", "Value1"), new SqlParameter("@SomeParameter2", "Value2")};
+            var expectedResult = Fixture.CreateMany<TEntity>().ToList();
+            AddFromSqlInterpolatedResult(DbSet, sql, setUpParameters, expectedResult);
+
+            Assert.Throws<NotSupportedException>(() =>
+            {
+                var actualResult1 = DbSet.FromSqlInterpolated($"[dbo].[sp_WithParams] {invocationParameters[0]}, {invocationParameters[1]}").ToList();
+            });
+
+            Assert.Throws<NotSupportedException>(() =>
+            {
+                var actualResult2 = DbSet.FromSqlInterpolated($"sp_WithParams {invocationParameters[0]}, {invocationParameters[1]}").ToList();
+            });
+        }
+
+        [Test]
+        public virtual void FromSqlInterpolated_SpecifiedSqlWithStringParameterParameters_ReturnsExpectedResult()
+        {
+            var sql = "sp_WithParams";
+            var parameters = new List<string> {"Value2"};
+            var expectedResult = Fixture.CreateMany<TEntity>().ToList();
+            AddFromSqlInterpolatedResult(DbSet, sql, parameters, expectedResult);
+
+            var actualResult1 = DbSet.FromSqlInterpolated($"[dbo].[sp_WithParams] {Fixture.Create<string>()}, {parameters[0]}").ToList();
+            var actualResult2 = DbSet.FromSqlInterpolated($"sp_WithParams {Fixture.Create<string>()}, {parameters[0]}").ToList();
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(actualResult1, Is.EquivalentTo(expectedResult));
+                Assert.That(actualResult2, Is.EquivalentTo(actualResult1));
+            });
+        }
+
+        [Test]
+        public virtual void FromSqlInterpolated_ThrowsException()
+        {
+            Assert.Throws<NotSupportedException>(() =>
+            {
+                var actualResult = DbSet.FromSqlInterpolated($"sp_NoParams").ToList();
+            });
+        }
+
+        [Test]
         public virtual void FromSqlRaw_AnySql_ReturnsExpectedResult()
         {
             var expectedResult = Fixture.CreateMany<TEntity>().ToList();
@@ -55,29 +166,14 @@ namespace EntityFrameworkCore.Testing.Common.Tests
 
             Logger.LogDebug("actualResult1");
             var actualResult1 = DbSet.FromSqlRaw("[dbo].[sp_NoParams]").ToList();
+
             Logger.LogDebug("actualResult2");
-            var actualResult2 = DbSet.FromSqlRaw("sp_NoParams").ToList();
-
-            Logger.LogDebug("actualResult3");
-            var actualResult3 = DbSet.FromSqlRaw("[dbo].[sp_WithParams]").ToList();
-            Logger.LogDebug("actualResult4");
-            var actualResult4 = DbSet.FromSqlRaw("sp_WithParams @SomeParameter1 @SomeParameter2").ToList();
-
-            Logger.LogDebug("actualResult5");
-            var actualResult5 = DbSet.FromSqlRaw("[dbo].[sp_WithParams]", new List<SqlParameter> {new SqlParameter("@someparameter2", "value2")}.ToArray()).ToList();
-            Logger.LogDebug("actualResult6");
-            var actualResult6 = DbSet.FromSqlRaw("sp_WithParams @SomeParameter1 @SomeParameter2", new List<SqlParameter> {new SqlParameter("@someparameter2", "value2")}.ToArray()).ToList();
+            var actualResult2 = DbSet.FromSqlRaw("[dbo].[sp_WithParams]", parameters2.ToArray()).ToList();
 
             Assert.Multiple(() =>
             {
                 Assert.That(actualResult1, Is.EquivalentTo(expectedResult1));
-                Assert.That(actualResult2, Is.EquivalentTo(actualResult1));
-
-                Assert.That(actualResult3, Is.EquivalentTo(expectedResult2));
-                Assert.That(actualResult4, Is.EquivalentTo(actualResult3));
-
-                Assert.That(actualResult5, Is.EquivalentTo(expectedResult2));
-                Assert.That(actualResult6, Is.EquivalentTo(actualResult5));
+                Assert.That(actualResult2, Is.EquivalentTo(expectedResult2));
             });
         }
 
@@ -133,7 +229,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         public virtual void FromSqlRaw_SpecifiedSqlWithStringParameterParameters_ReturnsExpectedResult()
         {
             var sql = "sp_WithParams";
-            var parameters = new List<string> { "Value2" };
+            var parameters = new List<string> {"Value2"};
             var expectedResult = Fixture.CreateMany<TEntity>().ToList();
             AddFromSqlRawResult(DbSet, sql, parameters, expectedResult);
 
@@ -148,11 +244,11 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         }
 
         [Test]
-        public virtual void FromSqlRaw_SpecifiedSqlWithParametersThatDoNotMatchSetUp_ThrowsException()
+        public virtual void FromSqlRaw_SpecifiedSqlWithSqlParameterParametersThatDoNotMatchSetUp_ThrowsException()
         {
             var sql = "sp_WithParams";
-            var setUpParameters = new List<SqlParameter> { new SqlParameter("@SomeParameter3", "Value3") };
-            var invocationParameters = new List<SqlParameter> { new SqlParameter("@SomeParameter1", "Value1"), new SqlParameter("@SomeParameter2", "Value2") };
+            var setUpParameters = new List<SqlParameter> {new SqlParameter("@SomeParameter3", "Value3")};
+            var invocationParameters = new List<SqlParameter> {new SqlParameter("@SomeParameter1", "Value1"), new SqlParameter("@SomeParameter2", "Value2")};
             var expectedResult = Fixture.CreateMany<TEntity>().ToList();
             AddFromSqlRawResult(DbSet, sql, setUpParameters, expectedResult);
 
@@ -166,22 +262,13 @@ namespace EntityFrameworkCore.Testing.Common.Tests
                 var actualResult2 = DbSet.FromSqlRaw("sp_WithParams @SomeParameter1 @SomeParameter2", invocationParameters.ToArray()).ToList();
             });
         }
-
+        
         [Test]
         public virtual void FromSqlRaw_ThrowsException()
         {
             Assert.Throws<NotSupportedException>(() =>
             {
                 var actualResult = DbSet.FromSqlRaw("sp_NoParams").ToList();
-            });
-        }
-
-        [Test]
-        public virtual void FromSqlInterpolated_ThrowsException()
-        {
-            Assert.Throws<NotSupportedException>(() =>
-            {
-                var actualResult = DbSet.FromSqlInterpolated($"sp_NoParams").ToList();
             });
         }
     }
