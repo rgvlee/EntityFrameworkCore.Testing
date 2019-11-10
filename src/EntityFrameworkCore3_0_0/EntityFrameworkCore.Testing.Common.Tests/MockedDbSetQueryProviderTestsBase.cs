@@ -13,9 +13,14 @@ namespace EntityFrameworkCore.Testing.Common.Tests
     public abstract class MockedDbSetQueryProviderTestsBase<TEntity> : QueryableTestsBase<TEntity>
         where TEntity : TestEntityBase
     {
-        protected abstract void AddFromSqlRawResult(IQueryable<TEntity> mockedReadOnlyDbSet, IEnumerable<TEntity> expectedResult);
-        protected abstract void AddFromSqlRawResult(IQueryable<TEntity> mockedReadOnlyDbSet, string sql, IEnumerable<TEntity> expectedResult);
-        protected abstract void AddFromSqlRawResult(IQueryable<TEntity> mockedReadOnlyDbSet, string sql, IEnumerable<object> parameters, IEnumerable<TEntity> expectedResult);
+        protected abstract void AddFromSqlRawResult(DbSet<TEntity> mockedDbSet, IEnumerable<TEntity> expectedResult);
+        protected abstract void AddFromSqlRawResult(DbSet<TEntity> mockedDbSet, string sql, IEnumerable<TEntity> expectedResult);
+        protected abstract void AddFromSqlRawResult(DbSet<TEntity> mockedDbSet, string sql, IEnumerable<object> parameters, IEnumerable<TEntity> expectedResult);
+
+        protected abstract void AddFromSqlInterpolatedResult(DbSet<TEntity> mockedDbSet, IEnumerable<TEntity> expectedResult);
+        protected abstract void AddFromSqlInterpolatedResult(DbSet<TEntity> mockedDbSet, string sql, IEnumerable<TEntity> expectedResult);
+        protected abstract void AddFromSqlInterpolatedResult(DbSet<TEntity> mockedDbSet, FormattableString sql, IEnumerable<TEntity> expectedResult);
+        protected abstract void AddFromSqlInterpolatedResult(DbSet<TEntity> mockedDbSet, string sql, IEnumerable<object> parameters, IEnumerable<TEntity> expectedResult);
 
         protected DbSet<TEntity> DbSet => (DbSet<TEntity>) Queryable;
 

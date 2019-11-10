@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.Linq;
 using EntityFrameworkCore.Testing.Common.Tests;
 using EntityFrameworkCore.Testing.Moq.Extensions;
 using EntityFrameworkCore.Testing.Moq.Helpers;
@@ -23,19 +21,39 @@ namespace EntityFrameworkCore.Testing.Moq.Tests
 
         protected TestDbContext MockedDbContext;
 
-        protected override void AddFromSqlRawResult(IQueryable<T> mockedQueryable, IEnumerable<T> expectedResult)
+        protected override void AddFromSqlRawResult(DbSet<T> mockedDbSet, IEnumerable<T> expectedResult)
         {
-            mockedQueryable.AddFromSqlRawResult(expectedResult);
+            mockedDbSet.AddFromSqlRawResult(expectedResult);
         }
 
-        protected override void AddFromSqlRawResult(IQueryable<T> mockedQueryable, string sql, IEnumerable<T> expectedResult)
+        protected override void AddFromSqlRawResult(DbSet<T> mockedDbSet, string sql, IEnumerable<T> expectedResult)
         {
-            mockedQueryable.AddFromSqlRawResult(sql, expectedResult);
+            mockedDbSet.AddFromSqlRawResult(sql, expectedResult);
         }
 
-        protected override void AddFromSqlRawResult(IQueryable<T> mockedQueryable, string sql, IEnumerable<object> parameters, IEnumerable<T> expectedResult)
+        protected override void AddFromSqlRawResult(DbSet<T> mockedDbSet, string sql, IEnumerable<object> parameters, IEnumerable<T> expectedResult)
         {
-            mockedQueryable.AddFromSqlRawResult(sql, parameters, expectedResult);
+            mockedDbSet.AddFromSqlRawResult(sql, parameters, expectedResult);
+        }
+
+        protected override void AddFromSqlInterpolatedResult(DbSet<T> mockedDbSet, IEnumerable<T> expectedResult)
+        {
+            mockedDbSet.AddFromSqlInterpolatedResult(expectedResult);
+        }
+
+        protected override void AddFromSqlInterpolatedResult(DbSet<T> mockedDbSet, string sql, IEnumerable<T> expectedResult)
+        {
+            mockedDbSet.AddFromSqlInterpolatedResult(sql, expectedResult);
+        }
+
+        protected override void AddFromSqlInterpolatedResult(DbSet<T> mockedDbSet, FormattableString sql, IEnumerable<T> expectedResult)
+        {
+            mockedDbSet.AddFromSqlInterpolatedResult(sql, expectedResult);
+        }
+
+        protected override void AddFromSqlInterpolatedResult(DbSet<T> mockedDbSet, string sql, IEnumerable<object> parameters, IEnumerable<T> expectedResult)
+        {
+            mockedDbSet.AddFromSqlInterpolatedResult(sql, parameters, expectedResult);
         }
 
         protected override void AddToReadOnlySource(DbSet<T> mockedDbQuery, T item)
