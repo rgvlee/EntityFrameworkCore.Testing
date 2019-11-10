@@ -226,24 +226,6 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         }
 
         [Test]
-        public virtual void FromSqlRaw_SpecifiedSqlWithStringParameterParameters_ReturnsExpectedResult()
-        {
-            var sql = "sp_WithParams";
-            var parameters = new List<string> {"Value2"};
-            var expectedResult = Fixture.CreateMany<TEntity>().ToList();
-            AddFromSqlRawResult(DbSet, sql, parameters, expectedResult);
-
-            var actualResult1 = DbSet.FromSqlRaw("[dbo].[sp_WithParams] @SomeParameter1 @SomeParameter2", parameters.ToArray()).ToList();
-            var actualResult2 = DbSet.FromSqlRaw("sp_WithParams @SomeParameter1 @SomeParameter2", parameters.ToArray()).ToList();
-
-            Assert.Multiple(() =>
-            {
-                Assert.That(actualResult1, Is.EquivalentTo(expectedResult));
-                Assert.That(actualResult2, Is.EquivalentTo(actualResult1));
-            });
-        }
-
-        [Test]
         public virtual void FromSqlRaw_SpecifiedSqlWithSqlParameterParametersThatDoNotMatchSetUp_ThrowsException()
         {
             var sql = "sp_WithParams";
@@ -262,7 +244,25 @@ namespace EntityFrameworkCore.Testing.Common.Tests
                 var actualResult2 = DbSet.FromSqlRaw("sp_WithParams @SomeParameter1 @SomeParameter2", invocationParameters.ToArray()).ToList();
             });
         }
-        
+
+        [Test]
+        public virtual void FromSqlRaw_SpecifiedSqlWithStringParameterParameters_ReturnsExpectedResult()
+        {
+            var sql = "sp_WithParams";
+            var parameters = new List<string> {"Value2"};
+            var expectedResult = Fixture.CreateMany<TEntity>().ToList();
+            AddFromSqlRawResult(DbSet, sql, parameters, expectedResult);
+
+            var actualResult1 = DbSet.FromSqlRaw("[dbo].[sp_WithParams] @SomeParameter1 @SomeParameter2", parameters.ToArray()).ToList();
+            var actualResult2 = DbSet.FromSqlRaw("sp_WithParams @SomeParameter1 @SomeParameter2", parameters.ToArray()).ToList();
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(actualResult1, Is.EquivalentTo(expectedResult));
+                Assert.That(actualResult2, Is.EquivalentTo(actualResult1));
+            });
+        }
+
         [Test]
         public virtual void FromSqlRaw_ThrowsException()
         {
