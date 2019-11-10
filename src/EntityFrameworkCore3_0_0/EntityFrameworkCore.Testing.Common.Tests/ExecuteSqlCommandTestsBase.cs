@@ -100,7 +100,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         }
 
         [Test]
-        public void ExecuteSqlCommand_SpecifiedSqlWithParametersThatDoNotMatchSetUp_ThrowsException()
+        public void ExecuteSqlCommand_SpecifiedSqlWithSqlParameterParametersThatDoNotMatchSetUp_ThrowsException()
         {
             var sql = "sp_WithParams";
             var setUpParameters = new List<SqlParameter> { new SqlParameter("@SomeParameter3", "Value3") };

@@ -100,7 +100,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         }
 
         [Test]
-        public void ExecuteSqlInterpolated_SpecifiedSqlWithParametersThatDoNotMatchSetUp_ThrowsException()
+        public void ExecuteSqlInterpolated_SpecifiedSqlWithSqlParameterParametersThatDoNotMatchSetUp_ThrowsException()
         {
             var setUpParameters = new List<SqlParameter> { new SqlParameter("@SomeParameter3", "Value3") };
             var invocationParameters = new List<SqlParameter> { new SqlParameter("@SomeParameter1", "Value1"), new SqlParameter("@SomeParameter2", "Value2") };
