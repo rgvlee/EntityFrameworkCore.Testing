@@ -26,11 +26,11 @@ In addition to the above you also get all of the benefits of using a mocking fra
 
 ## NuGet Packages
 #### EntityFrameworkCore 3.0.0
-[EntityFrameworkCore.Testing.Moq](https://www.nuget.org/packages/EntityFrameworkCore.Testing.Moq/2.0.0)
-*Want  an NSubstitute version for EntityFrameworkCore 3.0.0? Let me know!*
+- [EntityFrameworkCore.Testing.Moq](https://www.nuget.org/packages/EntityFrameworkCore.Testing.Moq/2.0.0)
+- *Want  an NSubstitute version for EntityFrameworkCore 3.0.0? Let me know!*
 #### EntityFrameworkCore 2.1.0-2.2.6
-[EntityFrameworkCore.Testing.Moq](https://www.nuget.org/packages/EntityFrameworkCore.Testing.Moq/1.0.3)
-[EntityFrameworkCore.Testing.NSubstitute](https://www.nuget.org/packages/EntityFrameworkCore.Testing.NSubstitute/1.0.3)
+- [EntityFrameworkCore.Testing.Moq](https://www.nuget.org/packages/EntityFrameworkCore.Testing.Moq/1.0.3)
+- [EntityFrameworkCore.Testing.NSubstitute](https://www.nuget.org/packages/EntityFrameworkCore.Testing.NSubstitute/1.0.3)
 
 # Prerequistes
 Your DbContext must have a parameterless constructor. I'll be releasing a future version that will allow you remove this limitation.
