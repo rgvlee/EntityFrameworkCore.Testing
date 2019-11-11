@@ -242,22 +242,7 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
 
             return mockedDbContext.AddExecuteSqlRawResult(string.Empty, new List<object>(), executeSqlInterpolatedResult);
         }
-
-        /// <summary>Sets up ExecuteSqlInterpolated invocations containing a specified sql string to return a specified result.</summary>
-        /// <typeparam name="TDbContext">The db context type.</typeparam>
-        /// <param name="mockedDbContext">The mocked db context.</param>
-        /// <param name="sql">The ExecuteSqlInterpolated sql string. Set up supports case insensitive partial matches.</param>
-        /// <param name="executeSqlInterpolatedResult">The integer to return when ExecuteSqlInterpolated is invoked.</param>
-        /// <returns>The mocked db context.</returns>
-        public static TDbContext AddExecuteSqlInterpolatedResult<TDbContext>(this TDbContext mockedDbContext, string sql, int executeSqlInterpolatedResult)
-            where TDbContext : DbContext
-        {
-            EnsureArgument.IsNotNull(mockedDbContext, nameof(mockedDbContext));
-            EnsureArgument.IsNotNull(sql, nameof(sql));
-
-            return mockedDbContext.AddExecuteSqlRawResult(sql, new List<object>(), executeSqlInterpolatedResult);
-        }
-
+        
         /// <summary>Sets up ExecuteSqlInterpolated invocations containing a specified sql string to return a specified result.</summary>
         /// <typeparam name="TDbContext">The db context type.</typeparam>
         /// <param name="mockedDbContext">The mocked db context.</param>
@@ -271,6 +256,23 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
             EnsureArgument.IsNotNull(sql, nameof(sql));
 
             return mockedDbContext.AddExecuteSqlRawResult(sql.Format, sql.GetArguments(), executeSqlInterpolatedResult);
+        }
+
+        /// <summary>Sets up ExecuteSqlInterpolated invocations containing a specified sql string to return a specified result.</summary>
+        /// <typeparam name="TDbContext">The db context type.</typeparam>
+        /// <param name="mockedDbContext">The mocked db context.</param>
+        /// <param name="sql">The ExecuteSqlInterpolated sql string. Set up supports case insensitive partial matches.</param>
+        /// <param name="parameters">The ExecuteSqlInterpolated parameters. Set up supports case insensitive partial parameter sequence matching.</param>
+        /// <param name="executeSqlInterpolatedResult">The integer to return when ExecuteSqlInterpolated is invoked.</param>
+        /// <returns>The mocked db context.</returns>
+        public static TDbContext AddExecuteSqlInterpolatedResult<TDbContext>(this TDbContext mockedDbContext, string sql, IEnumerable<object> parameters, int executeSqlInterpolatedResult)
+            where TDbContext : DbContext
+        {
+            EnsureArgument.IsNotNull(mockedDbContext, nameof(mockedDbContext));
+            EnsureArgument.IsNotNull(sql, nameof(sql));
+            EnsureArgument.IsNotNull(parameters, nameof(parameters));
+
+            return mockedDbContext.AddExecuteSqlRawResult(sql, parameters, executeSqlInterpolatedResult);
         }
 
         /// <summary>Sets up ExecuteSqlRaw invocations to return a specified result.</summary>

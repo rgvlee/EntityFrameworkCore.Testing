@@ -59,7 +59,7 @@
             <param name="executeSqlInterpolatedResult">The integer to return when ExecuteSqlInterpolated is invoked.</param>
             <returns>The mocked db context.</returns>
         </member>
-        <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.DbContextExtensions.AddExecuteSqlInterpolatedResult``1(``0,System.String,System.Int32)">
+        <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.DbContextExtensions.AddExecuteSqlInterpolatedResult``1(``0,System.FormattableString,System.Int32)">
             <summary>Sets up ExecuteSqlInterpolated invocations containing a specified sql string to return a specified result.</summary>
             <typeparam name="TDbContext">The db context type.</typeparam>
             <param name="mockedDbContext">The mocked db context.</param>
@@ -67,11 +67,12 @@
             <param name="executeSqlInterpolatedResult">The integer to return when ExecuteSqlInterpolated is invoked.</param>
             <returns>The mocked db context.</returns>
         </member>
-        <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.DbContextExtensions.AddExecuteSqlInterpolatedResult``1(``0,System.FormattableString,System.Int32)">
+        <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.DbContextExtensions.AddExecuteSqlInterpolatedResult``1(``0,System.String,System.Collections.Generic.IEnumerable{System.Object},System.Int32)">
             <summary>Sets up ExecuteSqlInterpolated invocations containing a specified sql string to return a specified result.</summary>
             <typeparam name="TDbContext">The db context type.</typeparam>
             <param name="mockedDbContext">The mocked db context.</param>
             <param name="sql">The ExecuteSqlInterpolated sql string. Set up supports case insensitive partial matches.</param>
+            <param name="parameters">The ExecuteSqlInterpolated parameters. Set up supports case insensitive partial parameter sequence matching.</param>
             <param name="executeSqlInterpolatedResult">The integer to return when ExecuteSqlInterpolated is invoked.</param>
             <returns>The mocked db context.</returns>
         </member>
