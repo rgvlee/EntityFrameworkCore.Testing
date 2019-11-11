@@ -44,7 +44,7 @@ namespace EntityFrameworkCore.Testing.Moq.PackageVerification.Tests
         }
 
         [Test]
-        public void SetUpFromSqlResult_AnyStoredProcedureWithNoParameters_ReturnsExpectedResult()
+        public void FromSql_AnyStoredProcedureWithNoParameters_ReturnsExpectedResult()
         {
             var dbContextToMock = new TestDbContext(new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
             var mockedDbContext = Create.MockedDbContextFor(dbContextToMock);
@@ -64,7 +64,7 @@ namespace EntityFrameworkCore.Testing.Moq.PackageVerification.Tests
         }
 
         [Test]
-        public void SetUpFromSql_SpecifiedStoredProcedureAndParameters_ReturnsExpectedResult()
+        public void FromSql_SpecifiedStoredProcedureAndParameters_ReturnsExpectedResult()
         {
             var dbContextToMock = new TestDbContext(new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
             var mockedDbContext = Create.MockedDbContextFor(dbContextToMock);
