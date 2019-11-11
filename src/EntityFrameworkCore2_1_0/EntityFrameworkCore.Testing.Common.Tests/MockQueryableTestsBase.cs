@@ -13,12 +13,6 @@ namespace EntityFrameworkCore.Testing.Common.Tests
     public abstract class MockQueryableTestsBase<T> : QueryableTestsBase<T>
         where T : TestEntityBase
     {
-        [SetUp]
-        public override void SetUp()
-        {
-            base.SetUp();
-        }
-
         protected abstract void AddFromSqlResult(IQueryable<T> mockedQueryable, IEnumerable<T> expectedResult);
         protected abstract void AddFromSqlResult(IQueryable<T> mockedQueryable, string sql, IEnumerable<T> expectedResult);
         protected abstract void AddFromSqlResult(IQueryable<T> mockedQueryable, string sql, IEnumerable<object> parameters, IEnumerable<T> expectedResult);

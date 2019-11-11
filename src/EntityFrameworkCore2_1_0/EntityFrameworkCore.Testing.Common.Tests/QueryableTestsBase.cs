@@ -13,12 +13,6 @@ namespace EntityFrameworkCore.Testing.Common.Tests
     public abstract class QueryableTestsBase<T> : TestBase
         where T : TestEntityBase
     {
-        [SetUp]
-        public override void SetUp()
-        {
-            base.SetUp();
-        }
-
         protected abstract IQueryable<T> Queryable { get; }
         protected abstract void SeedQueryableSource();
         protected List<T> ItemsAddedToQueryableSource;
