@@ -8,7 +8,7 @@ using NUnit.Framework;
 namespace EntityFrameworkCore.Testing.Common.Tests
 {
     [TestFixture]
-    public abstract class ExecuteSqlCommandTestsBase<TDbContext> : TestBase
+    public abstract class DbContextTestsBase<TDbContext> : TestBase
         where TDbContext : DbContext
     {
         protected TDbContext MockedDbContext;

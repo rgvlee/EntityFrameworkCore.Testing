@@ -1,23 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using EntityFrameworkCore.Testing.Common.Tests;
-using EntityFrameworkCore.Testing.NSubstitute.Extensions;
-using EntityFrameworkCore.Testing.NSubstitute.Helpers;
+using EntityFrameworkCore.Testing.Moq.Extensions;
+using EntityFrameworkCore.Testing.Moq.Helpers;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 
-namespace EntityFrameworkCore.Testing.NSubstitute.Tests
+namespace EntityFrameworkCore.Testing.Moq.Tests
 {
     [TestFixture]
-    public class ExecuteSqlCommandTests : ExecuteSqlCommandTestsBase<TestDbContext>
+    public class DbContextTests : DbContextTestsBase<TestDbContext>
     {
         [SetUp]
         public override void SetUp()
         {
             base.SetUp();
             var dbContextToMock = new TestDbContext(new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
-            MockedDbContext = Create.SubstituteFor(dbContextToMock);
+            MockedDbContext = Create.MockedDbContextFor(dbContextToMock);
         }
 
         public override void AddExecuteSqlCommandResult(TestDbContext mockedDbContext, int expectedResult)
