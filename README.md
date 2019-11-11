@@ -1,12 +1,18 @@
 
 
+
 # EntityFrameworkCore.Testing
 __*Moq and NSubstitute mocking libraries for EntityFrameworkCore*__
 
 EntityFrameworkCore.Testing is an EntityFrameworkCore mocking library for Moq and NSubstitute. It's designed to be used in conjunction with the [Microsoft in-memory provider](https://docs.microsoft.com/en-us/ef/core/miscellaneous/testing/in-memory) to cover the EntityFrameworkCore functionality that it does not provide. It creates DbContext and DbSet proxy mocks and provides support for:
-- FromSql
+- FromSql *(EntityFrameworkCore 2.1.0-2.2.6)*
+- FromSqlRaw *(EntityFrameworkCore 3.0.0)*
+- FromSqlInterpolated *(EntityFrameworkCore 3.0.0)*
 - ExecuteSqlCommand
+- ExecuteSqlRaw *(EntityFrameworkCore 3.0.0)*
+- ExecuteSqlInterpolated *(EntityFrameworkCore 3.0.0)*
 - DbQuery\<TQuery\>
+- Keyless DbSet\<TEntity\> *(EntityFrameworkCore 3.0.0)*
 - ElementAt
 - ElementAtOrDefault
 - Indexed Select (Queryable.Select(Func\<T, int, TResult\>))
@@ -14,18 +20,20 @@ EntityFrameworkCore.Testing is an EntityFrameworkCore mocking library for Moq an
 - TakeWhile
 - Indexed TakeWhile (Queryable.Select(Func\<T, int, bool\>))
 
-There may be more EntityFrameworkCore functionality that isn't supported by the Microsoft in-memory provider; this is what I've discovered/added support for so far. If you come across unsupported functionality, let me know so I can add support for it.
+There may be more EntityFrameworkCore functionality that isn't supported by the Microsoft in-memory provider; this is what I've discovered/added support for so far. If you come across unsupported functionality let me know so I can add support for it.
 
 In addition to the above you also get all of the benefits of using a mocking framework (e.g., the ability to verify method invocation).
 
-## EntityFrameworkCore 3.0.0 support
-The Moq version is nearly ready to package and deploy. An NSubstitute version will be a little longer.
-In general, testing has shown the LINQ queryable operations mentioned above are still not supported. Relational operations such as FromSql (now FromSqlRaw/FromSqlInterpolated), ExecuteSqlCommand (now ExecuteSqlRaw/ExecuteSqlInterpolated) and queries are also not supported, as you would expect.
+## NuGet Packages
+#### EntityFrameworkCore 3.0.0
+[EntityFrameworkCore.Testing.Moq](https://www.nuget.org/packages/EntityFrameworkCore.Testing.Moq/2.0.0)
+*Want  an NSubstitute version for EntityFrameworkCore 3.0.0? Let me know!*
+#### EntityFrameworkCore 2.1.0-2.2.6
+[EntityFrameworkCore.Testing.Moq](https://www.nuget.org/packages/EntityFrameworkCore.Testing.Moq/1.0.3)
+[EntityFrameworkCore.Testing.NSubstitute](https://www.nuget.org/packages/EntityFrameworkCore.Testing.NSubstitute/1.0.3)
 
-## Resources
-- [Source repository](https://github.com/rgvlee/EntityFrameworkCore.Testing)
-- [EntityFrameworkCore.Testing.Moq - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.Moq/)
-- [EntityFrameworkCore.Testing.NSubstitute - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.NSubstitute/)
+# Prerequistes
+Your DbContext must have a parameterless constructor. I'll be releasing a future version that will allow you remove this limitation.
 
 # Moq
 ## Example Usage
@@ -34,7 +42,7 @@ In general, testing has shown the LINQ queryable operations mentioned above are 
 
 ```
 [Test]
-public void SetAddAndPersist_Item_Persists()
+public void SetAddAndPersist_Item_AddsAndPersistsItem()
 {
     var dbContextToMock = new TestDbContext(new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
     var mockedDbContext = Create.MockedDbContextFor(dbContextToMock);
@@ -59,7 +67,7 @@ public void SetAddAndPersist_Item_Persists()
 
 ```
 [Test]
-public void SetUpFromSqlResult_AnyStoredProcedureWithNoParameters_ReturnsExpectedResult()
+public void FromSql_AnyStoredProcedureWithNoParameters_ReturnsExpectedResult()
 {
     var dbContextToMock = new TestDbContext(new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
     var mockedDbContext = Create.MockedDbContextFor(dbContextToMock);
@@ -86,7 +94,7 @@ The mock FromSql __sql__ matching is case insensitive and supports partial match
 
 ```
 [Test]
-public void SetUpFromSql_SpecifiedStoredProcedureAndParameters_ReturnsExpectedResult()
+public void FromSql_SpecifiedStoredProcedureAndParameters_ReturnsExpectedResult()
 {
     var dbContextToMock = new TestDbContext(new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
     var mockedDbContext = Create.MockedDbContextFor(dbContextToMock);
@@ -108,18 +116,18 @@ public void SetUpFromSql_SpecifiedStoredProcedureAndParameters_ReturnsExpectedRe
 ```
 
 ### Queries
-Queries are initialized as part of the DbContext mock initialization but you'll want to seed them to do anything useful with them. Use the `Add` , `AddRange` and `Clear` extensions to seed/manipulate the query source.
+Queries are initialized as part of the DbContext mock initialization but you'll want to seed them to do anything useful with them. Use the `AddToReadOnlySource` , `AddRangeToReadOnlySource` and `ClearReadOnlySource` extensions to seed/manipulate the query source.
 
 ```
 [Test]
-public void QueryAddRange_Enumeration_AddsToQuerySource()
+public void QueryAddToReadOnlySource_Items_AddsToQuerySource()
 {
     var dbContextToMock = new TestDbContext(new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
     var mockedDbContext = Create.MockedDbContextFor(dbContextToMock);
 
     var expectedResult = Fixture.CreateMany<TestQuery>().ToList();
 
-    mockedDbContext.Query<TestQuery>().AddRange(expectedResult);
+    mockedDbContext.Query<TestQuery>().AddRangeToReadOnlySource(expectedResult);
 
     Assert.Multiple(() =>
     {
