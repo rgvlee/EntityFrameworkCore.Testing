@@ -128,10 +128,11 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         [Test]
         public virtual void FormattableStringSetUpFromSqlInterpolated_SpecifiedSqlWithStringParameterParameters_ReturnsExpectedResult()
         {
-            var sql = "sp_WithParams";
             var parameters = new List<string> { "Value2" };
+            var sql = (FormattableString)$"[sp_WithParams] {parameters[0]}";
+            
             var expectedResult = Fixture.CreateMany<TEntity>().ToList();
-            AddFromSqlInterpolatedResult(DbSet, (FormattableString)$"[dbo].[sp_WithParams] {parameters[0]}", expectedResult);
+            AddFromSqlInterpolatedResult(DbSet, sql, expectedResult);
 
             var actualResult1 = DbSet.FromSqlInterpolated($"[dbo].[sp_WithParams] {parameters[0]}").ToList();
             var actualResult2 = DbSet.FromSqlInterpolated($"[dbo].[sp_WithParams] {parameters[0]}").ToList();
