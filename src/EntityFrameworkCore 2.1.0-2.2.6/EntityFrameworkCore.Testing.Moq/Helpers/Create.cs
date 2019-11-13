@@ -17,7 +17,7 @@ namespace EntityFrameworkCore.Testing.Moq.Helpers
         {
             EnsureArgument.IsNotNull(dbContextToMock, nameof(dbContextToMock));
 
-            return dbContextToMock.CreateMock();
+            return dbContextToMock.CreateMockedDbContext();
         }
 
         /// <summary>Creates a mocked db set.</summary>
@@ -29,7 +29,7 @@ namespace EntityFrameworkCore.Testing.Moq.Helpers
         {
             EnsureArgument.IsNotNull(dbSetToMock, nameof(dbSetToMock));
 
-            return dbSetToMock.CreateMock();
+            return dbSetToMock.CreateMockedDbSet();
         }
 
         /// <summary>Creates a mocked db query.</summary>
@@ -41,11 +41,11 @@ namespace EntityFrameworkCore.Testing.Moq.Helpers
         {
             EnsureArgument.IsNotNull(dbQueryToMock, nameof(dbQueryToMock));
 
-            return dbQueryToMock.CreateMock();
+            return dbQueryToMock.CreateMockedDbQuery();
         }
 
         /// <summary>
-        /// Creates a mocked query provider.
+        ///     Creates a mocked query provider.
         /// </summary>
         /// <typeparam name="T">The queryable type.</typeparam>
         /// <param name="queryable">The query provider source.</param>
@@ -55,7 +55,7 @@ namespace EntityFrameworkCore.Testing.Moq.Helpers
         {
             EnsureArgument.IsNotNull(queryable, nameof(queryable));
 
-            return queryable.Provider.CreateMock(queryable);
+            return queryable.Provider.CreateMockedQueryProvider(queryable);
         }
     }
 }

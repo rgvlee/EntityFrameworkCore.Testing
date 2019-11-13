@@ -18,7 +18,7 @@ namespace EntityFrameworkCore.Testing.Moq.Helpers
         {
             EnsureArgument.IsNotNull(dbContextToMock, nameof(dbContextToMock));
 
-            return dbContextToMock.CreateMock();
+            return dbContextToMock.CreateMockedDbContext();
         }
 
         /// <summary>Creates a mocked db set.</summary>
@@ -30,20 +30,20 @@ namespace EntityFrameworkCore.Testing.Moq.Helpers
         {
             EnsureArgument.IsNotNull(dbSetToMock, nameof(dbSetToMock));
 
-            return dbSetToMock.CreateMock();
+            return dbSetToMock.CreateMockedDbSet();
         }
 
         /// <summary>Creates a mocked db query.</summary>
         /// <typeparam name="TQuery">The query type.</typeparam>
         /// <param name="dbQueryToMock">The db query to mock.</param>
         /// <returns>A mocked db query.</returns>
-        [Obsolete("This method will remain until EntityFrameworkCore no longer supports the DbQuery<TQuery> type. Use Create.MockedReadOnlyDbSetFor<TEntity> instead.")]
+        [Obsolete("This method will remain until EntityFrameworkCore no longer supports the DbQuery<TQuery> type. Use Create.MockedReadOnlyDbSetFor instead.")]
         public static DbQuery<TQuery> MockedDbQueryFor<TQuery>(DbQuery<TQuery> dbQueryToMock)
             where TQuery : class
         {
             EnsureArgument.IsNotNull(dbQueryToMock, nameof(dbQueryToMock));
 
-            return (DbQuery<TQuery>) dbQueryToMock.CreateMock();
+            return dbQueryToMock.CreateMockedDbQuery();
         }
 
         /// <summary>Creates a mocked readonly db set.</summary>
@@ -55,11 +55,11 @@ namespace EntityFrameworkCore.Testing.Moq.Helpers
         {
             EnsureArgument.IsNotNull(readOnlyDbSet, nameof(readOnlyDbSet));
 
-            return readOnlyDbSet.CreateMock();
+            return readOnlyDbSet.CreateMockedReadOnlyDbSet();
         }
 
         /// <summary>
-        /// Creates a mocked query provider.
+        ///     Creates a mocked query provider.
         /// </summary>
         /// <typeparam name="T">The queryable type.</typeparam>
         /// <param name="queryable">The query provider source.</param>
@@ -69,7 +69,7 @@ namespace EntityFrameworkCore.Testing.Moq.Helpers
         {
             EnsureArgument.IsNotNull(queryable, nameof(queryable));
 
-            return queryable.Provider.CreateMock(queryable);
+            return queryable.Provider.CreateMockedQueryProvider(queryable);
         }
     }
 }
