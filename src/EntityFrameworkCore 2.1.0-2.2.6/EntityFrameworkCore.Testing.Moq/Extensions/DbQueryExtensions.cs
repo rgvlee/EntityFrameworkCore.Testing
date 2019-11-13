@@ -56,8 +56,8 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
         /// <param name="mockedDbQuery">The mocked db query.</param>
         /// <param name="item">The item to be added to the end of the mocked db query source.</param>
         [Obsolete(
-            "This has been replaced by DbQuery<TQuery>.AddToReadOnlySource(TQuery item) to avoid conflicts with the " +
-            "EntityFrameworkCore 3.0.0 read only set Add(TEntity entity) method.")
+            "This has been replaced by DbQueryExtensions.AddToReadOnlySource to avoid conflicts with the " +
+            "EntityFrameworkCore 3.0.0 read only set Add method.")
         ]
         public static void Add<TQuery>(this DbQuery<TQuery> mockedDbQuery, TQuery item) 
             where TQuery : class
@@ -87,8 +87,8 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
         /// <param name="mockedDbQuery">The mocked db query.</param>
         /// <param name="items">The sequence whose items should be added to the end of the mocked db query source.</param>
         [Obsolete(
-            "This has been replaced by DbQuery<TQuery>.AddRangeToReadOnlySource(IEnumerable<TQuery> items) to avoid conflicts with the " +
-            "EntityFrameworkCore 3.0.0 read only set AddRange(IEnumerable<TEntity> entities) method.")
+            "This has been replaced by DbQueryExtensions.AddRangeToReadOnlySource to avoid conflicts with the " +
+            "EntityFrameworkCore 3.0.0 read only set AddRange method.")
         ]
         public static void AddRange<TQuery>(this DbQuery<TQuery> mockedDbQuery, IEnumerable<TQuery> items) 
             where TQuery : class
@@ -117,7 +117,7 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
         /// <summary>Removes all items from the mocked db query source.</summary>
         /// <typeparam name="TQuery">The query type.</typeparam>
         /// <param name="mockedDbQuery">The mocked db query.</param>
-        [Obsolete("This has been replaced by DbQuery<TQuery>.ClearReadOnlySource().")]
+        [Obsolete("This has been replaced by DbQueryExtensions.ClearReadOnlySource.")]
         public static void Clear<TQuery>(this DbQuery<TQuery> mockedDbQuery) 
             where TQuery : class
         {
