@@ -17,7 +17,8 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
         /// <typeparam name="TQuery">The query type.</typeparam>
         /// <param name="dbQuery">The db query to mock.</param>
         /// <returns>A mocked db query.</returns>
-        public static DbQuery<TQuery> CreateMock<TQuery>(this DbQuery<TQuery> dbQuery) where TQuery : class
+        public static DbQuery<TQuery> CreateMockedDbQuery<TQuery>(this DbQuery<TQuery> dbQuery) 
+            where TQuery : class
         {
             EnsureArgument.IsNotNull(dbQuery, nameof(dbQuery));
 
@@ -33,10 +34,21 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
 
             dbQueryMock.As<IInfrastructure<IServiceProvider>>().Setup(m => m.Instance).Returns(((IInfrastructure<IServiceProvider>) dbQuery).Instance);
 
-            var mockedQueryProvider = ((IQueryable<TQuery>) dbQuery).Provider.CreateMock(new List<TQuery>());
+            var mockedQueryProvider = ((IQueryable<TQuery>) dbQuery).Provider.CreateMockedQueryProvider(new List<TQuery>());
             dbQueryMock.As<IQueryable<TQuery>>().Setup(m => m.Provider).Returns(mockedQueryProvider);
 
             return dbQueryMock.Object;
+        }
+
+        /// <summary>Creates and sets up a mocked db query.</summary>
+        /// <typeparam name="TQuery">The query type.</typeparam>
+        /// <param name="dbQuery">The db query to mock.</param>
+        /// <returns>A mocked db query.</returns>
+        [Obsolete("This will be removed in a future version. Use DbQueryExtensions.CreateMockedDbQuery instead.")]
+        public static DbQuery<TQuery> CreateMock<TQuery>(this DbQuery<TQuery> dbQuery)
+            where TQuery : class
+        {
+            return dbQuery.CreateMockedDbQuery();
         }
 
         /// <summary>Adds an item to the end of the mocked db query source.</summary>
@@ -47,7 +59,8 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
             "This has been replaced by DbQuery<TQuery>.AddToReadOnlySource(TQuery item) to avoid conflicts with the " +
             "EntityFrameworkCore 3.0.0 read only set Add(TEntity entity) method.")
         ]
-        public static void Add<TQuery>(this DbQuery<TQuery> mockedDbQuery, TQuery item) where TQuery : class
+        public static void Add<TQuery>(this DbQuery<TQuery> mockedDbQuery, TQuery item) 
+            where TQuery : class
         {
             mockedDbQuery.AddToReadOnlySource(item);
         }
@@ -56,7 +69,8 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
         /// <typeparam name="TQuery">The query type.</typeparam>
         /// <param name="mockedDbQuery">The mocked db query.</param>
         /// <param name="item">The item to be added to the end of the mocked db query source.</param>
-        public static void AddToReadOnlySource<TQuery>(this DbQuery<TQuery> mockedDbQuery, TQuery item) where TQuery : class
+        public static void AddToReadOnlySource<TQuery>(this DbQuery<TQuery> mockedDbQuery, TQuery item) 
+            where TQuery : class
         {
             EnsureArgument.IsNotNull(mockedDbQuery, nameof(mockedDbQuery));
             EnsureArgument.IsNotNull(item, nameof(item));
@@ -76,7 +90,8 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
             "This has been replaced by DbQuery<TQuery>.AddRangeToReadOnlySource(IEnumerable<TQuery> items) to avoid conflicts with the " +
             "EntityFrameworkCore 3.0.0 read only set AddRange(IEnumerable<TEntity> entities) method.")
         ]
-        public static void AddRange<TQuery>(this DbQuery<TQuery> mockedDbQuery, IEnumerable<TQuery> items) where TQuery : class
+        public static void AddRange<TQuery>(this DbQuery<TQuery> mockedDbQuery, IEnumerable<TQuery> items) 
+            where TQuery : class
         {
             mockedDbQuery.AddRangeToReadOnlySource(items);
         }
@@ -85,7 +100,8 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
         /// <typeparam name="TQuery">The query type.</typeparam>
         /// <param name="mockedDbQuery">The mocked db query.</param>
         /// <param name="items">The sequence whose items should be added to the end of the mocked db query source.</param>
-        public static void AddRangeToReadOnlySource<TQuery>(this DbQuery<TQuery> mockedDbQuery, IEnumerable<TQuery> items) where TQuery : class
+        public static void AddRangeToReadOnlySource<TQuery>(this DbQuery<TQuery> mockedDbQuery, IEnumerable<TQuery> items) 
+            where TQuery : class
         {
             EnsureArgument.IsNotNull(mockedDbQuery, nameof(mockedDbQuery));
             EnsureArgument.IsNotNull(items, nameof(items));
@@ -102,7 +118,8 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
         /// <typeparam name="TQuery">The query type.</typeparam>
         /// <param name="mockedDbQuery">The mocked db query.</param>
         [Obsolete("This has been replaced by DbQuery<TQuery>.ClearReadOnlySource().")]
-        public static void Clear<TQuery>(this DbQuery<TQuery> mockedDbQuery) where TQuery : class
+        public static void Clear<TQuery>(this DbQuery<TQuery> mockedDbQuery) 
+            where TQuery : class
         {
             mockedDbQuery.ClearReadOnlySource();
         }
@@ -110,14 +127,16 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
         /// <summary>Removes all items from the mocked db query source.</summary>
         /// <typeparam name="TQuery">The query type.</typeparam>
         /// <param name="mockedDbQuery">The mocked db query.</param>
-        public static void ClearReadOnlySource<TQuery>(this DbQuery<TQuery> mockedDbQuery) where TQuery : class
+        public static void ClearReadOnlySource<TQuery>(this DbQuery<TQuery> mockedDbQuery) 
+            where TQuery : class
         {
             EnsureArgument.IsNotNull(mockedDbQuery, nameof(mockedDbQuery));
 
             mockedDbQuery.SetSource(new List<TQuery>());
         }
 
-        internal static void SetSource<TQuery>(this DbQuery<TQuery> mockedDbQuery, IEnumerable<TQuery> source) where TQuery : class
+        internal static void SetSource<TQuery>(this DbQuery<TQuery> mockedDbQuery, IEnumerable<TQuery> source) 
+            where TQuery : class
         {
             EnsureArgument.IsNotNull(mockedDbQuery, nameof(mockedDbQuery));
             EnsureArgument.IsNotNull(source, nameof(source));
