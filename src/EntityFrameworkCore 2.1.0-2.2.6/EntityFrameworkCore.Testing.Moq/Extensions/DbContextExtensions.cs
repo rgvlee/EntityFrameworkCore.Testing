@@ -26,7 +26,7 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
         /// <param name="dbContextToMock">The db context to mock/proxy.</param>
         /// <returns>A mocked db context.</returns>
         /// <remarks>dbContextToMock would typically be an in-memory database instance.</remarks>
-        [Obsolete("This will be removed in a future version. Please use DbContextExtensions.CreateMockedDbContext<TDbContext>(this TDbContext dbContextToMock).")]
+        [Obsolete("This will be removed in a future version. Use DbContextExtensions.CreateMockedDbContext instead.")]
         public static TDbContext CreateMock<TDbContext>(this TDbContext dbContextToMock)
             where TDbContext : DbContext
         {
