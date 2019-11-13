@@ -28,7 +28,20 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
         /// <param name="dbContextToMock">The db context to mock/proxy.</param>
         /// <returns>A mocked db context.</returns>
         /// <remarks>dbContextToMock would typically be an in-memory database instance.</remarks>
-        public static TDbContext CreateMock<TDbContext>(this TDbContext dbContextToMock) where TDbContext : DbContext
+        [Obsolete("This will be removed in a future version. Please use DbContextExtensions.CreateDbContextSubstitute<TDbContext>(this TDbContext dbContextToMock).")]
+        public static TDbContext CreateMock<TDbContext>(this TDbContext dbContextToMock)
+            where TDbContext : DbContext
+        {
+            return dbContextToMock.CreateDbContextSubstitute();
+        }
+
+        /// <summary>Creates and sets up a mocked db context.</summary>
+        /// <typeparam name="TDbContext">The db context type.</typeparam>
+        /// <param name="dbContextToMock">The db context to mock/proxy.</param>
+        /// <returns>A mocked db context.</returns>
+        /// <remarks>dbContextToMock would typically be an in-memory database instance.</remarks>
+        public static TDbContext CreateDbContextSubstitute<TDbContext>(this TDbContext dbContextToMock) 
+            where TDbContext : DbContext
         {
             EnsureArgument.IsNotNull(dbContextToMock, nameof(dbContextToMock));
 
@@ -129,7 +142,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
             EnsureArgument.IsNotNull(mockedDbContext, nameof(mockedDbContext));
             EnsureArgument.IsNotNull(dbContextToMock, nameof(dbContextToMock));
 
-            var mockedDbSet = dbContextToMock.Set<TEntity>().CreateMock();
+            var mockedDbSet = dbContextToMock.Set<TEntity>().CreateDbSetSubstitute();
 
             var property = typeof(TDbContext).GetProperties().SingleOrDefault(p => p.PropertyType == typeof(DbSet<TEntity>));
 
@@ -175,7 +188,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
             EnsureArgument.IsNotNull(mockedDbContext, nameof(mockedDbContext));
             EnsureArgument.IsNotNull(dbContextToMock, nameof(dbContextToMock));
 
-            var mockedDbQuery = dbContextToMock.Query<TQuery>().CreateMock();
+            var mockedDbQuery = dbContextToMock.Query<TQuery>().CreateDbQuerySubstitute();
 
             var property = typeof(TDbContext).GetProperties().SingleOrDefault(p => p.PropertyType == typeof(DbQuery<TQuery>));
 

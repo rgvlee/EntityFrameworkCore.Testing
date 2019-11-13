@@ -26,7 +26,20 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
         /// <param name="dbContextToMock">The db context to mock/proxy.</param>
         /// <returns>A mocked db context.</returns>
         /// <remarks>dbContextToMock would typically be an in-memory database instance.</remarks>
-        public static TDbContext CreateMock<TDbContext>(this TDbContext dbContextToMock) where TDbContext : DbContext
+        [Obsolete("This will be removed in a future version. Please use DbContextExtensions.CreateMockedDbContext<TDbContext>(this TDbContext dbContextToMock).")]
+        public static TDbContext CreateMock<TDbContext>(this TDbContext dbContextToMock)
+            where TDbContext : DbContext
+        {
+            return dbContextToMock.CreateMockedDbContext();
+        }
+
+        /// <summary>Creates and sets up a mocked db context.</summary>
+        /// <typeparam name="TDbContext">The db context type.</typeparam>
+        /// <param name="dbContextToMock">The db context to mock/proxy.</param>
+        /// <returns>A mocked db context.</returns>
+        /// <remarks>dbContextToMock would typically be an in-memory database instance.</remarks>
+        public static TDbContext CreateMockedDbContext<TDbContext>(this TDbContext dbContextToMock)
+            where TDbContext : DbContext
         {
             EnsureArgument.IsNotNull(dbContextToMock, nameof(dbContextToMock));
 
@@ -117,7 +130,7 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
             EnsureArgument.IsNotNull(dbContextMock, nameof(dbContextMock));
             EnsureArgument.IsNotNull(dbContextToMock, nameof(dbContextToMock));
 
-            var mockedDbSet = dbContextToMock.Set<TEntity>().CreateMock();
+            var mockedDbSet = dbContextToMock.Set<TEntity>().CreateMockedDbSet();
 
             var property = typeof(TDbContext).GetProperties().SingleOrDefault(p => p.PropertyType == typeof(DbSet<TEntity>));
 
@@ -164,7 +177,7 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
             EnsureArgument.IsNotNull(dbContextMock, nameof(dbContextMock));
             EnsureArgument.IsNotNull(dbContextToMock, nameof(dbContextToMock));
 
-            var mockedReadOnlyDbSet = dbContextToMock.Set<TEntity>().CreateReadOnlyMock();
+            var mockedReadOnlyDbSet = dbContextToMock.Set<TEntity>().CreateMockedReadOnlyDbSet();
 
             var property = typeof(TDbContext).GetProperties().SingleOrDefault(p => p.PropertyType == typeof(DbSet<TEntity>) || p.PropertyType == typeof(DbQuery<TEntity>));
 
@@ -242,7 +255,7 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
 
             return mockedDbContext.AddExecuteSqlRawResult(string.Empty, new List<object>(), executeSqlInterpolatedResult);
         }
-        
+
         /// <summary>Sets up ExecuteSqlInterpolated invocations containing a specified sql string to return a specified result.</summary>
         /// <typeparam name="TDbContext">The db context type.</typeparam>
         /// <param name="mockedDbContext">The mocked db context.</param>
