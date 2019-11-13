@@ -18,7 +18,8 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
         /// <typeparam name="TEntity">The entity type.</typeparam>
         /// <param name="dbSet">The db set to mock/proxy.</param>
         /// <returns>A mocked db set.</returns>
-        public static DbSet<TEntity> CreateMock<TEntity>(this DbSet<TEntity> dbSet) where TEntity : class
+        public static DbSet<TEntity> CreateMockedDbSet<TEntity>(this DbSet<TEntity> dbSet)
+            where TEntity : class
         {
             EnsureArgument.IsNotNull(dbSet, nameof(dbSet));
 
@@ -69,10 +70,21 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
             dbSetMock.Setup(m => m.UpdateRange(It.IsAny<IEnumerable<TEntity>>())).Callback((IEnumerable<TEntity> providedEntities) => dbSet.UpdateRange(providedEntities));
             dbSetMock.Setup(m => m.UpdateRange(It.IsAny<TEntity[]>())).Callback((TEntity[] providedEntities) => dbSet.UpdateRange(providedEntities));
 
-            var mockedQueryProvider = ((IQueryable<TEntity>) dbSet).Provider.CreateMock(dbSet);
+            var mockedQueryProvider = ((IQueryable<TEntity>) dbSet).Provider.CreateMockedQueryProvider(dbSet);
             dbSetMock.As<IQueryable<TEntity>>().Setup(m => m.Provider).Returns(mockedQueryProvider);
 
             return dbSetMock.Object;
+        }
+
+        /// <summary>Creates and sets up a mocked db set.</summary>
+        /// <typeparam name="TEntity">The entity type.</typeparam>
+        /// <param name="dbSet">The db set to mock/proxy.</param>
+        /// <returns>A mocked db set.</returns>
+        [Obsolete("This will be removed in a future version. Use DbSetExtensions.CreateMockedDbSet instead.")]
+        public static DbSet<TEntity> CreateMock<TEntity>(this DbSet<TEntity> dbSet)
+            where TEntity : class
+        {
+            return dbSet.CreateMockedDbSet();
         }
     }
 }
