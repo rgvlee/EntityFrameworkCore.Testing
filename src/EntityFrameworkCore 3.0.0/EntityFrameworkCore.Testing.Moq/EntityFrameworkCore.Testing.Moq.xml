@@ -7,6 +7,13 @@
         <member name="T:EntityFrameworkCore.Testing.Moq.Extensions.DbContextExtensions">
             <summary>Extensions for the db context type.</summary>
         </member>
+        <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.DbContextExtensions.CreateMockedDbContext``1(``0)">
+            <summary>Creates and sets up a mocked db context.</summary>
+            <typeparam name="TDbContext">The db context type.</typeparam>
+            <param name="dbContextToMock">The db context to mock/proxy.</param>
+            <returns>A mocked db context.</returns>
+            <remarks>dbContextToMock would typically be an in-memory database instance.</remarks>
+        </member>
         <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.DbContextExtensions.CreateMock``1(``0)">
             <summary>Creates and sets up a mocked db context.</summary>
             <typeparam name="TDbContext">The db context type.</typeparam>
@@ -103,6 +110,12 @@
         <member name="T:EntityFrameworkCore.Testing.Moq.Extensions.DbSetExtensions">
             <summary>Extensions for the db set type.</summary>
         </member>
+        <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.DbSetExtensions.CreateMockedDbSet``1(Microsoft.EntityFrameworkCore.DbSet{``0})">
+            <summary>Creates and sets up a mocked db set.</summary>
+            <typeparam name="TEntity">The entity type.</typeparam>
+            <param name="dbSet">The db set to mock/proxy.</param>
+            <returns>A mocked db set.</returns>
+        </member>
         <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.DbSetExtensions.CreateMock``1(Microsoft.EntityFrameworkCore.DbSet{``0})">
             <summary>Creates and sets up a mocked db set.</summary>
             <typeparam name="TEntity">The entity type.</typeparam>
@@ -163,13 +176,58 @@
         <member name="T:EntityFrameworkCore.Testing.Moq.Extensions.QueryProviderExtensions">
             <summary>Extensions for query provider and mock query provider types.</summary>
         </member>
+        <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.QueryProviderExtensions.CreateMockedQueryProvider``1(System.Linq.IQueryProvider,System.Collections.Generic.IEnumerable{``0})">
+            <summary>Creates a mocked query provider.</summary>
+            <typeparam name="T">The query provider source item type.</typeparam>
+            <param name="queryProviderToMock">The query provider to mock.</param>
+            <param name="enumerable">The query provider source.</param>
+            <returns>A mocked query provider.</returns>
+        </member>
         <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.QueryProviderExtensions.CreateMock``1(System.Linq.IQueryProvider,System.Collections.Generic.IEnumerable{``0})">
             <summary>Creates a mocked query provider.</summary>
             <typeparam name="T">The query provider source item type.</typeparam>
             <param name="queryProviderToMock">The query provider to mock.</param>
             <param name="enumerable">The query provider source.</param>
             <returns>A mocked query provider.</returns>
-            <remarks>Extends queryProviderToMock if it is a mock.</remarks>
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.QueryProviderExtensions.AddFromSqlInterpolatedResult``1(System.Linq.IQueryProvider,System.Collections.Generic.IEnumerable{``0})">
+            <summary>Sets up FromSqlInterpolated invocations to return a specified result.</summary>
+            <typeparam name="T">The queryable source type.</typeparam>
+            <param name="mockedQueryProvider">The mocked query provider.</param>
+            <param name="fromSqlInterpolatedResult">The FromSqlInterpolated result.</param>
+            <returns>The mocked queryable.</returns>
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.QueryProviderExtensions.AddFromSqlInterpolatedResult``1(System.Linq.IQueryProvider,System.FormattableString,System.Collections.Generic.IEnumerable{``0})">
+            <summary>Sets up FromSqlInterpolated invocations containing a specified sql string to return a specified result.</summary>
+            <typeparam name="T">The queryable source type.</typeparam>
+            <param name="mockedQueryProvider">The mocked query provider.</param>
+            <param name="sql">The FromSqlInterpolated sql string. Set up supports case insensitive partial matches.</param>
+            <param name="fromSqlInterpolatedResult">The FromSqlInterpolated result.</param>
+            <returns>The mocked queryable.</returns>
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.QueryProviderExtensions.AddFromSqlInterpolatedResult``1(System.Linq.IQueryProvider,System.String,System.Collections.Generic.IEnumerable{System.Object},System.Collections.Generic.IEnumerable{``0})">
+            <summary>Sets up FromSqlInterpolated invocations containing a specified sql string and parameters to return a specified result.</summary>
+            <typeparam name="T">The queryable source type.</typeparam>
+            <param name="mockedQueryProvider">The mocked query provider.</param>
+            <param name="sql">The FromSqlInterpolated sql string. Set up supports case insensitive partial matches.</param>
+            <param name="parameters">The FromSqlInterpolated parameters. Set up supports case insensitive partial parameter sequence matching.</param>
+            <param name="fromSqlInterpolatedResult">The sequence to return when FromSqlInterpolated is invoked.</param>
+            <returns>The mocked query provider.</returns>
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.QueryProviderExtensions.AddFromSqlRawResult``1(System.Linq.IQueryProvider,System.Collections.Generic.IEnumerable{``0})">
+            <summary>Sets up FromSqlRaw invocations to return a specified result.</summary>
+            <typeparam name="T">The queryable source type.</typeparam>
+            <param name="mockedQueryProvider">The mocked query provider.</param>
+            <param name="fromSqlRawResult">The FromSqlRaw result.</param>
+            <returns>The mocked queryable.</returns>
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.QueryProviderExtensions.AddFromSqlRawResult``1(System.Linq.IQueryProvider,System.String,System.Collections.Generic.IEnumerable{``0})">
+            <summary>Sets up FromSqlRaw invocations containing a specified sql string to return a specified result.</summary>
+            <typeparam name="T">The queryable source type.</typeparam>
+            <param name="mockedQueryProvider">The mocked query provider.</param>
+            <param name="sql">The FromSqlRaw sql string. Set up supports case insensitive partial matches.</param>
+            <param name="fromSqlRawResult">The FromSqlRaw result.</param>
+            <returns>The mocked queryable.</returns>
         </member>
         <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.QueryProviderExtensions.AddFromSqlRawResult``1(System.Linq.IQueryProvider,System.String,System.Collections.Generic.IEnumerable{System.Object},System.Collections.Generic.IEnumerable{``0})">
             <summary>Sets up FromSqlRaw invocations containing a specified sql string and parameters to return a specified result.</summary>
@@ -183,11 +241,35 @@
         <member name="T:EntityFrameworkCore.Testing.Moq.Extensions.ReadOnlyDbSetExtensions">
             <summary>Extensions for the db set type.</summary>
         </member>
+        <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.ReadOnlyDbSetExtensions.CreateMockedDbQuery``1(Microsoft.EntityFrameworkCore.DbQuery{``0})">
+            <summary>Creates and sets up a mocked db query.</summary>
+            <typeparam name="TQuery">The query type.</typeparam>
+            <param name="dbQuery">The db query to mock.</param>
+            <returns>A mocked readonly db query.</returns>
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.ReadOnlyDbSetExtensions.CreateMockedReadOnlyDbSet``1(Microsoft.EntityFrameworkCore.DbSet{``0})">
+            <summary>Creates and sets up a mocked readonly db set.</summary>
+            <typeparam name="TEntity">The entity type.</typeparam>
+            <param name="readOnlyDbSet">The readonly db set to mock.</param>
+            <returns>A mocked readonly db set.</returns>
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.ReadOnlyDbSetExtensions.CreateReadOnlyMock``1(Microsoft.EntityFrameworkCore.DbQuery{``0})">
+            <summary>Creates and sets up a mocked db query.</summary>
+            <typeparam name="TQuery">The query type.</typeparam>
+            <param name="dbQuery">The db query to mock.</param>
+            <returns>A mocked readonly db query.</returns>
+        </member>
         <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.ReadOnlyDbSetExtensions.CreateReadOnlyMock``1(Microsoft.EntityFrameworkCore.DbSet{``0})">
             <summary>Creates and sets up a mocked readonly db set.</summary>
             <typeparam name="TEntity">The entity type.</typeparam>
             <param name="readOnlyDbSet">The readonly db set to mock.</param>
             <returns>A mocked readonly db set.</returns>
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.ReadOnlyDbSetExtensions.AddToReadOnlySource``1(Microsoft.EntityFrameworkCore.DbQuery{``0},``0)">
+            <summary>Adds an item to the end of the mocked readonly db set source.</summary>
+            <typeparam name="TEntity">The entity type.</typeparam>
+            <param name="mockedReadOnlyDbSet">The mocked readonly db set.</param>
+            <param name="item">The item to be added to the end of the mocked readonly db set source.</param>
         </member>
         <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.ReadOnlyDbSetExtensions.AddToReadOnlySource``1(Microsoft.EntityFrameworkCore.DbSet{``0},``0)">
             <summary>Adds an item to the end of the mocked readonly db set source.</summary>
@@ -195,11 +277,22 @@
             <param name="mockedReadOnlyDbSet">The mocked readonly db set.</param>
             <param name="item">The item to be added to the end of the mocked readonly db set source.</param>
         </member>
+        <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.ReadOnlyDbSetExtensions.AddRangeToReadOnlySource``1(Microsoft.EntityFrameworkCore.DbQuery{``0},System.Collections.Generic.IEnumerable{``0})">
+            <summary>Adds the items of the specified sequence to the end of the mocked readonly db set source.</summary>
+            <typeparam name="TEntity">The entity type.</typeparam>
+            <param name="mockedReadOnlyDbSet">The mocked readonly db set.</param>
+            <param name="items">The sequence whose items should be added to the end of the mocked readonly db set source.</param>
+        </member>
         <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.ReadOnlyDbSetExtensions.AddRangeToReadOnlySource``1(Microsoft.EntityFrameworkCore.DbSet{``0},System.Collections.Generic.IEnumerable{``0})">
             <summary>Adds the items of the specified sequence to the end of the mocked readonly db set source.</summary>
             <typeparam name="TEntity">The entity type.</typeparam>
             <param name="mockedReadOnlyDbSet">The mocked readonly db set.</param>
             <param name="items">The sequence whose items should be added to the end of the mocked readonly db set source.</param>
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.ReadOnlyDbSetExtensions.ClearReadOnlySource``1(Microsoft.EntityFrameworkCore.DbQuery{``0})">
+            <summary>Removes all items from the mocked readonly db set source.</summary>
+            <typeparam name="TEntity">The entity type.</typeparam>
+            <param name="mockedReadOnlyDbSet">The mocked readonly db set.</param>
         </member>
         <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.ReadOnlyDbSetExtensions.ClearReadOnlySource``1(Microsoft.EntityFrameworkCore.DbSet{``0})">
             <summary>Removes all items from the mocked readonly db set source.</summary>
@@ -235,7 +328,7 @@
         </member>
         <member name="M:EntityFrameworkCore.Testing.Moq.Helpers.Create.MockedQueryProviderFor``1(System.Linq.IQueryable{``0})">
             <summary>
-            Creates a mocked query provider.
+                Creates a mocked query provider.
             </summary>
             <typeparam name="T">The queryable type.</typeparam>
             <param name="queryable">The query provider source.</param>

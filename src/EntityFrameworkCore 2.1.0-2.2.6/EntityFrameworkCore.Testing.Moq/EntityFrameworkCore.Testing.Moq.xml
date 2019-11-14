@@ -7,6 +7,13 @@
         <member name="T:EntityFrameworkCore.Testing.Moq.Extensions.DbContextExtensions">
             <summary>Extensions for the db context type.</summary>
         </member>
+        <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.DbContextExtensions.CreateMockedDbContext``1(``0)">
+            <summary>Creates and sets up a mocked db context.</summary>
+            <typeparam name="TDbContext">The db context type.</typeparam>
+            <param name="dbContextToMock">The db context to mock/proxy.</param>
+            <returns>A mocked db context.</returns>
+            <remarks>dbContextToMock would typically be an in-memory database instance.</remarks>
+        </member>
         <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.DbContextExtensions.CreateMock``1(``0)">
             <summary>Creates and sets up a mocked db context.</summary>
             <typeparam name="TDbContext">The db context type.</typeparam>
@@ -55,6 +62,12 @@
         <member name="T:EntityFrameworkCore.Testing.Moq.Extensions.DbQueryExtensions">
             <summary>Extensions for the db query type.</summary>
         </member>
+        <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.DbQueryExtensions.CreateMockedDbQuery``1(Microsoft.EntityFrameworkCore.DbQuery{``0})">
+            <summary>Creates and sets up a mocked db query.</summary>
+            <typeparam name="TQuery">The query type.</typeparam>
+            <param name="dbQuery">The db query to mock.</param>
+            <returns>A mocked db query.</returns>
+        </member>
         <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.DbQueryExtensions.CreateMock``1(Microsoft.EntityFrameworkCore.DbQuery{``0})">
             <summary>Creates and sets up a mocked db query.</summary>
             <typeparam name="TQuery">The query type.</typeparam>
@@ -98,6 +111,12 @@
         <member name="T:EntityFrameworkCore.Testing.Moq.Extensions.DbSetExtensions">
             <summary>Extensions for the db set type.</summary>
         </member>
+        <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.DbSetExtensions.CreateMockedDbSet``1(Microsoft.EntityFrameworkCore.DbSet{``0})">
+            <summary>Creates and sets up a mocked db set.</summary>
+            <typeparam name="TEntity">The entity type.</typeparam>
+            <param name="dbSet">The db set to mock/proxy.</param>
+            <returns>A mocked db set.</returns>
+        </member>
         <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.DbSetExtensions.CreateMock``1(Microsoft.EntityFrameworkCore.DbSet{``0})">
             <summary>Creates and sets up a mocked db set.</summary>
             <typeparam name="TEntity">The entity type.</typeparam>
@@ -134,13 +153,34 @@
         <member name="T:EntityFrameworkCore.Testing.Moq.Extensions.QueryProviderExtensions">
             <summary>Extensions for query provider and mock query provider types.</summary>
         </member>
+        <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.QueryProviderExtensions.CreateMockedQueryProvider``1(System.Linq.IQueryProvider,System.Collections.Generic.IEnumerable{``0})">
+            <summary>Creates a mocked query provider.</summary>
+            <typeparam name="T">The query provider source item type.</typeparam>
+            <param name="queryProviderToMock">The query provider to mock.</param>
+            <param name="enumerable">The query provider source.</param>
+            <returns>A mocked query provider.</returns>
+        </member>
         <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.QueryProviderExtensions.CreateMock``1(System.Linq.IQueryProvider,System.Collections.Generic.IEnumerable{``0})">
             <summary>Creates a mocked query provider.</summary>
             <typeparam name="T">The query provider source item type.</typeparam>
             <param name="queryProviderToMock">The query provider to mock.</param>
             <param name="enumerable">The query provider source.</param>
             <returns>A mocked query provider.</returns>
-            <remarks>Extends queryProviderToMock if it is a mock.</remarks>
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.QueryProviderExtensions.AddFromSqlResult``1(System.Linq.IQueryProvider,System.Collections.Generic.IEnumerable{``0})">
+            <summary>Sets up FromSql invocations to return a specified result.</summary>
+            <typeparam name="T">The queryable source type.</typeparam>
+            <param name="mockedQueryProvider">The mocked query provider.</param>
+            <param name="fromSqlResult">The FromSql result.</param>
+            <returns>The mocked queryable.</returns>
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.QueryProviderExtensions.AddFromSqlResult``1(System.Linq.IQueryProvider,System.String,System.Collections.Generic.IEnumerable{``0})">
+            <summary>Sets up FromSql invocations containing a specified sql string to return a specified result.</summary>
+            <typeparam name="T">The queryable source type.</typeparam>
+            <param name="mockedQueryProvider">The mocked query provider.</param>
+            <param name="sql">The FromSql sql string. Set up supports case insensitive partial matches.</param>
+            <param name="fromSqlResult">The FromSql result.</param>
+            <returns>The mocked queryable.</returns>
         </member>
         <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.QueryProviderExtensions.AddFromSqlResult``1(System.Linq.IQueryProvider,System.String,System.Collections.Generic.IEnumerable{System.Object},System.Collections.Generic.IEnumerable{``0})">
             <summary>Sets up FromSql invocations containing a specified sql string and parameters to return a specified result.</summary>
@@ -174,7 +214,7 @@
         </member>
         <member name="M:EntityFrameworkCore.Testing.Moq.Helpers.Create.MockedQueryProviderFor``1(System.Linq.IQueryable{``0})">
             <summary>
-            Creates a mocked query provider.
+                Creates a mocked query provider.
             </summary>
             <typeparam name="T">The queryable type.</typeparam>
             <param name="queryable">The query provider source.</param>
