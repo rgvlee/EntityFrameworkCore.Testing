@@ -226,7 +226,7 @@ The only difference from the above examples is the Create factory methods are mo
 
 ```
 var dbContextToMock = new TestDbContext(new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
-var mockedContext = Create.SubstituteFor(dbContextToMock);
+var mockedContext = Create.SubstituteDbContextFor(dbContextToMock);
 ```
 
 ### Performing Received operations
@@ -237,7 +237,7 @@ Received operations can be performed directly on the substitute as you would exp
 public void AddRangeThenSaveChanges_CanAssertInvocationCount()
 {
     var dbContextToMock = new TestDbContext(new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
-    var mockedDbContext = Create.SubstituteFor(dbContextToMock);
+    var mockedDbContext = Create.SubstituteDbContextFor(dbContextToMock);
 
     mockedDbContext.Set<TestEntity>().AddRange(Fixture.CreateMany<TestEntity>().ToList());
     mockedDbContext.SaveChanges();
