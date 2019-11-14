@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Threading.Tasks;
 using AutoFixture;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -30,6 +31,23 @@ namespace EntityFrameworkCore.Testing.Common.Tests
             {
                 Assert.That(actualResult1, Is.EquivalentTo(expectedResult));
                 Assert.That(actualResult2, Is.EquivalentTo(actualResult1));
+            });
+        }
+
+        [Test]
+        public virtual async Task FromSqlThenFirstOrDefaultAsync_ReturnsFirstElement()
+        {
+            var sql = "sp_NoParams";
+            var expectedResult = Fixture.CreateMany<T>().ToList();
+            AddFromSqlResult(Queryable, sql, expectedResult);
+
+            var actualResult1 = await Queryable.FromSql("[dbo].[sp_NoParams]").FirstOrDefaultAsync();
+            var actualResult2 = await Queryable.FromSql("[dbo].[sp_NoParams]").FirstOrDefaultAsync();
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(actualResult1, Is.EqualTo(expectedResult.First()));
+                Assert.That(actualResult2, Is.EqualTo(expectedResult.First()));
             });
         }
 
