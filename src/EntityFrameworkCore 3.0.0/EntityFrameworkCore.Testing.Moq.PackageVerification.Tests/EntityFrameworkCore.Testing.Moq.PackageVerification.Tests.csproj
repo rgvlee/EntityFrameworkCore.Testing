@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
@@ -15,7 +15,7 @@
 
   <ItemGroup>
     <PackageReference Include="AutoFixture" Version="4.11.0" />
-    <PackageReference Include="EntityFrameworkCore.Testing.Moq" Version="2.0.0-RC2" />
+    <PackageReference Include="EntityFrameworkCore.Testing.Moq" Version="2.0.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="3.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="3.0.0" />
