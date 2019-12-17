@@ -14,6 +14,11 @@ namespace EntityFrameworkCore.Testing.Common
     public class AsyncQueryProvider<T> : IAsyncQueryProvider
     {
         private static readonly ILogger Logger = LoggerHelper.CreateLogger(typeof(AsyncQueryProvider<T>));
+        
+        public AsyncQueryProvider(IQueryable<T> source)
+        {
+            Source = source;
+        }
 
         /// <summary>The query provider source.</summary>
         public virtual IQueryable<T> Source { get; set; }
@@ -21,7 +26,7 @@ namespace EntityFrameworkCore.Testing.Common
         /// <inheritdoc />
         public virtual IQueryable CreateQuery(Expression expression)
         {
-            return new AsyncEnumerable<T>(expression);
+            return Source.Provider.CreateQuery(expression);
         }
 
         /// <inheritdoc />
@@ -72,7 +77,7 @@ namespace EntityFrameworkCore.Testing.Common
                 }
             }
 
-            return new AsyncEnumerable<TElement>(expression);
+            return Source.Provider.CreateQuery<TElement>(expression);
         }
 
         /// <inheritdoc />
