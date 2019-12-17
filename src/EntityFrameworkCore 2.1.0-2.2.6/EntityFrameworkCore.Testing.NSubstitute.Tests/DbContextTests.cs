@@ -24,14 +24,29 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Tests
             mockedDbContext.AddExecuteSqlCommandResult(expectedResult);
         }
 
+        public override void AddExecuteSqlCommandResult(TestDbContext mockedDbContext, int expectedResult, Action callback)
+        {
+            mockedDbContext.AddExecuteSqlCommandResult(expectedResult, callback);
+        }
+
         public override void AddExecuteSqlCommandResult(TestDbContext mockedDbContext, string sql, int expectedResult)
         {
             mockedDbContext.AddExecuteSqlCommandResult(sql, expectedResult);
+        }
+        
+        public override void AddExecuteSqlCommandResult(TestDbContext mockedDbContext, string sql, int expectedResult, Action callback)
+        {
+            mockedDbContext.AddExecuteSqlCommandResult(sql, expectedResult, callback);
         }
 
         public override void AddExecuteSqlCommandResult(TestDbContext mockedDbContext, string sql, IEnumerable<object> parameters, int expectedResult)
         {
             mockedDbContext.AddExecuteSqlCommandResult(sql, parameters, expectedResult);
+        }
+
+        public override void AddExecuteSqlCommandResult(TestDbContext mockedDbContext, string sql, IEnumerable<object> parameters, int expectedResult, Action callback)
+        {
+            mockedDbContext.AddExecuteSqlCommandResult(sql, parameters, expectedResult, callback);
         }
     }
 }
