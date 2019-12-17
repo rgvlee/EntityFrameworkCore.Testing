@@ -1,6 +1,3 @@
-
-
-
 # EntityFrameworkCore.Testing
 __*Moq and NSubstitute mocking libraries for EntityFrameworkCore*__
 
@@ -31,9 +28,6 @@ In addition to the above you also get all of the benefits of using a mocking fra
 #### EntityFrameworkCore 2.1.0-2.2.6
 - [EntityFrameworkCore.Testing.Moq](https://www.nuget.org/packages/EntityFrameworkCore.Testing.Moq/1.0.4)
 - [EntityFrameworkCore.Testing.NSubstitute](https://www.nuget.org/packages/EntityFrameworkCore.Testing.NSubstitute/1.0.4)
-
-# Prerequistes
-Your DbContext must have a parameterless constructor. I'll be releasing a future version that will allow you remove this limitation.
 
 # Moq
 ## Example Usage
