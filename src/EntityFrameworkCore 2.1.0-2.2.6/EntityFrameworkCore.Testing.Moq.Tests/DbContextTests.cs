@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using EntityFrameworkCore.Testing.Common.Tests;
 using EntityFrameworkCore.Testing.Moq.Extensions;
 using EntityFrameworkCore.Testing.Moq.Helpers;
-using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 
 namespace EntityFrameworkCore.Testing.Moq.Tests
@@ -14,8 +13,7 @@ namespace EntityFrameworkCore.Testing.Moq.Tests
         [SetUp]
         public override void SetUp()
         {
-            var dbContextToMock = new TestDbContext(new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
-            MockedDbContext = Create.MockedDbContextFor(dbContextToMock);
+            MockedDbContext = Create.MockedDbContextFor<TestDbContext>();
             base.SetUp();
         }
 
