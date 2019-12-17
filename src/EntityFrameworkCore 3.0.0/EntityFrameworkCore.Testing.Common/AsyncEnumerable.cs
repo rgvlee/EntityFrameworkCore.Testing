@@ -1,40 +1,45 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
 
 namespace EntityFrameworkCore.Testing.Common
 {
-    /// <inheritdoc cref="IAsyncEnumerable{T}" />
-    [ExcludeFromCodeCoverage]
-    public class AsyncEnumerable<T> : EnumerableQuery<T>, IAsyncEnumerable<T>, IQueryable, IQueryable<T>
+    public class AsyncEnumerable<T> : IAsyncEnumerable<T>, IOrderedQueryable<T>, IEnumerable<T>, IEnumerable, IOrderedQueryable, IQueryable, IQueryable<T>
     {
-        private readonly IQueryProvider _provider;
+        private readonly IEnumerable<T> _enumerable;
+        private readonly IQueryable<T> _queryable;
 
-        /// <summary>Constructor.</summary>
-        /// <param name="expression">The expression to create an asynchronous enumerable for.</param>
-        public AsyncEnumerable(Expression expression) : base(expression)
+        public AsyncEnumerable(IEnumerable<T> enumerable)
         {
-            var queryable = (IQueryable<T>) ((ConstantExpression) ((MethodCallExpression) expression).Arguments[0]).Value;
-            _provider = queryable.Provider;
+            _enumerable = enumerable;
+
+            _queryable = _enumerable.AsQueryable();
+
+            ElementType = _queryable.ElementType;
+            Expression = _queryable.Expression;
+            Provider = new AsyncQueryProvider<T>(_queryable);
         }
 
-        /// <summary>Constructor.</summary>
-        /// <param name="enumerable">The enumerable to create an asynchronous enumerable for.</param>
-        public AsyncEnumerable(IEnumerable<T> enumerable) : base(enumerable)
-        {
-            var provider = new AsyncQueryProvider<T>();
-            provider.Source = enumerable.AsQueryable();
-            _provider = provider;
-        }
-
-        /// <inheritdoc />
         public IAsyncEnumerator<T> GetAsyncEnumerator(CancellationToken cancellationToken = new CancellationToken())
         {
-            return new AsyncEnumerator<T>(this.AsEnumerable().GetEnumerator());
+            return ((IAsyncEnumerable<T>) _queryable).GetAsyncEnumerator(cancellationToken);
         }
 
-        IQueryProvider IQueryable.Provider => _provider;
+        IEnumerator<T> IEnumerable<T>.GetEnumerator()
+        {
+            return _enumerable.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return _enumerable.GetEnumerator();
+        }
+
+        public Type ElementType { get; }
+        public Expression Expression { get; }
+        public IQueryProvider Provider { get; }
     }
 }
