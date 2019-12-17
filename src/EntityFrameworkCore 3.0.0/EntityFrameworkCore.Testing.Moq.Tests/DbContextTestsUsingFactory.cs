@@ -9,12 +9,17 @@ using NUnit.Framework;
 namespace EntityFrameworkCore.Testing.Moq.Tests
 {
     [TestFixture]
-    public class DbContextTests : DbContextTestsBase<TestDbContext>
+    public class DbContextTestsUsingFactory : DbContextTestsBase<TestDbContext>
     {
         [SetUp]
         public override void SetUp()
         {
-            MockedDbContext = Create.MockedDbContextFor<TestDbContext>();
+            TestDbContext Factory()
+            {
+                return new TestDbContext(new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
+            }
+
+            MockedDbContext = Create.MockedDbContextFor(Factory);
             base.SetUp();
         }
 
