@@ -29,7 +29,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
             EnsureArgument.IsNotNull(queryProviderToMock, nameof(queryProviderToMock));
             EnsureArgument.IsNotNull(enumerable, nameof(enumerable));
 
-            var mockedQueryProvider = Substitute.ForPartsOf<AsyncQueryProvider<T>>();
+            var mockedQueryProvider = Substitute.ForPartsOf<AsyncQueryProvider<T>>(enumerable.AsQueryable());
 
             mockedQueryProvider
                 .Configure()
@@ -39,8 +39,6 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
                     Logger.LogDebug("Catch all exception invoked");
                     return new NotSupportedException();
                 });
-
-            mockedQueryProvider.Configure().Source.Returns(enumerable.AsQueryable());
 
             return mockedQueryProvider;
         }

@@ -27,7 +27,7 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
             EnsureArgument.IsNotNull(queryProviderToMock, nameof(queryProviderToMock));
             EnsureArgument.IsNotNull(enumerable, nameof(enumerable));
 
-            var queryProviderMock = new Mock<AsyncQueryProvider<T>>();
+            var queryProviderMock = new Mock<AsyncQueryProvider<T>>(enumerable.AsQueryable());
             queryProviderMock.CallBase = true;
 
             queryProviderMock
@@ -35,8 +35,6 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
                 .Setup(m => m.CreateQuery<T>(It.Is<MethodCallExpression>(mce => mce.Method.Name.Equals(nameof(RelationalQueryableExtensions.FromSql)))))
                 .Callback((Expression providedExpression) => { Logger.LogDebug("Catch all exception invoked"); })
                 .Throws<NotSupportedException>();
-
-            queryProviderMock.Setup(m => m.Source).Returns(enumerable.AsQueryable());
 
             return queryProviderMock.Object;
         }
