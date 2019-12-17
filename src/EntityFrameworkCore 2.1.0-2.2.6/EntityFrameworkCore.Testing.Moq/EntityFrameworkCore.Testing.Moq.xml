@@ -203,6 +203,18 @@
             <param name="dbContextToMock">The db context to mock.</param>
             <returns>A mocked db context.</returns>
         </member>
+        <member name="M:EntityFrameworkCore.Testing.Moq.Helpers.Create.MockedDbContextFor``1">
+            <summary>Creates a mocked db context.</summary>
+            <typeparam name="TDbContext">The db context type.</typeparam>
+            <returns>A mocked db context.</returns>
+            <remarks>TDbContext must have a constructor with a single parameter of type DbContextOptionsBuilder.</remarks>
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.Moq.Helpers.Create.MockedDbContextFor``1(System.Func{``0})">
+            <summary>Creates a mocked db context.</summary>
+            <typeparam name="TDbContext">The db context type.</typeparam>
+            <param name="factory">A factory method that will create an instance of TDbContext.</param>
+            <returns>A mocked db context.</returns>
+        </member>
         <member name="M:EntityFrameworkCore.Testing.Moq.Helpers.Create.MockedDbSetFor``1(Microsoft.EntityFrameworkCore.DbSet{``0})">
             <summary>Creates a mocked db set.</summary>
             <typeparam name="TEntity">The entity type.</typeparam>
