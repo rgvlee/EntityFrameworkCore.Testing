@@ -4,40 +4,6 @@
         <name>EntityFrameworkCore.Testing.Common</name>
     </assembly>
     <members>
-        <member name="T:EntityFrameworkCore.Testing.Common.AsyncEnumerable`1">
-            <inheritdoc cref="T:System.Collections.Generic.IAsyncEnumerable`1" />
-        </member>
-        <member name="M:EntityFrameworkCore.Testing.Common.AsyncEnumerable`1.#ctor(System.Linq.Expressions.Expression)">
-            <summary>Constructor.</summary>
-            <param name="expression">The expression to create an asynchronous enumerable for.</param>
-        </member>
-        <member name="M:EntityFrameworkCore.Testing.Common.AsyncEnumerable`1.#ctor(System.Collections.Generic.IEnumerable{`0})">
-            <summary>Constructor.</summary>
-            <param name="enumerable">The enumerable to create an asynchronous enumerable for.</param>
-        </member>
-        <member name="M:EntityFrameworkCore.Testing.Common.AsyncEnumerable`1.GetEnumerator">
-            <inheritdoc />
-        </member>
-        <member name="T:EntityFrameworkCore.Testing.Common.AsyncEnumerator`1">
-            <inheritdoc />
-        </member>
-        <member name="M:EntityFrameworkCore.Testing.Common.AsyncEnumerator`1.#ctor(System.Collections.Generic.IEnumerator{`0})">
-            <summary>Constructor.</summary>
-            <param name="enumerator">The enumerator to create an asynchronous enumerator for.</param>
-        </member>
-        <member name="P:EntityFrameworkCore.Testing.Common.AsyncEnumerator`1.Current">
-            <inheritdoc />
-        </member>
-        <member name="M:EntityFrameworkCore.Testing.Common.AsyncEnumerator`1.MoveNext(System.Threading.CancellationToken)">
-            <inheritdoc />
-        </member>
-        <member name="M:EntityFrameworkCore.Testing.Common.AsyncEnumerator`1.Dispose">
-            <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
-        </member>
-        <member name="M:EntityFrameworkCore.Testing.Common.AsyncEnumerator`1.Dispose(System.Boolean)">
-            <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
-            <param name="disposing">Provides disposal context; true if invoked by the instance, false if invoked by the finalizer.</param>
-        </member>
         <member name="T:EntityFrameworkCore.Testing.Common.AsyncQueryProvider`1">
             <inheritdoc />
         </member>
