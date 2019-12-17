@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using EntityFrameworkCore.Testing.Common;
 using EntityFrameworkCore.Testing.Moq.Extensions;
@@ -17,6 +18,29 @@ namespace EntityFrameworkCore.Testing.Moq.Helpers
         {
             EnsureArgument.IsNotNull(dbContextToMock, nameof(dbContextToMock));
 
+            return dbContextToMock.CreateMockedDbContext();
+        }
+
+        /// <summary>Creates a mocked db context.</summary>
+        /// <typeparam name="TDbContext">The db context type.</typeparam>
+        /// <returns>A mocked db context.</returns>
+        /// <remarks>TDbContext must have a constructor with a single parameter of type DbContextOptionsBuilder.</remarks>
+        public static TDbContext MockedDbContextFor<TDbContext>()
+            where TDbContext : DbContext
+        {
+            var options = new DbContextOptionsBuilder<TDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
+            var dbContextToMock = (TDbContext) Activator.CreateInstance(typeof(TDbContext), options);
+            return dbContextToMock.CreateMockedDbContext();
+        }
+
+        /// <summary>Creates a mocked db context.</summary>
+        /// <typeparam name="TDbContext">The db context type.</typeparam>
+        /// <param name="factory">A factory method that will create an instance of TDbContext.</param>
+        /// <returns>A mocked db context.</returns>
+        public static TDbContext MockedDbContextFor<TDbContext>(Func<TDbContext> factory)
+            where TDbContext : DbContext
+        {
+            var dbContextToMock = factory();
             return dbContextToMock.CreateMockedDbContext();
         }
 

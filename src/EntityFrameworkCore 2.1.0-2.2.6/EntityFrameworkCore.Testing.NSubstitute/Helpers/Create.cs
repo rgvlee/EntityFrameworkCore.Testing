@@ -20,7 +20,30 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Helpers
 
             return dbContextToMock.CreateDbContextSubstitute();
         }
-        
+
+        /// <summary>Creates a mocked db context.</summary>
+        /// <typeparam name="TDbContext">The db context type.</typeparam>
+        /// <returns>A mocked db context.</returns>
+        /// <remarks>TDbContext must have a constructor with a single parameter of type DbContextOptionsBuilder.</remarks>
+        public static TDbContext SubstituteDbContextFor<TDbContext>()
+            where TDbContext : DbContext
+        {
+            var options = new DbContextOptionsBuilder<TDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
+            var dbContextToMock = (TDbContext) Activator.CreateInstance(typeof(TDbContext), options);
+            return dbContextToMock.CreateDbContextSubstitute();
+        }
+
+        /// <summary>Creates a mocked db context.</summary>
+        /// <typeparam name="TDbContext">The db context type.</typeparam>
+        /// <param name="factory">A factory method that will create an instance of TDbContext.</param>
+        /// <returns>A mocked db context.</returns>
+        public static TDbContext SubstituteDbContextFor<TDbContext>(Func<TDbContext> factory)
+            where TDbContext : DbContext
+        {
+            var dbContextToMock = factory();
+            return dbContextToMock.CreateDbContextSubstitute();
+        }
+
         /// <summary>Creates a mocked db set.</summary>
         /// <typeparam name="TEntity">The entity type.</typeparam>
         /// <param name="dbSetToMock">The db set to mock.</param>
@@ -32,7 +55,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Helpers
 
             return dbSetToMock.CreateDbSetSubstitute();
         }
-        
+
         /// <summary>Creates a mocked db query.</summary>
         /// <typeparam name="TQuery">The query type.</typeparam>
         /// <param name="dbQueryToMock">The db query to mock.</param>
@@ -44,7 +67,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Helpers
 
             return dbQueryToMock.CreateDbQuerySubstitute();
         }
-        
+
         /// <summary>
         ///     Creates a mocked query provider.
         /// </summary>
