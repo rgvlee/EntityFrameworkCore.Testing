@@ -191,41 +191,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
                 Assert.That(actualResult2, Is.EqualTo(actualResult1));
             });
         }
-
-        [Test]
-        public void ExecuteSqlCommand_AnySqlWithCallback_InvokesCallback()
-        {
-            var expectedResult = 1;
-            var itemsToCreate = 3;
-            var source = Fixture.CreateMany<string>(itemsToCreate).ToList();
-
-            var preSetUpFirst = source.First();
-            var preSetUpCount = source.Count;
-
-            Logger.LogDebug("Setting up ExecuteSqlCommand");
-            AddExecuteSqlCommandResult(MockedDbContext, expectedResult, () =>
-            {
-                Logger.LogDebug($"Before callback invoked: {source.Count}");
-                source = source.Take(1).ToList();
-                Logger.LogDebug($"After callback invoked: {source.Count}");
-            });
-
-            var postSetUpCount = source.Count;
-
-            Logger.LogDebug("Invoking ExecuteSqlCommand");
-            var actualResult = MockedDbContext.Database.ExecuteSqlCommand("sp_NoParams");
-            Logger.LogDebug("ExecuteSqlCommand invoked");
-
-            Assert.Multiple(() =>
-            {
-                Assert.That(actualResult, Is.EqualTo(expectedResult));
-                Assert.That(preSetUpCount, Is.EqualTo(itemsToCreate));
-                Assert.That(postSetUpCount, Is.EqualTo(preSetUpCount));
-                Assert.That(source.Count, Is.EqualTo(1));
-                Assert.That(source.First(), Is.EqualTo(preSetUpFirst));
-            });
-        }
-
+        
         [Test]
         public void ExecuteSqlCommand_SpecifiedSql_ReturnsExpectedResult()
         {
