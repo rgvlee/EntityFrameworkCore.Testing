@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using EntityFrameworkCore.Testing.Common;
+using EntityFrameworkCore.Testing.NSubstitute.Extensions;
 using Microsoft.EntityFrameworkCore;
 
 namespace EntityFrameworkCore.Testing.NSubstitute.Helpers
