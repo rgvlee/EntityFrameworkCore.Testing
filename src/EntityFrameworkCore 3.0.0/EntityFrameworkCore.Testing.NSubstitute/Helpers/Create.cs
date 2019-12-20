@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 namespace EntityFrameworkCore.Testing.NSubstitute.Helpers
 {
     /// <summary>Factory for creating substitute instances.</summary>
-    public static class Create
+    public static partial class Create
     {
         /// <summary>Creates a substitute db context.</summary>
         /// <typeparam name="TDbContext">The db context type.</typeparam>
@@ -56,19 +56,6 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Helpers
             EnsureArgument.IsNotNull(dbSetToMock, nameof(dbSetToMock));
 
             return dbSetToMock.CreateSubstituteDbSet();
-        }
-
-        /// <summary>Creates a substitute db query.</summary>
-        /// <typeparam name="TQuery">The query type.</typeparam>
-        /// <param name="dbQueryToMock">The db query to mock.</param>
-        /// <returns>A substitute db query.</returns>
-        [Obsolete("This method will remain until EntityFrameworkCore no longer supports the DbQuery<TQuery> type. Use Create.SubstituteReadOnlyDbSetFor instead.")]
-        public static DbQuery<TQuery> SubstituteDbQueryFor<TQuery>(DbQuery<TQuery> dbQueryToMock)
-            where TQuery : class
-        {
-            EnsureArgument.IsNotNull(dbQueryToMock, nameof(dbQueryToMock));
-
-            return dbQueryToMock.CreateSubstituteDbQuery();
         }
 
         /// <summary>Creates a substitute readonly db set.</summary>

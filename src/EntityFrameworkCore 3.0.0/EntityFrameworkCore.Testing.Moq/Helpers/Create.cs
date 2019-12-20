@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 namespace EntityFrameworkCore.Testing.Moq.Helpers
 {
     /// <summary>Factory for creating mocked instances.</summary>
-    public static class Create
+    public static partial class Create
     {
         /// <summary>Creates a mocked db context.</summary>
         /// <typeparam name="TDbContext">The db context type.</typeparam>
@@ -56,19 +56,6 @@ namespace EntityFrameworkCore.Testing.Moq.Helpers
             EnsureArgument.IsNotNull(dbSetToMock, nameof(dbSetToMock));
 
             return dbSetToMock.CreateMockedDbSet();
-        }
-
-        /// <summary>Creates a mocked db query.</summary>
-        /// <typeparam name="TQuery">The query type.</typeparam>
-        /// <param name="dbQueryToMock">The db query to mock.</param>
-        /// <returns>A mocked db query.</returns>
-        [Obsolete("This method will remain until EntityFrameworkCore no longer supports the DbQuery<TQuery> type. Use Create.MockedReadOnlyDbSetFor instead.")]
-        public static DbQuery<TQuery> MockedDbQueryFor<TQuery>(DbQuery<TQuery> dbQueryToMock)
-            where TQuery : class
-        {
-            EnsureArgument.IsNotNull(dbQueryToMock, nameof(dbQueryToMock));
-
-            return dbQueryToMock.CreateMockedDbQuery();
         }
 
         /// <summary>Creates a mocked readonly db set.</summary>
