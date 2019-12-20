@@ -18,7 +18,7 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
         /// <typeparam name="TEntity">The entity type.</typeparam>
         /// <param name="readOnlyDbSet">The readonly db set to mock.</param>
         /// <returns>A mocked readonly db set.</returns>
-        public static DbSet<TEntity> CreateMockedReadOnlyDbSet<TEntity>(this DbSet<TEntity> readOnlyDbSet) 
+        public static DbSet<TEntity> CreateMockedReadOnlyDbSet<TEntity>(this DbSet<TEntity> readOnlyDbSet)
             where TEntity : class
         {
             EnsureArgument.IsNotNull(readOnlyDbSet, nameof(readOnlyDbSet));
@@ -74,12 +74,12 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
 
             return readOnlyDbSetMock.Object;
         }
-        
+
         /// <summary>Adds an item to the end of the mocked readonly db set source.</summary>
         /// <typeparam name="TEntity">The entity type.</typeparam>
         /// <param name="mockedReadOnlyDbSet">The mocked readonly db set.</param>
         /// <param name="item">The item to be added to the end of the mocked readonly db set source.</param>
-        public static void AddToReadOnlySource<TEntity>(this DbQuery<TEntity> mockedReadOnlyDbSet, TEntity item) 
+        public static void AddToReadOnlySource<TEntity>(this DbQuery<TEntity> mockedReadOnlyDbSet, TEntity item)
             where TEntity : class
         {
             ((DbSet<TEntity>) mockedReadOnlyDbSet).AddToReadOnlySource(item);
@@ -89,7 +89,7 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
         /// <typeparam name="TEntity">The entity type.</typeparam>
         /// <param name="mockedReadOnlyDbSet">The mocked readonly db set.</param>
         /// <param name="item">The item to be added to the end of the mocked readonly db set source.</param>
-        public static void AddToReadOnlySource<TEntity>(this DbSet<TEntity> mockedReadOnlyDbSet, TEntity item) 
+        public static void AddToReadOnlySource<TEntity>(this DbSet<TEntity> mockedReadOnlyDbSet, TEntity item)
             where TEntity : class
         {
             EnsureArgument.IsNotNull(mockedReadOnlyDbSet, nameof(mockedReadOnlyDbSet));
@@ -106,7 +106,7 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
         /// <typeparam name="TEntity">The entity type.</typeparam>
         /// <param name="mockedReadOnlyDbSet">The mocked readonly db set.</param>
         /// <param name="items">The sequence whose items should be added to the end of the mocked readonly db set source.</param>
-        public static void AddRangeToReadOnlySource<TEntity>(this DbQuery<TEntity> mockedReadOnlyDbSet, IEnumerable<TEntity> items) 
+        public static void AddRangeToReadOnlySource<TEntity>(this DbQuery<TEntity> mockedReadOnlyDbSet, IEnumerable<TEntity> items)
             where TEntity : class
         {
             ((DbSet<TEntity>) mockedReadOnlyDbSet).AddRangeToReadOnlySource(items);
@@ -116,7 +116,7 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
         /// <typeparam name="TEntity">The entity type.</typeparam>
         /// <param name="mockedReadOnlyDbSet">The mocked readonly db set.</param>
         /// <param name="items">The sequence whose items should be added to the end of the mocked readonly db set source.</param>
-        public static void AddRangeToReadOnlySource<TEntity>(this DbSet<TEntity> mockedReadOnlyDbSet, IEnumerable<TEntity> items) 
+        public static void AddRangeToReadOnlySource<TEntity>(this DbSet<TEntity> mockedReadOnlyDbSet, IEnumerable<TEntity> items)
             where TEntity : class
         {
             EnsureArgument.IsNotNull(mockedReadOnlyDbSet, nameof(mockedReadOnlyDbSet));
@@ -133,7 +133,7 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
         /// <summary>Removes all items from the mocked readonly db set source.</summary>
         /// <typeparam name="TEntity">The entity type.</typeparam>
         /// <param name="mockedReadOnlyDbSet">The mocked readonly db set.</param>
-        public static void ClearReadOnlySource<TEntity>(this DbQuery<TEntity> mockedReadOnlyDbSet) 
+        public static void ClearReadOnlySource<TEntity>(this DbQuery<TEntity> mockedReadOnlyDbSet)
             where TEntity : class
         {
             ((DbSet<TEntity>) mockedReadOnlyDbSet).ClearReadOnlySource();
@@ -142,7 +142,7 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
         /// <summary>Removes all items from the mocked readonly db set source.</summary>
         /// <typeparam name="TEntity">The entity type.</typeparam>
         /// <param name="mockedReadOnlyDbSet">The mocked readonly db set.</param>
-        public static void ClearReadOnlySource<TEntity>(this DbSet<TEntity> mockedReadOnlyDbSet) 
+        public static void ClearReadOnlySource<TEntity>(this DbSet<TEntity> mockedReadOnlyDbSet)
             where TEntity : class
         {
             EnsureArgument.IsNotNull(mockedReadOnlyDbSet, nameof(mockedReadOnlyDbSet));
@@ -150,7 +150,7 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
             mockedReadOnlyDbSet.SetSource(new List<TEntity>());
         }
 
-        internal static void SetSource<TEntity>(this DbSet<TEntity> mockedReadOnlyDbSet, IEnumerable<TEntity> source) 
+        internal static void SetSource<TEntity>(this DbSet<TEntity> mockedReadOnlyDbSet, IEnumerable<TEntity> source)
             where TEntity : class
         {
             EnsureArgument.IsNotNull(mockedReadOnlyDbSet, nameof(mockedReadOnlyDbSet));
