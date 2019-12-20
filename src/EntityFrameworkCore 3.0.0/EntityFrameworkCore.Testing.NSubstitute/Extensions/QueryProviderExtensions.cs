@@ -40,6 +40,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
 
             return substituteQueryProvider;
         }
+
         internal static void SetSource<T>(this AsyncQueryProvider<T> substituteQueryProvider, IEnumerable<T> enumerable)
             where T : class
         {
