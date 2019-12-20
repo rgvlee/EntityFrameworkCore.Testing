@@ -22,7 +22,7 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
             mockedQueryable.Provider.AddFromSqlRawResult(string.Empty, new List<object>(), fromSqlInterpolatedResult);
             return mockedQueryable;
         }
-        
+
         /// <summary>Sets up FromSqlInterpolated invocations to return a specified result.</summary>
         /// <typeparam name="T">The queryable source type.</typeparam>
         /// <param name="mockedQueryable">The mocked queryable.</param>
