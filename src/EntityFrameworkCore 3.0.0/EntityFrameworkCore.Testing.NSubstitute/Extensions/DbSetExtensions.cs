@@ -61,7 +61,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
 
             ((IEnumerable) substituteDbSet).GetEnumerator().Returns(callInfo => ((IEnumerable) dbSet).GetEnumerator());
             ((IEnumerable<TEntity>) substituteDbSet).GetEnumerator().Returns(callInfo => ((IEnumerable<TEntity>) dbSet).GetEnumerator());
-            
+
             ((IListSource) substituteDbSet).GetList().Returns(callInfo => dbSet.ToList());
 
             ((IInfrastructure<IServiceProvider>) substituteDbSet).Instance.Returns(callInfo => ((IInfrastructure<IServiceProvider>) dbSet).Instance);
