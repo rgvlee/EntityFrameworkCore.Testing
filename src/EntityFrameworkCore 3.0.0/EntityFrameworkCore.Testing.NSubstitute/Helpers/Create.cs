@@ -5,13 +5,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EntityFrameworkCore.Testing.NSubstitute.Helpers
 {
-    /// <summary>Factory for creating mocked instances.</summary>
+    /// <summary>Factory for creating substitute instances.</summary>
     public static class Create
     {
-        /// <summary>Creates a mocked db context.</summary>
+        /// <summary>Creates a substitute db context.</summary>
         /// <typeparam name="TDbContext">The db context type.</typeparam>
         /// <param name="dbContextToMock">The db context to mock.</param>
-        /// <returns>A mocked db context.</returns>
+        /// <returns>A substitute db context.</returns>
         public static TDbContext SubstituteDbContextFor<TDbContext>(TDbContext dbContextToMock)
             where TDbContext : DbContext
         {
@@ -20,9 +20,9 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Helpers
             return dbContextToMock.CreateSubstituteDbContext();
         }
 
-        /// <summary>Creates a mocked db context.</summary>
+        /// <summary>Creates a substitute db context.</summary>
         /// <typeparam name="TDbContext">The db context type.</typeparam>
-        /// <returns>A mocked db context.</returns>
+        /// <returns>A substitute db context.</returns>
         /// <remarks>TDbContext must have a constructor with a single parameter of type DbContextOptionsBuilder.</remarks>
         public static TDbContext SubstituteDbContextFor<TDbContext>()
             where TDbContext : DbContext
@@ -32,10 +32,10 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Helpers
             return dbContextToMock.CreateSubstituteDbContext();
         }
 
-        /// <summary>Creates a mocked db context.</summary>
+        /// <summary>Creates a substitute db context.</summary>
         /// <typeparam name="TDbContext">The db context type.</typeparam>
         /// <param name="factory">A factory method that will create an instance of TDbContext.</param>
-        /// <returns>A mocked db context.</returns>
+        /// <returns>A substitute db context.</returns>
         public static TDbContext SubstituteDbContextFor<TDbContext>(Func<TDbContext> factory)
             where TDbContext : DbContext
         {
@@ -45,10 +45,10 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Helpers
             return dbContextToMock.CreateSubstituteDbContext();
         }
 
-        /// <summary>Creates a mocked db set.</summary>
+        /// <summary>Creates a substitute db set.</summary>
         /// <typeparam name="TEntity">The entity type.</typeparam>
         /// <param name="dbSetToMock">The db set to mock.</param>
-        /// <returns>A mocked db set.</returns>
+        /// <returns>A substitute db set.</returns>
         public static DbSet<TEntity> SubstituteDbSetFor<TEntity>(DbSet<TEntity> dbSetToMock)
             where TEntity : class
         {
@@ -57,10 +57,10 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Helpers
             return dbSetToMock.CreateSubstituteDbSet();
         }
 
-        /// <summary>Creates a mocked db query.</summary>
+        /// <summary>Creates a substitute db query.</summary>
         /// <typeparam name="TQuery">The query type.</typeparam>
         /// <param name="dbQueryToMock">The db query to mock.</param>
-        /// <returns>A mocked db query.</returns>
+        /// <returns>A substitute db query.</returns>
         [Obsolete("This method will remain until EntityFrameworkCore no longer supports the DbQuery<TQuery> type. Use Create.SubstituteReadOnlyDbSetFor instead.")]
         public static DbQuery<TQuery> SubstituteDbQueryFor<TQuery>(DbQuery<TQuery> dbQueryToMock)
             where TQuery : class
@@ -70,10 +70,10 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Helpers
             return dbQueryToMock.CreateSubstituteDbQuery();
         }
 
-        /// <summary>Creates a mocked readonly db set.</summary>
+        /// <summary>Creates a substitute readonly db set.</summary>
         /// <typeparam name="TEntity">The entity type.</typeparam>
         /// <param name="readOnlyDbSet">The readonly db set to mock.</param>
-        /// <returns>A mocked readonly db set.</returns>
+        /// <returns>A substitute readonly db set.</returns>
         public static DbSet<TEntity> SubstituteReadOnlyDbSetFor<TEntity>(DbSet<TEntity> readOnlyDbSet)
             where TEntity : class
         {
@@ -83,11 +83,11 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Helpers
         }
 
         /// <summary>
-        ///     Creates a mocked query provider.
+        ///     Creates a substitute query provider.
         /// </summary>
         /// <typeparam name="T">The queryable type.</typeparam>
         /// <param name="queryable">The query provider source.</param>
-        /// <returns>A mocked query provider.</returns>
+        /// <returns>A substitute query provider.</returns>
         public static IQueryProvider SubstituteQueryProviderFor<T>(IQueryable<T> queryable)
             where T : class
         {
