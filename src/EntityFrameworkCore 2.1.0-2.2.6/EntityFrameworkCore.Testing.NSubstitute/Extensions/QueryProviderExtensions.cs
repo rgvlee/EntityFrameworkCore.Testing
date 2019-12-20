@@ -23,7 +23,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
         /// <param name="queryProviderToMock">The query provider to mock.</param>
         /// <param name="enumerable">The query provider source.</param>
         /// <returns>A mocked query provider.</returns>
-        public static IQueryProvider CreateQueryProviderSubstitute<T>(this IQueryProvider queryProviderToMock, IEnumerable<T> enumerable) 
+        public static IQueryProvider CreateSubstituteQueryProvider<T>(this IQueryProvider queryProviderToMock, IEnumerable<T> enumerable) 
             where T : class
         {
             EnsureArgument.IsNotNull(queryProviderToMock, nameof(queryProviderToMock));
@@ -52,7 +52,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
         public static IQueryProvider CreateMock<T>(this IQueryProvider queryProviderToMock, IEnumerable<T> enumerable)
             where T : class
         {
-            return queryProviderToMock.CreateQueryProviderSubstitute(enumerable);
+            return queryProviderToMock.CreateSubstituteQueryProvider(enumerable);
         }
 
         internal static void SetSource<T>(this AsyncQueryProvider<T> mockedQueryProvider, IEnumerable<T> enumerable) 

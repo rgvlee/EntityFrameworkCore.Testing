@@ -17,7 +17,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
         /// <typeparam name="TQuery">The query type.</typeparam>
         /// <param name="dbQuery">The db query to mock.</param>
         /// <returns>A mocked db query.</returns>
-        public static DbQuery<TQuery> CreateDbQuerySubstitute<TQuery>(this DbQuery<TQuery> dbQuery) 
+        public static DbQuery<TQuery> CreateSubstituteDbQuery<TQuery>(this DbQuery<TQuery> dbQuery) 
             where TQuery : class
         {
             EnsureArgument.IsNotNull(dbQuery, nameof(dbQuery));
@@ -44,7 +44,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
 
             ((IInfrastructure<IServiceProvider>) mockedDbQuery).Instance.Returns(((IInfrastructure<IServiceProvider>) mockedDbQuery).Instance);
 
-            var mockedQueryProvider = ((IQueryable<TQuery>) mockedDbQuery).Provider.CreateQueryProviderSubstitute(new List<TQuery>());
+            var mockedQueryProvider = ((IQueryable<TQuery>) mockedDbQuery).Provider.CreateSubstituteQueryProvider(new List<TQuery>());
             ((IQueryable<TQuery>) mockedDbQuery).Provider.Returns(mockedQueryProvider);
 
             return mockedDbQuery;
@@ -58,7 +58,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
         public static DbQuery<TQuery> CreateMock<TQuery>(this DbQuery<TQuery> dbQuery)
             where TQuery : class
         {
-            return dbQuery.CreateDbQuerySubstitute();
+            return dbQuery.CreateSubstituteDbQuery();
         }
 
         /// <summary>Adds an item to the end of the mocked db query source.</summary>

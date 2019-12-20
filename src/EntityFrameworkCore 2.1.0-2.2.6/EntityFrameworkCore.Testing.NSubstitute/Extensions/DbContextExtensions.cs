@@ -28,7 +28,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
         /// <param name="dbContextToMock">The db context to mock/proxy.</param>
         /// <returns>A mocked db context.</returns>
         /// <remarks>dbContextToMock would typically be an in-memory database instance.</remarks>
-        public static TDbContext CreateDbContextSubstitute<TDbContext>(this TDbContext dbContextToMock) 
+        public static TDbContext CreateSubstituteDbContext<TDbContext>(this TDbContext dbContextToMock) 
             where TDbContext : DbContext
         {
             EnsureArgument.IsNotNull(dbContextToMock, nameof(dbContextToMock));
@@ -127,7 +127,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
         public static TDbContext CreateMock<TDbContext>(this TDbContext dbContextToMock)
             where TDbContext : DbContext
         {
-            return dbContextToMock.CreateDbContextSubstitute();
+            return dbContextToMock.CreateSubstituteDbContext();
         }
 
         /// <summary>Creates and attaches a mocked db set to a mocked db context.</summary>
@@ -142,7 +142,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
             EnsureArgument.IsNotNull(mockedDbContext, nameof(mockedDbContext));
             EnsureArgument.IsNotNull(dbContextToMock, nameof(dbContextToMock));
 
-            var mockedDbSet = dbContextToMock.Set<TEntity>().CreateDbSetSubstitute();
+            var mockedDbSet = dbContextToMock.Set<TEntity>().CreateSubstituteDbSet();
 
             var property = typeof(TDbContext).GetProperties().SingleOrDefault(p => p.PropertyType == typeof(DbSet<TEntity>));
 
@@ -188,7 +188,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
             EnsureArgument.IsNotNull(mockedDbContext, nameof(mockedDbContext));
             EnsureArgument.IsNotNull(dbContextToMock, nameof(dbContextToMock));
 
-            var mockedDbQuery = dbContextToMock.Query<TQuery>().CreateDbQuerySubstitute();
+            var mockedDbQuery = dbContextToMock.Query<TQuery>().CreateSubstituteDbQuery();
 
             var property = typeof(TDbContext).GetProperties().SingleOrDefault(p => p.PropertyType == typeof(DbQuery<TQuery>));
 

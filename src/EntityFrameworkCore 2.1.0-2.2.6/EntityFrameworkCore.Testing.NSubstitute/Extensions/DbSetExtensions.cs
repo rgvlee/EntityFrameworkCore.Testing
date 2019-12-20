@@ -19,7 +19,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
         /// <typeparam name="TEntity">The entity type.</typeparam>
         /// <param name="dbSet">The db set to mock/proxy.</param>
         /// <returns>A mocked db set.</returns>
-        public static DbSet<TEntity> CreateDbSetSubstitute<TEntity>(this DbSet<TEntity> dbSet) 
+        public static DbSet<TEntity> CreateSubstituteDbSet<TEntity>(this DbSet<TEntity> dbSet) 
             where TEntity : class
         {
             EnsureArgument.IsNotNull(dbSet, nameof(dbSet));
@@ -83,7 +83,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
             mockedDbSet.When(x => x.UpdateRange(Arg.Any<IEnumerable<TEntity>>())).Do(callInfo => dbSet.UpdateRange(callInfo.Arg<IEnumerable<TEntity>>()));
             mockedDbSet.When(x => x.UpdateRange(Arg.Any<TEntity[]>())).Do(callInfo => dbSet.UpdateRange(callInfo.Arg<TEntity[]>()));
 
-            var mockedQueryProvider = ((IQueryable<TEntity>) dbSet).Provider.CreateQueryProviderSubstitute(dbSet);
+            var mockedQueryProvider = ((IQueryable<TEntity>) dbSet).Provider.CreateSubstituteQueryProvider(dbSet);
             ((IQueryable<TEntity>) mockedDbSet).Provider.Returns(mockedQueryProvider);
 
             return mockedDbSet;
@@ -97,7 +97,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
         public static DbSet<TEntity> CreateMock<TEntity>(this DbSet<TEntity> dbSet)
             where TEntity : class
         {
-            return dbSet.CreateDbSetSubstitute();
+            return dbSet.CreateSubstituteDbSet();
         }
     }
 }
