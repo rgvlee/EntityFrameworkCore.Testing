@@ -40,6 +40,8 @@ namespace EntityFrameworkCore.Testing.Moq.Helpers
         public static TDbContext MockedDbContextFor<TDbContext>(Func<TDbContext> factory)
             where TDbContext : DbContext
         {
+            EnsureArgument.IsNotNull(factory, nameof(factory));
+
             var dbContextToMock = factory();
             return dbContextToMock.CreateMockedDbContext();
         }

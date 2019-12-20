@@ -40,6 +40,8 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Helpers
         public static TDbContext SubstituteDbContextFor<TDbContext>(Func<TDbContext> factory)
             where TDbContext : DbContext
         {
+            EnsureArgument.IsNotNull(factory, nameof(factory));
+
             var dbContextToMock = factory();
             return dbContextToMock.CreateDbContextSubstitute();
         }
