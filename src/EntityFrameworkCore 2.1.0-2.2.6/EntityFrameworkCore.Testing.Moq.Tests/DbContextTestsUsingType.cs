@@ -1,19 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using EntityFrameworkCore.Testing.Common.Tests;
-using EntityFrameworkCore.Testing.NSubstitute.Extensions;
-using EntityFrameworkCore.Testing.NSubstitute.Helpers;
+using EntityFrameworkCore.Testing.Moq.Extensions;
+using EntityFrameworkCore.Testing.Moq.Helpers;
 using NUnit.Framework;
 
-namespace EntityFrameworkCore.Testing.NSubstitute.Tests
+namespace EntityFrameworkCore.Testing.Moq.Tests
 {
     [TestFixture]
-    public class DbContextTests : DbContextTestsBase<TestDbContext>
+    public class DbContextTestsUsingType : DbContextTestsBase<TestDbContext>
     {
         [SetUp]
         public override void SetUp()
         {
-            MockedDbContext = Create.SubstituteDbContextFor<TestDbContext>();
+            MockedDbContext = Create.MockedDbContextFor<TestDbContext>();
             base.SetUp();
         }
 
