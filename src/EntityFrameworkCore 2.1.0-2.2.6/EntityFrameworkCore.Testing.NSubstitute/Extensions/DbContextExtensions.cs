@@ -36,12 +36,10 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
             var substituteDbContext = (TDbContext)
                 Substitute.For(new[] {
                         typeof(TDbContext),
-                        typeof(IEnumerable<object>),
                         typeof(IDbContextDependencies),
                         typeof(IDbQueryCache),
                         typeof(IDbSetCache),
                         typeof(IInfrastructure<IServiceProvider>),
-                        typeof(IDbContextPoolable),
                         typeof(IDbContextPoolable)
                     },
                     new object[] { }
@@ -58,12 +56,12 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
             substituteDbContext.When(x => x.AttachRange(Arg.Any<object[]>())).Do(callInfo => dbContextToMock.AttachRange(callInfo.Arg<object[]>()));
             substituteDbContext.When(x => x.AttachRange(Arg.Any<IEnumerable<object>>())).Do(callInfo => dbContextToMock.AttachRange(callInfo.Arg<IEnumerable<object>>()));
 
-            ((IDbContextDependencies) substituteDbContext).ChangeDetector.Returns(((IDbContextDependencies) dbContextToMock).ChangeDetector);
-            substituteDbContext.ChangeTracker.Returns(dbContextToMock.ChangeTracker);
-            substituteDbContext.Database.Returns(dbContextToMock.Database);
+            ((IDbContextDependencies) substituteDbContext).ChangeDetector.Returns(callInfo => ((IDbContextDependencies) dbContextToMock).ChangeDetector);
+            substituteDbContext.ChangeTracker.Returns(callInfo => dbContextToMock.ChangeTracker);
+            substituteDbContext.Database.Returns(callInfo => dbContextToMock.Database);
             substituteDbContext.When(x => x.Dispose()).Do(callInfo => dbContextToMock.Dispose());
-            ((IDbContextDependencies) substituteDbContext).EntityFinderFactory.Returns(((IDbContextDependencies) dbContextToMock).EntityFinderFactory);
-            ((IDbContextDependencies) substituteDbContext).EntityGraphAttacher.Returns(((IDbContextDependencies) dbContextToMock).EntityGraphAttacher);
+            ((IDbContextDependencies) substituteDbContext).EntityFinderFactory.Returns(callInfo => ((IDbContextDependencies) dbContextToMock).EntityFinderFactory);
+            ((IDbContextDependencies) substituteDbContext).EntityGraphAttacher.Returns(callInfo => ((IDbContextDependencies) dbContextToMock).EntityGraphAttacher);
             substituteDbContext.Entry(Arg.Any<object>()).Returns(callInfo => dbContextToMock.Entry(callInfo.Arg<object>()));
 
             substituteDbContext.FindAsync(Arg.Any<Type>(), Arg.Any<object[]>()).Returns(callInfo => dbContextToMock.FindAsync(callInfo.Arg<Type>(), callInfo.Arg<object[]>()));
@@ -71,11 +69,11 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
 
             ((IDbQueryCache) substituteDbContext).GetOrAddQuery(Arg.Any<IDbQuerySource>(), Arg.Any<Type>()).Returns(callInfo => ((IDbQueryCache) dbContextToMock).GetOrAddQuery(callInfo.Arg<IDbQuerySource>(), callInfo.Arg<Type>()));
             ((IDbSetCache) substituteDbContext).GetOrAddSet(Arg.Any<IDbSetSource>(), Arg.Any<Type>()).Returns(callInfo => ((IDbSetCache) dbContextToMock).GetOrAddSet(callInfo.Arg<IDbSetSource>(), callInfo.Arg<Type>()));
-            ((IDbContextDependencies) substituteDbContext).InfrastructureLogger.Returns(((IDbContextDependencies) dbContextToMock).InfrastructureLogger);
-            ((IInfrastructure<IServiceProvider>) substituteDbContext).Instance.Returns(((IInfrastructure<IServiceProvider>) dbContextToMock).Instance);
-            ((IDbContextDependencies) substituteDbContext).Model.Returns(((IDbContextDependencies) dbContextToMock).Model);
-            ((IDbContextDependencies) substituteDbContext).QueryProvider.Returns(((IDbContextDependencies) dbContextToMock).QueryProvider);
-            ((IDbContextDependencies) substituteDbContext).QuerySource.Returns(((IDbContextDependencies) dbContextToMock).QuerySource);
+            ((IDbContextDependencies) substituteDbContext).InfrastructureLogger.Returns(callInfo => ((IDbContextDependencies) dbContextToMock).InfrastructureLogger);
+            ((IInfrastructure<IServiceProvider>) substituteDbContext).Instance.Returns(callInfo => ((IInfrastructure<IServiceProvider>) dbContextToMock).Instance);
+            ((IDbContextDependencies) substituteDbContext).Model.Returns(callInfo => ((IDbContextDependencies) dbContextToMock).Model);
+            ((IDbContextDependencies) substituteDbContext).QueryProvider.Returns(callInfo => ((IDbContextDependencies) dbContextToMock).QueryProvider);
+            ((IDbContextDependencies) substituteDbContext).QuerySource.Returns(callInfo => ((IDbContextDependencies) dbContextToMock).QuerySource);
 
             substituteDbContext.Remove(Arg.Any<object>()).Returns(callInfo => dbContextToMock.Remove(callInfo.Arg<object>()));
             substituteDbContext.When(x => x.RemoveRange(Arg.Any<object[]>())).Do(callInfo => dbContextToMock.RemoveRange(callInfo.Arg<object[]>()));
@@ -90,13 +88,13 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
             substituteDbContext.SaveChangesAsync(Arg.Any<bool>(), Arg.Any<CancellationToken>()).Returns(callInfo => dbContextToMock.SaveChangesAsync(callInfo.Arg<bool>(), callInfo.Arg<CancellationToken>()));
 
             ((IDbContextPoolable) substituteDbContext).When(x => x.SetPool(Arg.Any<IDbContextPool>())).Do(callInfo => ((IDbContextPoolable) dbContextToMock).SetPool(callInfo.Arg<IDbContextPool>()));
-            ((IDbContextDependencies) substituteDbContext).SetSource.Returns(((IDbContextDependencies) dbContextToMock).SetSource);
+            ((IDbContextDependencies) substituteDbContext).SetSource.Returns(callInfo => ((IDbContextDependencies) dbContextToMock).SetSource);
             ((IDbContextPoolable) substituteDbContext).SnapshotConfiguration().Returns(callInfo => ((IDbContextPoolable) dbContextToMock).SnapshotConfiguration());
-            ((IDbContextDependencies) substituteDbContext).StateManager.Returns(((IDbContextDependencies) dbContextToMock).StateManager);
+            ((IDbContextDependencies) substituteDbContext).StateManager.Returns(callInfo => ((IDbContextDependencies) dbContextToMock).StateManager);
 
             substituteDbContext.Update(Arg.Any<object>()).Returns(callInfo => dbContextToMock.Update(callInfo.Arg<object>()));
 
-            ((IDbContextDependencies) substituteDbContext).UpdateLogger.Returns(((IDbContextDependencies) dbContextToMock).UpdateLogger);
+            ((IDbContextDependencies) substituteDbContext).UpdateLogger.Returns(callInfo => ((IDbContextDependencies) dbContextToMock).UpdateLogger);
 
             substituteDbContext.When(x => x.UpdateRange(Arg.Any<object[]>())).Do(callInfo => dbContextToMock.UpdateRange(callInfo.Arg<object[]>()));
             substituteDbContext.When(x => x.UpdateRange(Arg.Any<IEnumerable<object>>())).Do(callInfo => dbContextToMock.UpdateRange(callInfo.Arg<IEnumerable<object>>()));
@@ -261,12 +259,13 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
                 .AndDoes(callInfo => { callback?.Invoke(); });
 
             var rawSqlCommand = Substitute.For<RawSqlCommand>(relationalCommand, new Dictionary<string, object>());
-            rawSqlCommand.RelationalCommand.Returns(relationalCommand);
-            rawSqlCommand.ParameterValues.Returns(new Dictionary<string, object>());
+            rawSqlCommand.RelationalCommand.Returns(callInfo => relationalCommand);
+            rawSqlCommand.ParameterValues.Returns(callInfo => new Dictionary<string, object>());
 
             var rawSqlCommandBuilder = Substitute.For<IRawSqlCommandBuilder>();
-
-            rawSqlCommandBuilder.Build(Arg.Any<string>(), Arg.Any<IEnumerable<object>>()).Throws(callInfo =>
+            rawSqlCommandBuilder
+                .Build(Arg.Any<string>(), Arg.Any<IEnumerable<object>>())
+                .Throws(callInfo =>
             {
                 Logger.LogDebug("Catch all exception invoked");
                 return new InvalidOperationException();
@@ -296,9 +295,9 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
             serviceProvider.GetService(Arg.Is<Type>(t => t == typeof(IRelationalConnection))).Returns(callInfo => Substitute.For<IRelationalConnection>());
 
             var databaseFacade = Substitute.For<DatabaseFacade>(substituteDbContext);
-            ((IInfrastructure<IServiceProvider>) databaseFacade).Instance.Returns(serviceProvider);
+            ((IInfrastructure<IServiceProvider>) databaseFacade).Instance.Returns(callInfo => serviceProvider);
 
-            substituteDbContext.Database.Returns(databaseFacade);
+            substituteDbContext.Database.Returns(callInfo => databaseFacade);
 
             return substituteDbContext;
         }
