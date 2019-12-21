@@ -22,12 +22,12 @@ There may be more EntityFrameworkCore functionality that isn't supported by the 
 In addition to the above you also get all of the benefits of using a mocking framework (e.g., the ability to verify method invocation).
 
 ## NuGet Packages
-#### EntityFrameworkCore 3.0.0
-- [EntityFrameworkCore.Testing.Moq](https://www.nuget.org/packages/EntityFrameworkCore.Testing.Moq/2.0.1)
-- *Want  an NSubstitute version for EntityFrameworkCore 3.0.0? Let me know!*
+#### EntityFrameworkCore 3.0.0+
+- [EntityFrameworkCore.Testing.Moq](https://www.nuget.org/packages/EntityFrameworkCore.Testing.Moq/2.0.3)
+- [EntityFrameworkCore.Testing.NSubstitute](https://www.nuget.org/packages/EntityFrameworkCore.Testing.NSubstitute/2.0.3)
 #### EntityFrameworkCore 2.1.0-2.2.6
-- [EntityFrameworkCore.Testing.Moq](https://www.nuget.org/packages/EntityFrameworkCore.Testing.Moq/1.0.4)
-- [EntityFrameworkCore.Testing.NSubstitute](https://www.nuget.org/packages/EntityFrameworkCore.Testing.NSubstitute/1.0.4)
+- [EntityFrameworkCore.Testing.Moq](https://www.nuget.org/packages/EntityFrameworkCore.Testing.Moq/1.0.6)
+- [EntityFrameworkCore.Testing.NSubstitute](https://www.nuget.org/packages/EntityFrameworkCore.Testing.NSubstitute/1.0.6)
 
 # Moq
 ## Example Usage
