@@ -38,7 +38,7 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
 
             return queryProviderMock.Object;
         }
-        
+
         internal static void SetSource<T>(this AsyncQueryProvider<T> mockedQueryProvider, IEnumerable<T> enumerable)
             where T : class
         {

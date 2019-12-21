@@ -1,14 +1,5 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Threading;
-using EntityFrameworkCore.Testing.Common;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Query.Internal;
-using NSubstitute;
 
 namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
 {
