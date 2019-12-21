@@ -1,369 +1,330 @@
 <?xml version="1.0"?>
-
 <doc>
-  <assembly>
-    <name>EntityFrameworkCore.Testing.NSubstitute</name>
-  </assembly>
-  <members>
-    <member name="T:EntityFrameworkCore.Testing.NSubstitute.Extensions.DbContextExtensions">
-      <summary>Extensions for the db context type.</summary>
-      <summary>Extensions for the db context type.</summary>
-    </member>
-    <member
-      name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.DbContextExtensions.CreateSubstituteDbContext``1(``0)">
-      <summary>Creates and sets up a mocked db context.</summary>
-      <typeparam name="TDbContext">The db context type.</typeparam>
-      <param name="dbContextToMock">The db context to mock/proxy.</param>
-      <returns>A mocked db context.</returns>
-      <remarks>dbContextToMock would typically be an in-memory database instance.</remarks>
-    </member>
-    <member
-      name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.DbContextExtensions.CreateAndAttachMockedDbSetTo``2(``0,``0)">
-      <summary>Creates and attaches a substitute db set to a substitute db context.</summary>
-      <typeparam name="TDbContext">The db context type.</typeparam>
-      <typeparam name="TEntity">The entity type.</typeparam>
-      <param name="substituteDbContext">The substitute db context.</param>
-      <param name="dbContextToMock">The db context to mock/proxy.</param>
-    </member>
-    <member
-      name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.DbContextExtensions.CreateAndAttachMockedReadOnlyDbSetTo``2(``0,``0)">
-      <summary>Creates and attaches a substitute readonly db set to a substitute db context.</summary>
-      <typeparam name="TDbContext">The db context type.</typeparam>
-      <typeparam name="TEntity">The entity type.</typeparam>
-      <param name="substituteDbContext">The substitute db context.</param>
-      <param name="dbContextToMock">The db context to mock/proxy.</param>
-    </member>
-    <member
-      name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.DbContextExtensions.AddExecuteSqlInterpolatedResult``1(``0,System.Int32,System.Action)">
-      <summary>Sets up ExecuteSqlInterpolated invocations to return a specified result.</summary>
-      <typeparam name="TDbContext">The db context type.</typeparam>
-      <param name="mockedDbContext">The mocked db context.</param>
-      <param name="executeSqlInterpolatedResult">The integer to return when ExecuteSqlInterpolated is invoked.</param>
-      <param name="callback">Operations to perform after ExecuteSqlCommand is invoked.</param>
-      <returns>The mocked db context.</returns>
-    </member>
-    <member
-      name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.DbContextExtensions.AddExecuteSqlInterpolatedResult``1(``0,System.FormattableString,System.Int32,System.Action)">
-      <summary>Sets up ExecuteSqlInterpolated invocations containing a specified sql string to return a specified result.</summary>
-      <typeparam name="TDbContext">The db context type.</typeparam>
-      <param name="mockedDbContext">The mocked db context.</param>
-      <param name="sql">The ExecuteSqlInterpolated sql string. Set up supports case insensitive partial matches.</param>
-      <param name="executeSqlInterpolatedResult">The integer to return when ExecuteSqlInterpolated is invoked.</param>
-      <param name="callback">Operations to perform after ExecuteSqlCommand is invoked.</param>
-      <returns>The mocked db context.</returns>
-    </member>
-    <member
-      name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.DbContextExtensions.AddExecuteSqlInterpolatedResult``1(``0,System.String,System.Collections.Generic.IEnumerable{System.Object},System.Int32,System.Action)">
-      <summary>Sets up ExecuteSqlInterpolated invocations containing a specified sql string to return a specified result.</summary>
-      <typeparam name="TDbContext">The db context type.</typeparam>
-      <param name="mockedDbContext">The mocked db context.</param>
-      <param name="sql">The ExecuteSqlInterpolated sql string. Set up supports case insensitive partial matches.</param>
-      <param name="parameters">The ExecuteSqlInterpolated parameters. Set up supports case insensitive partial parameter sequence matching.</param>
-      <param name="executeSqlInterpolatedResult">The integer to return when ExecuteSqlInterpolated is invoked.</param>
-      <param name="callback">Operations to perform after ExecuteSqlCommand is invoked.</param>
-      <returns>The mocked db context.</returns>
-    </member>
-    <member
-      name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.DbContextExtensions.AddExecuteSqlRawResult``1(``0,System.Int32,System.Action)">
-      <summary>Sets up ExecuteSqlRaw invocations to return a specified result.</summary>
-      <typeparam name="TDbContext">The db context type.</typeparam>
-      <param name="mockedDbContext">The mocked db context.</param>
-      <param name="executeSqlRawResult">The integer to return when ExecuteSqlRaw is invoked.</param>
-      <param name="callback">Operations to perform after ExecuteSqlCommand is invoked.</param>
-      <returns>The mocked db context.</returns>
-    </member>
-    <member
-      name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.DbContextExtensions.AddExecuteSqlRawResult``1(``0,System.String,System.Int32,System.Action)">
-      <summary>Sets up ExecuteSqlRaw invocations containing a specified sql string and parameters to return a specified result.</summary>
-      <typeparam name="TDbContext">The db context type.</typeparam>
-      <param name="mockedDbContext">The mocked db context.</param>
-      <param name="sql">The ExecuteSqlRaw sql string. Set up supports case insensitive partial matches.</param>
-      <param name="executeSqlRawResult">The integer to return when ExecuteSqlRaw is invoked.</param>
-      <param name="callback">Operations to perform after ExecuteSqlCommand is invoked.</param>
-      <returns>The mocked db context.</returns>
-    </member>
-    <member
-      name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.DbContextExtensions.AddExecuteSqlRawResult``1(``0,System.String,System.Collections.Generic.IEnumerable{System.Object},System.Int32,System.Action)">
-      <summary>Sets up ExecuteSqlRaw invocations containing a specified sql string and parameters to return a specified result.</summary>
-      <typeparam name="TDbContext">The db context type.</typeparam>
-      <param name="substituteDbContext">The mocked db context.</param>
-      <param name="sql">The ExecuteSqlRaw sql string. Set up supports case insensitive partial matches.</param>
-      <param name="parameters">The ExecuteSqlRaw parameters. Set up supports case insensitive partial parameter sequence matching.</param>
-      <param name="executeSqlRawResult">The integer to return when ExecuteSqlRaw is invoked.</param>
-      <param name="callback">Operations to perform after ExecuteSqlCommand is invoked.</param>
-      <returns>The mocked db context.</returns>
-    </member>
-    <member
-      name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.DbContextExtensions.AddExecuteSqlCommandResult``1(``0,System.Int32,System.Action)">
-      <summary>Sets up ExecuteSqlCommand invocations to return a specified result.</summary>
-      <typeparam name="TDbContext">The db context type.</typeparam>
-      <param name="substituteDbContext">The substitute db context.</param>
-      <param name="executeSqlCommandResult">The integer to return when ExecuteSqlCommand is invoked.</param>
-      <param name="callback">Operations to perform after ExecuteSqlCommand is invoked.</param>
-      <returns>The substitute db context.</returns>
-    </member>
-    <member
-      name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.DbContextExtensions.AddExecuteSqlCommandResult``1(``0,System.String,System.Int32,System.Action)">
-      <summary>Sets up ExecuteSqlCommand invocations containing a specified sql string to return a specified result.</summary>
-      <typeparam name="TDbContext">The db context type.</typeparam>
-      <param name="substituteDbContext">The substitute db context.</param>
-      <param name="sql">The ExecuteSqlCommand sql string. Set up supports case insensitive partial matches.</param>
-      <param name="executeSqlCommandResult">The integer to return when ExecuteSqlCommand is invoked.</param>
-      <param name="callback">Operations to perform after ExecuteSqlCommand is invoked.</param>
-      <returns>The substitute db context.</returns>
-    </member>
-    <member
-      name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.DbContextExtensions.AddExecuteSqlCommandResult``1(``0,System.String,System.Collections.Generic.IEnumerable{System.Object},System.Int32,System.Action)">
-      <summary>Sets up ExecuteSqlCommand invocations containing a specified sql string and parameters to return a specified result.</summary>
-      <typeparam name="TDbContext">The db context type.</typeparam>
-      <param name="substituteDbContext">The substitute db context.</param>
-      <param name="sql">The ExecuteSqlCommand sql string. Set up supports case insensitive partial matches.</param>
-      <param name="parameters">The ExecuteSqlCommand parameters. Set up supports case insensitive partial parameter sequence matching.</param>
-      <param name="executeSqlCommandResult">The integer to return when ExecuteSqlCommand is invoked.</param>
-      <param name="callback">Operations to perform after ExecuteSqlCommand is invoked.</param>
-      <returns>The substitute db context.</returns>
-    </member>
-    <member name="T:EntityFrameworkCore.Testing.NSubstitute.Extensions.DbSetExtensions">
-      <summary>Extensions for the db set type.</summary>
-    </member>
-    <member
-      name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.DbSetExtensions.CreateSubstituteDbSet``1(Microsoft.EntityFrameworkCore.DbSet{``0})">
-      <summary>Creates and sets up a substitute db set.</summary>
-      <typeparam name="TEntity">The entity type.</typeparam>
-      <param name="dbSet">The db set to mock/proxy.</param>
-      <returns>A substitute db set.</returns>
-    </member>
-    <member name="T:EntityFrameworkCore.Testing.NSubstitute.Extensions.QueryableExtensions">
-      <summary>Extensions for queryable types.</summary>
-    </member>
-    <member
-      name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.QueryableExtensions.AddFromSqlInterpolatedResult``1(System.Linq.IQueryable{``0},System.Collections.Generic.IEnumerable{``0})">
-      <summary>Sets up FromSqlInterpolated invocations to return a specified result.</summary>
-      <typeparam name="T">The queryable source type.</typeparam>
-      <param name="substituteQueryable">The substitute queryable.</param>
-      <param name="fromSqlInterpolatedResult">The FromSqlInterpolated result.</param>
-      <returns>The substitute queryable.</returns>
-    </member>
-    <member
-      name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.QueryableExtensions.AddFromSqlInterpolatedResult``1(System.Linq.IQueryable{``0},System.FormattableString,System.Collections.Generic.IEnumerable{``0})">
-      <summary>Sets up FromSqlInterpolated invocations to return a specified result.</summary>
-      <typeparam name="T">The queryable source type.</typeparam>
-      <param name="substituteQueryable">The substitute queryable.</param>
-      <param name="sql">The FromSqlInterpolated sql string. Set up supports case insensitive partial matches.</param>
-      <param name="fromSqlInterpolatedResult">The FromSqlInterpolated result.</param>
-      <returns>The substitute queryable.</returns>
-    </member>
-    <member
-      name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.QueryableExtensions.AddFromSqlInterpolatedResult``1(System.Linq.IQueryable{``0},System.String,System.Collections.Generic.IEnumerable{System.Object},System.Collections.Generic.IEnumerable{``0})">
-      <summary>Sets up FromSqlInterpolated invocations to return a specified result.</summary>
-      <typeparam name="T">The queryable source type.</typeparam>
-      <param name="substituteQueryable">The substitute queryable.</param>
-      <param name="sql">The FromSqlInterpolated sql string. Set up supports case insensitive partial matches.</param>
-      <param name="parameters">The FromSqlInterpolated parameters. Set up supports case insensitive partial parameter sequence matching.</param>
-      <param name="fromSqlInterpolatedResult">The FromSqlInterpolated result.</param>
-      <returns>The substitute queryable.</returns>
-    </member>
-    <member
-      name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.QueryableExtensions.AddFromSqlRawResult``1(System.Linq.IQueryable{``0},System.Collections.Generic.IEnumerable{``0})">
-      <summary>Sets up FromSqlRaw invocations to return a specified result.</summary>
-      <typeparam name="T">The queryable source type.</typeparam>
-      <param name="substituteQueryable">The substitute queryable.</param>
-      <param name="fromSqlRawResult">The FromSqlRaw result.</param>
-      <returns>The substitute queryable.</returns>
-    </member>
-    <member
-      name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.QueryableExtensions.AddFromSqlRawResult``1(System.Linq.IQueryable{``0},System.String,System.Collections.Generic.IEnumerable{``0})">
-      <summary>Sets up FromSqlRaw invocations containing a specified sql string to return a specified result.</summary>
-      <typeparam name="T">The queryable source type.</typeparam>
-      <param name="substituteQueryable">The substitute queryable.</param>
-      <param name="sql">The FromSqlRaw sql string. Set up supports case insensitive partial matches.</param>
-      <param name="fromSqlRawResult">The FromSqlRaw result.</param>
-      <returns>The substitute queryable.</returns>
-    </member>
-    <member
-      name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.QueryableExtensions.AddFromSqlRawResult``1(System.Linq.IQueryable{``0},System.String,System.Collections.Generic.IEnumerable{System.Object},System.Collections.Generic.IEnumerable{``0})">
-      <summary>Sets up FromSqlRaw invocations containing a specified sql string and parameters to return a specified result.</summary>
-      <typeparam name="T">The queryable source type.</typeparam>
-      <param name="substituteQueryable">The substitute queryable.</param>
-      <param name="sql">The FromSqlRaw sql string. Set up supports case insensitive partial matches.</param>
-      <param name="parameters">The FromSqlRaw parameters. Set up supports case insensitive partial parameter sequence matching.</param>
-      <param name="fromSqlRawResult">The FromSqlRaw result.</param>
-      <returns>The substitute queryable.</returns>
-    </member>
-    <member name="T:EntityFrameworkCore.Testing.NSubstitute.Extensions.QueryProviderExtensions">
-      <summary>Extensions for query provider and mock query provider types.</summary>
-    </member>
-    <member
-      name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.QueryProviderExtensions.CreateSubstituteQueryProvider``1(System.Linq.IQueryProvider,System.Collections.Generic.IEnumerable{``0})">
-      <summary>Creates a substitute query provider.</summary>
-      <typeparam name="T">The query provider source item type.</typeparam>
-      <param name="queryProviderToMock">The query provider to mock.</param>
-      <param name="enumerable">The query provider source.</param>
-      <returns>A substitute query provider.</returns>
-    </member>
-    <member
-      name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.QueryProviderExtensions.AddFromSqlInterpolatedResult``1(System.Linq.IQueryProvider,System.Collections.Generic.IEnumerable{``0})">
-      <summary>Sets up FromSqlInterpolated invocations to return a specified result.</summary>
-      <typeparam name="T">The queryable source type.</typeparam>
-      <param name="substituteQueryProvider">The substitute query provider.</param>
-      <param name="fromSqlInterpolatedResult">The FromSqlInterpolated result.</param>
-      <returns>The substitute queryable.</returns>
-    </member>
-    <member
-      name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.QueryProviderExtensions.AddFromSqlInterpolatedResult``1(System.Linq.IQueryProvider,System.FormattableString,System.Collections.Generic.IEnumerable{``0})">
-      <summary>Sets up FromSqlInterpolated invocations containing a specified sql string to return a specified result.</summary>
-      <typeparam name="T">The queryable source type.</typeparam>
-      <param name="substituteQueryProvider">The substitute query provider.</param>
-      <param name="sql">The FromSqlInterpolated sql string. Set up supports case insensitive partial matches.</param>
-      <param name="fromSqlInterpolatedResult">The FromSqlInterpolated result.</param>
-      <returns>The substitute queryable.</returns>
-    </member>
-    <member
-      name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.QueryProviderExtensions.AddFromSqlInterpolatedResult``1(System.Linq.IQueryProvider,System.String,System.Collections.Generic.IEnumerable{System.Object},System.Collections.Generic.IEnumerable{``0})">
-      <summary>Sets up FromSqlInterpolated invocations containing a specified sql string and parameters to return a specified result.</summary>
-      <typeparam name="T">The queryable source type.</typeparam>
-      <param name="substituteQueryProvider">The substitute query provider.</param>
-      <param name="sql">The FromSqlInterpolated sql string. Set up supports case insensitive partial matches.</param>
-      <param name="parameters">The FromSqlInterpolated parameters. Set up supports case insensitive partial parameter sequence matching.</param>
-      <param name="fromSqlInterpolatedResult">The sequence to return when FromSqlInterpolated is invoked.</param>
-      <returns>The substitute query provider.</returns>
-    </member>
-    <member
-      name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.QueryProviderExtensions.AddFromSqlRawResult``1(System.Linq.IQueryProvider,System.Collections.Generic.IEnumerable{``0})">
-      <summary>Sets up FromSqlRaw invocations to return a specified result.</summary>
-      <typeparam name="T">The queryable source type.</typeparam>
-      <param name="substituteQueryProvider">The substitute query provider.</param>
-      <param name="fromSqlRawResult">The FromSqlRaw result.</param>
-      <returns>The substitute queryable.</returns>
-    </member>
-    <member
-      name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.QueryProviderExtensions.AddFromSqlRawResult``1(System.Linq.IQueryProvider,System.String,System.Collections.Generic.IEnumerable{``0})">
-      <summary>Sets up FromSqlRaw invocations containing a specified sql string to return a specified result.</summary>
-      <typeparam name="T">The queryable source type.</typeparam>
-      <param name="substituteQueryProvider">The substitute query provider.</param>
-      <param name="sql">The FromSqlRaw sql string. Set up supports case insensitive partial matches.</param>
-      <param name="fromSqlRawResult">The FromSqlRaw result.</param>
-      <returns>The substitute queryable.</returns>
-    </member>
-    <member
-      name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.QueryProviderExtensions.AddFromSqlRawResult``1(System.Linq.IQueryProvider,System.String,System.Collections.Generic.IEnumerable{System.Object},System.Collections.Generic.IEnumerable{``0})">
-      <summary>Sets up FromSqlRaw invocations containing a specified sql string and parameters to return a specified result.</summary>
-      <typeparam name="T">The queryable source type.</typeparam>
-      <param name="substituteQueryProvider">The substitute query provider.</param>
-      <param name="sql">The FromSqlRaw sql string. Set up supports case insensitive partial matches.</param>
-      <param name="parameters">The FromSqlRaw parameters. Set up supports case insensitive partial parameter sequence matching.</param>
-      <param name="fromSqlResult">The sequence to return when FromSqlRaw is invoked.</param>
-      <returns>The substitute query provider.</returns>
-    </member>
-    <member name="T:EntityFrameworkCore.Testing.NSubstitute.Extensions.ReadOnlyDbSetExtensions">
-      <summary>Extensions for read-only db sets.</summary>
-      <summary>Extensions for read-only db sets.</summary>
-    </member>
-    <member
-      name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.ReadOnlyDbSetExtensions.CreateSubstituteReadOnlyDbSet``1(Microsoft.EntityFrameworkCore.DbSet{``0})">
-      <summary>Creates and sets up a substitute readonly db set.</summary>
-      <typeparam name="TEntity">The entity type.</typeparam>
-      <param name="readOnlyDbSet">The readonly db set to mock.</param>
-      <returns>A substitute readonly db set.</returns>
-    </member>
-    <member
-      name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.ReadOnlyDbSetExtensions.AddToReadOnlySource``1(Microsoft.EntityFrameworkCore.DbQuery{``0},``0)">
-      <summary>Adds an item to the end of the substitute readonly db set source.</summary>
-      <typeparam name="TEntity">The entity type.</typeparam>
-      <param name="substituteReadOnlyDbSet">The substitute readonly db set.</param>
-      <param name="item">The item to be added to the end of the substitute readonly db set source.</param>
-    </member>
-    <member
-      name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.ReadOnlyDbSetExtensions.AddToReadOnlySource``1(Microsoft.EntityFrameworkCore.DbSet{``0},``0)">
-      <summary>Adds an item to the end of the substitute readonly db set source.</summary>
-      <typeparam name="TEntity">The entity type.</typeparam>
-      <param name="substituteReadOnlyDbSet">The substitute readonly db set.</param>
-      <param name="item">The item to be added to the end of the substitute readonly db set source.</param>
-    </member>
-    <member
-      name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.ReadOnlyDbSetExtensions.AddRangeToReadOnlySource``1(Microsoft.EntityFrameworkCore.DbQuery{``0},System.Collections.Generic.IEnumerable{``0})">
-      <summary>Adds the items of the specified sequence to the end of the substitute readonly db set source.</summary>
-      <typeparam name="TEntity">The entity type.</typeparam>
-      <param name="substituteReadOnlyDbSet">The substitute readonly db set.</param>
-      <param name="items">The sequence whose items should be added to the end of the substitute readonly db set source.</param>
-    </member>
-    <member
-      name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.ReadOnlyDbSetExtensions.AddRangeToReadOnlySource``1(Microsoft.EntityFrameworkCore.DbSet{``0},System.Collections.Generic.IEnumerable{``0})">
-      <summary>Adds the items of the specified sequence to the end of the substitute readonly db set source.</summary>
-      <typeparam name="TEntity">The entity type.</typeparam>
-      <param name="substituteReadOnlyDbSet">The substitute readonly db set.</param>
-      <param name="items">The sequence whose items should be added to the end of the substitute readonly db set source.</param>
-    </member>
-    <member
-      name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.ReadOnlyDbSetExtensions.ClearReadOnlySource``1(Microsoft.EntityFrameworkCore.DbQuery{``0})">
-      <summary>Removes all items from the substitute readonly db set source.</summary>
-      <typeparam name="TEntity">The entity type.</typeparam>
-      <param name="substituteReadOnlyDbSet">The substitute readonly db set.</param>
-    </member>
-    <member
-      name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.ReadOnlyDbSetExtensions.ClearReadOnlySource``1(Microsoft.EntityFrameworkCore.DbSet{``0})">
-      <summary>Removes all items from the substitute readonly db set source.</summary>
-      <typeparam name="TEntity">The entity type.</typeparam>
-      <param name="substituteReadOnlyDbSet">The substitute readonly db set.</param>
-    </member>
-    <member
-      name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.ReadOnlyDbSetExtensions.CreateSubstituteDbQuery``1(Microsoft.EntityFrameworkCore.DbQuery{``0})">
-      <summary>Creates and sets up a substitute db query.</summary>
-      <typeparam name="TQuery">The query type.</typeparam>
-      <param name="dbQuery">The db query to mock.</param>
-      <returns>A substitute readonly db query.</returns>
-    </member>
-    <member name="T:EntityFrameworkCore.Testing.NSubstitute.Helpers.Create">
-      <summary>Factory for creating substitute instances.</summary>
-      <summary>Factory for creating mocked instances.</summary>
-    </member>
-    <member name="M:EntityFrameworkCore.Testing.NSubstitute.Helpers.Create.SubstituteDbContextFor``1(``0)">
-      <summary>Creates a substitute db context.</summary>
-      <typeparam name="TDbContext">The db context type.</typeparam>
-      <param name="dbContextToMock">The db context to mock.</param>
-      <returns>A substitute db context.</returns>
-    </member>
-    <member name="M:EntityFrameworkCore.Testing.NSubstitute.Helpers.Create.SubstituteDbContextFor``1">
-      <summary>Creates a substitute db context.</summary>
-      <typeparam name="TDbContext">The db context type.</typeparam>
-      <returns>A substitute db context.</returns>
-      <remarks>TDbContext must have a constructor with a single parameter of type DbContextOptionsBuilder.</remarks>
-    </member>
-    <member name="M:EntityFrameworkCore.Testing.NSubstitute.Helpers.Create.SubstituteDbContextFor``1(System.Func{``0})">
-      <summary>Creates a substitute db context.</summary>
-      <typeparam name="TDbContext">The db context type.</typeparam>
-      <param name="factory">A factory method that will create an instance of TDbContext.</param>
-      <returns>A substitute db context.</returns>
-    </member>
-    <member
-      name="M:EntityFrameworkCore.Testing.NSubstitute.Helpers.Create.SubstituteDbSetFor``1(Microsoft.EntityFrameworkCore.DbSet{``0})">
-      <summary>Creates a substitute db set.</summary>
-      <typeparam name="TEntity">The entity type.</typeparam>
-      <param name="dbSetToMock">The db set to mock.</param>
-      <returns>A substitute db set.</returns>
-    </member>
-    <member
-      name="M:EntityFrameworkCore.Testing.NSubstitute.Helpers.Create.SubstituteReadOnlyDbSetFor``1(Microsoft.EntityFrameworkCore.DbSet{``0})">
-      <summary>Creates a substitute readonly db set.</summary>
-      <typeparam name="TEntity">The entity type.</typeparam>
-      <param name="readOnlyDbSet">The readonly db set to mock.</param>
-      <returns>A substitute readonly db set.</returns>
-    </member>
-    <member
-      name="M:EntityFrameworkCore.Testing.NSubstitute.Helpers.Create.SubstituteQueryProviderFor``1(System.Linq.IQueryable{``0})">
-      <summary>
-        Creates a substitute query provider.
-      </summary>
-      <typeparam name="T">The queryable type.</typeparam>
-      <param name="queryable">The query provider source.</param>
-      <returns>A substitute query provider.</returns>
-    </member>
-    <member
-      name="M:EntityFrameworkCore.Testing.NSubstitute.Helpers.Create.SubstituteDbQueryFor``1(Microsoft.EntityFrameworkCore.DbQuery{``0})">
-      <summary>Creates a substitute db query.</summary>
-      <typeparam name="TQuery">The query type.</typeparam>
-      <param name="dbQueryToMock">The db query to mock.</param>
-      <returns>A substitute db query.</returns>
-    </member>
-  </members>
+    <assembly>
+        <name>EntityFrameworkCore.Testing.NSubstitute</name>
+    </assembly>
+    <members>
+        <member name="T:EntityFrameworkCore.Testing.NSubstitute.Extensions.DbContextExtensions">
+            <summary>Extensions for the db context type.</summary>
+            <summary>Extensions for the db context type.</summary>
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.DbContextExtensions.CreateSubstituteDbContext``1(``0)">
+            <summary>Creates and sets up a mocked db context.</summary>
+            <typeparam name="TDbContext">The db context type.</typeparam>
+            <param name="dbContextToMock">The db context to mock/proxy.</param>
+            <returns>A mocked db context.</returns>
+            <remarks>dbContextToMock would typically be an in-memory database instance.</remarks>
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.DbContextExtensions.CreateAndAttachMockedDbSetTo``2(``0,``0)">
+            <summary>Creates and attaches a substitute db set to a substitute db context.</summary>
+            <typeparam name="TDbContext">The db context type.</typeparam>
+            <typeparam name="TEntity">The entity type.</typeparam>
+            <param name="substituteDbContext">The substitute db context.</param>
+            <param name="dbContextToMock">The db context to mock/proxy.</param>
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.DbContextExtensions.CreateAndAttachMockedReadOnlyDbSetTo``2(``0,``0)">
+            <summary>Creates and attaches a substitute readonly db set to a substitute db context.</summary>
+            <typeparam name="TDbContext">The db context type.</typeparam>
+            <typeparam name="TEntity">The entity type.</typeparam>
+            <param name="substituteDbContext">The substitute db context.</param>
+            <param name="dbContextToMock">The db context to mock/proxy.</param>
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.DbContextExtensions.AddExecuteSqlInterpolatedResult``1(``0,System.Int32,System.Action)">
+            <summary>Sets up ExecuteSqlInterpolated invocations to return a specified result.</summary>
+            <typeparam name="TDbContext">The db context type.</typeparam>
+            <param name="mockedDbContext">The mocked db context.</param>
+            <param name="executeSqlInterpolatedResult">The integer to return when ExecuteSqlInterpolated is invoked.</param>
+            <param name="callback">Operations to perform after ExecuteSqlCommand is invoked.</param>
+            <returns>The mocked db context.</returns>
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.DbContextExtensions.AddExecuteSqlInterpolatedResult``1(``0,System.FormattableString,System.Int32,System.Action)">
+            <summary>Sets up ExecuteSqlInterpolated invocations containing a specified sql string to return a specified result.</summary>
+            <typeparam name="TDbContext">The db context type.</typeparam>
+            <param name="mockedDbContext">The mocked db context.</param>
+            <param name="sql">The ExecuteSqlInterpolated sql string. Set up supports case insensitive partial matches.</param>
+            <param name="executeSqlInterpolatedResult">The integer to return when ExecuteSqlInterpolated is invoked.</param>
+            <param name="callback">Operations to perform after ExecuteSqlCommand is invoked.</param>
+            <returns>The mocked db context.</returns>
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.DbContextExtensions.AddExecuteSqlInterpolatedResult``1(``0,System.String,System.Collections.Generic.IEnumerable{System.Object},System.Int32,System.Action)">
+            <summary>Sets up ExecuteSqlInterpolated invocations containing a specified sql string to return a specified result.</summary>
+            <typeparam name="TDbContext">The db context type.</typeparam>
+            <param name="mockedDbContext">The mocked db context.</param>
+            <param name="sql">The ExecuteSqlInterpolated sql string. Set up supports case insensitive partial matches.</param>
+            <param name="parameters">The ExecuteSqlInterpolated parameters. Set up supports case insensitive partial parameter sequence matching.</param>
+            <param name="executeSqlInterpolatedResult">The integer to return when ExecuteSqlInterpolated is invoked.</param>
+            <param name="callback">Operations to perform after ExecuteSqlCommand is invoked.</param>
+            <returns>The mocked db context.</returns>
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.DbContextExtensions.AddExecuteSqlRawResult``1(``0,System.Int32,System.Action)">
+            <summary>Sets up ExecuteSqlRaw invocations to return a specified result.</summary>
+            <typeparam name="TDbContext">The db context type.</typeparam>
+            <param name="mockedDbContext">The mocked db context.</param>
+            <param name="executeSqlRawResult">The integer to return when ExecuteSqlRaw is invoked.</param>
+            <param name="callback">Operations to perform after ExecuteSqlCommand is invoked.</param>
+            <returns>The mocked db context.</returns>
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.DbContextExtensions.AddExecuteSqlRawResult``1(``0,System.String,System.Int32,System.Action)">
+            <summary>Sets up ExecuteSqlRaw invocations containing a specified sql string and parameters to return a specified result.</summary>
+            <typeparam name="TDbContext">The db context type.</typeparam>
+            <param name="mockedDbContext">The mocked db context.</param>
+            <param name="sql">The ExecuteSqlRaw sql string. Set up supports case insensitive partial matches.</param>
+            <param name="executeSqlRawResult">The integer to return when ExecuteSqlRaw is invoked.</param>
+            <param name="callback">Operations to perform after ExecuteSqlCommand is invoked.</param>
+            <returns>The mocked db context.</returns>
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.DbContextExtensions.AddExecuteSqlRawResult``1(``0,System.String,System.Collections.Generic.IEnumerable{System.Object},System.Int32,System.Action)">
+            <summary>Sets up ExecuteSqlRaw invocations containing a specified sql string and parameters to return a specified result.</summary>
+            <typeparam name="TDbContext">The db context type.</typeparam>
+            <param name="substituteDbContext">The mocked db context.</param>
+            <param name="sql">The ExecuteSqlRaw sql string. Set up supports case insensitive partial matches.</param>
+            <param name="parameters">The ExecuteSqlRaw parameters. Set up supports case insensitive partial parameter sequence matching.</param>
+            <param name="executeSqlRawResult">The integer to return when ExecuteSqlRaw is invoked.</param>
+            <param name="callback">Operations to perform after ExecuteSqlCommand is invoked.</param>
+            <returns>The mocked db context.</returns>
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.DbContextExtensions.AddExecuteSqlCommandResult``1(``0,System.Int32,System.Action)">
+            <summary>Sets up ExecuteSqlCommand invocations to return a specified result.</summary>
+            <typeparam name="TDbContext">The db context type.</typeparam>
+            <param name="substituteDbContext">The substitute db context.</param>
+            <param name="executeSqlCommandResult">The integer to return when ExecuteSqlCommand is invoked.</param>
+            <param name="callback">Operations to perform after ExecuteSqlCommand is invoked.</param>
+            <returns>The substitute db context.</returns>
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.DbContextExtensions.AddExecuteSqlCommandResult``1(``0,System.String,System.Int32,System.Action)">
+            <summary>Sets up ExecuteSqlCommand invocations containing a specified sql string to return a specified result.</summary>
+            <typeparam name="TDbContext">The db context type.</typeparam>
+            <param name="substituteDbContext">The substitute db context.</param>
+            <param name="sql">The ExecuteSqlCommand sql string. Set up supports case insensitive partial matches.</param>
+            <param name="executeSqlCommandResult">The integer to return when ExecuteSqlCommand is invoked.</param>
+            <param name="callback">Operations to perform after ExecuteSqlCommand is invoked.</param>
+            <returns>The substitute db context.</returns>
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.DbContextExtensions.AddExecuteSqlCommandResult``1(``0,System.String,System.Collections.Generic.IEnumerable{System.Object},System.Int32,System.Action)">
+            <summary>Sets up ExecuteSqlCommand invocations containing a specified sql string and parameters to return a specified result.</summary>
+            <typeparam name="TDbContext">The db context type.</typeparam>
+            <param name="substituteDbContext">The substitute db context.</param>
+            <param name="sql">The ExecuteSqlCommand sql string. Set up supports case insensitive partial matches.</param>
+            <param name="parameters">The ExecuteSqlCommand parameters. Set up supports case insensitive partial parameter sequence matching.</param>
+            <param name="executeSqlCommandResult">The integer to return when ExecuteSqlCommand is invoked.</param>
+            <param name="callback">Operations to perform after ExecuteSqlCommand is invoked.</param>
+            <returns>The substitute db context.</returns>
+        </member>
+        <member name="T:EntityFrameworkCore.Testing.NSubstitute.Extensions.DbSetExtensions">
+            <summary>Extensions for the db set type.</summary>
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.DbSetExtensions.CreateSubstituteDbSet``1(Microsoft.EntityFrameworkCore.DbSet{``0})">
+            <summary>Creates and sets up a substitute db set.</summary>
+            <typeparam name="TEntity">The entity type.</typeparam>
+            <param name="dbSet">The db set to mock/proxy.</param>
+            <returns>A substitute db set.</returns>
+        </member>
+        <member name="T:EntityFrameworkCore.Testing.NSubstitute.Extensions.QueryableExtensions">
+            <summary>Extensions for queryable types.</summary>
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.QueryableExtensions.AddFromSqlInterpolatedResult``1(System.Linq.IQueryable{``0},System.Collections.Generic.IEnumerable{``0})">
+            <summary>Sets up FromSqlInterpolated invocations to return a specified result.</summary>
+            <typeparam name="T">The queryable source type.</typeparam>
+            <param name="substituteQueryable">The substitute queryable.</param>
+            <param name="fromSqlInterpolatedResult">The FromSqlInterpolated result.</param>
+            <returns>The substitute queryable.</returns>
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.QueryableExtensions.AddFromSqlInterpolatedResult``1(System.Linq.IQueryable{``0},System.FormattableString,System.Collections.Generic.IEnumerable{``0})">
+            <summary>Sets up FromSqlInterpolated invocations to return a specified result.</summary>
+            <typeparam name="T">The queryable source type.</typeparam>
+            <param name="substituteQueryable">The substitute queryable.</param>
+            <param name="sql">The FromSqlInterpolated sql string. Set up supports case insensitive partial matches.</param>
+            <param name="fromSqlInterpolatedResult">The FromSqlInterpolated result.</param>
+            <returns>The substitute queryable.</returns>
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.QueryableExtensions.AddFromSqlInterpolatedResult``1(System.Linq.IQueryable{``0},System.String,System.Collections.Generic.IEnumerable{System.Object},System.Collections.Generic.IEnumerable{``0})">
+            <summary>Sets up FromSqlInterpolated invocations to return a specified result.</summary>
+            <typeparam name="T">The queryable source type.</typeparam>
+            <param name="substituteQueryable">The substitute queryable.</param>
+            <param name="sql">The FromSqlInterpolated sql string. Set up supports case insensitive partial matches.</param>
+            <param name="parameters">The FromSqlInterpolated parameters. Set up supports case insensitive partial parameter sequence matching.</param>
+            <param name="fromSqlInterpolatedResult">The FromSqlInterpolated result.</param>
+            <returns>The substitute queryable.</returns>
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.QueryableExtensions.AddFromSqlRawResult``1(System.Linq.IQueryable{``0},System.Collections.Generic.IEnumerable{``0})">
+            <summary>Sets up FromSqlRaw invocations to return a specified result.</summary>
+            <typeparam name="T">The queryable source type.</typeparam>
+            <param name="substituteQueryable">The substitute queryable.</param>
+            <param name="fromSqlRawResult">The FromSqlRaw result.</param>
+            <returns>The substitute queryable.</returns>
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.QueryableExtensions.AddFromSqlRawResult``1(System.Linq.IQueryable{``0},System.String,System.Collections.Generic.IEnumerable{``0})">
+            <summary>Sets up FromSqlRaw invocations containing a specified sql string to return a specified result.</summary>
+            <typeparam name="T">The queryable source type.</typeparam>
+            <param name="substituteQueryable">The substitute queryable.</param>
+            <param name="sql">The FromSqlRaw sql string. Set up supports case insensitive partial matches.</param>
+            <param name="fromSqlRawResult">The FromSqlRaw result.</param>
+            <returns>The substitute queryable.</returns>
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.QueryableExtensions.AddFromSqlRawResult``1(System.Linq.IQueryable{``0},System.String,System.Collections.Generic.IEnumerable{System.Object},System.Collections.Generic.IEnumerable{``0})">
+            <summary>Sets up FromSqlRaw invocations containing a specified sql string and parameters to return a specified result.</summary>
+            <typeparam name="T">The queryable source type.</typeparam>
+            <param name="substituteQueryable">The substitute queryable.</param>
+            <param name="sql">The FromSqlRaw sql string. Set up supports case insensitive partial matches.</param>
+            <param name="parameters">The FromSqlRaw parameters. Set up supports case insensitive partial parameter sequence matching.</param>
+            <param name="fromSqlRawResult">The FromSqlRaw result.</param>
+            <returns>The substitute queryable.</returns>
+        </member>
+        <member name="T:EntityFrameworkCore.Testing.NSubstitute.Extensions.QueryProviderExtensions">
+            <summary>Extensions for query provider and mock query provider types.</summary>
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.QueryProviderExtensions.CreateSubstituteQueryProvider``1(System.Linq.IQueryProvider,System.Collections.Generic.IEnumerable{``0})">
+            <summary>Creates a substitute query provider.</summary>
+            <typeparam name="T">The query provider source item type.</typeparam>
+            <param name="queryProviderToMock">The query provider to mock.</param>
+            <param name="enumerable">The query provider source.</param>
+            <returns>A substitute query provider.</returns>
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.QueryProviderExtensions.AddFromSqlInterpolatedResult``1(System.Linq.IQueryProvider,System.Collections.Generic.IEnumerable{``0})">
+            <summary>Sets up FromSqlInterpolated invocations to return a specified result.</summary>
+            <typeparam name="T">The queryable source type.</typeparam>
+            <param name="substituteQueryProvider">The substitute query provider.</param>
+            <param name="fromSqlInterpolatedResult">The FromSqlInterpolated result.</param>
+            <returns>The substitute queryable.</returns>
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.QueryProviderExtensions.AddFromSqlInterpolatedResult``1(System.Linq.IQueryProvider,System.FormattableString,System.Collections.Generic.IEnumerable{``0})">
+            <summary>Sets up FromSqlInterpolated invocations containing a specified sql string to return a specified result.</summary>
+            <typeparam name="T">The queryable source type.</typeparam>
+            <param name="substituteQueryProvider">The substitute query provider.</param>
+            <param name="sql">The FromSqlInterpolated sql string. Set up supports case insensitive partial matches.</param>
+            <param name="fromSqlInterpolatedResult">The FromSqlInterpolated result.</param>
+            <returns>The substitute queryable.</returns>
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.QueryProviderExtensions.AddFromSqlInterpolatedResult``1(System.Linq.IQueryProvider,System.String,System.Collections.Generic.IEnumerable{System.Object},System.Collections.Generic.IEnumerable{``0})">
+            <summary>Sets up FromSqlInterpolated invocations containing a specified sql string and parameters to return a specified result.</summary>
+            <typeparam name="T">The queryable source type.</typeparam>
+            <param name="substituteQueryProvider">The substitute query provider.</param>
+            <param name="sql">The FromSqlInterpolated sql string. Set up supports case insensitive partial matches.</param>
+            <param name="parameters">The FromSqlInterpolated parameters. Set up supports case insensitive partial parameter sequence matching.</param>
+            <param name="fromSqlInterpolatedResult">The sequence to return when FromSqlInterpolated is invoked.</param>
+            <returns>The substitute query provider.</returns>
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.QueryProviderExtensions.AddFromSqlRawResult``1(System.Linq.IQueryProvider,System.Collections.Generic.IEnumerable{``0})">
+            <summary>Sets up FromSqlRaw invocations to return a specified result.</summary>
+            <typeparam name="T">The queryable source type.</typeparam>
+            <param name="substituteQueryProvider">The substitute query provider.</param>
+            <param name="fromSqlRawResult">The FromSqlRaw result.</param>
+            <returns>The substitute queryable.</returns>
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.QueryProviderExtensions.AddFromSqlRawResult``1(System.Linq.IQueryProvider,System.String,System.Collections.Generic.IEnumerable{``0})">
+            <summary>Sets up FromSqlRaw invocations containing a specified sql string to return a specified result.</summary>
+            <typeparam name="T">The queryable source type.</typeparam>
+            <param name="substituteQueryProvider">The substitute query provider.</param>
+            <param name="sql">The FromSqlRaw sql string. Set up supports case insensitive partial matches.</param>
+            <param name="fromSqlRawResult">The FromSqlRaw result.</param>
+            <returns>The substitute queryable.</returns>
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.QueryProviderExtensions.AddFromSqlRawResult``1(System.Linq.IQueryProvider,System.String,System.Collections.Generic.IEnumerable{System.Object},System.Collections.Generic.IEnumerable{``0})">
+            <summary>Sets up FromSqlRaw invocations containing a specified sql string and parameters to return a specified result.</summary>
+            <typeparam name="T">The queryable source type.</typeparam>
+            <param name="substituteQueryProvider">The substitute query provider.</param>
+            <param name="sql">The FromSqlRaw sql string. Set up supports case insensitive partial matches.</param>
+            <param name="parameters">The FromSqlRaw parameters. Set up supports case insensitive partial parameter sequence matching.</param>
+            <param name="fromSqlResult">The sequence to return when FromSqlRaw is invoked.</param>
+            <returns>The substitute query provider.</returns>
+        </member>
+        <member name="T:EntityFrameworkCore.Testing.NSubstitute.Extensions.ReadOnlyDbSetExtensions">
+            <summary>Extensions for read-only db sets.</summary>
+            <summary>Extensions for read-only db sets.</summary>
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.ReadOnlyDbSetExtensions.CreateSubstituteReadOnlyDbSet``1(Microsoft.EntityFrameworkCore.DbSet{``0})">
+            <summary>Creates and sets up a substitute readonly db set.</summary>
+            <typeparam name="TEntity">The entity type.</typeparam>
+            <param name="readOnlyDbSet">The readonly db set to mock.</param>
+            <returns>A substitute readonly db set.</returns>
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.ReadOnlyDbSetExtensions.AddToReadOnlySource``1(Microsoft.EntityFrameworkCore.DbQuery{``0},``0)">
+            <summary>Adds an item to the end of the substitute readonly db set source.</summary>
+            <typeparam name="TEntity">The entity type.</typeparam>
+            <param name="substituteReadOnlyDbSet">The substitute readonly db set.</param>
+            <param name="item">The item to be added to the end of the substitute readonly db set source.</param>
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.ReadOnlyDbSetExtensions.AddToReadOnlySource``1(Microsoft.EntityFrameworkCore.DbSet{``0},``0)">
+            <summary>Adds an item to the end of the substitute readonly db set source.</summary>
+            <typeparam name="TEntity">The entity type.</typeparam>
+            <param name="substituteReadOnlyDbSet">The substitute readonly db set.</param>
+            <param name="item">The item to be added to the end of the substitute readonly db set source.</param>
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.ReadOnlyDbSetExtensions.AddRangeToReadOnlySource``1(Microsoft.EntityFrameworkCore.DbQuery{``0},System.Collections.Generic.IEnumerable{``0})">
+            <summary>Adds the items of the specified sequence to the end of the substitute readonly db set source.</summary>
+            <typeparam name="TEntity">The entity type.</typeparam>
+            <param name="substituteReadOnlyDbSet">The substitute readonly db set.</param>
+            <param name="items">The sequence whose items should be added to the end of the substitute readonly db set source.</param>
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.ReadOnlyDbSetExtensions.AddRangeToReadOnlySource``1(Microsoft.EntityFrameworkCore.DbSet{``0},System.Collections.Generic.IEnumerable{``0})">
+            <summary>Adds the items of the specified sequence to the end of the substitute readonly db set source.</summary>
+            <typeparam name="TEntity">The entity type.</typeparam>
+            <param name="substituteReadOnlyDbSet">The substitute readonly db set.</param>
+            <param name="items">The sequence whose items should be added to the end of the substitute readonly db set source.</param>
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.ReadOnlyDbSetExtensions.ClearReadOnlySource``1(Microsoft.EntityFrameworkCore.DbQuery{``0})">
+            <summary>Removes all items from the substitute readonly db set source.</summary>
+            <typeparam name="TEntity">The entity type.</typeparam>
+            <param name="substituteReadOnlyDbSet">The substitute readonly db set.</param>
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.ReadOnlyDbSetExtensions.ClearReadOnlySource``1(Microsoft.EntityFrameworkCore.DbSet{``0})">
+            <summary>Removes all items from the substitute readonly db set source.</summary>
+            <typeparam name="TEntity">The entity type.</typeparam>
+            <param name="substituteReadOnlyDbSet">The substitute readonly db set.</param>
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.ReadOnlyDbSetExtensions.CreateSubstituteDbQuery``1(Microsoft.EntityFrameworkCore.DbQuery{``0})">
+            <summary>Creates and sets up a substitute db query.</summary>
+            <typeparam name="TQuery">The query type.</typeparam>
+            <param name="dbQuery">The db query to mock.</param>
+            <returns>A substitute readonly db query.</returns>
+        </member>
+        <member name="T:EntityFrameworkCore.Testing.NSubstitute.Helpers.Create">
+            <summary>Factory for creating substitute instances.</summary>
+            <summary>Factory for creating mocked instances.</summary>
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.NSubstitute.Helpers.Create.SubstituteDbContextFor``1(``0)">
+            <summary>Creates a substitute db context.</summary>
+            <typeparam name="TDbContext">The db context type.</typeparam>
+            <param name="dbContextToMock">The db context to mock.</param>
+            <returns>A substitute db context.</returns>
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.NSubstitute.Helpers.Create.SubstituteDbContextFor``1">
+            <summary>Creates a substitute db context.</summary>
+            <typeparam name="TDbContext">The db context type.</typeparam>
+            <returns>A substitute db context.</returns>
+            <remarks>TDbContext must have a constructor with a single parameter of type DbContextOptionsBuilder.</remarks>
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.NSubstitute.Helpers.Create.SubstituteDbContextFor``1(System.Func{``0})">
+            <summary>Creates a substitute db context.</summary>
+            <typeparam name="TDbContext">The db context type.</typeparam>
+            <param name="factory">A factory method that will create an instance of TDbContext.</param>
+            <returns>A substitute db context.</returns>
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.NSubstitute.Helpers.Create.SubstituteDbSetFor``1(Microsoft.EntityFrameworkCore.DbSet{``0})">
+            <summary>Creates a substitute db set.</summary>
+            <typeparam name="TEntity">The entity type.</typeparam>
+            <param name="dbSetToMock">The db set to mock.</param>
+            <returns>A substitute db set.</returns>
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.NSubstitute.Helpers.Create.SubstituteReadOnlyDbSetFor``1(Microsoft.EntityFrameworkCore.DbSet{``0})">
+            <summary>Creates a substitute readonly db set.</summary>
+            <typeparam name="TEntity">The entity type.</typeparam>
+            <param name="readOnlyDbSet">The readonly db set to mock.</param>
+            <returns>A substitute readonly db set.</returns>
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.NSubstitute.Helpers.Create.SubstituteQueryProviderFor``1(System.Linq.IQueryable{``0})">
+            <summary>
+                Creates a substitute query provider.
+            </summary>
+            <typeparam name="T">The queryable type.</typeparam>
+            <param name="queryable">The query provider source.</param>
+            <returns>A substitute query provider.</returns>
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.NSubstitute.Helpers.Create.SubstituteDbQueryFor``1(Microsoft.EntityFrameworkCore.DbQuery{``0})">
+            <summary>Creates a substitute db query.</summary>
+            <typeparam name="TQuery">The query type.</typeparam>
+            <param name="dbQueryToMock">The db query to mock.</param>
+            <returns>A substitute db query.</returns>
+        </member>
+    </members>
 </doc>

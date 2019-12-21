@@ -15,6 +15,10 @@
     <DocumentationFile>EntityFrameworkCore.Testing.NSubstitute.xml</DocumentationFile>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>EntityFrameworkCore.Testing.NSubstitute.xml</DocumentationFile>
+  </PropertyGroup>
+
   <ItemGroup>
     <None Include="..\..\..\LICENSE">
       <Pack>True</Pack>
