@@ -35,23 +35,6 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         }
 
         [Test]
-        public virtual async Task FromSqlThenFirstOrDefaultAsync_ReturnsFirstElement()
-        {
-            var sql = "sp_NoParams";
-            var expectedResult = Fixture.CreateMany<T>().ToList();
-            AddFromSqlResult(Queryable, sql, expectedResult);
-
-            var actualResult1 = await Queryable.FromSql("[dbo].[sp_NoParams]").FirstOrDefaultAsync();
-            var actualResult2 = await Queryable.FromSql("[dbo].[sp_NoParams]").FirstOrDefaultAsync();
-
-            Assert.Multiple(() =>
-            {
-                Assert.That(actualResult1, Is.EqualTo(expectedResult.First()));
-                Assert.That(actualResult2, Is.EqualTo(expectedResult.First()));
-            });
-        }
-
-        [Test]
         public virtual void FromSql_QueryProviderWithManyFromSqlResults_ReturnsExpectedResults()
         {
             var sql1 = "sp_NoParams";
@@ -129,8 +112,8 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         public virtual void FromSql_SpecifiedSqlWithSqlParameterParametersThatDoNotMatchSetUp_ThrowsException()
         {
             var sql = "sp_WithParams";
-            var setUpParameters = new List<SqlParameter> { new SqlParameter("@SomeParameter3", "Value3") };
-            var invocationParameters = new List<SqlParameter> { new SqlParameter("@SomeParameter1", "Value1"), new SqlParameter("@SomeParameter2", "Value2") };
+            var setUpParameters = new List<SqlParameter> {new SqlParameter("@SomeParameter3", "Value3")};
+            var invocationParameters = new List<SqlParameter> {new SqlParameter("@SomeParameter1", "Value1"), new SqlParameter("@SomeParameter2", "Value2")};
             var expectedResult = Fixture.CreateMany<T>().ToList();
             AddFromSqlResult(Queryable, sql, setUpParameters, expectedResult);
 
@@ -169,6 +152,23 @@ namespace EntityFrameworkCore.Testing.Common.Tests
             Assert.Throws<NotSupportedException>(() =>
             {
                 var actualResult = Queryable.FromSql("sp_NoParams").ToList();
+            });
+        }
+
+        [Test]
+        public virtual async Task FromSqlThenFirstOrDefaultAsync_ReturnsFirstElement()
+        {
+            var sql = "sp_NoParams";
+            var expectedResult = Fixture.CreateMany<T>().ToList();
+            AddFromSqlResult(Queryable, sql, expectedResult);
+
+            var actualResult1 = await Queryable.FromSql("[dbo].[sp_NoParams]").FirstOrDefaultAsync();
+            var actualResult2 = await Queryable.FromSql("[dbo].[sp_NoParams]").FirstOrDefaultAsync();
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(actualResult1, Is.EqualTo(expectedResult.First()));
+                Assert.That(actualResult2, Is.EqualTo(expectedResult.First()));
             });
         }
     }

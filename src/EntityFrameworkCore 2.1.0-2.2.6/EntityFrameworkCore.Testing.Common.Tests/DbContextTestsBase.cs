@@ -191,7 +191,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
                 Assert.That(actualResult2, Is.EqualTo(actualResult1));
             });
         }
-        
+
         [Test]
         public void ExecuteSqlCommand_SpecifiedSql_ReturnsExpectedResult()
         {
