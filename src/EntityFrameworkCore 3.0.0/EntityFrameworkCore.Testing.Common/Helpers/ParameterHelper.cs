@@ -89,19 +89,20 @@ namespace EntityFrameworkCore.Testing.Common.Helpers
                 switch (invocationParameter)
                 {
                     case DbParameter dbInvocationParameter:
+                    {
+                        sb.Append(dbInvocationParameter.ParameterName);
+                        sb.Append(": ");
+                        if (dbInvocationParameter.Value == null)
                         {
-                            sb.Append(dbInvocationParameter.ParameterName);
-                            sb.Append(": ");
-                            if (dbInvocationParameter.Value == null)
-                            {
-                                sb.Append("null");
-                            }
-                            else
-                            {
-                                sb.Append(dbInvocationParameter.Value);
-                            }
-                            break;
+                            sb.Append("null");
                         }
+                        else
+                        {
+                            sb.Append(dbInvocationParameter.Value);
+                        }
+
+                        break;
+                    }
 
                     case null:
                         sb.Append("Parameter ");

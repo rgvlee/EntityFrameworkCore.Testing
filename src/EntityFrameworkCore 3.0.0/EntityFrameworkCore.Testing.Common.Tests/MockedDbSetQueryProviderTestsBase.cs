@@ -25,6 +25,25 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         protected DbSet<TEntity> DbSet => (DbSet<TEntity>) Queryable;
 
         [Test]
+        public virtual void FormattableStringSetUpFromSqlInterpolated_SpecifiedSqlWithStringParameterParameters_ReturnsExpectedResult()
+        {
+            var parameters = new List<string> {"Value2"};
+            var sql = (FormattableString) $"[sp_WithParams] {parameters[0]}";
+
+            var expectedResult = Fixture.CreateMany<TEntity>().ToList();
+            AddFromSqlInterpolatedResult(DbSet, sql, expectedResult);
+
+            var actualResult1 = DbSet.FromSqlInterpolated($"[dbo].[sp_WithParams] {parameters[0]}").ToList();
+            var actualResult2 = DbSet.FromSqlInterpolated($"[dbo].[sp_WithParams] {parameters[0]}").ToList();
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(actualResult1, Is.EquivalentTo(expectedResult));
+                Assert.That(actualResult2, Is.EquivalentTo(actualResult1));
+            });
+        }
+
+        [Test]
         public virtual void FromSqlInterpolated_AnySql_ReturnsExpectedResult()
         {
             var expectedResult = Fixture.CreateMany<TEntity>().ToList();
@@ -43,7 +62,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         [Test]
         public virtual void FromSqlInterpolated_SpecifiedSql_ReturnsExpectedResult()
         {
-            var sql = (FormattableString)$"sp_NoParams";
+            var sql = (FormattableString) $"sp_NoParams";
             var expectedResult = Fixture.CreateMany<TEntity>().ToList();
             AddFromSqlInterpolatedResult(DbSet, sql, expectedResult);
 
@@ -60,7 +79,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         [Test]
         public virtual void FromSqlInterpolated_SpecifiedSqlThatDoesNotMatchSetUp_ThrowsException()
         {
-            var sql = (FormattableString)$"asdf";
+            var sql = (FormattableString) $"asdf";
             var expectedResult = Fixture.CreateMany<TEntity>().ToList();
             AddFromSqlInterpolatedResult(DbSet, sql, expectedResult);
 
@@ -118,25 +137,6 @@ namespace EntityFrameworkCore.Testing.Common.Tests
 
             var actualResult1 = DbSet.FromSqlInterpolated($"[dbo].[sp_WithParams] {Fixture.Create<string>()}, {parameters[0]}").ToList();
             var actualResult2 = DbSet.FromSqlInterpolated($"sp_WithParams {Fixture.Create<string>()}, {parameters[0]}").ToList();
-
-            Assert.Multiple(() =>
-            {
-                Assert.That(actualResult1, Is.EquivalentTo(expectedResult));
-                Assert.That(actualResult2, Is.EquivalentTo(actualResult1));
-            });
-        }
-
-        [Test]
-        public virtual void FormattableStringSetUpFromSqlInterpolated_SpecifiedSqlWithStringParameterParameters_ReturnsExpectedResult()
-        {
-            var parameters = new List<string> { "Value2" };
-            var sql = (FormattableString)$"[sp_WithParams] {parameters[0]}";
-            
-            var expectedResult = Fixture.CreateMany<TEntity>().ToList();
-            AddFromSqlInterpolatedResult(DbSet, sql, expectedResult);
-
-            var actualResult1 = DbSet.FromSqlInterpolated($"[dbo].[sp_WithParams] {parameters[0]}").ToList();
-            var actualResult2 = DbSet.FromSqlInterpolated($"[dbo].[sp_WithParams] {parameters[0]}").ToList();
 
             Assert.Multiple(() =>
             {

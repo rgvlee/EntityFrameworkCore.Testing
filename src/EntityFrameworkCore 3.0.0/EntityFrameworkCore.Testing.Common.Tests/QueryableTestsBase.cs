@@ -254,6 +254,13 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         }
 
         [Test]
+        public void ContainsListCollection_ReturnsFalse()
+        {
+            var containsListCollection = ((IListSource) Queryable).ContainsListCollection;
+            Assert.That(containsListCollection, Is.False);
+        }
+
+        [Test]
         public virtual void ElementAt_ReturnsElementAtSpecifiedIndex()
         {
             SeedQueryableSource();
@@ -798,13 +805,6 @@ namespace EntityFrameworkCore.Testing.Common.Tests
                     Assert.That(actualResult2[i].Guid, Is.Not.EqualTo(default(Guid)));
                 }
             });
-        }
-
-        [Test]
-        public void ContainsListCollection_ReturnsFalse()
-        {
-            var containsListCollection = ((IListSource)Queryable).ContainsListCollection;
-            Assert.That(containsListCollection, Is.False);
         }
     }
 }

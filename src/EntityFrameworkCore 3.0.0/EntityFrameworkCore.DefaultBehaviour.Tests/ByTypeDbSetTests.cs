@@ -44,20 +44,20 @@ namespace EntityFrameworkCore.DefaultBehaviour.Tests
         public override void ElementAtOrDefault_WithNoItemsAdded_ReturnsDefault() { }
 
         [Test]
-        public virtual void FromSqlRaw_ThrowsException()
-        {
-            Assert.Throws<NotImplementedException>(() =>
-            {
-                var actualResult = DbSet.FromSqlRaw("sp_NoParams").ToList();
-            });
-        }
-
-        [Test]
         public virtual void FromSqlInterpolated_ThrowsException()
         {
             Assert.Throws<NotImplementedException>(() =>
             {
                 var actualResult = DbSet.FromSqlInterpolated($"sp_NoParams").ToList();
+            });
+        }
+
+        [Test]
+        public virtual void FromSqlRaw_ThrowsException()
+        {
+            Assert.Throws<NotImplementedException>(() =>
+            {
+                var actualResult = DbSet.FromSqlRaw("sp_NoParams").ToList();
             });
         }
 
