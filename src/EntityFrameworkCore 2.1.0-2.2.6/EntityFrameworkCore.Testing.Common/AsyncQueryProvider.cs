@@ -14,7 +14,7 @@ namespace EntityFrameworkCore.Testing.Common
     public class AsyncQueryProvider<T> : IAsyncQueryProvider
     {
         private static readonly ILogger Logger = LoggerHelper.CreateLogger(typeof(AsyncQueryProvider<T>));
-        
+
         public AsyncQueryProvider(IQueryable<T> source)
         {
             Source = source;

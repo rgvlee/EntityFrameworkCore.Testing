@@ -266,10 +266,10 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
             rawSqlCommandBuilder
                 .Build(Arg.Any<string>(), Arg.Any<IEnumerable<object>>())
                 .Throws(callInfo =>
-            {
-                Logger.LogDebug("Catch all exception invoked");
-                return new InvalidOperationException();
-            });
+                {
+                    Logger.LogDebug("Catch all exception invoked");
+                    return new InvalidOperationException();
+                });
 
             rawSqlCommandBuilder
                 .Build(

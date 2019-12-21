@@ -100,6 +100,7 @@ namespace EntityFrameworkCore.Testing.Common.Helpers
                         {
                             sb.Append(dbInvocationParameter.Value);
                         }
+
                         break;
                     }
 

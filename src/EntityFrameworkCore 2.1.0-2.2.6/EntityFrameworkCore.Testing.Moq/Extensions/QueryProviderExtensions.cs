@@ -15,13 +15,13 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
     public static class QueryProviderExtensions
     {
         private static readonly ILogger Logger = LoggerHelper.CreateLogger(typeof(QueryProviderExtensions));
-        
+
         /// <summary>Creates a mocked query provider.</summary>
         /// <typeparam name="T">The query provider source item type.</typeparam>
         /// <param name="queryProviderToMock">The query provider to mock.</param>
         /// <param name="enumerable">The query provider source.</param>
         /// <returns>A mocked query provider.</returns>
-        public static IQueryProvider CreateMockedQueryProvider<T>(this IQueryProvider queryProviderToMock, IEnumerable<T> enumerable) 
+        public static IQueryProvider CreateMockedQueryProvider<T>(this IQueryProvider queryProviderToMock, IEnumerable<T> enumerable)
             where T : class
         {
             EnsureArgument.IsNotNull(queryProviderToMock, nameof(queryProviderToMock));
@@ -51,7 +51,7 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
             return queryProviderToMock.CreateMockedQueryProvider(enumerable);
         }
 
-        internal static void SetSource<T>(this AsyncQueryProvider<T> mockedQueryProvider, IEnumerable<T> enumerable) 
+        internal static void SetSource<T>(this AsyncQueryProvider<T> mockedQueryProvider, IEnumerable<T> enumerable)
             where T : class
         {
             EnsureArgument.IsNotNull(mockedQueryProvider, nameof(mockedQueryProvider));
@@ -62,7 +62,7 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
             var queryable = enumerable.AsQueryable();
             queryProviderMock.Setup(m => m.Source).Returns(queryable);
         }
-        
+
         /// <summary>Sets up FromSql invocations to return a specified result.</summary>
         /// <typeparam name="T">The queryable source type.</typeparam>
         /// <param name="mockedQueryProvider">The mocked query provider.</param>
@@ -94,7 +94,7 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
             mockedQueryProvider.AddFromSqlResult(sql, new List<object>(), fromSqlResult);
             return mockedQueryProvider;
         }
-        
+
         /// <summary>Sets up FromSql invocations containing a specified sql string and parameters to return a specified result.</summary>
         /// <typeparam name="T">The queryable source type.</typeparam>
         /// <param name="mockedQueryProvider">The mocked query provider.</param>
@@ -102,7 +102,7 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
         /// <param name="parameters">The FromSql parameters. Set up supports case insensitive partial parameter sequence matching.</param>
         /// <param name="fromSqlResult">The sequence to return when FromSql is invoked.</param>
         /// <returns>The mocked query provider.</returns>
-        public static IQueryProvider AddFromSqlResult<T>(this IQueryProvider mockedQueryProvider, string sql, IEnumerable<object> parameters, IEnumerable<T> fromSqlResult) 
+        public static IQueryProvider AddFromSqlResult<T>(this IQueryProvider mockedQueryProvider, string sql, IEnumerable<object> parameters, IEnumerable<T> fromSqlResult)
             where T : class
         {
             EnsureArgument.IsNotNull(mockedQueryProvider, nameof(mockedQueryProvider));

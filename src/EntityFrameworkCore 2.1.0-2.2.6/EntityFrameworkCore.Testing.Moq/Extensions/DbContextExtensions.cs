@@ -20,13 +20,13 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
     public static class DbContextExtensions
     {
         private static readonly ILogger Logger = LoggerHelper.CreateLogger(typeof(DbContextExtensions));
-        
+
         /// <summary>Creates and sets up a mocked db context.</summary>
         /// <typeparam name="TDbContext">The db context type.</typeparam>
         /// <param name="dbContextToMock">The db context to mock/proxy.</param>
         /// <returns>A mocked db context.</returns>
         /// <remarks>dbContextToMock would typically be an in-memory database instance.</remarks>
-        public static TDbContext CreateMockedDbContext<TDbContext>(this TDbContext dbContextToMock) 
+        public static TDbContext CreateMockedDbContext<TDbContext>(this TDbContext dbContextToMock)
             where TDbContext : DbContext
         {
             EnsureArgument.IsNotNull(dbContextToMock, nameof(dbContextToMock));
@@ -241,18 +241,12 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
             relationalCommandMock
                 .Setup(m => m.ExecuteNonQuery(It.IsAny<IRelationalConnection>(), It.IsAny<IReadOnlyDictionary<string, object>>()))
                 .Returns((IRelationalConnection providedConnection, IReadOnlyDictionary<string, object> providedParameterValues) => executeSqlCommandResult)
-                .Callback(() =>
-                {
-                    callback?.Invoke();
-                });
+                .Callback(() => { callback?.Invoke(); });
 
             relationalCommandMock
                 .Setup(m => m.ExecuteNonQueryAsync(It.IsAny<IRelationalConnection>(), It.IsAny<IReadOnlyDictionary<string, object>>(), It.IsAny<CancellationToken>()))
                 .Returns((IRelationalConnection providedConnection, IReadOnlyDictionary<string, object> providedParameterValues, CancellationToken providedCancellationToken) => Task.FromResult(executeSqlCommandResult))
-                .Callback(() => 
-                {
-                    callback?.Invoke();
-                }); 
+                .Callback(() => { callback?.Invoke(); });
             var relationalCommand = relationalCommandMock.Object;
 
             var rawSqlCommandMock = new Mock<RawSqlCommand>(MockBehavior.Strict, relationalCommand, new Dictionary<string, object>());

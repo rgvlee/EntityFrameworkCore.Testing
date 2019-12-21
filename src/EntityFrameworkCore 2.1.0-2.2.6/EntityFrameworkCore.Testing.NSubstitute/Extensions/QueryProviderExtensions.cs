@@ -17,13 +17,13 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
     public static class QueryProviderExtensions
     {
         private static readonly ILogger Logger = LoggerHelper.CreateLogger(typeof(QueryProviderExtensions));
-        
+
         /// <summary>Creates a substitute query provider.</summary>
         /// <typeparam name="T">The query provider source item type.</typeparam>
         /// <param name="queryProviderToMock">The query provider to mock.</param>
         /// <param name="enumerable">The query provider source.</param>
         /// <returns>A substitute query provider.</returns>
-        public static IQueryProvider CreateSubstituteQueryProvider<T>(this IQueryProvider queryProviderToMock, IEnumerable<T> enumerable) 
+        public static IQueryProvider CreateSubstituteQueryProvider<T>(this IQueryProvider queryProviderToMock, IEnumerable<T> enumerable)
             where T : class
         {
             EnsureArgument.IsNotNull(queryProviderToMock, nameof(queryProviderToMock));
@@ -55,7 +55,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
             return queryProviderToMock.CreateSubstituteQueryProvider(enumerable);
         }
 
-        internal static void SetSource<T>(this AsyncQueryProvider<T> substituteQueryProvider, IEnumerable<T> enumerable) 
+        internal static void SetSource<T>(this AsyncQueryProvider<T> substituteQueryProvider, IEnumerable<T> enumerable)
             where T : class
         {
             EnsureArgument.IsNotNull(substituteQueryProvider, nameof(substituteQueryProvider));
@@ -104,7 +104,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
         /// <param name="parameters">The FromSql parameters. Set up supports case insensitive partial parameter sequence matching.</param>
         /// <param name="fromSqlResult">The sequence to return when FromSql is invoked.</param>
         /// <returns>The substitute query provider.</returns>
-        public static IQueryProvider AddFromSqlResult<T>(this IQueryProvider substituteQueryProvider, string sql, IEnumerable<object> parameters, IEnumerable<T> fromSqlResult) 
+        public static IQueryProvider AddFromSqlResult<T>(this IQueryProvider substituteQueryProvider, string sql, IEnumerable<object> parameters, IEnumerable<T> fromSqlResult)
             where T : class
         {
             EnsureArgument.IsNotNull(substituteQueryProvider, nameof(substituteQueryProvider));

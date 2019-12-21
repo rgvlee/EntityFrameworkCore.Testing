@@ -19,7 +19,7 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
         /// <typeparam name="TEntity">The entity type.</typeparam>
         /// <param name="dbSet">The db set to mock/proxy.</param>
         /// <returns>A mocked db set.</returns>
-        public static DbSet<TEntity> CreateMockedDbSet<TEntity>(this DbSet<TEntity> dbSet) 
+        public static DbSet<TEntity> CreateMockedDbSet<TEntity>(this DbSet<TEntity> dbSet)
             where TEntity : class
         {
             EnsureArgument.IsNotNull(dbSet, nameof(dbSet));
