@@ -83,7 +83,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
             substituteDbQuery.When(x => x.UpdateRange(Arg.Any<TEntity[]>())).Do(callInfo => throw invalidOperationException);
 
             var substituteQueryProvider = ((IQueryable<TEntity>) readOnlyDbSet).Provider.CreateSubstituteQueryProvider(new List<TEntity>());
-            ((IQueryable<TEntity>) substituteQueryProvider).Provider.Returns(callInfo => substituteQueryProvider);
+            ((IQueryable<TEntity>)substituteDbQuery).Provider.Returns(callInfo => substituteQueryProvider);
 
             return substituteDbQuery;
         }
