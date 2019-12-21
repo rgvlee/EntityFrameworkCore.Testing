@@ -1,4 +1,6 @@
-﻿using System;
+﻿#pragma warning disable EF1001 // Internal EF Core API usage.
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
