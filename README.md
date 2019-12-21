@@ -114,7 +114,7 @@ Queries are initialized as part of the DbContext mock initialization but you'll 
 
 ```
 [Test]
-public void QueryAddToReadOnlySource_Items_AddsToQuerySource()
+public void QueryAddRangeToReadOnlySource_Enumeration_AddsToQuerySource()
 {
     var dbContextToMock = new TestDbContext(new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
     var mockedDbContext = Create.MockedDbContextFor(dbContextToMock);

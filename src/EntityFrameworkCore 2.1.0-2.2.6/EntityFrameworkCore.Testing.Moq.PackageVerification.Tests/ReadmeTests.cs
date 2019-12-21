@@ -85,14 +85,14 @@ namespace EntityFrameworkCore.Testing.Moq.PackageVerification.Tests
         }
 
         [Test]
-        public void QueryAddRange_Enumeration_AddsToQuerySource()
+        public void QueryAddRangeToReadOnlySource_Enumeration_AddsToQuerySource()
         {
             var dbContextToMock = new TestDbContext(new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
             var mockedDbContext = Create.MockedDbContextFor(dbContextToMock);
 
             var expectedResult = Fixture.CreateMany<TestQuery>().ToList();
 
-            mockedDbContext.Query<TestQuery>().AddRange(expectedResult);
+            mockedDbContext.Query<TestQuery>().AddRangeToReadOnlySource(expectedResult);
 
             Assert.Multiple(() =>
             {
