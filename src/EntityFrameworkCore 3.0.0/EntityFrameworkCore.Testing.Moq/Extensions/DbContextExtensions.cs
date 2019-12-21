@@ -290,7 +290,7 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
                 .Callback(() => { callback?.Invoke(); });
             var relationalCommand = relationalCommandMock.Object;
 
-            var rawSqlCommandMock = new Mock<RawSqlCommand>(relationalCommand, new Dictionary<string, object>());
+            var rawSqlCommandMock = new Mock<RawSqlCommand>(MockBehavior.Strict, relationalCommand, new Dictionary<string, object>());
             rawSqlCommandMock.Setup(m => m.RelationalCommand).Returns(relationalCommand);
             rawSqlCommandMock.Setup(m => m.ParameterValues).Returns(new Dictionary<string, object>());
             var rawSqlCommand = rawSqlCommandMock.Object;
@@ -325,9 +325,13 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
             dependenciesMock.Setup(m => m.RelationalConnection).Returns(Mock.Of<IRelationalConnection>());
             var dependencies = dependenciesMock.Object;
 
-            var databaseFacadeMock = new Mock<DatabaseFacade>(mockedDbContext);
-            databaseFacadeMock.As<IDatabaseFacadeDependenciesAccessor>().Setup(m => m.Context).Returns(mockedDbContext);
-            databaseFacadeMock.As<IDatabaseFacadeDependenciesAccessor>().Setup(m => m.Dependencies).Returns(dependencies);
+            var serviceProviderMock = new Mock<IServiceProvider>();
+            serviceProviderMock.Setup(m => m.GetService(It.Is<Type>(t => t == typeof(IDatabaseFacadeDependencies)))).Returns((Type providedType) => dependencies);
+            var serviceProvider = serviceProviderMock.Object;
+
+            Mock.Get(mockedDbContext).As<IInfrastructure<IServiceProvider>>().Setup(m => m.Instance).Returns(serviceProvider);
+
+            var databaseFacadeMock = new Mock<DatabaseFacade>(MockBehavior.Strict, mockedDbContext);
             var databaseFacade = databaseFacadeMock.Object;
 
             Mock.Get(mockedDbContext).Setup(m => m.Database).Returns(databaseFacade);

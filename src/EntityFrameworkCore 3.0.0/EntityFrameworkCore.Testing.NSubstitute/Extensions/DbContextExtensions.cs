@@ -334,11 +334,13 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
             dependencies.CommandLogger.Returns(callInfo => Substitute.For<IDiagnosticsLogger<DbLoggerCategory.Database.Command>>());
             dependencies.RawSqlCommandBuilder.Returns(callInfo => rawSqlCommandBuilder);
             dependencies.RelationalConnection.Returns(callInfo => Substitute.For<IRelationalConnection>());
-            
-            var databaseFacade = Substitute.For<DatabaseFacade>(substituteDbContext);
-            ((IDatabaseFacadeDependenciesAccessor)databaseFacade).Context.Returns(callInfo => substituteDbContext);
-            ((IDatabaseFacadeDependenciesAccessor)databaseFacade).Dependencies.Returns(callInfo => dependencies);
 
+            var serviceProvider = Substitute.For<IServiceProvider>();
+            serviceProvider.GetService(Arg.Is<Type>(t => t == typeof(IDatabaseFacadeDependencies))).Returns(callInfo => dependencies);
+
+            ((IInfrastructure<IServiceProvider>) substituteDbContext).Instance.Returns(callInfo => serviceProvider);
+                
+            var databaseFacade = Substitute.For<DatabaseFacade>(substituteDbContext);
             substituteDbContext.Database.Returns(callInfo => databaseFacade);
             
             return substituteDbContext;
