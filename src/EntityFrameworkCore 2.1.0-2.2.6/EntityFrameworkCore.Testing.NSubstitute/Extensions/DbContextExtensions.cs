@@ -19,7 +19,7 @@ using NSubstitute.Extensions;
 namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
 {
     /// <summary>Extensions for the db context type.</summary>
-    public static class DbContextExtensions
+    public static partial class DbContextExtensions
     {
         private static readonly ILogger Logger = LoggerHelper.CreateLogger(typeof(DbContextExtensions));
 
@@ -114,18 +114,6 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
             }
 
             return substituteDbContext;
-        }
-
-        /// <summary>Creates and sets up a substitute db context.</summary>
-        /// <typeparam name="TDbContext">The db context type.</typeparam>
-        /// <param name="dbContextToMock">The db context to mock/proxy.</param>
-        /// <returns>A substitute db context.</returns>
-        /// <remarks>dbContextToMock would typically be an in-memory database instance.</remarks>
-        [Obsolete("This will be removed in a future version. Use DbContextExtensions.CreateDbContextSubstitute instead.")]
-        public static TDbContext CreateMock<TDbContext>(this TDbContext dbContextToMock)
-            where TDbContext : DbContext
-        {
-            return dbContextToMock.CreateSubstituteDbContext();
         }
 
         /// <summary>Creates and attaches a substitute db set to a substitute db context.</summary>
