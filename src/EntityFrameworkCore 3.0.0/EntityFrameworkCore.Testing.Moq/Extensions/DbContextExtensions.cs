@@ -277,7 +277,6 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
             EnsureArgument.IsNotNull(parameters, nameof(parameters));
 
             var relationalCommandMock = new Mock<IRelationalCommand>();
-
             relationalCommandMock
                 .Setup(m => m.ExecuteNonQuery(It.IsAny<RelationalCommandParameterObject>()))
                 .Returns((RelationalCommandParameterObject providedRelationalCommandParameterObject) => executeSqlRawResult)
@@ -287,7 +286,6 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
                 .Setup(m => m.ExecuteNonQueryAsync(It.IsAny<RelationalCommandParameterObject>(), It.IsAny<CancellationToken>()))
                 .Returns((RelationalCommandParameterObject providedRelationalCommandParameterObject, CancellationToken providedCancellationToken) => Task.FromResult(executeSqlRawResult))
                 .Callback(() => { callback?.Invoke(); });
-
             var relationalCommand = relationalCommandMock.Object;
 
             var rawSqlCommandMock = new Mock<RawSqlCommand>(relationalCommand, new Dictionary<string, object>());
@@ -296,12 +294,8 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
             var rawSqlCommand = rawSqlCommandMock.Object;
 
             var rawSqlCommandBuilderMock = new Mock<IRawSqlCommandBuilder>();
-
-            rawSqlCommandBuilderMock.Setup(m =>
-                    m.Build(
-                        It.IsAny<string>(),
-                        It.IsAny<IEnumerable<object>>())
-                )
+            rawSqlCommandBuilderMock
+                .Setup(m => m.Build(It.IsAny<string>(),It.IsAny<IEnumerable<object>>()))
                 .Callback((string providedSql, IEnumerable<object> providedParameters) => Logger.LogDebug("Catch all exception invoked"))
                 .Throws<InvalidOperationException>();
 
@@ -330,7 +324,7 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
             var dependencies = dependenciesMock.Object;
 
             var databaseFacadeMock = new Mock<DatabaseFacade>(mockedDbContext);
-            databaseFacadeMock.As<IDatabaseFacadeDependenciesAccessor>().Setup(m => m.Context).Returns(Mock.Of<DbContext>());
+            databaseFacadeMock.As<IDatabaseFacadeDependenciesAccessor>().Setup(m => m.Context).Returns(mockedDbContext);
             databaseFacadeMock.As<IDatabaseFacadeDependenciesAccessor>().Setup(m => m.Dependencies).Returns(dependencies);
             var databaseFacade = databaseFacadeMock.Object;
 
