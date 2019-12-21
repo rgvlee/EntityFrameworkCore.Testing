@@ -7,14 +7,14 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.4.0" />
-    <PackageReference Include="NSubstitute" Version="4.1.0" />
+    <PackageReference Include="NSubstitute" Version="4.2.1" />
     <PackageReference Include="NUnit" Version="3.12.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.15.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="Z:\Git\EntityFrameworkCore.Testing\src\EntityFrameworkCore 3.0.0\EntityFrameworkCore.Testing.Common.Tests\EntityFrameworkCore.Testing.Common.Tests.csproj" />
-    <ProjectReference Include="Z:\Git\EntityFrameworkCore.Testing\src\EntityFrameworkCore 3.0.0\EntityFrameworkCore.Testing.NSubstitute\EntityFrameworkCore.Testing.NSubstitute.csproj" />
+    <ProjectReference Include="..\EntityFrameworkCore.Testing.Common.Tests\EntityFrameworkCore.Testing.Common.Tests.csproj" />
+    <ProjectReference Include="..\EntityFrameworkCore.Testing.NSubstitute\EntityFrameworkCore.Testing.NSubstitute.csproj" />
   </ItemGroup>
 
 </Project>
