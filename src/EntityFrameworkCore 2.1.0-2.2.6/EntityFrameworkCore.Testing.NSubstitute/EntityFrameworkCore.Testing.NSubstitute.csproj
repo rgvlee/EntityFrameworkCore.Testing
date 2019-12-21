@@ -17,6 +17,10 @@
     <DocumentationFile>EntityFrameworkCore.Testing.NSubstitute.xml</DocumentationFile>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>EntityFrameworkCore.Testing.NSubstitute.xml</DocumentationFile>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="NSubstitute" Version="4.1.0" />
   </ItemGroup>
