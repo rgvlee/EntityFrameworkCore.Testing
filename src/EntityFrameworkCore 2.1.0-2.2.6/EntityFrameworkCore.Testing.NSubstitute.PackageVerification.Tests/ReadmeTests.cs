@@ -6,7 +6,6 @@ using AutoFixture;
 using EntityFrameworkCore.Testing.Common.Helpers;
 using EntityFrameworkCore.Testing.Common.Tests;
 using EntityFrameworkCore.Testing.NSubstitute.Extensions;
-using EntityFrameworkCore.Testing.NSubstitute.Helpers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
@@ -28,7 +27,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.PackageVerification.Tests
         public void SetAddAndPersist_Item_Persists()
         {
             var dbContextToMock = new TestDbContext(new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
-            var mockedDbContext = Create.SubstituteDbContextFor(dbContextToMock);
+            var mockedDbContext = Helpers.Create.SubstituteDbContextFor(dbContextToMock);
 
             var testEntity = Fixture.Create<TestEntity>();
 
@@ -47,7 +46,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.PackageVerification.Tests
         public void FromSql_AnyStoredProcedureWithNoParameters_ReturnsExpectedResult()
         {
             var dbContextToMock = new TestDbContext(new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
-            var mockedDbContext = Create.SubstituteDbContextFor(dbContextToMock);
+            var mockedDbContext = Helpers.Create.SubstituteDbContextFor(dbContextToMock);
 
             var expectedResult = Fixture.CreateMany<TestEntity>().ToList();
 
@@ -67,7 +66,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.PackageVerification.Tests
         public void FromSql_SpecifiedStoredProcedureAndParameters_ReturnsExpectedResult()
         {
             var dbContextToMock = new TestDbContext(new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
-            var mockedDbContext = Create.SubstituteDbContextFor(dbContextToMock);
+            var mockedDbContext = Helpers.Create.SubstituteDbContextFor(dbContextToMock);
 
             var sqlParameters = new List<SqlParameter> {new SqlParameter("@SomeParameter2", "Value2")};
             var expectedResult = Fixture.CreateMany<TestEntity>().ToList();
@@ -88,7 +87,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.PackageVerification.Tests
         public void QueryAddRange_Enumeration_AddsToQuerySource()
         {
             var dbContextToMock = new TestDbContext(new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
-            var mockedDbContext = Create.SubstituteDbContextFor(dbContextToMock);
+            var mockedDbContext = Helpers.Create.SubstituteDbContextFor(dbContextToMock);
 
             var expectedResult = Fixture.CreateMany<TestQuery>().ToList();
 
@@ -105,7 +104,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.PackageVerification.Tests
         public void ExecuteSqlCommand_SpecifiedStoredProcedure_ReturnsExpectedResult()
         {
             var dbContextToMock = new TestDbContext(new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
-            var mockedDbContext = Create.SubstituteDbContextFor(dbContextToMock);
+            var mockedDbContext = Helpers.Create.SubstituteDbContextFor(dbContextToMock);
 
             var commandText = "sp_NoParams";
             var expectedResult = 1;
@@ -121,7 +120,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.PackageVerification.Tests
         public void ExecuteSqlCommand_SpecifiedStoredProcedureAndSqlParameters_ReturnsExpectedResult()
         {
             var dbContextToMock = new TestDbContext(new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
-            var mockedDbContext = Create.SubstituteDbContextFor(dbContextToMock);
+            var mockedDbContext = Helpers.Create.SubstituteDbContextFor(dbContextToMock);
 
             var commandText = "sp_WithParams";
             var sqlParameters = new List<SqlParameter> {new SqlParameter("@SomeParameter2", "Value2")};
@@ -137,7 +136,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.PackageVerification.Tests
         [Test]
         public void AddRangeThenSaveChanges_CanAssertInvocationCount()
         {
-            var mockedDbContext = Create.SubstituteDbContextFor<TestDbContext>();
+            var mockedDbContext = Helpers.Create.SubstituteDbContextFor<TestDbContext>();
 
             mockedDbContext.Set<TestEntity>().AddRange(Fixture.CreateMany<TestEntity>().ToList());
             mockedDbContext.SaveChanges();
