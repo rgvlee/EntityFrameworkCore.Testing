@@ -35,6 +35,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EntityFrameworkCore.Testing
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EntityFrameworkCore.Testing.NSubstitute.Tests", "\\marge\home\Git\EntityFrameworkCore.Testing\src\EntityFrameworkCore 3.0.0\EntityFrameworkCore.Testing.NSubstitute.Tests\EntityFrameworkCore.Testing.NSubstitute.Tests.csproj", "{9C2072EF-8461-4429-A941-A0AA910553B4}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EntityFrameworkCore.Testing.NSubstitute.PackageVerification.Tests", "EntityFrameworkCore.Testing.NSubstitute.PackageVerification.Tests\EntityFrameworkCore.Testing.NSubstitute.PackageVerification.Tests.csproj", "{1251EFF7-0B26-47F2-8559-C43492B7FBE3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -73,6 +75,10 @@ Global
 		{9C2072EF-8461-4429-A941-A0AA910553B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9C2072EF-8461-4429-A941-A0AA910553B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9C2072EF-8461-4429-A941-A0AA910553B4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1251EFF7-0B26-47F2-8559-C43492B7FBE3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1251EFF7-0B26-47F2-8559-C43492B7FBE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1251EFF7-0B26-47F2-8559-C43492B7FBE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1251EFF7-0B26-47F2-8559-C43492B7FBE3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -83,6 +89,7 @@ Global
 		{9C08E46C-C902-473F-93E6-FCB89DEC8C97} = {5B717CD0-96CD-4862-95EB-80ECCDCD1D07}
 		{AA3FB1FC-472F-491B-B6D1-C4792B6BB81F} = {14FCAAB1-10D9-4211-9389-60310E89D99A}
 		{9C2072EF-8461-4429-A941-A0AA910553B4} = {5B717CD0-96CD-4862-95EB-80ECCDCD1D07}
+		{1251EFF7-0B26-47F2-8559-C43492B7FBE3} = {14FCAAB1-10D9-4211-9389-60310E89D99A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0E585345-42EF-438B-8212-2C328D36D9AD}
