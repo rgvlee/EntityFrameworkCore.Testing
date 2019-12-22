@@ -1,6 +1,5 @@
 ﻿using System;
 using EntityFrameworkCore.Testing.Common.Tests;
-using EntityFrameworkCore.Testing.Moq.Helpers;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 

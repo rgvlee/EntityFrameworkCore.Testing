@@ -1,5 +1,4 @@
 ﻿using EntityFrameworkCore.Testing.Common.Tests;
-using EntityFrameworkCore.Testing.NSubstitute.Helpers;
 using NUnit.Framework;
 
 namespace EntityFrameworkCore.Testing.NSubstitute.Tests
@@ -10,7 +9,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Tests
         [SetUp]
         public override void SetUp()
         {
-            MockedDbContext = Create.SubstituteDbContextFor<TestDbContext>();
+            MockedDbContext = Create.MockedDbContextFor<TestDbContext>();
             base.SetUp();
         }
     }

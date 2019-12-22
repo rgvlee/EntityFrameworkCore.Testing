@@ -1,10 +1,10 @@
 using System;
 using System.Linq;
 using EntityFrameworkCore.Testing.Common;
-using EntityFrameworkCore.Testing.Moq.Extensions;
+using EntityFrameworkCore.Testing.NSubstitute.Extensions;
 using Microsoft.EntityFrameworkCore;
 
-namespace EntityFrameworkCore.Testing.Moq.Helpers
+namespace EntityFrameworkCore.Testing.NSubstitute
 {
     /// <summary>Factory for creating mocked instances.</summary>
     public static partial class Create
@@ -37,7 +37,7 @@ namespace EntityFrameworkCore.Testing.Moq.Helpers
         /// <typeparam name="TDbContext">The db context type.</typeparam>
         /// <param name="factory">A factory method that will create an instance of TDbContext.</param>
         /// <returns>A mocked db context.</returns>
-        public static TDbContext MockedDbContextFor<TDbContext>(Func<TDbContext> factory)
+        public static TDbContext MockedDbContextUsingResultFrom<TDbContext>(Func<TDbContext> factory)
             where TDbContext : DbContext
         {
             EnsureArgument.IsNotNull(factory, nameof(factory));

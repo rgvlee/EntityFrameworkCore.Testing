@@ -16,20 +16,20 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
     {
         private static readonly ILogger Logger = LoggerHelper.CreateLogger(typeof(QueryProviderExtensions));
 
-        /// <summary>Creates a substitute query provider.</summary>
+        /// <summary>Creates a mocked query provider.</summary>
         /// <typeparam name="T">The query provider source item type.</typeparam>
         /// <param name="queryProviderToMock">The query provider to mock.</param>
         /// <param name="enumerable">The query provider source.</param>
-        /// <returns>A substitute query provider.</returns>
-        public static IQueryProvider CreateSubstituteQueryProvider<T>(this IQueryProvider queryProviderToMock, IEnumerable<T> enumerable)
+        /// <returns>A mocked query provider.</returns>
+        public static IQueryProvider CreateMockedQueryProvider<T>(this IQueryProvider queryProviderToMock, IEnumerable<T> enumerable)
             where T : class
         {
             EnsureArgument.IsNotNull(queryProviderToMock, nameof(queryProviderToMock));
             EnsureArgument.IsNotNull(enumerable, nameof(enumerable));
 
-            var substituteQueryProvider = Substitute.ForPartsOf<AsyncQueryProvider<T>>(enumerable.AsQueryable());
+            var mockedQueryProvider = Substitute.ForPartsOf<AsyncQueryProvider<T>>(enumerable.AsQueryable());
 
-            substituteQueryProvider
+            mockedQueryProvider
                 .Configure()
                 .CreateQuery<T>(Arg.Is<MethodCallExpression>(mce => mce.Method.Name.Equals("FromSqlOnQueryable")))
                 .Throws(callInfo =>
@@ -38,113 +38,113 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
                     return new NotSupportedException();
                 });
 
-            return substituteQueryProvider;
+            return mockedQueryProvider;
         }
 
-        internal static void SetSource<T>(this AsyncQueryProvider<T> substituteQueryProvider, IEnumerable<T> enumerable)
+        internal static void SetSource<T>(this AsyncQueryProvider<T> mockedQueryProvider, IEnumerable<T> enumerable)
             where T : class
         {
-            EnsureArgument.IsNotNull(substituteQueryProvider, nameof(substituteQueryProvider));
+            EnsureArgument.IsNotNull(mockedQueryProvider, nameof(mockedQueryProvider));
             EnsureArgument.IsNotNull(enumerable, nameof(enumerable));
 
             var queryable = enumerable.AsQueryable();
-            substituteQueryProvider.Configure().Source.Returns(callInfo => queryable);
+            mockedQueryProvider.Configure().Source.Returns(callInfo => queryable);
         }
 
         /// <summary>Sets up FromSqlInterpolated invocations to return a specified result.</summary>
         /// <typeparam name="T">The queryable source type.</typeparam>
-        /// <param name="substituteQueryProvider">The substitute query provider.</param>
+        /// <param name="mockedQueryProvider">The mocked query provider.</param>
         /// <param name="fromSqlInterpolatedResult">The FromSqlInterpolated result.</param>
-        /// <returns>The substitute queryable.</returns>
-        public static IQueryProvider AddFromSqlInterpolatedResult<T>(this IQueryProvider substituteQueryProvider, IEnumerable<T> fromSqlInterpolatedResult)
+        /// <returns>The mocked queryable.</returns>
+        public static IQueryProvider AddFromSqlInterpolatedResult<T>(this IQueryProvider mockedQueryProvider, IEnumerable<T> fromSqlInterpolatedResult)
             where T : class
         {
-            EnsureArgument.IsNotNull(substituteQueryProvider, nameof(substituteQueryProvider));
+            EnsureArgument.IsNotNull(mockedQueryProvider, nameof(mockedQueryProvider));
             EnsureArgument.IsNotNull(fromSqlInterpolatedResult, nameof(fromSqlInterpolatedResult));
 
-            substituteQueryProvider.AddFromSqlRawResult(string.Empty, new List<object>(), fromSqlInterpolatedResult);
-            return substituteQueryProvider;
+            mockedQueryProvider.AddFromSqlRawResult(string.Empty, new List<object>(), fromSqlInterpolatedResult);
+            return mockedQueryProvider;
         }
 
         /// <summary>Sets up FromSqlInterpolated invocations containing a specified sql string to return a specified result.</summary>
         /// <typeparam name="T">The queryable source type.</typeparam>
-        /// <param name="substituteQueryProvider">The substitute query provider.</param>
+        /// <param name="mockedQueryProvider">The mocked query provider.</param>
         /// <param name="sql">The FromSqlInterpolated sql string. Set up supports case insensitive partial matches.</param>
         /// <param name="fromSqlInterpolatedResult">The FromSqlInterpolated result.</param>
-        /// <returns>The substitute queryable.</returns>
-        public static IQueryProvider AddFromSqlInterpolatedResult<T>(this IQueryProvider substituteQueryProvider, FormattableString sql, IEnumerable<T> fromSqlInterpolatedResult)
+        /// <returns>The mocked queryable.</returns>
+        public static IQueryProvider AddFromSqlInterpolatedResult<T>(this IQueryProvider mockedQueryProvider, FormattableString sql, IEnumerable<T> fromSqlInterpolatedResult)
             where T : class
         {
-            EnsureArgument.IsNotNull(substituteQueryProvider, nameof(substituteQueryProvider));
+            EnsureArgument.IsNotNull(mockedQueryProvider, nameof(mockedQueryProvider));
             EnsureArgument.IsNotNull(sql, nameof(sql));
             EnsureArgument.IsNotNull(fromSqlInterpolatedResult, nameof(fromSqlInterpolatedResult));
 
-            substituteQueryProvider.AddFromSqlRawResult(sql.Format, sql.GetArguments(), fromSqlInterpolatedResult);
-            return substituteQueryProvider;
+            mockedQueryProvider.AddFromSqlRawResult(sql.Format, sql.GetArguments(), fromSqlInterpolatedResult);
+            return mockedQueryProvider;
         }
 
         /// <summary>Sets up FromSqlInterpolated invocations containing a specified sql string and parameters to return a specified result.</summary>
         /// <typeparam name="T">The queryable source type.</typeparam>
-        /// <param name="substituteQueryProvider">The substitute query provider.</param>
+        /// <param name="mockedQueryProvider">The mocked query provider.</param>
         /// <param name="sql">The FromSqlInterpolated sql string. Set up supports case insensitive partial matches.</param>
         /// <param name="parameters">The FromSqlInterpolated parameters. Set up supports case insensitive partial parameter sequence matching.</param>
         /// <param name="fromSqlInterpolatedResult">The sequence to return when FromSqlInterpolated is invoked.</param>
-        /// <returns>The substitute query provider.</returns>
-        public static IQueryProvider AddFromSqlInterpolatedResult<T>(this IQueryProvider substituteQueryProvider, string sql, IEnumerable<object> parameters, IEnumerable<T> fromSqlInterpolatedResult)
+        /// <returns>The mocked query provider.</returns>
+        public static IQueryProvider AddFromSqlInterpolatedResult<T>(this IQueryProvider mockedQueryProvider, string sql, IEnumerable<object> parameters, IEnumerable<T> fromSqlInterpolatedResult)
             where T : class
         {
-            EnsureArgument.IsNotNull(substituteQueryProvider, nameof(substituteQueryProvider));
+            EnsureArgument.IsNotNull(mockedQueryProvider, nameof(mockedQueryProvider));
             EnsureArgument.IsNotNull(sql, nameof(sql));
             EnsureArgument.IsNotNull(parameters, nameof(parameters));
             EnsureArgument.IsNotNull(fromSqlInterpolatedResult, nameof(fromSqlInterpolatedResult));
 
-            substituteQueryProvider.AddFromSqlRawResult(sql, parameters, fromSqlInterpolatedResult);
-            return substituteQueryProvider;
+            mockedQueryProvider.AddFromSqlRawResult(sql, parameters, fromSqlInterpolatedResult);
+            return mockedQueryProvider;
         }
 
         /// <summary>Sets up FromSqlRaw invocations to return a specified result.</summary>
         /// <typeparam name="T">The queryable source type.</typeparam>
-        /// <param name="substituteQueryProvider">The substitute query provider.</param>
+        /// <param name="mockedQueryProvider">The mocked query provider.</param>
         /// <param name="fromSqlRawResult">The FromSqlRaw result.</param>
-        /// <returns>The substitute queryable.</returns>
-        public static IQueryProvider AddFromSqlRawResult<T>(this IQueryProvider substituteQueryProvider, IEnumerable<T> fromSqlRawResult)
+        /// <returns>The mocked queryable.</returns>
+        public static IQueryProvider AddFromSqlRawResult<T>(this IQueryProvider mockedQueryProvider, IEnumerable<T> fromSqlRawResult)
             where T : class
         {
-            EnsureArgument.IsNotNull(substituteQueryProvider, nameof(substituteQueryProvider));
+            EnsureArgument.IsNotNull(mockedQueryProvider, nameof(mockedQueryProvider));
             EnsureArgument.IsNotNull(fromSqlRawResult, nameof(fromSqlRawResult));
 
-            substituteQueryProvider.AddFromSqlRawResult(string.Empty, new List<object>(), fromSqlRawResult);
-            return substituteQueryProvider;
+            mockedQueryProvider.AddFromSqlRawResult(string.Empty, new List<object>(), fromSqlRawResult);
+            return mockedQueryProvider;
         }
 
         /// <summary>Sets up FromSqlRaw invocations containing a specified sql string to return a specified result.</summary>
         /// <typeparam name="T">The queryable source type.</typeparam>
-        /// <param name="substituteQueryProvider">The substitute query provider.</param>
+        /// <param name="mockedQueryProvider">The mocked query provider.</param>
         /// <param name="sql">The FromSqlRaw sql string. Set up supports case insensitive partial matches.</param>
         /// <param name="fromSqlRawResult">The FromSqlRaw result.</param>
-        /// <returns>The substitute queryable.</returns>
-        public static IQueryProvider AddFromSqlRawResult<T>(this IQueryProvider substituteQueryProvider, string sql, IEnumerable<T> fromSqlRawResult)
+        /// <returns>The mocked queryable.</returns>
+        public static IQueryProvider AddFromSqlRawResult<T>(this IQueryProvider mockedQueryProvider, string sql, IEnumerable<T> fromSqlRawResult)
             where T : class
         {
-            EnsureArgument.IsNotNull(substituteQueryProvider, nameof(substituteQueryProvider));
+            EnsureArgument.IsNotNull(mockedQueryProvider, nameof(mockedQueryProvider));
             EnsureArgument.IsNotNull(sql, nameof(sql));
             EnsureArgument.IsNotNull(fromSqlRawResult, nameof(fromSqlRawResult));
 
-            substituteQueryProvider.AddFromSqlRawResult(sql, new List<object>(), fromSqlRawResult);
-            return substituteQueryProvider;
+            mockedQueryProvider.AddFromSqlRawResult(sql, new List<object>(), fromSqlRawResult);
+            return mockedQueryProvider;
         }
 
         /// <summary>Sets up FromSqlRaw invocations containing a specified sql string and parameters to return a specified result.</summary>
         /// <typeparam name="T">The queryable source type.</typeparam>
-        /// <param name="substituteQueryProvider">The substitute query provider.</param>
+        /// <param name="mockedQueryProvider">The mocked query provider.</param>
         /// <param name="sql">The FromSqlRaw sql string. Set up supports case insensitive partial matches.</param>
         /// <param name="parameters">The FromSqlRaw parameters. Set up supports case insensitive partial parameter sequence matching.</param>
         /// <param name="fromSqlResult">The sequence to return when FromSqlRaw is invoked.</param>
-        /// <returns>The substitute query provider.</returns>
-        public static IQueryProvider AddFromSqlRawResult<T>(this IQueryProvider substituteQueryProvider, string sql, IEnumerable<object> parameters, IEnumerable<T> fromSqlResult)
+        /// <returns>The mocked query provider.</returns>
+        public static IQueryProvider AddFromSqlRawResult<T>(this IQueryProvider mockedQueryProvider, string sql, IEnumerable<object> parameters, IEnumerable<T> fromSqlResult)
             where T : class
         {
-            EnsureArgument.IsNotNull(substituteQueryProvider, nameof(substituteQueryProvider));
+            EnsureArgument.IsNotNull(mockedQueryProvider, nameof(mockedQueryProvider));
             EnsureArgument.IsNotNull(sql, nameof(sql));
             EnsureArgument.IsNotNull(parameters, nameof(parameters));
             EnsureArgument.IsNotNull(fromSqlResult, nameof(fromSqlResult));
@@ -154,7 +154,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
             var createQueryResult = new AsyncEnumerable<T>(fromSqlResult);
 
             //TODO: SpecifiedParametersMatchMethodCallExpression is being invoked during set up; is there an alternative way to do this?
-            substituteQueryProvider
+            mockedQueryProvider
                 .Configure()
                 .CreateQuery<T>(Arg.Is<MethodCallExpression>(mce => SpecifiedParametersMatchMethodCallExpression(mce, sql, parameters)))
                 .Returns(callInfo =>
@@ -168,7 +168,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
                     return createQueryResult;
                 });
 
-            return substituteQueryProvider;
+            return mockedQueryProvider;
         }
 
         private static bool SqlMatchesMethodCallExpression(MethodCallExpression mce, string sql)

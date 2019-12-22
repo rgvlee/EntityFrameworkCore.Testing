@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using EntityFrameworkCore.Testing.Common.Tests;
 using EntityFrameworkCore.Testing.NSubstitute.Extensions;
-using EntityFrameworkCore.Testing.NSubstitute.Helpers;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 
@@ -13,7 +12,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Tests
     {
         protected override TestDbContext CreateMockedDbContext()
         {
-            return Create.SubstituteDbContextFor(new TestDbContext(new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options));
+            return Create.MockedDbContextFor(new TestDbContext(new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options));
         }
 
         protected override void AddFromSqlRawResult(DbSet<T> mockedDbSet, IEnumerable<T> expectedResult)
