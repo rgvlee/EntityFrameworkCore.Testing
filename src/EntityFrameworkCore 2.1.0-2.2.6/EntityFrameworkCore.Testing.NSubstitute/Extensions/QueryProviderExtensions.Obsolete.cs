@@ -12,11 +12,11 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
         /// <param name="queryProviderToMock">The query provider to mock.</param>
         /// <param name="enumerable">The query provider source.</param>
         /// <returns>A mocked query provider.</returns>
-        [Obsolete("This will be removed in a future version. Use QueryProviderExtensions.CreateSubstituteQueryProvider instead.")]
+        [Obsolete("This will be removed in a future version. Use QueryProviderExtensions.CreateMockedQueryProvider instead.")]
         public static IQueryProvider CreateMock<T>(this IQueryProvider queryProviderToMock, IEnumerable<T> enumerable)
             where T : class
         {
-            return queryProviderToMock.CreateSubstituteQueryProvider(enumerable);
+            return queryProviderToMock.CreateMockedQueryProvider(enumerable);
         }
 
         /// <summary>Creates a mocked query provider.</summary>
@@ -24,11 +24,23 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
         /// <param name="queryProviderToMock">The query provider to mock.</param>
         /// <param name="enumerable">The query provider source.</param>
         /// <returns>A mocked query provider.</returns>
-        [Obsolete("This will be removed in a future version. Use QueryProviderExtensions.CreateSubstituteQueryProvider instead.")]
+        [Obsolete("This will be removed in a future version. Use QueryProviderExtensions.CreateMockedQueryProvider instead.")]
         public static IQueryProvider CreateQueryProviderSubstitute<T>(this IQueryProvider queryProviderToMock, IEnumerable<T> enumerable)
             where T : class
         {
-            return queryProviderToMock.CreateSubstituteQueryProvider(enumerable);
+            return queryProviderToMock.CreateMockedQueryProvider(enumerable);
+        }
+
+        /// <summary>Creates a mocked query provider.</summary>
+        /// <typeparam name="T">The query provider source item type.</typeparam>
+        /// <param name="queryProviderToMock">The query provider to mock.</param>
+        /// <param name="enumerable">The query provider source.</param>
+        /// <returns>A mocked query provider.</returns>
+        [Obsolete("This will be removed in a future version. Use QueryProviderExtensions.CreateMockedQueryProvider instead.")]
+        public static IQueryProvider CreateSubstituteQueryProvider<T>(this IQueryProvider queryProviderToMock, IEnumerable<T> enumerable)
+            where T : class
+        {
+            return queryProviderToMock.CreateMockedQueryProvider(enumerable);
         }
     }
 }

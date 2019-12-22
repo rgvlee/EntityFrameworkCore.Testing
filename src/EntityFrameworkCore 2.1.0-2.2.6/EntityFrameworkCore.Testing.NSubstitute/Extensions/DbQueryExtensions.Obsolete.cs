@@ -11,22 +11,33 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
         /// <typeparam name="TQuery">The query type.</typeparam>
         /// <param name="dbQuery">The db query to mock.</param>
         /// <returns>A mocked db query.</returns>
-        [Obsolete("This will be removed in a future version. Use DbQueryExtensions.CreateSubstituteDbQuery instead.")]
+        [Obsolete("This will be removed in a future version. Use DbQueryExtensions.CreateMockedDbQuery instead.")]
         public static DbQuery<TQuery> CreateMock<TQuery>(this DbQuery<TQuery> dbQuery)
             where TQuery : class
         {
-            return dbQuery.CreateSubstituteDbQuery();
+            return dbQuery.CreateMockedDbQuery();
         }
 
         /// <summary>Creates and sets up a mocked db query.</summary>
         /// <typeparam name="TQuery">The query type.</typeparam>
         /// <param name="dbQuery">The db query to mock.</param>
         /// <returns>A mocked db query.</returns>
-        [Obsolete("This will be removed in a future version. Use DbQueryExtensions.CreateSubstituteDbQuery instead.")]
+        [Obsolete("This will be removed in a future version. Use DbQueryExtensions.CreateMockedDbQuery instead.")]
         public static DbQuery<TQuery> CreateDbQuerySubstitute<TQuery>(this DbQuery<TQuery> dbQuery)
             where TQuery : class
         {
-            return dbQuery.CreateSubstituteDbQuery();
+            return dbQuery.CreateMockedDbQuery();
+        }
+
+        /// <summary>Creates and sets up a mocked db query.</summary>
+        /// <typeparam name="TQuery">The query type.</typeparam>
+        /// <param name="dbQuery">The db query to mock.</param>
+        /// <returns>A mocked db query.</returns>
+        [Obsolete("This will be removed in a future version. Use DbQueryExtensions.CreateMockedDbQuery instead.")]
+        public static DbQuery<TQuery> CreateSubstituteDbQuery<TQuery>(this DbQuery<TQuery> dbQuery)
+            where TQuery : class
+        {
+            return dbQuery.CreateMockedDbQuery();
         }
 
         /// <summary>Adds an item to the end of the mocked db query source.</summary>

@@ -4,84 +4,82 @@ using EntityFrameworkCore.Testing.Common;
 using EntityFrameworkCore.Testing.NSubstitute.Extensions;
 using Microsoft.EntityFrameworkCore;
 
-namespace EntityFrameworkCore.Testing.NSubstitute.Helpers
+namespace EntityFrameworkCore.Testing.NSubstitute
 {
-    /// <summary>Factory for creating substitute instances.</summary>
+    /// <summary>Factory for creating mocked instances.</summary>
     public static partial class Create
     {
-        /// <summary>Creates a substitute db context.</summary>
+        /// <summary>Creates a mocked db context.</summary>
         /// <typeparam name="TDbContext">The db context type.</typeparam>
         /// <param name="dbContextToMock">The db context to mock.</param>
-        /// <returns>A substitute db context.</returns>
-        public static TDbContext SubstituteDbContextFor<TDbContext>(TDbContext dbContextToMock)
+        /// <returns>A mocked db context.</returns>
+        public static TDbContext MockedDbContextFor<TDbContext>(TDbContext dbContextToMock)
             where TDbContext : DbContext
         {
             EnsureArgument.IsNotNull(dbContextToMock, nameof(dbContextToMock));
 
-            return dbContextToMock.CreateSubstituteDbContext();
+            return dbContextToMock.CreateMockedDbContext();
         }
 
-        /// <summary>Creates a substitute db context.</summary>
+        /// <summary>Creates a mocked db context.</summary>
         /// <typeparam name="TDbContext">The db context type.</typeparam>
-        /// <returns>A substitute db context.</returns>
+        /// <returns>A mocked db context.</returns>
         /// <remarks>TDbContext must have a constructor with a single parameter of type DbContextOptionsBuilder.</remarks>
-        public static TDbContext SubstituteDbContextFor<TDbContext>()
+        public static TDbContext MockedDbContextFor<TDbContext>()
             where TDbContext : DbContext
         {
             var options = new DbContextOptionsBuilder<TDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
             var dbContextToMock = (TDbContext) Activator.CreateInstance(typeof(TDbContext), options);
-            return dbContextToMock.CreateSubstituteDbContext();
+            return dbContextToMock.CreateMockedDbContext();
         }
 
-        /// <summary>Creates a substitute db context.</summary>
+        /// <summary>Creates a mocked db context.</summary>
         /// <typeparam name="TDbContext">The db context type.</typeparam>
         /// <param name="factory">A factory method that will create an instance of TDbContext.</param>
-        /// <returns>A substitute db context.</returns>
-        public static TDbContext SubstituteDbContextFor<TDbContext>(Func<TDbContext> factory)
+        /// <returns>A mocked db context.</returns>
+        public static TDbContext MockedDbContextUsing<TDbContext>(Func<TDbContext> factory)
             where TDbContext : DbContext
         {
             EnsureArgument.IsNotNull(factory, nameof(factory));
 
             var dbContextToMock = factory();
-            return dbContextToMock.CreateSubstituteDbContext();
+            return dbContextToMock.CreateMockedDbContext();
         }
 
-        /// <summary>Creates a substitute db set.</summary>
+        /// <summary>Creates a mocked db set.</summary>
         /// <typeparam name="TEntity">The entity type.</typeparam>
         /// <param name="dbSetToMock">The db set to mock.</param>
-        /// <returns>A substitute db set.</returns>
-        public static DbSet<TEntity> SubstituteDbSetFor<TEntity>(DbSet<TEntity> dbSetToMock)
+        /// <returns>A mocked db set.</returns>
+        public static DbSet<TEntity> MockedDbSetFor<TEntity>(DbSet<TEntity> dbSetToMock)
             where TEntity : class
         {
             EnsureArgument.IsNotNull(dbSetToMock, nameof(dbSetToMock));
 
-            return dbSetToMock.CreateSubstituteDbSet();
+            return dbSetToMock.CreateMockedDbSet();
         }
 
-        /// <summary>Creates a substitute db query.</summary>
+        /// <summary>Creates a mocked db query.</summary>
         /// <typeparam name="TQuery">The query type.</typeparam>
         /// <param name="dbQueryToMock">The db query to mock.</param>
-        /// <returns>A substitute db query.</returns>
-        public static DbQuery<TQuery> SubstituteDbQueryFor<TQuery>(DbQuery<TQuery> dbQueryToMock)
+        /// <returns>A mocked db query.</returns>
+        public static DbQuery<TQuery> MockedDbQueryFor<TQuery>(DbQuery<TQuery> dbQueryToMock)
             where TQuery : class
         {
             EnsureArgument.IsNotNull(dbQueryToMock, nameof(dbQueryToMock));
 
-            return dbQueryToMock.CreateSubstituteDbQuery();
+            return dbQueryToMock.CreateMockedDbQuery();
         }
 
-        /// <summary>
-        ///     Creates a substitute query provider.
-        /// </summary>
+        /// <summary>Creates a mocked query provider.</summary>
         /// <typeparam name="T">The queryable type.</typeparam>
         /// <param name="queryable">The query provider source.</param>
-        /// <returns>A substitute query provider.</returns>
-        public static IQueryProvider SubstituteQueryProviderFor<T>(IQueryable<T> queryable)
+        /// <returns>A mocked query provider.</returns>
+        public static IQueryProvider MockedQueryProviderFor<T>(IQueryable<T> queryable)
             where T : class
         {
             EnsureArgument.IsNotNull(queryable, nameof(queryable));
 
-            return queryable.Provider.CreateSubstituteQueryProvider(queryable);
+            return queryable.Provider.CreateMockedQueryProvider(queryable);
         }
     }
 }
