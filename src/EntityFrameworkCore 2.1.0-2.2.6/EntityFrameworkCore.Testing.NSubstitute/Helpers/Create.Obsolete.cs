@@ -29,7 +29,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Helpers
         {
             return NSubstitute.Create.MockedDbContextFor(dbContextToMock);
         }
-        
+
         /// <summary>Creates a mocked db context.</summary>
         /// <typeparam name="TDbContext">The db context type.</typeparam>
         /// <returns>A mocked db context.</returns>
@@ -49,7 +49,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Helpers
         public static TDbContext SubstituteDbContextFor<TDbContext>(Func<TDbContext> factory)
             where TDbContext : DbContext
         {
-            return NSubstitute.Create.MockedDbContextUsing(factory);
+            return NSubstitute.Create.MockedDbContextUsingResultFrom(factory);
         }
 
         /// <summary>Creates a mocked db set.</summary>

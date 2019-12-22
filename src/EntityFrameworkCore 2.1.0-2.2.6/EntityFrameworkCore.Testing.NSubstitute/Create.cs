@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 namespace EntityFrameworkCore.Testing.NSubstitute
 {
     /// <summary>Factory for creating mocked instances.</summary>
-    public static partial class Create
+    public static class Create
     {
         /// <summary>Creates a mocked db context.</summary>
         /// <typeparam name="TDbContext">The db context type.</typeparam>
@@ -37,7 +37,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute
         /// <typeparam name="TDbContext">The db context type.</typeparam>
         /// <param name="factory">A factory method that will create an instance of TDbContext.</param>
         /// <returns>A mocked db context.</returns>
-        public static TDbContext MockedDbContextUsing<TDbContext>(Func<TDbContext> factory)
+        public static TDbContext MockedDbContextUsingResultFrom<TDbContext>(Func<TDbContext> factory)
             where TDbContext : DbContext
         {
             EnsureArgument.IsNotNull(factory, nameof(factory));

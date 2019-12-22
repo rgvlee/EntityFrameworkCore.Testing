@@ -38,7 +38,7 @@ namespace EntityFrameworkCore.Testing.Moq.Helpers
         public static TDbContext MockedDbContextFor<TDbContext>(Func<TDbContext> factory)
             where TDbContext : DbContext
         {
-            return Moq.Create.MockedDbContextUsing(factory);
+            return Moq.Create.MockedDbContextUsingResultFrom(factory);
         }
 
         /// <summary>Creates a mocked db set.</summary>

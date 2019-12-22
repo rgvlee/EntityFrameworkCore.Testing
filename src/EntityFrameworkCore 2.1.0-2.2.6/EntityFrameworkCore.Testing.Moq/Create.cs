@@ -37,7 +37,7 @@ namespace EntityFrameworkCore.Testing.Moq
         /// <typeparam name="TDbContext">The db context type.</typeparam>
         /// <param name="factory">A factory method that will create an instance of TDbContext.</param>
         /// <returns>A mocked db context.</returns>
-        public static TDbContext MockedDbContextUsing<TDbContext>(Func<TDbContext> factory)
+        public static TDbContext MockedDbContextUsingResultFrom<TDbContext>(Func<TDbContext> factory)
             where TDbContext : DbContext
         {
             EnsureArgument.IsNotNull(factory, nameof(factory));

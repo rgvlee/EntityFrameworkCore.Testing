@@ -1,5 +1,4 @@
 ﻿using EntityFrameworkCore.Testing.Common.Tests;
-using EntityFrameworkCore.Testing.Moq.Helpers;
 using NUnit.Framework;
 
 namespace EntityFrameworkCore.Testing.Moq.Tests
