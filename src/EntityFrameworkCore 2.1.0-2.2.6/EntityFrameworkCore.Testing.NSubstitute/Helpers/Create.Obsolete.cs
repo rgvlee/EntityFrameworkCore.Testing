@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 namespace EntityFrameworkCore.Testing.NSubstitute.Helpers
 {
     /// <summary>Factory for creating mocked instances.</summary>
+    [Obsolete("This will be removed in a future version. Use EntityFrameworkCore.Testing.NSubstitute.Create instead.")]
     public static class Create
     {
         /// <summary>Creates a mocked db context.</summary>
