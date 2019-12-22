@@ -23,11 +23,11 @@ In addition to the above you also get all of the benefits of using a mocking fra
 
 ## NuGet Packages
 #### EntityFrameworkCore 3.0.0+
-- [EntityFrameworkCore.Testing.Moq](https://www.nuget.org/packages/EntityFrameworkCore.Testing.Moq/2.0.3)
-- [EntityFrameworkCore.Testing.NSubstitute](https://www.nuget.org/packages/EntityFrameworkCore.Testing.NSubstitute/2.0.3)
+- [EntityFrameworkCore.Testing.Moq](https://www.nuget.org/packages/EntityFrameworkCore.Testing.Moq/2.0.2)
+- [EntityFrameworkCore.Testing.NSubstitute](https://www.nuget.org/packages/EntityFrameworkCore.Testing.NSubstitute/2.0.3-RC01)
 #### EntityFrameworkCore 2.1.0-2.2.6
-- [EntityFrameworkCore.Testing.Moq](https://www.nuget.org/packages/EntityFrameworkCore.Testing.Moq/1.0.6)
-- [EntityFrameworkCore.Testing.NSubstitute](https://www.nuget.org/packages/EntityFrameworkCore.Testing.NSubstitute/1.0.6)
+- [EntityFrameworkCore.Testing.Moq](https://www.nuget.org/packages/EntityFrameworkCore.Testing.Moq/1.0.5)
+- [EntityFrameworkCore.Testing.NSubstitute](https://www.nuget.org/packages/EntityFrameworkCore.Testing.NSubstitute/1.0.5)
 
 # Moq
 ## Example Usage
@@ -187,8 +187,7 @@ Keep in mind that the DbContext, each DbSet\<TEntity\>, each DbQuery\<TQuery\>, 
 [Test]
 public void AddRangeThenSaveChanges_CanAssertInvocationCount()
 {
-    var dbContextToMock = new TestDbContext(new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
-    var mockedDbContext = Create.MockedDbContextFor(dbContextToMock);
+    var mockedDbContext = Create.MockedDbContextFor<TestDbContext>();
 
     mockedDbContext.Set<TestEntity>().AddRange(Fixture.CreateMany<TestEntity>().ToList());
     mockedDbContext.SaveChanges();
@@ -216,12 +215,7 @@ public void AddRangeThenSaveChanges_CanAssertInvocationCount()
 The Create factory always returns the mocked object. This is deliberate as once created there should be no further set up required (other than what the EntityFrameworkCore.Testing interface provides of course). That being said the Mock\<T\> is always accessible using `Mock.Get<T>(T mocked)`. If you find yourself resorting to using this to support an unsupported operation :cry: get in touch so I can make it a supported operation :smile:.
 
 # NSubstitute
-The only difference from the above examples is the Create factory methods are more NSubstitute-ish. The rest of the interface is deliberately the same.
-
-```
-var dbContextToMock = new TestDbContext(new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
-var mockedContext = Create.SubstituteDbContextFor(dbContextToMock);
-```
+It works the same/has the same interface. The only difference is if you want to mocks themselves. For Moq you need to invoke Mock.Get(mocked) to get it. For NSubstitute you don't need to do this.
 
 ### Performing Received operations
 Received operations can be performed directly on the substitute as you would expect. Keep in mind that the DbContext, each DbSet\<TEntity\>, each DbQuery\<TQuery\>, and the query provider for each DbSet\<TEntity\> and DbQuery\<TQuery\> are separate substitutes so you will need to invoke the Received operation on the appropriate substitute.
@@ -230,8 +224,7 @@ Received operations can be performed directly on the substitute as you would exp
 [Test]
 public void AddRangeThenSaveChanges_CanAssertInvocationCount()
 {
-    var dbContextToMock = new TestDbContext(new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
-    var mockedDbContext = Create.SubstituteDbContextFor(dbContextToMock);
+    var mockedDbContext = Create.MockedDbContextFor<TestDbContext>();
 
     mockedDbContext.Set<TestEntity>().AddRange(Fixture.CreateMany<TestEntity>().ToList());
     mockedDbContext.SaveChanges();

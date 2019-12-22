@@ -12,14 +12,14 @@ using NUnit.Framework;
 
 namespace EntityFrameworkCore.Testing.Moq.PackageVerification.Tests
 {
-    public class Tests
+    public class ReadmeTests
     {
         public Fixture Fixture = new Fixture();
 
         [SetUp]
         public virtual void SetUp()
         {
-            //LoggerHelper.LoggerFactory
+            //LoggerHelper.LoggerFactory.AddConsole(LogLevel.Debug);
         }
 
         [Test]
@@ -135,8 +135,7 @@ namespace EntityFrameworkCore.Testing.Moq.PackageVerification.Tests
         [Test]
         public void AddRangeThenSaveChanges_CanAssertInvocationCount()
         {
-            var dbContextToMock = new TestDbContext(new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
-            var mockedDbContext = Create.MockedDbContextFor(dbContextToMock);
+            var mockedDbContext = Create.MockedDbContextFor<TestDbContext>();
 
             mockedDbContext.Set<TestEntity>().AddRange(Fixture.CreateMany<TestEntity>().ToList());
             mockedDbContext.SaveChanges();
