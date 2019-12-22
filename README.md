@@ -24,7 +24,7 @@ In addition to the above you also get all of the benefits of using a mocking fra
 ## NuGet Packages
 #### EntityFrameworkCore 3.0.0+
 - [EntityFrameworkCore.Testing.Moq](https://www.nuget.org/packages/EntityFrameworkCore.Testing.Moq/2.0.2)
-- [EntityFrameworkCore.Testing.NSubstitute](https://www.nuget.org/packages/EntityFrameworkCore.Testing.NSubstitute/2.0.3-RC01)
+- [EntityFrameworkCore.Testing.NSubstitute (release candidate)](https://www.nuget.org/packages/EntityFrameworkCore.Testing.NSubstitute/2.0.3-RC01)
 #### EntityFrameworkCore 2.1.0-2.2.6
 - [EntityFrameworkCore.Testing.Moq](https://www.nuget.org/packages/EntityFrameworkCore.Testing.Moq/1.0.5)
 - [EntityFrameworkCore.Testing.NSubstitute](https://www.nuget.org/packages/EntityFrameworkCore.Testing.NSubstitute/1.0.5)
