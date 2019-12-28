@@ -65,7 +65,7 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
             EnsureArgument.IsNotNull(mockedDbContext, nameof(mockedDbContext));
             return mockedDbContext.AddExecuteSqlRawResult(sql, parameters, executeSqlCommandResult, (providedSql, providedParameters) => callback?.Invoke());
         }
-        
+
         /// <summary>Sets up ExecuteSqlCommand invocations to return a specified result.</summary>
         /// <typeparam name="TDbContext">The db context type.</typeparam>
         /// <param name="mockedDbContext">The mocked db context.</param>
@@ -110,7 +110,7 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
             EnsureArgument.IsNotNull(mockedDbContext, nameof(mockedDbContext));
             return mockedDbContext.AddExecuteSqlRawResult(sql, parameters, executeSqlCommandResult, callback);
         }
-        
+
         /// <summary>Sets up ExecuteSqlInterpolated invocations to return a specified result.</summary>
         /// <typeparam name="TDbContext">The db context type.</typeparam>
         /// <param name="mockedDbContext">The mocked db context.</param>
