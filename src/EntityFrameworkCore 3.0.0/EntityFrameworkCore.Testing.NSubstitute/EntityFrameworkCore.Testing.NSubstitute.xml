@@ -77,7 +77,7 @@
             <param name="mockedDbContext">The mocked db context.</param>
             <param name="dbContextToMock">The db context to mock/proxy.</param>
         </member>
-        <member name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.DbContextExtensions.AddExecuteSqlInterpolatedResult``1(``0,System.Int32,System.Action)">
+        <member name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.DbContextExtensions.AddExecuteSqlInterpolatedResult``1(``0,System.Int32,System.Action{System.String,System.Collections.Generic.IEnumerable{System.Object}})">
             <summary>Sets up ExecuteSqlInterpolated invocations to return a specified result.</summary>
             <typeparam name="TDbContext">The db context type.</typeparam>
             <param name="mockedDbContext">The mocked db context.</param>
@@ -85,7 +85,7 @@
             <param name="callback">Operations to perform after ExecuteSqlCommand is invoked.</param>
             <returns>The mocked db context.</returns>
         </member>
-        <member name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.DbContextExtensions.AddExecuteSqlInterpolatedResult``1(``0,System.FormattableString,System.Int32,System.Action)">
+        <member name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.DbContextExtensions.AddExecuteSqlInterpolatedResult``1(``0,System.FormattableString,System.Int32,System.Action{System.String,System.Collections.Generic.IEnumerable{System.Object}})">
             <summary>Sets up ExecuteSqlInterpolated invocations containing a specified sql string to return a specified result.</summary>
             <typeparam name="TDbContext">The db context type.</typeparam>
             <param name="mockedDbContext">The mocked db context.</param>
@@ -94,7 +94,7 @@
             <param name="callback">Operations to perform after ExecuteSqlCommand is invoked.</param>
             <returns>The mocked db context.</returns>
         </member>
-        <member name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.DbContextExtensions.AddExecuteSqlInterpolatedResult``1(``0,System.String,System.Collections.Generic.IEnumerable{System.Object},System.Int32,System.Action)">
+        <member name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.DbContextExtensions.AddExecuteSqlInterpolatedResult``1(``0,System.String,System.Collections.Generic.IEnumerable{System.Object},System.Int32,System.Action{System.String,System.Collections.Generic.IEnumerable{System.Object}})">
             <summary>Sets up ExecuteSqlInterpolated invocations containing a specified sql string to return a specified result.</summary>
             <typeparam name="TDbContext">The db context type.</typeparam>
             <param name="mockedDbContext">The mocked db context.</param>
@@ -104,7 +104,7 @@
             <param name="callback">Operations to perform after ExecuteSqlCommand is invoked.</param>
             <returns>The mocked db context.</returns>
         </member>
-        <member name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.DbContextExtensions.AddExecuteSqlRawResult``1(``0,System.Int32,System.Action)">
+        <member name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.DbContextExtensions.AddExecuteSqlRawResult``1(``0,System.Int32,System.Action{System.String,System.Collections.Generic.IEnumerable{System.Object}})">
             <summary>Sets up ExecuteSqlRaw invocations to return a specified result.</summary>
             <typeparam name="TDbContext">The db context type.</typeparam>
             <param name="mockedDbContext">The mocked db context.</param>
@@ -112,7 +112,7 @@
             <param name="callback">Operations to perform after ExecuteSqlCommand is invoked.</param>
             <returns>The mocked db context.</returns>
         </member>
-        <member name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.DbContextExtensions.AddExecuteSqlRawResult``1(``0,System.String,System.Int32,System.Action)">
+        <member name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.DbContextExtensions.AddExecuteSqlRawResult``1(``0,System.String,System.Int32,System.Action{System.String,System.Collections.Generic.IEnumerable{System.Object}})">
             <summary>Sets up ExecuteSqlRaw invocations containing a specified sql string and parameters to return a specified result.</summary>
             <typeparam name="TDbContext">The db context type.</typeparam>
             <param name="mockedDbContext">The mocked db context.</param>
@@ -121,7 +121,7 @@
             <param name="callback">Operations to perform after ExecuteSqlCommand is invoked.</param>
             <returns>The mocked db context.</returns>
         </member>
-        <member name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.DbContextExtensions.AddExecuteSqlRawResult``1(``0,System.String,System.Collections.Generic.IEnumerable{System.Object},System.Int32,System.Action)">
+        <member name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.DbContextExtensions.AddExecuteSqlRawResult``1(``0,System.String,System.Collections.Generic.IEnumerable{System.Object},System.Int32,System.Action{System.String,System.Collections.Generic.IEnumerable{System.Object}})">
             <summary>Sets up ExecuteSqlRaw invocations containing a specified sql string and parameters to return a specified result.</summary>
             <typeparam name="TDbContext">The db context type.</typeparam>
             <param name="mockedDbContext">The mocked db context.</param>
