@@ -19,8 +19,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
             where TDbContext : DbContext
         {
             EnsureArgument.IsNotNull(mockedDbContext, nameof(mockedDbContext));
-
-            return mockedDbContext.AddExecuteSqlRawResult(string.Empty, new List<object>(), executeSqlCommandResult, callback);
+            return mockedDbContext.AddExecuteSqlRawResult(executeSqlCommandResult, (providedSql, providedParameters) => callback?.Invoke());
         }
 
         /// <summary>Sets up ExecuteSqlCommand invocations containing a specified sql string to return a specified result.</summary>
@@ -35,9 +34,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
             where TDbContext : DbContext
         {
             EnsureArgument.IsNotNull(mockedDbContext, nameof(mockedDbContext));
-            EnsureArgument.IsNotNull(sql, nameof(sql));
-
-            return mockedDbContext.AddExecuteSqlRawResult(sql, new List<object>(), executeSqlCommandResult, callback);
+            return mockedDbContext.AddExecuteSqlRawResult(sql, executeSqlCommandResult, (providedSql, providedParameters) => callback?.Invoke());
         }
 
         /// <summary>Sets up ExecuteSqlCommand invocations containing a specified sql string and parameters to return a specified result.</summary>
@@ -53,10 +50,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
             where TDbContext : DbContext
         {
             EnsureArgument.IsNotNull(mockedDbContext, nameof(mockedDbContext));
-            EnsureArgument.IsNotNull(sql, nameof(sql));
-            EnsureArgument.IsNotNull(parameters, nameof(parameters));
-
-            return mockedDbContext.AddExecuteSqlRawResult(sql, parameters, executeSqlCommandResult, callback);
+            return mockedDbContext.AddExecuteSqlRawResult(sql, parameters, executeSqlCommandResult, (providedSql, providedParameters) => callback?.Invoke());
         }
     }
 }
