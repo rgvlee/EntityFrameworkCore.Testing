@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using EntityFrameworkCore.Testing.Common;
 using Microsoft.EntityFrameworkCore;
 
 namespace EntityFrameworkCore.Testing.Moq.Extensions
@@ -15,6 +16,7 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
         public static DbQuery<TQuery> CreateMock<TQuery>(this DbQuery<TQuery> dbQuery)
             where TQuery : class
         {
+            EnsureArgument.IsNotNull(dbQuery, nameof(dbQuery));
             return dbQuery.CreateMockedDbQuery();
         }
 
@@ -29,6 +31,7 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
         public static void Add<TQuery>(this DbQuery<TQuery> mockedDbQuery, TQuery item)
             where TQuery : class
         {
+            EnsureArgument.IsNotNull(mockedDbQuery, nameof(mockedDbQuery));
             mockedDbQuery.AddToReadOnlySource(item);
         }
 
@@ -43,6 +46,7 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
         public static void AddRange<TQuery>(this DbQuery<TQuery> mockedDbQuery, IEnumerable<TQuery> items)
             where TQuery : class
         {
+            EnsureArgument.IsNotNull(mockedDbQuery, nameof(mockedDbQuery));
             mockedDbQuery.AddRangeToReadOnlySource(items);
         }
 
@@ -53,6 +57,7 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
         public static void Clear<TQuery>(this DbQuery<TQuery> mockedDbQuery)
             where TQuery : class
         {
+            EnsureArgument.IsNotNull(mockedDbQuery, nameof(mockedDbQuery));
             mockedDbQuery.ClearReadOnlySource();
         }
     }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using EntityFrameworkCore.Testing.Common;
 
 namespace EntityFrameworkCore.Testing.Moq.Extensions
 {
@@ -16,6 +17,7 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
         public static IQueryProvider CreateMock<T>(this IQueryProvider queryProviderToMock, IEnumerable<T> enumerable)
             where T : class
         {
+            EnsureArgument.IsNotNull(queryProviderToMock, nameof(queryProviderToMock));
             return queryProviderToMock.CreateMockedQueryProvider(enumerable);
         }
     }

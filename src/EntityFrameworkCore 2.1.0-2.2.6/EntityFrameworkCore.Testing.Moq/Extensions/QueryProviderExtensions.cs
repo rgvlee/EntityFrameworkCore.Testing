@@ -60,8 +60,6 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
             where T : class
         {
             EnsureArgument.IsNotNull(mockedQueryProvider, nameof(mockedQueryProvider));
-            EnsureArgument.IsNotNull(fromSqlResult, nameof(fromSqlResult));
-
             mockedQueryProvider.AddFromSqlResult(string.Empty, new List<object>(), fromSqlResult);
             return mockedQueryProvider;
         }
@@ -76,9 +74,6 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
             where T : class
         {
             EnsureArgument.IsNotNull(mockedQueryProvider, nameof(mockedQueryProvider));
-            EnsureArgument.IsNotNull(sql, nameof(sql));
-            EnsureArgument.IsNotNull(fromSqlResult, nameof(fromSqlResult));
-
             mockedQueryProvider.AddFromSqlResult(sql, new List<object>(), fromSqlResult);
             return mockedQueryProvider;
         }
