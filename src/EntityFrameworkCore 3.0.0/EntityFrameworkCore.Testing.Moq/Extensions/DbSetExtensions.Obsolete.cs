@@ -1,4 +1,5 @@
 ﻿using System;
+using EntityFrameworkCore.Testing.Common;
 using Microsoft.EntityFrameworkCore;
 
 namespace EntityFrameworkCore.Testing.Moq.Extensions
@@ -14,6 +15,7 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
         public static DbSet<TEntity> CreateMock<TEntity>(this DbSet<TEntity> dbSet)
             where TEntity : class
         {
+            EnsureArgument.IsNotNull(dbSet, nameof(dbSet));
             return dbSet.CreateMockedDbSet();
         }
     }

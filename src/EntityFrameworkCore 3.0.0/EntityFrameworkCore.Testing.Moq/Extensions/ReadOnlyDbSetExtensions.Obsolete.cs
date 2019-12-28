@@ -1,4 +1,5 @@
 ﻿using System;
+using EntityFrameworkCore.Testing.Common;
 using Microsoft.EntityFrameworkCore;
 
 namespace EntityFrameworkCore.Testing.Moq.Extensions
@@ -14,8 +15,8 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
         public static DbQuery<TQuery> CreateMockedDbQuery<TQuery>(this DbQuery<TQuery> dbQuery)
             where TQuery : class
         {
-            var mockedReadOnlyDbSet = dbQuery.CreateMockedReadOnlyDbSet();
-            return (DbQuery<TQuery>) mockedReadOnlyDbSet;
+            EnsureArgument.IsNotNull(dbQuery, nameof(dbQuery));
+            return (DbQuery<TQuery>)dbQuery.CreateMockedReadOnlyDbSet();
         }
 
         /// <summary>Creates and sets up a mocked db query.</summary>
@@ -26,6 +27,7 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
         public static DbQuery<TQuery> CreateReadOnlyMock<TQuery>(this DbQuery<TQuery> dbQuery)
             where TQuery : class
         {
+            EnsureArgument.IsNotNull(dbQuery, nameof(dbQuery));
             return dbQuery.CreateMockedDbQuery();
         }
 
@@ -37,6 +39,7 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
         public static DbSet<TEntity> CreateReadOnlyMock<TEntity>(this DbSet<TEntity> readOnlyDbSet)
             where TEntity : class
         {
+            EnsureArgument.IsNotNull(readOnlyDbSet, nameof(readOnlyDbSet));
             return readOnlyDbSet.CreateMockedReadOnlyDbSet();
         }
     }
