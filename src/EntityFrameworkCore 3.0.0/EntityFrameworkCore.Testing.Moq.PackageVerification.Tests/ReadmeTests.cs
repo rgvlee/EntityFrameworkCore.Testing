@@ -4,7 +4,6 @@ using System.Linq;
 using AutoFixture;
 using EntityFrameworkCore.Testing.Common.Tests;
 using EntityFrameworkCore.Testing.Moq.Extensions;
-using EntityFrameworkCore.Testing.Moq.Helpers;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Moq;

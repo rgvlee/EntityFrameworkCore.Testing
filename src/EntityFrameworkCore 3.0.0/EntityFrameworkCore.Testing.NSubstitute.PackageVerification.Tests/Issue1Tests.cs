@@ -50,21 +50,21 @@ namespace EntityFrameworkCore.Testing.NSubstitute.PackageVerification.Tests
             Assert.That(service.GiveMeCookie().Result, Is.EqualTo("Cookie"));
         }
 
-public class MyService
-{
-    private readonly DbContext _context;
+        public class MyService
+        {
+            private readonly DbContext _context;
 
-    public MyService(DbContext context)
-    {
-        _context = context;
-    }
+            public MyService(DbContext context)
+            {
+                _context = context;
+            }
 
-    public async Task<string> GiveMeCookie()
-    {
-        var outcomeParam = new SqlParameter("Outcome", SqlDbType.VarChar, 500) {Direction = ParameterDirection.Output};
-        await _context.Database.ExecuteSqlRawAsync(@"EXEC [GiveMeCookie] @Outcome = @Outcome OUT", outcomeParam);
-        return outcomeParam.Value.ToString();
-    }
-}
+            public async Task<string> GiveMeCookie()
+            {
+                var outcomeParam = new SqlParameter("Outcome", SqlDbType.VarChar, 500) {Direction = ParameterDirection.Output};
+                await _context.Database.ExecuteSqlRawAsync(@"EXEC [GiveMeCookie] @Outcome = @Outcome OUT", outcomeParam);
+                return outcomeParam.Value.ToString();
+            }
+        }
     }
 }

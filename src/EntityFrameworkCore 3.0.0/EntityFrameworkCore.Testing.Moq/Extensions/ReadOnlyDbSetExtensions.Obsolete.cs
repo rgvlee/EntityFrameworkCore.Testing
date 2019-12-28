@@ -16,7 +16,7 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
             where TQuery : class
         {
             EnsureArgument.IsNotNull(dbQuery, nameof(dbQuery));
-            return (DbQuery<TQuery>)dbQuery.CreateMockedReadOnlyDbSet();
+            return (DbQuery<TQuery>) dbQuery.CreateMockedReadOnlyDbSet();
         }
 
         /// <summary>Creates and sets up a mocked db query.</summary>

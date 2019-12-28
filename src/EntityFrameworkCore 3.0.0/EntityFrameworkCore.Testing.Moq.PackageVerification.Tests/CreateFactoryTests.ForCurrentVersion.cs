@@ -8,7 +8,7 @@ using NUnit.Framework;
 
 namespace EntityFrameworkCore.Testing.Moq.PackageVerification.Tests
 {
-    public partial class CreateFactoryTests
+    public class CreateFactoryTests
     {
         private DbContextOptions<TestDbContext> DbContextOptions => new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
 
