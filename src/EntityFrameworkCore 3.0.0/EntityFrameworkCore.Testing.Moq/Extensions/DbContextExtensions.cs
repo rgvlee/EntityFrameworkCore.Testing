@@ -191,11 +191,10 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
         /// <param name="executeSqlInterpolatedResult">The integer to return when ExecuteSqlInterpolated is invoked.</param>
         /// <param name="callback">Operations to perform after ExecuteSqlCommand is invoked.</param>
         /// <returns>The mocked db context.</returns>
-        public static TDbContext AddExecuteSqlInterpolatedResult<TDbContext>(this TDbContext mockedDbContext, int executeSqlInterpolatedResult, Action callback = null)
+        public static TDbContext AddExecuteSqlInterpolatedResult<TDbContext>(this TDbContext mockedDbContext, int executeSqlInterpolatedResult, Action<string, IEnumerable<object>> callback = null)
             where TDbContext : DbContext
         {
             EnsureArgument.IsNotNull(mockedDbContext, nameof(mockedDbContext));
-
             return mockedDbContext.AddExecuteSqlRawResult(string.Empty, new List<object>(), executeSqlInterpolatedResult, callback);
         }
 
@@ -206,12 +205,11 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
         /// <param name="executeSqlInterpolatedResult">The integer to return when ExecuteSqlInterpolated is invoked.</param>
         /// <param name="callback">Operations to perform after ExecuteSqlCommand is invoked.</param>
         /// <returns>The mocked db context.</returns>
-        public static TDbContext AddExecuteSqlInterpolatedResult<TDbContext>(this TDbContext mockedDbContext, FormattableString sql, int executeSqlInterpolatedResult, Action callback = null)
+        public static TDbContext AddExecuteSqlInterpolatedResult<TDbContext>(
+            this TDbContext mockedDbContext, FormattableString sql, int executeSqlInterpolatedResult, Action<string, IEnumerable<object>> callback = null)
             where TDbContext : DbContext
         {
             EnsureArgument.IsNotNull(mockedDbContext, nameof(mockedDbContext));
-            EnsureArgument.IsNotNull(sql, nameof(sql));
-
             return mockedDbContext.AddExecuteSqlRawResult(sql.Format, sql.GetArguments(), executeSqlInterpolatedResult, callback);
         }
 
@@ -223,13 +221,11 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
         /// <param name="executeSqlInterpolatedResult">The integer to return when ExecuteSqlInterpolated is invoked.</param>
         /// <param name="callback">Operations to perform after ExecuteSqlCommand is invoked.</param>
         /// <returns>The mocked db context.</returns>
-        public static TDbContext AddExecuteSqlInterpolatedResult<TDbContext>(this TDbContext mockedDbContext, string sql, IEnumerable<object> parameters, int executeSqlInterpolatedResult, Action callback = null)
+        public static TDbContext AddExecuteSqlInterpolatedResult<TDbContext>(
+            this TDbContext mockedDbContext, string sql, IEnumerable<object> parameters, int executeSqlInterpolatedResult, Action<string, IEnumerable<object>> callback = null)
             where TDbContext : DbContext
         {
             EnsureArgument.IsNotNull(mockedDbContext, nameof(mockedDbContext));
-            EnsureArgument.IsNotNull(sql, nameof(sql));
-            EnsureArgument.IsNotNull(parameters, nameof(parameters));
-
             return mockedDbContext.AddExecuteSqlRawResult(sql, parameters, executeSqlInterpolatedResult, callback);
         }
 
@@ -239,11 +235,10 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
         /// <param name="executeSqlRawResult">The integer to return when ExecuteSqlRaw is invoked.</param>
         /// <param name="callback">Operations to perform after ExecuteSqlCommand is invoked.</param>
         /// <returns>The mocked db context.</returns>
-        public static TDbContext AddExecuteSqlRawResult<TDbContext>(this TDbContext mockedDbContext, int executeSqlRawResult, Action callback = null)
+        public static TDbContext AddExecuteSqlRawResult<TDbContext>(this TDbContext mockedDbContext, int executeSqlRawResult, Action<string, IEnumerable<object>> callback = null)
             where TDbContext : DbContext
         {
             EnsureArgument.IsNotNull(mockedDbContext, nameof(mockedDbContext));
-
             return mockedDbContext.AddExecuteSqlRawResult(string.Empty, new List<object>(), executeSqlRawResult, callback);
         }
 
@@ -254,12 +249,10 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
         /// <param name="executeSqlRawResult">The integer to return when ExecuteSqlRaw is invoked.</param>
         /// <param name="callback">Operations to perform after ExecuteSqlCommand is invoked.</param>
         /// <returns>The mocked db context.</returns>
-        public static TDbContext AddExecuteSqlRawResult<TDbContext>(this TDbContext mockedDbContext, string sql, int executeSqlRawResult, Action callback = null)
+        public static TDbContext AddExecuteSqlRawResult<TDbContext>(this TDbContext mockedDbContext, string sql, int executeSqlRawResult, Action<string, IEnumerable<object>> callback = null)
             where TDbContext : DbContext
         {
             EnsureArgument.IsNotNull(mockedDbContext, nameof(mockedDbContext));
-            EnsureArgument.IsNotNull(sql, nameof(sql));
-
             return mockedDbContext.AddExecuteSqlRawResult(sql, new List<object>(), executeSqlRawResult, callback);
         }
 
@@ -271,7 +264,8 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
         /// <param name="executeSqlRawResult">The integer to return when ExecuteSqlRaw is invoked.</param>
         /// <param name="callback">Operations to perform after ExecuteSqlCommand is invoked.</param>
         /// <returns>The mocked db context.</returns>
-        public static TDbContext AddExecuteSqlRawResult<TDbContext>(this TDbContext mockedDbContext, string sql, IEnumerable<object> parameters, int executeSqlRawResult, Action callback = null)
+        public static TDbContext AddExecuteSqlRawResult<TDbContext>(
+            this TDbContext mockedDbContext, string sql, IEnumerable<object> parameters, int executeSqlRawResult, Action<string, IEnumerable<object>> callback = null)
             where TDbContext : DbContext
         {
             EnsureArgument.IsNotNull(mockedDbContext, nameof(mockedDbContext));
@@ -281,13 +275,11 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
             var relationalCommandMock = new Mock<IRelationalCommand>();
             relationalCommandMock
                 .Setup(m => m.ExecuteNonQuery(It.IsAny<RelationalCommandParameterObject>()))
-                .Returns((RelationalCommandParameterObject providedRelationalCommandParameterObject) => executeSqlRawResult)
-                .Callback(() => { callback?.Invoke(); });
+                .Returns((RelationalCommandParameterObject providedRelationalCommandParameterObject) => executeSqlRawResult);
 
             relationalCommandMock
                 .Setup(m => m.ExecuteNonQueryAsync(It.IsAny<RelationalCommandParameterObject>(), It.IsAny<CancellationToken>()))
-                .Returns((RelationalCommandParameterObject providedRelationalCommandParameterObject, CancellationToken providedCancellationToken) => Task.FromResult(executeSqlRawResult))
-                .Callback(() => { callback?.Invoke(); });
+                .Returns((RelationalCommandParameterObject providedRelationalCommandParameterObject, CancellationToken providedCancellationToken) => Task.FromResult(executeSqlRawResult));
             var relationalCommand = relationalCommandMock.Object;
 
             var rawSqlCommandMock = new Mock<RawSqlCommand>(MockBehavior.Strict, relationalCommand, new Dictionary<string, object>());
@@ -310,6 +302,8 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
                 .Returns((string providedSql, IEnumerable<object> providedParameters) => rawSqlCommand)
                 .Callback((string providedSql, IEnumerable<object> providedParameters) =>
                 {
+                    callback?.Invoke(providedSql, providedParameters);
+
                     var parts = new List<string>();
                     parts.Add($"Invocation sql: {providedSql}");
                     parts.Add("Invocation Parameters:");
