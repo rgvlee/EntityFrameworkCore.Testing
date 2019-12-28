@@ -196,11 +196,10 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
         /// <param name="executeSqlCommandResult">The integer to return when ExecuteSqlCommand is invoked.</param>
         /// <param name="callback">Operations to perform after ExecuteSqlCommand is invoked.</param>
         /// <returns>The mocked db context.</returns>
-        public static TDbContext AddExecuteSqlCommandResult<TDbContext>(this TDbContext mockedDbContext, int executeSqlCommandResult, Action callback = null)
+        public static TDbContext AddExecuteSqlCommandResult<TDbContext>(this TDbContext mockedDbContext, int executeSqlCommandResult, Action<string, IEnumerable<object>> callback = null)
             where TDbContext : DbContext
         {
             EnsureArgument.IsNotNull(mockedDbContext, nameof(mockedDbContext));
-
             return mockedDbContext.AddExecuteSqlCommandResult(string.Empty, new List<object>(), executeSqlCommandResult, callback);
         }
 
@@ -211,12 +210,10 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
         /// <param name="executeSqlCommandResult">The integer to return when ExecuteSqlCommand is invoked.</param>
         /// <param name="callback">Operations to perform after ExecuteSqlCommand is invoked.</param>
         /// <returns>The mocked db context.</returns>
-        public static TDbContext AddExecuteSqlCommandResult<TDbContext>(this TDbContext mockedDbContext, string sql, int executeSqlCommandResult, Action callback = null)
+        public static TDbContext AddExecuteSqlCommandResult<TDbContext>(this TDbContext mockedDbContext, string sql, int executeSqlCommandResult, Action<string, IEnumerable<object>> callback = null)
             where TDbContext : DbContext
         {
             EnsureArgument.IsNotNull(mockedDbContext, nameof(mockedDbContext));
-            EnsureArgument.IsNotNull(sql, nameof(sql));
-
             return mockedDbContext.AddExecuteSqlCommandResult(sql, new List<object>(), executeSqlCommandResult, callback);
         }
 
@@ -228,7 +225,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
         /// <param name="executeSqlCommandResult">The integer to return when ExecuteSqlCommand is invoked.</param>
         /// <param name="callback">Operations to perform after ExecuteSqlCommand is invoked.</param>
         /// <returns>The mocked db context.</returns>
-        public static TDbContext AddExecuteSqlCommandResult<TDbContext>(this TDbContext mockedDbContext, string sql, IEnumerable<object> parameters, int executeSqlCommandResult, Action callback = null)
+        public static TDbContext AddExecuteSqlCommandResult<TDbContext>(this TDbContext mockedDbContext, string sql, IEnumerable<object> parameters, int executeSqlCommandResult, Action<string, IEnumerable<object>> callback = null)
             where TDbContext : DbContext
         {
             EnsureArgument.IsNotNull(mockedDbContext, nameof(mockedDbContext));
@@ -238,13 +235,11 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
             var relationalCommand = Substitute.For<IRelationalCommand>();
             relationalCommand
                 .ExecuteNonQuery(Arg.Any<IRelationalConnection>(), Arg.Any<IReadOnlyDictionary<string, object>>())
-                .Returns(callInfo => executeSqlCommandResult)
-                .AndDoes(callInfo => { callback?.Invoke(); });
+                .Returns(callInfo => executeSqlCommandResult);
 
             relationalCommand
                 .ExecuteNonQueryAsync(Arg.Any<IRelationalConnection>(), Arg.Any<IReadOnlyDictionary<string, object>>(), Arg.Any<CancellationToken>())
-                .Returns(callInfo => Task.FromResult(executeSqlCommandResult))
-                .AndDoes(callInfo => { callback?.Invoke(); });
+                .Returns(callInfo => Task.FromResult(executeSqlCommandResult));
 
             var rawSqlCommand = Substitute.For<RawSqlCommand>(relationalCommand, new Dictionary<string, object>());
             rawSqlCommand.RelationalCommand.Returns(callInfo => relationalCommand);
@@ -269,6 +264,8 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
                 {
                     var providedSql = callInfo.Arg<string>();
                     var providedParameters = callInfo.Arg<IEnumerable<object>>();
+
+                    callback?.Invoke(providedSql, providedParameters);
 
                     var parts = new List<string>();
                     parts.Add($"Invocation sql: {providedSql}");
