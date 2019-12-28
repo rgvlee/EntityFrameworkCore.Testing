@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using EntityFrameworkCore.Testing.Common;
 
 namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
 {
@@ -16,6 +17,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
         public static IQueryProvider CreateMock<T>(this IQueryProvider queryProviderToMock, IEnumerable<T> enumerable)
             where T : class
         {
+            EnsureArgument.IsNotNull(queryProviderToMock, nameof(queryProviderToMock));
             return queryProviderToMock.CreateMockedQueryProvider(enumerable);
         }
 
@@ -28,6 +30,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
         public static IQueryProvider CreateQueryProviderSubstitute<T>(this IQueryProvider queryProviderToMock, IEnumerable<T> enumerable)
             where T : class
         {
+            EnsureArgument.IsNotNull(queryProviderToMock, nameof(queryProviderToMock));
             return queryProviderToMock.CreateMockedQueryProvider(enumerable);
         }
 
@@ -40,6 +43,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
         public static IQueryProvider CreateSubstituteQueryProvider<T>(this IQueryProvider queryProviderToMock, IEnumerable<T> enumerable)
             where T : class
         {
+            EnsureArgument.IsNotNull(queryProviderToMock, nameof(queryProviderToMock));
             return queryProviderToMock.CreateMockedQueryProvider(enumerable);
         }
     }

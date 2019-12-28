@@ -1,4 +1,5 @@
 ﻿using System;
+using EntityFrameworkCore.Testing.Common;
 using Microsoft.EntityFrameworkCore;
 
 namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
@@ -14,6 +15,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
         public static DbSet<TEntity> CreateMock<TEntity>(this DbSet<TEntity> dbSet)
             where TEntity : class
         {
+            EnsureArgument.IsNotNull(dbSet, nameof(dbSet));
             return dbSet.CreateMockedDbSet();
         }
 
@@ -25,6 +27,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
         public static DbSet<TEntity> CreateDbSetSubstitute<TEntity>(this DbSet<TEntity> dbSet)
             where TEntity : class
         {
+            EnsureArgument.IsNotNull(dbSet, nameof(dbSet));
             return dbSet.CreateMockedDbSet();
         }
 
@@ -36,6 +39,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
         public static DbSet<TEntity> CreateSubstituteDbSet<TEntity>(this DbSet<TEntity> dbSet)
             where TEntity : class
         {
+            EnsureArgument.IsNotNull(dbSet, nameof(dbSet));
             return dbSet.CreateMockedDbSet();
         }
     }

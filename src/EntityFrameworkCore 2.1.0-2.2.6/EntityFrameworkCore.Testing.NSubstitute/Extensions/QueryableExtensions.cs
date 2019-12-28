@@ -16,8 +16,6 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
             where T : class
         {
             EnsureArgument.IsNotNull(mockedQueryable, nameof(mockedQueryable));
-            EnsureArgument.IsNotNull(fromSqlResult, nameof(fromSqlResult));
-
             mockedQueryable.Provider.AddFromSqlResult(string.Empty, new List<object>(), fromSqlResult);
             return mockedQueryable;
         }
@@ -32,9 +30,6 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
             where T : class
         {
             EnsureArgument.IsNotNull(mockedQueryable, nameof(mockedQueryable));
-            EnsureArgument.IsNotNull(sql, nameof(sql));
-            EnsureArgument.IsNotNull(fromSqlResult, nameof(fromSqlResult));
-
             mockedQueryable.Provider.AddFromSqlResult(sql, new List<object>(), fromSqlResult);
             return mockedQueryable;
         }
@@ -50,10 +45,6 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
             where T : class
         {
             EnsureArgument.IsNotNull(mockedQueryable, nameof(mockedQueryable));
-            EnsureArgument.IsNotNull(sql, nameof(sql));
-            EnsureArgument.IsNotNull(parameters, nameof(parameters));
-            EnsureArgument.IsNotNull(fromSqlResult, nameof(fromSqlResult));
-
             mockedQueryable.Provider.AddFromSqlResult(sql, parameters, fromSqlResult);
             return mockedQueryable;
         }

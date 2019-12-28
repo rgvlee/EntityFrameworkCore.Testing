@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using EntityFrameworkCore.Testing.Common;
 using Microsoft.EntityFrameworkCore;
 
 namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
@@ -15,6 +16,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
         public static DbQuery<TQuery> CreateMock<TQuery>(this DbQuery<TQuery> dbQuery)
             where TQuery : class
         {
+            EnsureArgument.IsNotNull(dbQuery, nameof(dbQuery));
             return dbQuery.CreateMockedDbQuery();
         }
 
@@ -26,6 +28,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
         public static DbQuery<TQuery> CreateDbQuerySubstitute<TQuery>(this DbQuery<TQuery> dbQuery)
             where TQuery : class
         {
+            EnsureArgument.IsNotNull(dbQuery, nameof(dbQuery));
             return dbQuery.CreateMockedDbQuery();
         }
 
@@ -37,6 +40,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
         public static DbQuery<TQuery> CreateSubstituteDbQuery<TQuery>(this DbQuery<TQuery> dbQuery)
             where TQuery : class
         {
+            EnsureArgument.IsNotNull(dbQuery, nameof(dbQuery));
             return dbQuery.CreateMockedDbQuery();
         }
 
@@ -51,6 +55,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
         public static void Add<TQuery>(this DbQuery<TQuery> mockedDbQuery, TQuery item)
             where TQuery : class
         {
+            EnsureArgument.IsNotNull(mockedDbQuery, nameof(mockedDbQuery));
             mockedDbQuery.AddToReadOnlySource(item);
         }
 
@@ -65,6 +70,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
         public static void AddRange<TQuery>(this DbQuery<TQuery> mockedDbQuery, IEnumerable<TQuery> items)
             where TQuery : class
         {
+            EnsureArgument.IsNotNull(mockedDbQuery, nameof(mockedDbQuery));
             mockedDbQuery.AddRangeToReadOnlySource(items);
         }
 
@@ -75,6 +81,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
         public static void Clear<TQuery>(this DbQuery<TQuery> mockedDbQuery)
             where TQuery : class
         {
+            EnsureArgument.IsNotNull(mockedDbQuery, nameof(mockedDbQuery));
             mockedDbQuery.ClearReadOnlySource();
         }
     }
