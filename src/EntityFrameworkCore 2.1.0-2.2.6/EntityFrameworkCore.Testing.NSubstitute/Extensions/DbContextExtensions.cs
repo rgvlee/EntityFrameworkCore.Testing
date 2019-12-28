@@ -225,7 +225,8 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
         /// <param name="executeSqlCommandResult">The integer to return when ExecuteSqlCommand is invoked.</param>
         /// <param name="callback">Operations to perform after ExecuteSqlCommand is invoked.</param>
         /// <returns>The mocked db context.</returns>
-        public static TDbContext AddExecuteSqlCommandResult<TDbContext>(this TDbContext mockedDbContext, string sql, IEnumerable<object> parameters, int executeSqlCommandResult, Action<string, IEnumerable<object>> callback = null)
+        public static TDbContext AddExecuteSqlCommandResult<TDbContext>(
+            this TDbContext mockedDbContext, string sql, IEnumerable<object> parameters, int executeSqlCommandResult, Action<string, IEnumerable<object>> callback = null)
             where TDbContext : DbContext
         {
             EnsureArgument.IsNotNull(mockedDbContext, nameof(mockedDbContext));

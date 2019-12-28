@@ -91,7 +91,6 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
             where TQuery : class
         {
             EnsureArgument.IsNotNull(mockedDbQuery, nameof(mockedDbQuery));
-
             mockedDbQuery.SetSource(new List<TQuery>());
         }
 
