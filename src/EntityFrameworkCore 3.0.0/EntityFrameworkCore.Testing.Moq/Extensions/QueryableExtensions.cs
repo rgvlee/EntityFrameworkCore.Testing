@@ -17,8 +17,6 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
             where T : class
         {
             EnsureArgument.IsNotNull(mockedQueryable, nameof(mockedQueryable));
-            EnsureArgument.IsNotNull(fromSqlInterpolatedResult, nameof(fromSqlInterpolatedResult));
-
             mockedQueryable.Provider.AddFromSqlRawResult(string.Empty, new List<object>(), fromSqlInterpolatedResult);
             return mockedQueryable;
         }
@@ -33,9 +31,6 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
             where T : class
         {
             EnsureArgument.IsNotNull(mockedQueryable, nameof(mockedQueryable));
-            EnsureArgument.IsNotNull(sql, nameof(sql));
-            EnsureArgument.IsNotNull(fromSqlInterpolatedResult, nameof(fromSqlInterpolatedResult));
-
             mockedQueryable.Provider.AddFromSqlRawResult(sql.Format, sql.GetArguments(), fromSqlInterpolatedResult);
             return mockedQueryable;
         }
@@ -51,10 +46,6 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
             where T : class
         {
             EnsureArgument.IsNotNull(mockedQueryable, nameof(mockedQueryable));
-            EnsureArgument.IsNotNull(sql, nameof(sql));
-            EnsureArgument.IsNotNull(parameters, nameof(parameters));
-            EnsureArgument.IsNotNull(fromSqlInterpolatedResult, nameof(fromSqlInterpolatedResult));
-
             mockedQueryable.Provider.AddFromSqlRawResult(sql, parameters, fromSqlInterpolatedResult);
             return mockedQueryable;
         }
@@ -68,8 +59,6 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
             where T : class
         {
             EnsureArgument.IsNotNull(mockedQueryable, nameof(mockedQueryable));
-            EnsureArgument.IsNotNull(fromSqlRawResult, nameof(fromSqlRawResult));
-
             mockedQueryable.Provider.AddFromSqlRawResult(string.Empty, new List<object>(), fromSqlRawResult);
             return mockedQueryable;
         }
@@ -84,9 +73,6 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
             where T : class
         {
             EnsureArgument.IsNotNull(mockedQueryable, nameof(mockedQueryable));
-            EnsureArgument.IsNotNull(sql, nameof(sql));
-            EnsureArgument.IsNotNull(fromSqlRawResult, nameof(fromSqlRawResult));
-
             mockedQueryable.Provider.AddFromSqlRawResult(sql, new List<object>(), fromSqlRawResult);
             return mockedQueryable;
         }
@@ -102,10 +88,6 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
             where T : class
         {
             EnsureArgument.IsNotNull(mockedQueryable, nameof(mockedQueryable));
-            EnsureArgument.IsNotNull(sql, nameof(sql));
-            EnsureArgument.IsNotNull(parameters, nameof(parameters));
-            EnsureArgument.IsNotNull(fromSqlRawResult, nameof(fromSqlRawResult));
-
             mockedQueryable.Provider.AddFromSqlRawResult(sql, parameters, fromSqlRawResult);
             return mockedQueryable;
         }
