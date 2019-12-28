@@ -22,7 +22,7 @@ namespace EntityFrameworkCore.Testing.Moq.PackageVerification.Tests
         public async Task ExecuteSqlRawAsync_SpecifiedSqlAndSqlParameter_ReturnsExpectedResultAndSetsOutputParameterValue()
         {
             var mockedDbContext = Create.MockedDbContextFor<TestDbContext>();
-            mockedDbContext.AddExecuteSqlRawResult(string.Empty, new List<object>(), -1, (sql, parameters) =>
+            mockedDbContext.AddExecuteSqlRawResult(-1, (sql, parameters) =>
             {
                 ((SqlParameter) parameters.ElementAt(0)).Value = "Cookie";
             });
@@ -41,7 +41,7 @@ namespace EntityFrameworkCore.Testing.Moq.PackageVerification.Tests
         public void GiveMeCookie_SetsOutputParameterValue()
         {
             var mockedDbContext = Create.MockedDbContextFor<TestDbContext>();
-            mockedDbContext.AddExecuteSqlRawResult(string.Empty, new List<object>(), -1, (sql, parameters) =>
+            mockedDbContext.AddExecuteSqlRawResult(-1, (sql, parameters) =>
             {
                 ((SqlParameter) parameters.ElementAt(0)).Value = "Cookie";
             });
