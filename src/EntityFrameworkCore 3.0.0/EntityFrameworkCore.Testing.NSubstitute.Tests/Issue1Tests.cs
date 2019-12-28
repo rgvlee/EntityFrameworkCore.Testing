@@ -3,13 +3,13 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using EntityFrameworkCore.Testing.Common.Tests;
-using EntityFrameworkCore.Testing.Moq.Extensions;
+using EntityFrameworkCore.Testing.NSubstitute.Extensions;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 
-namespace EntityFrameworkCore.Testing.Moq.Tests
+namespace EntityFrameworkCore.Testing.NSubstitute.Tests
 {
-    public class Issue569237159Tests
+    public class Issue1Tests
     {
         [SetUp]
         public virtual void SetUp()

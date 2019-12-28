@@ -3,13 +3,13 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using EntityFrameworkCore.Testing.Common.Tests;
-using EntityFrameworkCore.Testing.NSubstitute.Extensions;
+using EntityFrameworkCore.Testing.Moq.Extensions;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 
-namespace EntityFrameworkCore.Testing.NSubstitute.Tests
+namespace EntityFrameworkCore.Testing.Moq.Tests
 {
-    public class Issue569237159Tests
+    public class Issue1Tests
     {
         [SetUp]
         public virtual void SetUp()
@@ -21,13 +21,13 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Tests
         public async Task ExecuteSqlRawAsync_SpecifiedSqlAndSqlParameter_ReturnsExpectedResultAndSetsOutputParameterValue()
         {
             var mockedDbContext = Create.MockedDbContextFor<TestDbContext>();
-            mockedDbContext.AddExecuteSqlCommandResult(-1, (sql, parameters) =>
+            mockedDbContext.AddExecuteSqlRawResult(-1, (sql, parameters) =>
             {
                 ((SqlParameter) parameters.ElementAt(0)).Value = "Cookie";
             });
 
             var outcomeParam = new SqlParameter("Outcome", SqlDbType.VarChar, 500) {Direction = ParameterDirection.Output};
-            var result = await mockedDbContext.Database.ExecuteSqlCommandAsync(@"EXEC [GiveMeCookie] @Outcome = @Outcome OUT", outcomeParam);
+            var result = await mockedDbContext.Database.ExecuteSqlRawAsync(@"EXEC [GiveMeCookie] @Outcome = @Outcome OUT", outcomeParam);
 
             Assert.Multiple(() =>
             {
@@ -40,7 +40,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Tests
         public void GiveMeCookie_SetsOutputParameterValue()
         {
             var mockedDbContext = Create.MockedDbContextFor<TestDbContext>();
-            mockedDbContext.AddExecuteSqlCommandResult(-1, (sql, parameters) =>
+            mockedDbContext.AddExecuteSqlRawResult(-1, (sql, parameters) =>
             {
                 ((SqlParameter) parameters.ElementAt(0)).Value = "Cookie";
             });
@@ -62,7 +62,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Tests
             public async Task<string> GiveMeCookie()
             {
                 var outcomeParam = new SqlParameter("Outcome", SqlDbType.VarChar, 500) {Direction = ParameterDirection.Output};
-                await _context.Database.ExecuteSqlCommandAsync(@"EXEC [GiveMeCookie] @Outcome = @Outcome OUT", outcomeParam);
+                await _context.Database.ExecuteSqlRawAsync(@"EXEC [GiveMeCookie] @Outcome = @Outcome OUT", outcomeParam);
                 return outcomeParam.Value.ToString();
             }
         }

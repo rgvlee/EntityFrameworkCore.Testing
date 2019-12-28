@@ -9,7 +9,7 @@ using NUnit.Framework;
 
 namespace EntityFrameworkCore.Testing.Moq.Tests
 {
-    public class Issue569237159Tests
+    public class Issue1Tests
     {
         [SetUp]
         public virtual void SetUp()
