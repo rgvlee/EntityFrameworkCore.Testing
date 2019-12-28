@@ -60,8 +60,6 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
             where T : class
         {
             EnsureArgument.IsNotNull(mockedQueryProvider, nameof(mockedQueryProvider));
-            EnsureArgument.IsNotNull(fromSqlInterpolatedResult, nameof(fromSqlInterpolatedResult));
-
             mockedQueryProvider.AddFromSqlRawResult(string.Empty, new List<object>(), fromSqlInterpolatedResult);
             return mockedQueryProvider;
         }
@@ -76,9 +74,6 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
             where T : class
         {
             EnsureArgument.IsNotNull(mockedQueryProvider, nameof(mockedQueryProvider));
-            EnsureArgument.IsNotNull(sql, nameof(sql));
-            EnsureArgument.IsNotNull(fromSqlInterpolatedResult, nameof(fromSqlInterpolatedResult));
-
             mockedQueryProvider.AddFromSqlRawResult(sql.Format, sql.GetArguments(), fromSqlInterpolatedResult);
             return mockedQueryProvider;
         }
@@ -94,10 +89,6 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
             where T : class
         {
             EnsureArgument.IsNotNull(mockedQueryProvider, nameof(mockedQueryProvider));
-            EnsureArgument.IsNotNull(sql, nameof(sql));
-            EnsureArgument.IsNotNull(parameters, nameof(parameters));
-            EnsureArgument.IsNotNull(fromSqlInterpolatedResult, nameof(fromSqlInterpolatedResult));
-
             mockedQueryProvider.AddFromSqlRawResult(sql, parameters, fromSqlInterpolatedResult);
             return mockedQueryProvider;
         }
@@ -111,8 +102,6 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
             where T : class
         {
             EnsureArgument.IsNotNull(mockedQueryProvider, nameof(mockedQueryProvider));
-            EnsureArgument.IsNotNull(fromSqlRawResult, nameof(fromSqlRawResult));
-
             mockedQueryProvider.AddFromSqlRawResult(string.Empty, new List<object>(), fromSqlRawResult);
             return mockedQueryProvider;
         }
@@ -127,9 +116,6 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
             where T : class
         {
             EnsureArgument.IsNotNull(mockedQueryProvider, nameof(mockedQueryProvider));
-            EnsureArgument.IsNotNull(sql, nameof(sql));
-            EnsureArgument.IsNotNull(fromSqlRawResult, nameof(fromSqlRawResult));
-
             mockedQueryProvider.AddFromSqlRawResult(sql, new List<object>(), fromSqlRawResult);
             return mockedQueryProvider;
         }

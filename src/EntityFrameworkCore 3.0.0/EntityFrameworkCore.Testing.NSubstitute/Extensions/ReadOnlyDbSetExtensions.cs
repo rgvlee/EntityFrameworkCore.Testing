@@ -95,6 +95,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
         public static void AddToReadOnlySource<TEntity>(this DbQuery<TEntity> mockedReadOnlyDbSet, TEntity item)
             where TEntity : class
         {
+            EnsureArgument.IsNotNull(mockedReadOnlyDbSet, nameof(mockedReadOnlyDbSet));
             ((DbSet<TEntity>) mockedReadOnlyDbSet).AddToReadOnlySource(item);
         }
 
@@ -122,6 +123,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
         public static void AddRangeToReadOnlySource<TEntity>(this DbQuery<TEntity> mockedReadOnlyDbSet, IEnumerable<TEntity> items)
             where TEntity : class
         {
+            EnsureArgument.IsNotNull(mockedReadOnlyDbSet, nameof(mockedReadOnlyDbSet));
             ((DbSet<TEntity>) mockedReadOnlyDbSet).AddRangeToReadOnlySource(items);
         }
 
@@ -133,7 +135,6 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
             where TEntity : class
         {
             EnsureArgument.IsNotNull(mockedReadOnlyDbSet, nameof(mockedReadOnlyDbSet));
-            EnsureArgument.IsNotNull(items, nameof(items));
             EnsureArgument.IsNotEmpty(items, nameof(items));
 
             var list = mockedReadOnlyDbSet.ToList();
@@ -149,6 +150,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
         public static void ClearReadOnlySource<TEntity>(this DbQuery<TEntity> mockedReadOnlyDbSet)
             where TEntity : class
         {
+            EnsureArgument.IsNotNull(mockedReadOnlyDbSet, nameof(mockedReadOnlyDbSet));
             ((DbSet<TEntity>) mockedReadOnlyDbSet).ClearReadOnlySource();
         }
 
@@ -159,7 +161,6 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
             where TEntity : class
         {
             EnsureArgument.IsNotNull(mockedReadOnlyDbSet, nameof(mockedReadOnlyDbSet));
-
             mockedReadOnlyDbSet.SetSource(new List<TEntity>());
         }
 
