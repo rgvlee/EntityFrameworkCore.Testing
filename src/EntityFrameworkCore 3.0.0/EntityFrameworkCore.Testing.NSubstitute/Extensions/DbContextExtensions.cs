@@ -27,13 +27,13 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
 
         /// <summary>Creates and sets up a mocked db context.</summary>
         /// <typeparam name="TDbContext">The db context type.</typeparam>
-        /// <param name="dbContextToMock">The db context to mock/proxy.</param>
+        /// <param name="constructorParameters">The db context constructor parameters.</param>
         /// <returns>A mocked db context.</returns>
         /// <remarks>dbContextToMock would typically be an in-memory database instance.</remarks>
-        public static TDbContext CreateMockedDbContext<TDbContext>(this TDbContext dbContextToMock)
+        internal static TDbContext CreateMockedDbContext<TDbContext>(params object[] constructorParameters)
             where TDbContext : DbContext
         {
-            EnsureArgument.IsNotNull(dbContextToMock, nameof(dbContextToMock));
+            var dbContextToMock = (TDbContext) Activator.CreateInstance(typeof(TDbContext), constructorParameters);
 
             var mockedDbContext = (TDbContext)
                 Substitute.For(new[] {
@@ -43,7 +43,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
                         typeof(IInfrastructure<IServiceProvider>),
                         typeof(IDbContextPoolable)
                     },
-                    new object[] { }
+                    constructorParameters
                 );
 
             mockedDbContext.Add(Arg.Any<object>()).Returns(callInfo => dbContextToMock.Add(callInfo.Arg<object>()));
