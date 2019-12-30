@@ -1,10 +1,13 @@
-﻿using System.Data;
+﻿using System;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
+using Castle.DynamicProxy;
 using EntityFrameworkCore.Testing.Common.Tests;
 using EntityFrameworkCore.Testing.NSubstitute.Extensions;
 using Microsoft.EntityFrameworkCore;
+using NSubstitute;
 using NUnit.Framework;
 
 namespace EntityFrameworkCore.Testing.NSubstitute.Tests
@@ -50,6 +53,20 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Tests
             Assert.That(service.GiveMeCookie().Result, Is.EqualTo("Cookie"));
         }
 
+        [Test]
+        public void CreateMockedDbContextUsingResultFrom_InlineFactory_CreatesSubstitute()
+        {
+            var testContext = Create.MockedDbContextFor<MyContext>(
+                new DbContextOptionsBuilder<MyContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).EnableSensitiveDataLogging().Options,
+                Substitute.For<ITimeProvider>());
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(testContext, Is.Not.Null);
+                Assert.That(ProxyUtil.IsProxy(testContext), Is.True);
+            });
+        }
+
         public class MyService
         {
             private readonly DbContext _context;
@@ -65,6 +82,13 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Tests
                 await _context.Database.ExecuteSqlRawAsync(@"EXEC [GiveMeCookie] @Outcome = @Outcome OUT", outcomeParam);
                 return outcomeParam.Value.ToString();
             }
+        }
+
+        public interface ITimeProvider { }
+
+        public class MyContext : DbContext
+        {
+            public MyContext(DbContextOptions<MyContext> options, ITimeProvider timeProvider) : base(options) { }
         }
     }
 }
