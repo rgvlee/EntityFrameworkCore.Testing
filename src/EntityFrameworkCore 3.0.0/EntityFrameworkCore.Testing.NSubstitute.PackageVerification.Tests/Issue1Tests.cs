@@ -54,13 +54,11 @@ namespace EntityFrameworkCore.Testing.NSubstitute.PackageVerification.Tests
         }
 
         [Test]
-        public void CreateMockedDbContextUsingResultFrom_InlineFactory_CreatesSubstitute()
+        public void CreateMockedDbContextFor_ParametersForSpecificConstructor_CreatesSubstitute()
         {
-            var testContext = Create.MockedDbContextUsingResultFrom(() =>
-                new MyContext(
-                    new DbContextOptionsBuilder<MyContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).EnableSensitiveDataLogging().Options,
-                    Substitute.For<ITimeProvider>())
-            );
+            var testContext = Create.MockedDbContextFor<MyContext>(
+                new DbContextOptionsBuilder<MyContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).EnableSensitiveDataLogging().Options,
+                Substitute.For<ITimeProvider>());
 
             Assert.Multiple(() =>
             {
@@ -90,7 +88,6 @@ namespace EntityFrameworkCore.Testing.NSubstitute.PackageVerification.Tests
 
         public class MyContext : DbContext
         {
-            public MyContext() { }
             public MyContext(DbContextOptions<MyContext> options, ITimeProvider timeProvider) : base(options) { }
         }
     }

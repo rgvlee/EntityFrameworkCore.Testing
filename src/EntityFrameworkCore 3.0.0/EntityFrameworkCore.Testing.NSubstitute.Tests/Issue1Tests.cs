@@ -54,7 +54,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Tests
         }
 
         [Test]
-        public void CreateMockedDbContextUsingResultFrom_InlineFactory_CreatesSubstitute()
+        public void CreateMockedDbContextFor_ParametersForSpecificConstructor_CreatesSubstitute()
         {
             var testContext = Create.MockedDbContextFor<MyContext>(
                 new DbContextOptionsBuilder<MyContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).EnableSensitiveDataLogging().Options,
