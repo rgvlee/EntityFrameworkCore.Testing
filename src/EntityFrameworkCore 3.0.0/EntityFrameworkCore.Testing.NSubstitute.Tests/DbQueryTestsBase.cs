@@ -13,8 +13,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Tests
         [SetUp]
         public override void SetUp()
         {
-            var dbContextToMock = new TestDbContext(new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
-            MockedDbContext = Create.MockedDbContextFor(dbContextToMock);
+            MockedDbContext = Create.MockedDbContextFor<TestDbContext>();
             base.SetUp();
         }
 
