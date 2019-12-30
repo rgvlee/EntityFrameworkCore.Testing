@@ -13,13 +13,13 @@ using NSubstitute.ExceptionExtensions;
 namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
 {
     /// <summary>Extensions for read-only db sets.</summary>
-    public static partial class ReadOnlyDbSetExtensions
+    public static class ReadOnlyDbSetExtensions
     {
         /// <summary>Creates and sets up a mocked readonly db set.</summary>
         /// <typeparam name="TEntity">The entity type.</typeparam>
         /// <param name="readOnlyDbSet">The readonly db set to mock.</param>
         /// <returns>A mocked readonly db set.</returns>
-        public static DbSet<TEntity> CreateMockedReadOnlyDbSet<TEntity>(this DbSet<TEntity> readOnlyDbSet)
+        internal static DbSet<TEntity> CreateMockedReadOnlyDbSet<TEntity>(this DbSet<TEntity> readOnlyDbSet)
             where TEntity : class
         {
             EnsureArgument.IsNotNull(readOnlyDbSet, nameof(readOnlyDbSet));
