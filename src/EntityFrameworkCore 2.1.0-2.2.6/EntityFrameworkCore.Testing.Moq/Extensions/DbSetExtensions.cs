@@ -19,6 +19,7 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
         /// <typeparam name="TEntity">The entity type.</typeparam>
         /// <param name="dbSet">The db set to mock/proxy.</param>
         /// <returns>A mocked db set.</returns>
+        [Obsolete("This will be removed in a future version. Use EntityFrameworkCore.Testing.Moq.Create.MockedDbContextFor with the params object[] parameter instead.")]
         public static DbSet<TEntity> CreateMockedDbSet<TEntity>(this DbSet<TEntity> dbSet)
             where TEntity : class
         {
