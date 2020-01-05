@@ -12,7 +12,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
         /// <typeparam name="TQuery">The query type.</typeparam>
         /// <param name="dbQuery">The db query to mock.</param>
         /// <returns>A mocked db query.</returns>
-        [Obsolete("This will be removed in a future version. Use DbQueryExtensions.CreateMockedDbQuery instead.")]
+        [Obsolete("This will be removed in a future version. Use EntityFrameworkCore.Testing.NSubstitute.Create.MockedDbContextFor with the params object[] parameter instead.")]
         public static DbQuery<TQuery> CreateMock<TQuery>(this DbQuery<TQuery> dbQuery)
             where TQuery : class
         {
@@ -24,7 +24,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
         /// <typeparam name="TQuery">The query type.</typeparam>
         /// <param name="dbQuery">The db query to mock.</param>
         /// <returns>A mocked db query.</returns>
-        [Obsolete("This will be removed in a future version. Use DbQueryExtensions.CreateMockedDbQuery instead.")]
+        [Obsolete("This will be removed in a future version. Use EntityFrameworkCore.Testing.NSubstitute.Create.MockedDbContextFor with the params object[] parameter instead.")]
         public static DbQuery<TQuery> CreateDbQuerySubstitute<TQuery>(this DbQuery<TQuery> dbQuery)
             where TQuery : class
         {
@@ -36,7 +36,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
         /// <typeparam name="TQuery">The query type.</typeparam>
         /// <param name="dbQuery">The db query to mock.</param>
         /// <returns>A mocked db query.</returns>
-        [Obsolete("This will be removed in a future version. Use DbQueryExtensions.CreateMockedDbQuery instead.")]
+        [Obsolete("This will be removed in a future version. Use EntityFrameworkCore.Testing.NSubstitute.Create.MockedDbContextFor with the params object[] parameter instead.")]
         public static DbQuery<TQuery> CreateSubstituteDbQuery<TQuery>(this DbQuery<TQuery> dbQuery)
             where TQuery : class
         {

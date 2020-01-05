@@ -11,7 +11,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
         /// <typeparam name="TEntity">The entity type.</typeparam>
         /// <param name="dbSet">The db set to mock/proxy.</param>
         /// <returns>A mocked db set.</returns>
-        [Obsolete("This will be removed in a future version. Use DbSetExtensions.CreateMockedDbSet instead.")]
+        [Obsolete("This will be removed in a future version. Use EntityFrameworkCore.Testing.NSubstitute.Create.MockedDbContextFor with the params object[] parameter instead.")]
         public static DbSet<TEntity> CreateMock<TEntity>(this DbSet<TEntity> dbSet)
             where TEntity : class
         {
@@ -23,7 +23,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
         /// <typeparam name="TEntity">The entity type.</typeparam>
         /// <param name="dbSet">The db set to mock/proxy.</param>
         /// <returns>A mocked db set.</returns>
-        [Obsolete("This will be removed in a future version. Use DbSetExtensions.CreateMockedDbSet instead.")]
+        [Obsolete("This will be removed in a future version. Use EntityFrameworkCore.Testing.NSubstitute.Create.MockedDbContextFor with the params object[] parameter instead.")]
         public static DbSet<TEntity> CreateDbSetSubstitute<TEntity>(this DbSet<TEntity> dbSet)
             where TEntity : class
         {
@@ -35,7 +35,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
         /// <typeparam name="TEntity">The entity type.</typeparam>
         /// <param name="dbSet">The db set to mock/proxy.</param>
         /// <returns>A mocked db set.</returns>
-        [Obsolete("This will be removed in a future version. Use DbSetExtensions.CreateMockedDbSet instead.")]
+        [Obsolete("This will be removed in a future version. Use EntityFrameworkCore.Testing.NSubstitute.Create.MockedDbContextFor with the params object[] parameter instead.")]
         public static DbSet<TEntity> CreateSubstituteDbSet<TEntity>(this DbSet<TEntity> dbSet)
             where TEntity : class
         {
