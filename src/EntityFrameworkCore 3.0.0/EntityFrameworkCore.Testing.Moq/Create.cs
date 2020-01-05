@@ -30,7 +30,6 @@ namespace EntityFrameworkCore.Testing.Moq
             where T : class
         {
             EnsureArgument.IsNotNull(queryable, nameof(queryable));
-
             return queryable.Provider.CreateMockedQueryProvider(queryable);
         }
     }

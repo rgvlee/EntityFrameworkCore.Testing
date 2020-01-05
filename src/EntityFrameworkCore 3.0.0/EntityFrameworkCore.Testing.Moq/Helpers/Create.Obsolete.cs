@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using EntityFrameworkCore.Testing.Common;
 using EntityFrameworkCore.Testing.Moq.Extensions;
 using Microsoft.EntityFrameworkCore;
 
@@ -50,6 +51,7 @@ namespace EntityFrameworkCore.Testing.Moq.Helpers
         public static DbSet<TEntity> MockedDbSetFor<TEntity>(DbSet<TEntity> dbSetToMock)
             where TEntity : class
         {
+            EnsureArgument.IsNotNull(dbSetToMock, nameof(dbSetToMock));
             return dbSetToMock.CreateMockedDbSet();
         }
 
@@ -61,6 +63,7 @@ namespace EntityFrameworkCore.Testing.Moq.Helpers
         public static DbSet<TEntity> MockedReadOnlyDbSetFor<TEntity>(DbSet<TEntity> readOnlyDbSet)
             where TEntity : class
         {
+            EnsureArgument.IsNotNull(readOnlyDbSet, nameof(readOnlyDbSet));
             return readOnlyDbSet.CreateMockedReadOnlyDbSet();
         }
 
@@ -72,6 +75,7 @@ namespace EntityFrameworkCore.Testing.Moq.Helpers
         public static DbQuery<TQuery> MockedDbQueryFor<TQuery>(DbQuery<TQuery> dbQueryToMock)
             where TQuery : class
         {
+            EnsureArgument.IsNotNull(dbQueryToMock, nameof(dbQueryToMock));
             return dbQueryToMock.CreateMockedDbQuery();
         }
 

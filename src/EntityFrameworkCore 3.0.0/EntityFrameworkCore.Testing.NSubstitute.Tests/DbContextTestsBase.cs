@@ -11,32 +11,44 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Tests
     {
         public override void AddExecuteSqlCommandResult(T mockedDbContext, int expectedResult)
         {
+#pragma warning disable 618
             mockedDbContext.AddExecuteSqlCommandResult(expectedResult);
+#pragma warning restore 618
         }
 
-        public override void AddExecuteSqlCommandResult(T mockedDbContext, int expectedResult, Action callback)
+        public override void AddExecuteSqlCommandResult(T mockedDbContext, int expectedResult, Action<string, IEnumerable<object>> callback)
         {
+#pragma warning disable 618
             mockedDbContext.AddExecuteSqlCommandResult(expectedResult, callback);
+#pragma warning restore 618
         }
 
         public override void AddExecuteSqlCommandResult(T mockedDbContext, string sql, int expectedResult)
         {
+#pragma warning disable 618
             mockedDbContext.AddExecuteSqlCommandResult(sql, expectedResult);
+#pragma warning restore 618
         }
 
-        public override void AddExecuteSqlCommandResult(T mockedDbContext, string sql, int expectedResult, Action callback)
+        public override void AddExecuteSqlCommandResult(T mockedDbContext, string sql, int expectedResult, Action<string, IEnumerable<object>> callback)
         {
+#pragma warning disable 618
             mockedDbContext.AddExecuteSqlCommandResult(sql, expectedResult, callback);
+#pragma warning restore 618
         }
 
         public override void AddExecuteSqlCommandResult(T mockedDbContext, string sql, IEnumerable<object> parameters, int expectedResult)
         {
+#pragma warning disable 618
             mockedDbContext.AddExecuteSqlCommandResult(sql, parameters, expectedResult);
+#pragma warning restore 618
         }
 
-        public override void AddExecuteSqlCommandResult(T mockedDbContext, string sql, IEnumerable<object> parameters, int expectedResult, Action callback)
+        public override void AddExecuteSqlCommandResult(T mockedDbContext, string sql, IEnumerable<object> parameters, int expectedResult, Action<string, IEnumerable<object>> callback)
         {
+#pragma warning disable 618
             mockedDbContext.AddExecuteSqlCommandResult(sql, parameters, expectedResult, callback);
+#pragma warning restore 618
         }
 
         public override void AddExecuteSqlInterpolatedResult(T mockedDbContext, int expectedResult)

@@ -17,11 +17,11 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         protected TDbContext MockedDbContext;
 
         public abstract void AddExecuteSqlCommandResult(TDbContext mockedDbContext, int expectedResult);
-        public abstract void AddExecuteSqlCommandResult(TDbContext mockedDbContext, int expectedResult, Action callback);
+        public abstract void AddExecuteSqlCommandResult(TDbContext mockedDbContext, int expectedResult, Action<string, IEnumerable<object>> callback);
         public abstract void AddExecuteSqlCommandResult(TDbContext mockedDbContext, string sql, int expectedResult);
-        public abstract void AddExecuteSqlCommandResult(TDbContext mockedDbContext, string sql, int expectedResult, Action callback);
+        public abstract void AddExecuteSqlCommandResult(TDbContext mockedDbContext, string sql, int expectedResult, Action<string, IEnumerable<object>> callback);
         public abstract void AddExecuteSqlCommandResult(TDbContext mockedDbContext, string sql, IEnumerable<object> parameters, int expectedResult);
-        public abstract void AddExecuteSqlCommandResult(TDbContext mockedDbContext, string sql, IEnumerable<object> parameters, int expectedResult, Action callback);
+        public abstract void AddExecuteSqlCommandResult(TDbContext mockedDbContext, string sql, IEnumerable<object> parameters, int expectedResult, Action<string, IEnumerable<object>> callback);
 
         public abstract void AddExecuteSqlInterpolatedResult(TDbContext mockedDbContext, int expectedResult);
         public abstract void AddExecuteSqlInterpolatedResult(TDbContext mockedDbContext, FormattableString sql, int expectedResult);
@@ -47,7 +47,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
             var preSetUpFirst = source.First();
             var preSetUpCount = source.Count;
 
-            void Callback()
+            void Callback(string providedSql, IEnumerable<object> providedParameters)
             {
                 Logger.LogDebug($"Before callback invoked: {source.Count}");
                 source = source.Take(1).ToList();
@@ -81,6 +81,8 @@ namespace EntityFrameworkCore.Testing.Common.Tests
             Logger.LogDebug("Invoking ExecuteSqlCommand");
             var actualResult1 = default(int);
             var actualResult2 = default(int);
+
+#pragma warning disable 618
             if (!string.IsNullOrWhiteSpace(sql) &&
                 parameters.Any())
             {
@@ -97,6 +99,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
                 actualResult1 = MockedDbContext.Database.ExecuteSqlCommand("sp_NoParams");
                 actualResult2 = MockedDbContext.Database.ExecuteSqlCommand("sp_NoParams");
             }
+#pragma warning restore 618
 
             Logger.LogDebug("ExecuteSqlCommand invoked");
 
@@ -120,7 +123,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
             var preSetUpFirst = source.First();
             var preSetUpCount = source.Count;
 
-            void Callback()
+            void Callback(string providedSql, IEnumerable<object> providedParameters)
             {
                 Logger.LogDebug($"Before callback invoked: {source.Count}");
                 source = source.Take(1).ToList();
@@ -154,6 +157,8 @@ namespace EntityFrameworkCore.Testing.Common.Tests
             Logger.LogDebug("Invoking ExecuteSqlCommand");
             var actualResult1 = default(int);
             var actualResult2 = default(int);
+
+#pragma warning disable 618
             if (!string.IsNullOrWhiteSpace(sql) &&
                 parameters.Any())
             {
@@ -170,6 +175,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
                 actualResult1 = await MockedDbContext.Database.ExecuteSqlCommandAsync("sp_NoParams");
                 actualResult2 = await MockedDbContext.Database.ExecuteSqlCommandAsync("sp_NoParams");
             }
+#pragma warning restore 618
 
             Logger.LogDebug("ExecuteSqlCommand invoked");
 
@@ -190,8 +196,10 @@ namespace EntityFrameworkCore.Testing.Common.Tests
             var expectedResult = 1;
             AddExecuteSqlCommandResult(MockedDbContext, expectedResult);
 
+#pragma warning disable 618
             var actualResult1 = MockedDbContext.Database.ExecuteSqlCommand("sp_NoParams");
             var actualResult2 = MockedDbContext.Database.ExecuteSqlCommand("sp_NoParams");
+#pragma warning restore 618
 
             Assert.Multiple(() =>
             {
@@ -207,8 +215,10 @@ namespace EntityFrameworkCore.Testing.Common.Tests
             var expectedResult = 1;
             AddExecuteSqlCommandResult(MockedDbContext, sql, expectedResult);
 
+#pragma warning disable 618
             var actualResult1 = MockedDbContext.Database.ExecuteSqlCommand("sp_NoParams");
             var actualResult2 = MockedDbContext.Database.ExecuteSqlCommand("sp_NoParams");
+#pragma warning restore 618
 
             Assert.Multiple(() =>
             {
@@ -226,7 +236,9 @@ namespace EntityFrameworkCore.Testing.Common.Tests
 
             Assert.Throws<InvalidOperationException>(() =>
             {
+#pragma warning disable 618
                 var actualResult = MockedDbContext.Database.ExecuteSqlCommand("sp_NoParams");
+#pragma warning restore 618
             });
         }
 
@@ -238,8 +250,10 @@ namespace EntityFrameworkCore.Testing.Common.Tests
             var expectedResult = 1;
             AddExecuteSqlCommandResult(MockedDbContext, sql, parameters, expectedResult);
 
+#pragma warning disable 618
             var actualResult1 = MockedDbContext.Database.ExecuteSqlCommand("[dbo].[sp_WithParams] @SomeParameter1 @SomeParameter2", parameters);
             var actualResult2 = MockedDbContext.Database.ExecuteSqlCommand("[dbo].[sp_WithParams] @SomeParameter1 @SomeParameter2", parameters);
+#pragma warning restore 618
 
             Assert.Multiple(() =>
             {
@@ -257,6 +271,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
             var expectedResult = 1;
             AddExecuteSqlCommandResult(MockedDbContext, sql, setUpParameters, expectedResult);
 
+#pragma warning disable 618
             Assert.Throws<InvalidOperationException>(() =>
             {
                 var actualResult1 = MockedDbContext.Database.ExecuteSqlCommand("[dbo].[sp_WithParams] @SomeParameter1 @SomeParameter2", invocationParameters);
@@ -266,6 +281,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
             {
                 var actualResult2 = MockedDbContext.Database.ExecuteSqlCommand("[dbo].[sp_WithParams] @SomeParameter1 @SomeParameter2", invocationParameters);
             });
+#pragma warning restore 618
         }
 
         [Test]
@@ -276,8 +292,10 @@ namespace EntityFrameworkCore.Testing.Common.Tests
             var expectedResult = 1;
             AddExecuteSqlCommandResult(MockedDbContext, sql, parameters, expectedResult);
 
+#pragma warning disable 618
             var actualResult1 = MockedDbContext.Database.ExecuteSqlCommand("[dbo].[sp_WithParams] @SomeParameter1 @SomeParameter2", parameters);
             var actualResult2 = MockedDbContext.Database.ExecuteSqlCommand("[dbo].[sp_WithParams] @SomeParameter1 @SomeParameter2", parameters);
+#pragma warning restore 618
 
             Assert.Multiple(() =>
             {
@@ -291,7 +309,9 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         {
             Assert.Throws<InvalidOperationException>(() =>
             {
+#pragma warning disable 618
                 var actualResult = MockedDbContext.Database.ExecuteSqlCommand("sp_NoParams");
+#pragma warning restore 618
             });
         }
 
@@ -301,8 +321,10 @@ namespace EntityFrameworkCore.Testing.Common.Tests
             var expectedResult = 1;
             AddExecuteSqlCommandResult(MockedDbContext, expectedResult);
 
+#pragma warning disable 618
             var actualResult1 = await MockedDbContext.Database.ExecuteSqlCommandAsync("sp_NoParams");
             var actualResult2 = await MockedDbContext.Database.ExecuteSqlCommandAsync("sp_NoParams");
+#pragma warning restore 618
 
             Assert.Multiple(() =>
             {
@@ -318,8 +340,10 @@ namespace EntityFrameworkCore.Testing.Common.Tests
             var expectedResult = 1;
             AddExecuteSqlCommandResult(MockedDbContext, sql, expectedResult);
 
+#pragma warning disable 618
             var actualResult1 = await MockedDbContext.Database.ExecuteSqlCommandAsync("sp_NoParams");
             var actualResult2 = await MockedDbContext.Database.ExecuteSqlCommandAsync("sp_NoParams");
+#pragma warning restore 618
 
             Assert.Multiple(() =>
             {
@@ -337,7 +361,9 @@ namespace EntityFrameworkCore.Testing.Common.Tests
 
             Assert.ThrowsAsync<InvalidOperationException>(async () =>
             {
+#pragma warning disable 618
                 var actualResult = await MockedDbContext.Database.ExecuteSqlCommandAsync("sp_NoParams");
+#pragma warning restore 618
             });
         }
 
@@ -349,8 +375,10 @@ namespace EntityFrameworkCore.Testing.Common.Tests
             var expectedResult = 1;
             AddExecuteSqlCommandResult(MockedDbContext, sql, parameters, expectedResult);
 
+#pragma warning disable 618
             var actualResult1 = await MockedDbContext.Database.ExecuteSqlCommandAsync("[dbo].[sp_WithParams] @SomeParameter2", parameters);
             var actualResult2 = await MockedDbContext.Database.ExecuteSqlCommandAsync("[dbo].[sp_WithParams] @SomeParameter2", parameters);
+#pragma warning restore 618
 
             Assert.Multiple(() =>
             {
@@ -367,8 +395,10 @@ namespace EntityFrameworkCore.Testing.Common.Tests
             var expectedResult = 1;
             AddExecuteSqlCommandResult(MockedDbContext, sql, parameters, expectedResult);
 
+#pragma warning disable 618
             var actualResult1 = await MockedDbContext.Database.ExecuteSqlCommandAsync("[dbo].[sp_WithParams] @SomeParameter2", parameters);
             var actualResult2 = await MockedDbContext.Database.ExecuteSqlCommandAsync("[dbo].[sp_WithParams] @SomeParameter2", parameters);
+#pragma warning restore 618
 
             Assert.Multiple(() =>
             {

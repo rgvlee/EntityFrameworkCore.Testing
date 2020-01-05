@@ -28,7 +28,6 @@ namespace EntityFrameworkCore.Testing.NSubstitute
             where T : class
         {
             EnsureArgument.IsNotNull(queryable, nameof(queryable));
-
             return queryable.Provider.CreateMockedQueryProvider(queryable);
         }
     }
