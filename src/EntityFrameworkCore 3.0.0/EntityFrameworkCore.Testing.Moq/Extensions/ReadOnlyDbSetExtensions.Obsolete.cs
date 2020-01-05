@@ -11,7 +11,7 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
         /// <typeparam name="TQuery">The query type.</typeparam>
         /// <param name="dbQuery">The db query to mock.</param>
         /// <returns>A mocked readonly db query.</returns>
-        [Obsolete("This method will remain until EntityFrameworkCore no longer supports the DbQuery<TQuery> type. Use ReadOnlyDbSetExtensions.CreateMockedReadOnlyDbSet instead.")]
+        [Obsolete("This will be removed in a future version. Use EntityFrameworkCore.Testing.Moq.Create.MockedDbContextFor with the params object[] parameter instead.")]
         public static DbQuery<TQuery> CreateMockedDbQuery<TQuery>(this DbQuery<TQuery> dbQuery)
             where TQuery : class
         {
@@ -23,7 +23,7 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
         /// <typeparam name="TQuery">The query type.</typeparam>
         /// <param name="dbQuery">The db query to mock.</param>
         /// <returns>A mocked readonly db query.</returns>
-        [Obsolete("This will be removed in a future version. Use ReadOnlyDbSetExtensions.CreateMockedDbQuery instead.")]
+        [Obsolete("This will be removed in a future version. Use EntityFrameworkCore.Testing.Moq.Create.MockedDbContextFor with the params object[] parameter instead.")]
         public static DbQuery<TQuery> CreateReadOnlyMock<TQuery>(this DbQuery<TQuery> dbQuery)
             where TQuery : class
         {
@@ -35,7 +35,7 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
         /// <typeparam name="TEntity">The entity type.</typeparam>
         /// <param name="readOnlyDbSet">The readonly db set to mock.</param>
         /// <returns>A mocked readonly db set.</returns>
-        [Obsolete("This will be removed in a future version. Use ReadOnlyDbSetExtensions.CreateMockedReadOnlyDbSet instead.")]
+        [Obsolete("This will be removed in a future version. Use EntityFrameworkCore.Testing.Moq.Create.MockedDbContextFor with the params object[] parameter instead.")]
         public static DbSet<TEntity> CreateReadOnlyMock<TEntity>(this DbSet<TEntity> readOnlyDbSet)
             where TEntity : class
         {
