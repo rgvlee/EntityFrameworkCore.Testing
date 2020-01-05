@@ -1,7 +1,7 @@
-using System;
 using System.Linq;
 using EntityFrameworkCore.Testing.Common;
 using EntityFrameworkCore.Testing.NSubstitute.Extensions;
+using EntityFrameworkCore.Testing.NSubstitute.Helpers;
 using Microsoft.EntityFrameworkCore;
 
 namespace EntityFrameworkCore.Testing.NSubstitute
@@ -17,14 +17,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute
         public static TDbContext MockedDbContextFor<TDbContext>(params object[] constructorParameters)
             where TDbContext : DbContext
         {
-            if (constructorParameters != null &&
-                constructorParameters.Any())
-            {
-                return DbContextExtensions.CreateMockedDbContext<TDbContext>(constructorParameters);
-            }
-
-            var options = new DbContextOptionsBuilder<TDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
-            return DbContextExtensions.CreateMockedDbContext<TDbContext>(options);
+            return new MockedDbContextFactory<TDbContext>(constructorParameters).Create();
         }
 
         /// <summary>Creates a mocked query provider.</summary>

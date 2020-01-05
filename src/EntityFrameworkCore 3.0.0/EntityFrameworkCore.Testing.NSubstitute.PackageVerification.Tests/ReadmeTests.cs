@@ -79,7 +79,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.PackageVerification.Tests
         }
 
         [Test]
-        public void QueryAddRange_Enumeration_AddsToQuerySource()
+        public void QueryAddRangeToReadOnlySource_Enumeration_AddsToQuerySource()
         {
             var mockedDbContext = Create.MockedDbContextFor<TestDbContext>();
 

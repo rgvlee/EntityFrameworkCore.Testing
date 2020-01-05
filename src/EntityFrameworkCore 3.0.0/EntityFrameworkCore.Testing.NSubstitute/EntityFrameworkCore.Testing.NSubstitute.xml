@@ -24,27 +24,6 @@
             <summary>Extensions for the db context type.</summary>
             <summary>Extensions for the db context type.</summary>
         </member>
-        <member name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.DbContextExtensions.CreateMockedDbContext``1(System.Object[])">
-            <summary>Creates and sets up a mocked db context.</summary>
-            <typeparam name="TDbContext">The db context type.</typeparam>
-            <param name="constructorParameters">The db context constructor parameters.</param>
-            <returns>A mocked db context.</returns>
-            <remarks>dbContextToMock would typically be an in-memory database instance.</remarks>
-        </member>
-        <member name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.DbContextExtensions.CreateAndAttachMockedDbSetTo``2(``0,``0)">
-            <summary>Creates and attaches a mocked db set to a mocked db context.</summary>
-            <typeparam name="TDbContext">The db context type.</typeparam>
-            <typeparam name="TEntity">The entity type.</typeparam>
-            <param name="mockedDbContext">The mocked db context.</param>
-            <param name="dbContextToMock">The db context to mock/proxy.</param>
-        </member>
-        <member name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.DbContextExtensions.CreateAndAttachMockedReadOnlyDbSetTo``2(``0,``0)">
-            <summary>Creates and attaches a mocked readonly db set to a mocked db context.</summary>
-            <typeparam name="TDbContext">The db context type.</typeparam>
-            <typeparam name="TEntity">The entity type.</typeparam>
-            <param name="mockedDbContext">The mocked db context.</param>
-            <param name="dbContextToMock">The db context to mock/proxy.</param>
-        </member>
         <member name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.DbContextExtensions.AddExecuteSqlInterpolatedResult``1(``0,System.Int32,System.Action{System.String,System.Collections.Generic.IEnumerable{System.Object}})">
             <summary>Sets up ExecuteSqlInterpolated invocations to return a specified result.</summary>
             <typeparam name="TDbContext">The db context type.</typeparam>
@@ -313,6 +292,10 @@
             <summary>Removes all items from the mocked readonly db set source.</summary>
             <typeparam name="TEntity">The entity type.</typeparam>
             <param name="mockedReadOnlyDbSet">The mocked readonly db set.</param>
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.NSubstitute.Helpers.MockedDbContextFactory`1.Create">
+            <summary>Creates and sets up a mocked db context.</summary>
+            <returns>A mocked db context.</returns>
         </member>
     </members>
 </doc>
