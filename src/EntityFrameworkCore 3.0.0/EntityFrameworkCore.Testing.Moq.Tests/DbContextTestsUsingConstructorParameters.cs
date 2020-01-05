@@ -6,17 +6,13 @@ using NUnit.Framework;
 namespace EntityFrameworkCore.Testing.Moq.Tests
 {
     [TestFixture]
-    public class ByPropertyDbQueryExceptionTests : ReadOnlyDbSetExceptionTests<TestQuery>
+    public class DbContextTestsUsingConstructorParameters : DbContextTestsBase<TestDbContext>
     {
         [SetUp]
         public override void SetUp()
         {
-            MockedDbContext = Create.MockedDbContextFor<TestDbContext>();
+            MockedDbContext = Create.MockedDbContextFor<TestDbContext>(new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
             base.SetUp();
         }
-
-        protected TestDbContext MockedDbContext;
-
-        protected override DbSet<TestQuery> DbSet => MockedDbContext.TestView;
     }
 }
