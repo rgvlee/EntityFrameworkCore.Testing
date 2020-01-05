@@ -18,7 +18,7 @@ namespace EntityFrameworkCore.Testing.Moq.PackageVerification.Tests
         }
 
         [Test]
-        public async Task ExecuteSqlRawAsync_SpecifiedSqlAndSqlParameter_ReturnsExpectedResultAndSetsOutputParameterValue()
+        public async Task ExecuteSqlCommandAsync_SpecifiedSqlAndSqlParameter_ReturnsExpectedResultAndSetsOutputParameterValue()
         {
             var mockedDbContext = Create.MockedDbContextFor<TestDbContext>();
             mockedDbContext.AddExecuteSqlCommandResult(-1, (sql, parameters) =>
