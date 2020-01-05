@@ -17,11 +17,11 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         protected TDbContext MockedDbContext;
 
         public abstract void AddExecuteSqlCommandResult(TDbContext mockedDbContext, int expectedResult);
-        public abstract void AddExecuteSqlCommandResult(TDbContext mockedDbContext, int expectedResult, Action callback);
+        public abstract void AddExecuteSqlCommandResult(TDbContext mockedDbContext, int expectedResult, Action<string, IEnumerable<object>> callback);
         public abstract void AddExecuteSqlCommandResult(TDbContext mockedDbContext, string sql, int expectedResult);
-        public abstract void AddExecuteSqlCommandResult(TDbContext mockedDbContext, string sql, int expectedResult, Action callback);
+        public abstract void AddExecuteSqlCommandResult(TDbContext mockedDbContext, string sql, int expectedResult, Action<string, IEnumerable<object>> callback);
         public abstract void AddExecuteSqlCommandResult(TDbContext mockedDbContext, string sql, IEnumerable<object> parameters, int expectedResult);
-        public abstract void AddExecuteSqlCommandResult(TDbContext mockedDbContext, string sql, IEnumerable<object> parameters, int expectedResult, Action callback);
+        public abstract void AddExecuteSqlCommandResult(TDbContext mockedDbContext, string sql, IEnumerable<object> parameters, int expectedResult, Action<string, IEnumerable<object>> callback);
 
         public static IEnumerable<TestCaseData> ExecuteSqlCommandWithCallback_InvokesCallback_TestCases()
         {
@@ -39,7 +39,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
             var preSetUpFirst = source.First();
             var preSetUpCount = source.Count;
 
-            void Callback()
+            void Callback(string providedSql, IEnumerable<object> providedParameters)
             {
                 Logger.LogDebug($"Before callback invoked: {source.Count}");
                 source = source.Take(1).ToList();
@@ -112,7 +112,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
             var preSetUpFirst = source.First();
             var preSetUpCount = source.Count;
 
-            void Callback()
+            void Callback(string providedSql, IEnumerable<object> providedParameters)
             {
                 Logger.LogDebug($"Before callback invoked: {source.Count}");
                 source = source.Take(1).ToList();
