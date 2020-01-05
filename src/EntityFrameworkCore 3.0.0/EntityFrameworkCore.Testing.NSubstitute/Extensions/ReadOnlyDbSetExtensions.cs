@@ -96,14 +96,14 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
 
             var queryable = source.AsQueryable();
 
-            ((IQueryable<TEntity>)mockedReadOnlyDbSet).ElementType.Returns(callInfo => queryable.ElementType);
-            ((IQueryable<TEntity>)mockedReadOnlyDbSet).Expression.Returns(callInfo => queryable.Expression);
-            ((IAsyncEnumerable<TEntity>)mockedReadOnlyDbSet).GetAsyncEnumerator(Arg.Any<CancellationToken>()).Returns(callInfo => ((IAsyncEnumerable<TEntity>)queryable).GetAsyncEnumerator(callInfo.Arg<CancellationToken>()));
-            ((IEnumerable)mockedReadOnlyDbSet).GetEnumerator().Returns(callInfo => queryable.GetEnumerator());
-            ((IEnumerable<TEntity>)mockedReadOnlyDbSet).GetEnumerator().Returns(callInfo => queryable.GetEnumerator());
+            ((IQueryable<TEntity>) mockedReadOnlyDbSet).ElementType.Returns(callInfo => queryable.ElementType);
+            ((IQueryable<TEntity>) mockedReadOnlyDbSet).Expression.Returns(callInfo => queryable.Expression);
+            ((IAsyncEnumerable<TEntity>) mockedReadOnlyDbSet).GetAsyncEnumerator(Arg.Any<CancellationToken>()).Returns(callInfo => ((IAsyncEnumerable<TEntity>) queryable).GetAsyncEnumerator(callInfo.Arg<CancellationToken>()));
+            ((IEnumerable) mockedReadOnlyDbSet).GetEnumerator().Returns(callInfo => queryable.GetEnumerator());
+            ((IEnumerable<TEntity>) mockedReadOnlyDbSet).GetEnumerator().Returns(callInfo => queryable.GetEnumerator());
 
-            var provider = ((IQueryable<TEntity>)mockedReadOnlyDbSet).Provider;
-            ((AsyncQueryProvider<TEntity>)provider).SetSource(queryable);
+            var provider = ((IQueryable<TEntity>) mockedReadOnlyDbSet).Provider;
+            ((AsyncQueryProvider<TEntity>) provider).SetSource(queryable);
         }
 
         /// <summary>Adds an item to the end of the mocked readonly db set source.</summary>
