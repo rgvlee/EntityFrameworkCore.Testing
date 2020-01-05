@@ -776,6 +776,23 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         }
 
         [Test]
+        public virtual async Task ToListAsync_ReturnsList()
+        {
+            SeedQueryableSource();
+
+            var expectedResult = Queryable.ToList();
+
+            var actualResult1 = await Queryable.ToListAsync();
+            var actualResult2 = await Queryable.ToListAsync();
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(actualResult1, Is.EquivalentTo(expectedResult));
+                Assert.That(actualResult2, Is.EquivalentTo(expectedResult));
+            });
+        }
+
+        [Test]
         public virtual void Where_Condition_ReturnsItemsThatSatisfyCondition()
         {
             SeedQueryableSource();
