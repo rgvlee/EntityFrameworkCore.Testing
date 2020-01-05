@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 namespace EntityFrameworkCore.Testing.Moq
 {
     /// <summary>Factory for creating mocked instances.</summary>
-    public static partial class Create
+    public static class Create
     {
         /// <summary>Creates a mocked db context.</summary>
         /// <typeparam name="TDbContext">The db context type.</typeparam>

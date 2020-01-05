@@ -2,13 +2,10 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using EntityFrameworkCore.Testing.Common;
 using EntityFrameworkCore.Testing.Common.Helpers;
-using EntityFrameworkCore.Testing.Moq.Helpers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.EntityFrameworkCore.Infrastructure;
@@ -23,7 +20,7 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
     public static partial class DbContextExtensions
     {
         private static readonly ILogger Logger = LoggerHelper.CreateLogger(typeof(DbContextExtensions));
-        
+
         /// <summary>Sets up ExecuteSqlInterpolated invocations to return a specified result.</summary>
         /// <typeparam name="TDbContext">The db context type.</typeparam>
         /// <param name="mockedDbContext">The mocked db context.</param>

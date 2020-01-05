@@ -21,7 +21,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
     public static partial class DbContextExtensions
     {
         private static readonly ILogger Logger = LoggerHelper.CreateLogger(typeof(DbContextExtensions));
-        
+
         /// <summary>Sets up ExecuteSqlInterpolated invocations to return a specified result.</summary>
         /// <typeparam name="TDbContext">The db context type.</typeparam>
         /// <param name="mockedDbContext">The mocked db context.</param>

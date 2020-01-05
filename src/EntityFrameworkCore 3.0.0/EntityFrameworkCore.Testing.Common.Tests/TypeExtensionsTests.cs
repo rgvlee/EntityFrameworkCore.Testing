@@ -36,7 +36,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         {
             Assert.That(typeof(TypeWithParameterlessConstructor).GetDefaultValue(), Is.Null);
         }
-        
+
         [Test]
         public void HasParameterlessConstructor_TypeWithParameterlessConstructor_ReturnsTrue()
         {
