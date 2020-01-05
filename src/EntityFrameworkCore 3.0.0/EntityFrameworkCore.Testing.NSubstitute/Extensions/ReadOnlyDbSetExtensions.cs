@@ -63,7 +63,13 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
             mockedDbQuery.FindAsync(Arg.Any<object[]>()).Throws(callInfo => new NullReferenceException());
             mockedDbQuery.FindAsync(Arg.Any<object[]>(), Arg.Any<CancellationToken>()).Throws(callInfo => new NullReferenceException());
 
-            ((IAsyncEnumerable<TEntity>) mockedDbQuery).GetAsyncEnumerator(Arg.Any<CancellationToken>()).Returns(callInfo => ((IAsyncEnumerable<TEntity>) queryable).GetAsyncEnumerator(callInfo.Arg<CancellationToken>()));
+            ((IAsyncEnumerable<TEntity>) mockedDbQuery).GetAsyncEnumerator(Arg.Any<CancellationToken>())
+                .Returns(callInfo =>
+                    {
+                        return new AsyncEnumerable<TEntity>(queryable).GetAsyncEnumerator(callInfo.Arg<CancellationToken>());
+                        //return ((IAsyncEnumerable<TEntity>)queryable).GetAsyncEnumerator(callInfo.Arg<CancellationToken>());
+                    }
+                );
 
             ((IEnumerable) mockedDbQuery).GetEnumerator().Returns(callInfo => queryable.GetEnumerator());
             ((IEnumerable<TEntity>) mockedDbQuery).GetEnumerator().Returns(callInfo => queryable.GetEnumerator());
@@ -98,7 +104,15 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
 
             ((IQueryable<TEntity>) mockedReadOnlyDbSet).ElementType.Returns(callInfo => queryable.ElementType);
             ((IQueryable<TEntity>) mockedReadOnlyDbSet).Expression.Returns(callInfo => queryable.Expression);
-            ((IAsyncEnumerable<TEntity>) mockedReadOnlyDbSet).GetAsyncEnumerator(Arg.Any<CancellationToken>()).Returns(callInfo => ((IAsyncEnumerable<TEntity>) queryable).GetAsyncEnumerator(callInfo.Arg<CancellationToken>()));
+
+            ((IAsyncEnumerable<TEntity>) mockedReadOnlyDbSet).GetAsyncEnumerator(Arg.Any<CancellationToken>())
+                .Returns(callInfo =>
+                    {
+                        return new AsyncEnumerable<TEntity>(queryable).GetAsyncEnumerator(callInfo.Arg<CancellationToken>());
+                        //return ((IAsyncEnumerable<TEntity>)queryable).GetAsyncEnumerator(callInfo.Arg<CancellationToken>());
+                    }
+                );
+
             ((IEnumerable) mockedReadOnlyDbSet).GetEnumerator().Returns(callInfo => queryable.GetEnumerator());
             ((IEnumerable<TEntity>) mockedReadOnlyDbSet).GetEnumerator().Returns(callInfo => queryable.GetEnumerator());
 
