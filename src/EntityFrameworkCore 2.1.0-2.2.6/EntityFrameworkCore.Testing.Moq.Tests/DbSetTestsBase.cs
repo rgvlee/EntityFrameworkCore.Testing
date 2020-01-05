@@ -13,7 +13,7 @@ namespace EntityFrameworkCore.Testing.Moq.Tests
     {
         protected override TestDbContext CreateMockedDbContext()
         {
-            return Create.MockedDbContextFor(new TestDbContext(new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options));
+            return Create.MockedDbContextFor<TestDbContext>();
         }
 
         protected override void AddFromSqlResult(IQueryable<T> queryable, IEnumerable<T> expectedResult)
