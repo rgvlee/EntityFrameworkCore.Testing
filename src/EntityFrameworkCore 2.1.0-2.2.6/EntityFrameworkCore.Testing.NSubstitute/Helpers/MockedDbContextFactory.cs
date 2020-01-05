@@ -30,7 +30,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Helpers
                         typeof(IDbQueryCache),
                         typeof(IDbSetCache),
                         typeof(IInfrastructure<IServiceProvider>),
-                        typeof(IDbContextPoolable),
+                        typeof(IDbContextPoolable)
                     },
                     ConstructorParametersProvided ? ConstructorParameters : DefaultConstructorParameters
                 );

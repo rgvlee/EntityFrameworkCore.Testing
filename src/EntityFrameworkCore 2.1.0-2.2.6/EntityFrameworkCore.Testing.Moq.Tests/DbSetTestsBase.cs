@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using EntityFrameworkCore.Testing.Common.Tests;
 using EntityFrameworkCore.Testing.Moq.Extensions;
-using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 
 namespace EntityFrameworkCore.Testing.Moq.Tests

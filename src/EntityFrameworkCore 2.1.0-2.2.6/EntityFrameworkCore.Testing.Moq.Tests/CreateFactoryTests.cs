@@ -47,7 +47,7 @@ namespace EntityFrameworkCore.Testing.Moq.Tests
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var mocked = Create.MockedQueryProviderFor((IQueryable<TestEntity>)null);
+                var mocked = Create.MockedQueryProviderFor((IQueryable<TestEntity>) null);
             });
         }
     }

@@ -57,8 +57,8 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
             dbQueryMock.As<IEnumerable>().Setup(m => m.GetEnumerator()).Returns(queryable.GetEnumerator());
             dbQueryMock.As<IEnumerable<TQuery>>().Setup(m => m.GetEnumerator()).Returns(queryable.GetEnumerator());
 
-            var provider = ((IQueryable<TQuery>)mockedDbQuery).Provider;
-            ((AsyncQueryProvider<TQuery>)provider).SetSource(queryable);
+            var provider = ((IQueryable<TQuery>) mockedDbQuery).Provider;
+            ((AsyncQueryProvider<TQuery>) provider).SetSource(queryable);
         }
 
         /// <summary>Adds an item to the end of the mocked db query source.</summary>
