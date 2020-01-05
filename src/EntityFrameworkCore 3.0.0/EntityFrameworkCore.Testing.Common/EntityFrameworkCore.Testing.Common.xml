@@ -131,6 +131,14 @@
             <param name="type">The type.</param>
             <returns>A new logger instance.</returns>
         </member>
+        <member name="M:EntityFrameworkCore.Testing.Common.Helpers.MockedDbContextFactoryBase`1.#ctor(System.Object[])">
+            <summary>Constructor.</summary>
+            <param name="constructorParameters">The db context constructor parameters.</param>
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.Common.Helpers.MockedDbContextFactoryBase`1.Create">
+            <summary>Creates and sets up a mocked db context.</summary>
+            <returns>A mocked db context.</returns>
+        </member>
         <member name="T:EntityFrameworkCore.Testing.Common.Helpers.ParameterMatchingHelper">
             <summary>A helper for parameter matching.</summary>
         </member>

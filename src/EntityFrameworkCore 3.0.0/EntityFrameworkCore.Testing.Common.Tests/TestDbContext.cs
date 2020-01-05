@@ -8,7 +8,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
     {
         private static readonly ILogger Logger = LoggerHelper.CreateLogger(typeof(TestDbContext));
 
-        public TestDbContext() { }
+        //public TestDbContext() { }
 
         public TestDbContext(DbContextOptions<TestDbContext> options) : base(options) { }
 
