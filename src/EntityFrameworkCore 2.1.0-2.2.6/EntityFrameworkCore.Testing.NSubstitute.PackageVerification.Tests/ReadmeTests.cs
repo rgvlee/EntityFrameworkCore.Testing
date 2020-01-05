@@ -24,7 +24,58 @@ namespace EntityFrameworkCore.Testing.NSubstitute.PackageVerification.Tests
         }
 
         [Test]
-        public void SetAddAndPersist_Item_Persists()
+        public void Method_WithSpecifiedInput_ReturnsAResult()
+        {
+            var mockedDbContext = Create.MockedDbContextFor<MyDbContext>();
+
+            //...
+        }
+
+        [Test]
+        public void AnotherMethod_WithSpecifiedInput_ReturnsAResult()
+        {
+            var mockedDbContext = Create.MockedDbContextFor<MyDbContextWithConstructorParameters>(
+                Substitute.For<ILogger<MyDbContextWithConstructorParameters>>(),
+                new DbContextOptionsBuilder<MyDbContextWithConstructorParameters>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options
+            );
+
+            //...
+        }
+
+        [Test]
+        public void ExecuteSqlCommandWithCallback_InvokesCallback()
+        {
+            //Arrange
+            var mockedDbContext = Create.MockedDbContextFor<TestDbContext>();
+
+            var itemsToCreate = 100;
+            mockedDbContext.Set<TestEntity>().AddRange(Fixture.CreateMany<TestEntity>(itemsToCreate).ToList());
+            mockedDbContext.SaveChanges();
+
+            var numberOfRowsToDelete = itemsToCreate / 2;
+            var rowsToDelete = mockedDbContext.Set<TestEntity>().Take(numberOfRowsToDelete).ToList();
+            var remainingRows = mockedDbContext.Set<TestEntity>().Skip(numberOfRowsToDelete).ToList();
+
+            mockedDbContext.AddExecuteSqlCommandResult("usp_MyStoredProc", numberOfRowsToDelete, (providedSql, providedParameters) =>
+            {
+                mockedDbContext.Set<TestEntity>().RemoveRange(rowsToDelete);
+                mockedDbContext.SaveChanges();
+            });
+
+            //Act
+            var actualResult = mockedDbContext.Database.ExecuteSqlCommand($"usp_MyStoredProc {numberOfRowsToDelete}");
+
+            //Assert
+            Assert.Multiple(() =>
+            {
+                Assert.That(actualResult, Is.EqualTo(numberOfRowsToDelete));
+                Assert.That(mockedDbContext.Set<TestEntity>().Count(), Is.EqualTo(itemsToCreate - numberOfRowsToDelete));
+                Assert.That(mockedDbContext.Set<TestEntity>().ToList(), Is.EquivalentTo(remainingRows));
+            });
+        }
+
+        [Test]
+        public void SetAddAndPersist_Item_AddAndPersistsItem()
         {
             var mockedDbContext = Create.MockedDbContextFor<TestDbContext>();
 
@@ -147,6 +198,18 @@ namespace EntityFrameworkCore.Testing.NSubstitute.PackageVerification.Tests
 
                 Assert.That(mockedDbContext.TestEntities, Is.SameAs(mockedDbContext.Set<TestEntity>()));
             });
+        }
+
+        public class MyDbContext : DbContext
+        {
+            public MyDbContext(DbContextOptions<MyDbContext> options) : base(options) { }
+        }
+
+        public class MyDbContextWithConstructorParameters : DbContext
+        {
+            public MyDbContextWithConstructorParameters(
+                ILogger<MyDbContextWithConstructorParameters> logger,
+                DbContextOptions<MyDbContextWithConstructorParameters> options) : base(options) { }
         }
     }
 }
