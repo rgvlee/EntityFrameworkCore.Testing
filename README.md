@@ -54,8 +54,6 @@ public void Method_WithSpecifiedInput_ReturnsAResult()
 
 The library supports creation using a parameterless constructor if that's all you have, however the assumption is that using such a constructor will result in a usable `DbContext`. To be clear, this library is intended to extend the in-memory provider and as such I don't recommend falling back on this unless you know what you're doing.
 
-Finally, if you don't have a constructor that meets these requirements and you haven't specified any constructor parameters, you'll get a `MissingMethodException` and you'll need to add one or specify constructor parameters as per the next section.
-
 ### Creating by type using a specific constructor on your DbContext
 If you're like me your `DbContext` constructor will have other parameters; loggers, current user and so on. Simply provide the constructor parameters for the constructor you want the library to use.
 
