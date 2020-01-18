@@ -1,5 +1,3 @@
-
-
 # EntityFrameworkCore.Testing
 __*Moq and NSubstitute mocking libraries for EntityFrameworkCore*__
 
@@ -39,7 +37,7 @@ There are two ways you can create the mocked `DbContext`:
 ### Creating by type
 This method requires that you have a `DbContext` with a constructor that has a single `DbContextOptions<TDbContext>` or `DbContextOptions` parameter - with the most specific constructor being used.
 
-```
+``` C#
 public class MyDbContext : DbContext
 {
     public MyDbContext(DbContextOptions<MyDbContext> options) : base(options) { }
@@ -61,7 +59,7 @@ Finally, if you don't have a constructor that meets these requirements and you h
 ### Creating by type using a specific constructor on your DbContext
 If you're like me your `DbContext` constructor will have other parameters; loggers, current user and so on. Simply provide the constructor parameters for the constructor you want the library to use.
 
-```
+``` C#
 public class MyDbContextWithConstructorParameters : DbContext
 {
     public MyDbContextWithConstructorParameters(
@@ -81,13 +79,11 @@ public void AnotherMethod_WithSpecifiedInput_ReturnsAResult()
 }
 ```
 
-## Example Usage
-
-### MVP
-- Create mocked `DbContext`
+### Basic usage
+- Create a mocked `DbContext`
 - Consume
 
-```
+``` C#
 [Test]
 public void SetAddAndPersist_Item_AddAndPersistsItem()
 {
@@ -111,7 +107,7 @@ public void SetAddAndPersist_Item_AddAndPersistsItem()
 - Specify a `FromSql` result
 - Consume
 
-```
+``` C#
 [Test]
 public void FromSql_AnyStoredProcedureWithNoParameters_ReturnsExpectedResult()
 {
@@ -137,7 +133,7 @@ The following example shows how to specify a result for a specific `FromSql` inv
 
 The __sql__ matching is case insensitive and supports partial matches; in the example I've left out the schema name and it'll match on just the stored procedure name. The __parameters__ matching is case insensitive and supports partial sequence matching however it does not support partial matches on the parameter name/value; in this example we're only specifying one of the parameters. You only need to specify the bare distinct minimum.
 
-```
+``` C#
 [Test]
 public void FromSql_SpecifiedStoredProcedureAndParameters_ReturnsExpectedResult()
 {
@@ -165,7 +161,7 @@ As above except the method names have *Raw and *Interpolated suffixes.
 ### Queries
 Queries are initialized automatically but you'll want to seed them to do anything useful with them. Use the `AddToReadOnlySource` , `AddRangeToReadOnlySource` and `ClearReadOnlySource` extensions to seed/manipulate the query source.
 
-```
+``` C#
 [Test]
 public void QueryAddRangeToReadOnlySource_Enumeration_AddsToQuerySource()
 {
@@ -191,7 +187,7 @@ As above.
 ### ExecuteSqlCommand
 Specifying an `ExecuteSqlCommand` result is similar to `FromSql` with the main difference being the return type. `ExecuteSqlCommand` always returns an `int`.
 
-```
+``` C#
 [Test]
 public void ExecuteSqlCommand_SpecifiedStoredProcedure_ReturnsExpectedResult()
 {
@@ -210,7 +206,7 @@ public void ExecuteSqlCommand_SpecifiedStoredProcedure_ReturnsExpectedResult()
 
 And with parameters:
 
-```
+``` C#
 [Test]
 public void ExecuteSqlCommand_SpecifiedStoredProcedureAndSqlParameters_ReturnsExpectedResult()
 {
@@ -233,7 +229,7 @@ All of the ExecuteSql* extensions accept an optional `Action<string, IEnumerable
 
 The following shows a basic example where invoking `ExecuteSqlCommand` deletes a specified number of rows from a set. You have access to the SQL and parameters that were provided to the ExecuteSql* invocation in the callback so you're covered for cases where you need to set the value of an output parameter.
 
-```
+``` C#
 [Test]
 public void ExecuteSqlCommandWithCallback_InvokesCallback()
 {
@@ -283,7 +279,7 @@ The `Create` factory always returns the mocked object, not the `Mock<TDbContext>
 
 Keep in mind that the `DbContext`, each `DbSet<TEntity>`, each `DbQuery<TQuery>`, and the query provider for each `DbSet<TEntity>` and `DbQuery<TQuery>` are all separate mocks; you need to invoke the `Verify` operation on the appropriate mock.
 
-```
+``` C#
 [Test]
 public void AddRangeThenSaveChanges_CanAssertInvocationCount()
 {
@@ -320,7 +316,7 @@ As above! The only difference is if you want to mocks themselves. For Moq you ne
 ### Performing Received operations
 Received operations can be performed directly on the substitute as you would expect. Keep in mind that the `DbContext`, each `DbSet<TEntity>`, each `DbQuery<TQuery>`, and the query provider for each `DbSet<TEntity>` and `DbQuery<TQuery>` are all separate substitutes; you need to invoke the `Received` operation on the appropriate substitute.
 
-```
+``` C#
 [Test]
 public void AddRangeThenSaveChanges_CanAssertInvocationCount()
 {
