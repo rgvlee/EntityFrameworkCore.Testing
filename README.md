@@ -17,7 +17,7 @@ EntityFrameworkCore.Testing is an EntityFrameworkCore mocking library for Moq an
 - TakeWhile
 - Indexed TakeWhile (Queryable.Select(Func\<T, int, bool\>))
 
-There may be more functionality that isn't supported by the in-memory provider; this is what I've discovered/added support for so far. If you come across unsupported functionality let me know so I can add support for it.
+There may be more functionality that isn't supported by the in-memory provider; this is what I've discovered/added support for so far. If you come across anything I've missed let me know so I can add support for it.
 
 In addition to the above you also get all of the benefits of using a mocking framework (e.g., the ability to verify method invocation).
 
@@ -269,7 +269,7 @@ As above except the method names have *Raw and *Interpolated suffixes instead of
 ### Async operations
 Whenever you add a FromSql* or ExecuteSql* result, the library sets up both the sync and async methods.
 
-Additionally the library intercepts LINQ operations and returns an async emumerable/query provider to provide support for async LINQ operations that the in-memory provider doesn't provide.
+Additionally the library intercepts LINQ operations and returns an async emumerable/query provider to provide support for async LINQ operations that are not supported by the in-memory provider.
 
 ### The rest
 LINQ queryable operations such as `ElementAt`, indexed `Select`, `SkipWhile` etc just work as you would expect, there is nothing additional you need to do.
@@ -308,7 +308,7 @@ public void AddRangeThenSaveChanges_CanAssertInvocationCount()
 ```
 
 ### Getting the Mock itself
-The `Create` factory always returns the mocked object. This is deliberate as once created there should be no further set up required (other than what the EntityFrameworkCore.Testing interface provides of course). That being said the `Mock<T>` is always accessible using `Mock.Get<T>(T mocked)`. If you find yourself resorting to using this to support an unsupported operation :cry: get in touch so I can make it a supported operation :smile:.
+The `Create` factory always returns the mocked object. This is deliberate as once created there should be no further set up required (other than what the EntityFrameworkCore.Testing interface provides of course). That being said the `Mock<T>` is always accessible using `Mock.Get<T>(T mocked)`.
 
 # NSubstitute
 As above! The only difference is if you want to mocks themselves. For Moq you need to invoke `Mock.Get<T>(T mocked)` to get it. For NSubstitute you don't need to do this.
