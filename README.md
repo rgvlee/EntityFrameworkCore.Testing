@@ -77,6 +77,8 @@ public void AnotherMethod_WithSpecifiedInput_ReturnsAResult()
 }
 ```
 
+## Example usage
+
 ### Basic usage
 - Create a mocked `DbContext`
 - Consume
