@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Threading;
 using EntityFrameworkCore.Testing.Common;
+using EntityFrameworkCore.Testing.Common.Helpers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Moq;
@@ -78,6 +79,21 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
             var mockedQueryProvider = ((IQueryable<TEntity>) readOnlyDbSet).Provider.CreateMockedQueryProvider(new List<TEntity>());
             readOnlyDbSetMock.As<IQueryable<TEntity>>().Setup(m => m.Provider).Returns(mockedQueryProvider);
 
+            //Backwards compatibility implementation for EFCore 3.0.0
+            var asyncEnumerableMethod = typeof(DbSet<TEntity>).GetMethod("AsAsyncEnumerable");
+            if (asyncEnumerableMethod != null)
+            {
+                var asyncEnumerableExpression = ExpressionHelper.CreateMethodExpression<DbQuery<TEntity>, IAsyncEnumerable<TEntity>>(asyncEnumerableMethod);
+                readOnlyDbSetMock.Setup(asyncEnumerableExpression).Returns(new AsyncEnumerable<TEntity>(queryable));
+            }
+
+            var queryableMethod = typeof(DbSet<TEntity>).GetMethod("AsQueryable");
+            if (queryableMethod != null)
+            {
+                var queryableExpression = ExpressionHelper.CreateMethodExpression<DbQuery<TEntity>, IQueryable<TEntity>>(queryableMethod);
+                readOnlyDbSetMock.Setup(queryableExpression).Returns(queryable);
+            }
+
             return readOnlyDbSetMock.Object;
         }
 
@@ -106,6 +122,21 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
 
             var provider = ((IQueryable<TEntity>) mockedReadOnlyDbSet).Provider;
             ((AsyncQueryProvider<TEntity>) provider).SetSource(queryable);
+
+            //Backwards compatibility implementation for EFCore 3.0.0
+            var asyncEnumerableMethod = typeof(DbSet<TEntity>).GetMethod("AsAsyncEnumerable");
+            if (asyncEnumerableMethod != null)
+            {
+                var asyncEnumerableExpression = ExpressionHelper.CreateMethodExpression<DbQuery<TEntity>, IAsyncEnumerable<TEntity>>(asyncEnumerableMethod);
+                readOnlyDbSetMock.Setup(asyncEnumerableExpression).Returns(new AsyncEnumerable<TEntity>(queryable));
+            }
+
+            var queryableMethod = typeof(DbSet<TEntity>).GetMethod("AsQueryable");
+            if (queryableMethod != null)
+            {
+                var queryableExpression = ExpressionHelper.CreateMethodExpression<DbQuery<TEntity>, IQueryable<TEntity>>(queryableMethod);
+                readOnlyDbSetMock.Setup(queryableExpression).Returns(queryable);
+            }
         }
 
         /// <summary>Adds an item to the end of the mocked readonly db set source.</summary>

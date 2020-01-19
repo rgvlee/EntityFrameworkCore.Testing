@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using NSubstitute;
 using NSubstitute.ExceptionExtensions;
+using NSubstitute.Extensions;
 
 namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
 {
@@ -91,6 +92,19 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
             var mockedQueryProvider = ((IQueryable<TEntity>) readOnlyDbSet).Provider.CreateMockedQueryProvider(new List<TEntity>());
             ((IQueryable<TEntity>) mockedDbQuery).Provider.Returns(callInfo => mockedQueryProvider);
 
+            //Backwards compatibility implementation for EFCore 3.0.0
+            var asyncEnumerableMethod = typeof(DbSet<TEntity>).GetMethod("AsAsyncEnumerable");
+            if (asyncEnumerableMethod != null)
+            {
+                asyncEnumerableMethod.Invoke(mockedDbQuery.Configure(), null).Returns(new AsyncEnumerable<TEntity>(queryable));
+            }
+
+            var queryableMethod = typeof(DbSet<TEntity>).GetMethod("AsQueryable");
+            if (queryableMethod != null)
+            {
+                queryableMethod.Invoke(mockedDbQuery.Configure(), null).Returns(queryable);
+            }
+
             return mockedDbQuery;
         }
 
@@ -118,6 +132,19 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
 
             var provider = ((IQueryable<TEntity>) mockedReadOnlyDbSet).Provider;
             ((AsyncQueryProvider<TEntity>) provider).SetSource(queryable);
+
+            //Backwards compatibility implementation for EFCore 3.0.0
+            var asyncEnumerableMethod = typeof(DbSet<TEntity>).GetMethod("AsAsyncEnumerable");
+            if (asyncEnumerableMethod != null)
+            {
+                asyncEnumerableMethod.Invoke(mockedReadOnlyDbSet.Configure(), null).Returns(new AsyncEnumerable<TEntity>(queryable));
+            }
+
+            var queryableMethod = typeof(DbSet<TEntity>).GetMethod("AsQueryable");
+            if (queryableMethod != null)
+            {
+                queryableMethod.Invoke(mockedReadOnlyDbSet.Configure(), null).Returns(queryable);
+            }
         }
 
         /// <summary>Adds an item to the end of the mocked readonly db set source.</summary>

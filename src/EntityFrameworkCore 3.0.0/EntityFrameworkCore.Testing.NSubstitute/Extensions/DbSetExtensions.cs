@@ -8,6 +8,7 @@ using EntityFrameworkCore.Testing.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using NSubstitute;
+using NSubstitute.Extensions;
 
 namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
 {
@@ -78,6 +79,19 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
 
             var mockedQueryProvider = ((IQueryable<TEntity>) dbSet).Provider.CreateMockedQueryProvider(dbSet);
             ((IQueryable<TEntity>) mockedDbSet).Provider.Returns(callInfo => mockedQueryProvider);
+
+            //Backwards compatibility implementation for EFCore 3.0.0
+            var asyncEnumerableMethod = typeof(DbSet<TEntity>).GetMethod("AsAsyncEnumerable");
+            if (asyncEnumerableMethod != null)
+            {
+                asyncEnumerableMethod.Invoke(mockedDbSet.Configure(), null).Returns(dbSet.AsAsyncEnumerable());
+            }
+
+            var queryableMethod = typeof(DbSet<TEntity>).GetMethod("AsQueryable");
+            if (queryableMethod != null)
+            {
+                queryableMethod.Invoke(mockedDbSet.Configure(), null).Returns(dbSet.AsQueryable());
+            }
 
             return mockedDbSet;
         }
