@@ -123,48 +123,75 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
             rawSqlCommandMock.Setup(m => m.ParameterValues).Returns(new Dictionary<string, object>());
             var rawSqlCommand = rawSqlCommandMock.Object;
 
-            var rawSqlCommandBuilderMock = new Mock<IRawSqlCommandBuilder>();
-            rawSqlCommandBuilderMock
-                .Setup(m => m.Build(It.IsAny<string>(), It.IsAny<IEnumerable<object>>()))
-                .Callback((string providedSql, IEnumerable<object> providedParameters) => Logger.LogDebug("Catch all exception invoked"))
-                .Throws<InvalidOperationException>();
+            var existingRawSqlCommandBuilder =
+                (((IInfrastructure<IServiceProvider>) mockedDbContext).Instance.GetService(typeof(IDatabaseFacadeDependencies)) as IRelationalDatabaseFacadeDependencies)?.RawSqlCommandBuilder;
 
-            rawSqlCommandBuilderMock.Setup(m =>
-                    m.Build(
-                        It.Is<string>(s => s.Contains(sql, StringComparison.CurrentCultureIgnoreCase)),
-                        It.Is<IEnumerable<object>>(p => ParameterMatchingHelper.DoInvocationParametersMatchSetUpParameters(parameters, p))
+            if (existingRawSqlCommandBuilder != null)
+            {
+                var rawSqlCommandBuilderMock = Mock.Get(existingRawSqlCommandBuilder);
+                rawSqlCommandBuilderMock.Setup(m =>
+                        m.Build(
+                            It.Is<string>(s => s.Contains(sql, StringComparison.CurrentCultureIgnoreCase)),
+                            It.Is<IEnumerable<object>>(p => ParameterMatchingHelper.DoInvocationParametersMatchSetUpParameters(parameters, p))
+                        )
                     )
-                )
-                .Returns((string providedSql, IEnumerable<object> providedParameters) => rawSqlCommand)
-                .Callback((string providedSql, IEnumerable<object> providedParameters) =>
-                {
-                    callback?.Invoke(providedSql, providedParameters);
+                    .Returns((string providedSql, IEnumerable<object> providedParameters) => rawSqlCommand)
+                    .Callback((string providedSql, IEnumerable<object> providedParameters) =>
+                    {
+                        callback?.Invoke(providedSql, providedParameters);
 
-                    var parts = new List<string>();
-                    parts.Add($"Invocation sql: {providedSql}");
-                    parts.Add("Invocation Parameters:");
-                    parts.Add(ParameterMatchingHelper.StringifyParameters(providedParameters));
-                    Logger.LogDebug(string.Join(Environment.NewLine, parts));
-                });
-            var rawSqlCommandBuilder = rawSqlCommandBuilderMock.Object;
+                        var parts = new List<string>();
+                        parts.Add($"Invocation sql: {providedSql}");
+                        parts.Add("Invocation Parameters:");
+                        parts.Add(ParameterMatchingHelper.StringifyParameters(providedParameters));
+                        Logger.LogDebug(string.Join(Environment.NewLine, parts));
+                    });
+            }
+            else
+            {
+                var rawSqlCommandBuilderMock = new Mock<IRawSqlCommandBuilder>();
+                rawSqlCommandBuilderMock
+                    .Setup(m => m.Build(It.IsAny<string>(), It.IsAny<IEnumerable<object>>()))
+                    .Callback((string providedSql, IEnumerable<object> providedParameters) => Logger.LogDebug("Catch all exception invoked"))
+                    .Throws<InvalidOperationException>();
 
-            var dependenciesMock = new Mock<IRelationalDatabaseFacadeDependencies>();
-            dependenciesMock.Setup(m => m.ConcurrencyDetector).Returns(Mock.Of<IConcurrencyDetector>());
-            dependenciesMock.Setup(m => m.CommandLogger).Returns(Mock.Of<IDiagnosticsLogger<DbLoggerCategory.Database.Command>>());
-            dependenciesMock.Setup(m => m.RawSqlCommandBuilder).Returns(rawSqlCommandBuilder);
-            dependenciesMock.Setup(m => m.RelationalConnection).Returns(Mock.Of<IRelationalConnection>());
-            var dependencies = dependenciesMock.Object;
+                rawSqlCommandBuilderMock.Setup(m =>
+                        m.Build(
+                            It.Is<string>(s => s.Contains(sql, StringComparison.CurrentCultureIgnoreCase)),
+                            It.Is<IEnumerable<object>>(p => ParameterMatchingHelper.DoInvocationParametersMatchSetUpParameters(parameters, p))
+                        )
+                    )
+                    .Returns((string providedSql, IEnumerable<object> providedParameters) => rawSqlCommand)
+                    .Callback((string providedSql, IEnumerable<object> providedParameters) =>
+                    {
+                        callback?.Invoke(providedSql, providedParameters);
 
-            var serviceProviderMock = new Mock<IServiceProvider>();
-            serviceProviderMock.Setup(m => m.GetService(It.Is<Type>(t => t == typeof(IDatabaseFacadeDependencies)))).Returns((Type providedType) => dependencies);
-            var serviceProvider = serviceProviderMock.Object;
+                        var parts = new List<string>();
+                        parts.Add($"Invocation sql: {providedSql}");
+                        parts.Add("Invocation Parameters:");
+                        parts.Add(ParameterMatchingHelper.StringifyParameters(providedParameters));
+                        Logger.LogDebug(string.Join(Environment.NewLine, parts));
+                    });
+                var rawSqlCommandBuilder = rawSqlCommandBuilderMock.Object;
 
-            Mock.Get(mockedDbContext).As<IInfrastructure<IServiceProvider>>().Setup(m => m.Instance).Returns(serviceProvider);
+                var dependenciesMock = new Mock<IRelationalDatabaseFacadeDependencies>();
+                dependenciesMock.Setup(m => m.ConcurrencyDetector).Returns(Mock.Of<IConcurrencyDetector>());
+                dependenciesMock.Setup(m => m.CommandLogger).Returns(Mock.Of<IDiagnosticsLogger<DbLoggerCategory.Database.Command>>());
+                dependenciesMock.Setup(m => m.RawSqlCommandBuilder).Returns(rawSqlCommandBuilder);
+                dependenciesMock.Setup(m => m.RelationalConnection).Returns(Mock.Of<IRelationalConnection>());
+                var dependencies = dependenciesMock.Object;
 
-            var databaseFacadeMock = new Mock<DatabaseFacade>(MockBehavior.Strict, mockedDbContext);
-            var databaseFacade = databaseFacadeMock.Object;
+                var serviceProviderMock = new Mock<IServiceProvider>();
+                serviceProviderMock.Setup(m => m.GetService(It.Is<Type>(t => t == typeof(IDatabaseFacadeDependencies)))).Returns((Type providedType) => dependencies);
+                var serviceProvider = serviceProviderMock.Object;
 
-            Mock.Get(mockedDbContext).Setup(m => m.Database).Returns(databaseFacade);
+                Mock.Get(mockedDbContext).As<IInfrastructure<IServiceProvider>>().Setup(m => m.Instance).Returns(serviceProvider);
+
+                var databaseFacadeMock = new Mock<DatabaseFacade>(mockedDbContext);
+                var databaseFacade = databaseFacadeMock.Object;
+
+                Mock.Get(mockedDbContext).Setup(m => m.Database).Returns(databaseFacade);
+            }
 
             return mockedDbContext;
         }

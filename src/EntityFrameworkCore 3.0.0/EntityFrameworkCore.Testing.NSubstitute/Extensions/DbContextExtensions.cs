@@ -122,48 +122,76 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
             rawSqlCommand.RelationalCommand.Returns(callInfo => relationalCommand);
             rawSqlCommand.ParameterValues.Returns(callInfo => new Dictionary<string, object>());
 
-            var rawSqlCommandBuilder = Substitute.For<IRawSqlCommandBuilder>();
-            rawSqlCommandBuilder
-                .Build(Arg.Any<string>(), Arg.Any<IEnumerable<object>>())
-                .Throws(callInfo =>
-                {
-                    Logger.LogDebug("Catch all exception invoked");
-                    return new InvalidOperationException();
-                });
+            var existingRawSqlCommandBuilder =
+                (((IInfrastructure<IServiceProvider>)mockedDbContext).Instance.GetService(typeof(IDatabaseFacadeDependencies)) as IRelationalDatabaseFacadeDependencies)?.RawSqlCommandBuilder;
 
-            rawSqlCommandBuilder
-                .Build(
-                    Arg.Is<string>(s => s.Contains(sql, StringComparison.CurrentCultureIgnoreCase)),
-                    Arg.Is<IEnumerable<object>>(p => ParameterMatchingHelper.DoInvocationParametersMatchSetUpParameters(parameters, p))
-                )
-                .Returns(callInfo => rawSqlCommand)
-                .AndDoes(callInfo =>
-                {
-                    var providedSql = callInfo.Arg<string>();
-                    var providedParameters = callInfo.Arg<IEnumerable<object>>();
+            if (existingRawSqlCommandBuilder != null)
+            {
+                existingRawSqlCommandBuilder
+                    .Build(
+                        Arg.Is<string>(s => s.Contains(sql, StringComparison.CurrentCultureIgnoreCase)),
+                        Arg.Is<IEnumerable<object>>(p => ParameterMatchingHelper.DoInvocationParametersMatchSetUpParameters(parameters, p))
+                    )
+                    .Returns(callInfo => rawSqlCommand)
+                    .AndDoes(callInfo =>
+                    {
+                        var providedSql = callInfo.Arg<string>();
+                        var providedParameters = callInfo.Arg<IEnumerable<object>>();
 
-                    callback?.Invoke(providedSql, providedParameters);
+                        callback?.Invoke(providedSql, providedParameters);
 
-                    var parts = new List<string>();
-                    parts.Add($"Invocation sql: {providedSql}");
-                    parts.Add("Invocation Parameters:");
-                    parts.Add(ParameterMatchingHelper.StringifyParameters(providedParameters));
-                    Logger.LogDebug(string.Join(Environment.NewLine, parts));
-                });
+                        var parts = new List<string>();
+                        parts.Add($"Invocation sql: {providedSql}");
+                        parts.Add("Invocation Parameters:");
+                        parts.Add(ParameterMatchingHelper.StringifyParameters(providedParameters));
+                        Logger.LogDebug(string.Join(Environment.NewLine, parts));
+                    });
+            }
+            else
+            {
+                var rawSqlCommandBuilder = Substitute.For<IRawSqlCommandBuilder>();
+                rawSqlCommandBuilder
+                    .Build(Arg.Any<string>(), Arg.Any<IEnumerable<object>>())
+                    .Throws(callInfo =>
+                    {
+                        Logger.LogDebug("Catch all exception invoked");
+                        return new InvalidOperationException();
+                    });
 
-            var dependencies = Substitute.For<IRelationalDatabaseFacadeDependencies>();
-            dependencies.ConcurrencyDetector.Returns(callInfo => Substitute.For<IConcurrencyDetector>());
-            dependencies.CommandLogger.Returns(callInfo => Substitute.For<IDiagnosticsLogger<DbLoggerCategory.Database.Command>>());
-            dependencies.RawSqlCommandBuilder.Returns(callInfo => rawSqlCommandBuilder);
-            dependencies.RelationalConnection.Returns(callInfo => Substitute.For<IRelationalConnection>());
+                rawSqlCommandBuilder
+                    .Build(
+                        Arg.Is<string>(s => s.Contains(sql, StringComparison.CurrentCultureIgnoreCase)),
+                        Arg.Is<IEnumerable<object>>(p => ParameterMatchingHelper.DoInvocationParametersMatchSetUpParameters(parameters, p))
+                    )
+                    .Returns(callInfo => rawSqlCommand)
+                    .AndDoes(callInfo =>
+                    {
+                        var providedSql = callInfo.Arg<string>();
+                        var providedParameters = callInfo.Arg<IEnumerable<object>>();
 
-            var serviceProvider = Substitute.For<IServiceProvider>();
-            serviceProvider.GetService(Arg.Is<Type>(t => t == typeof(IDatabaseFacadeDependencies))).Returns(callInfo => dependencies);
+                        callback?.Invoke(providedSql, providedParameters);
 
-            ((IInfrastructure<IServiceProvider>) mockedDbContext).Instance.Returns(callInfo => serviceProvider);
+                        var parts = new List<string>();
+                        parts.Add($"Invocation sql: {providedSql}");
+                        parts.Add("Invocation Parameters:");
+                        parts.Add(ParameterMatchingHelper.StringifyParameters(providedParameters));
+                        Logger.LogDebug(string.Join(Environment.NewLine, parts));
+                    });
 
-            var databaseFacade = Substitute.For<DatabaseFacade>(mockedDbContext);
-            mockedDbContext.Database.Returns(callInfo => databaseFacade);
+                var dependencies = Substitute.For<IRelationalDatabaseFacadeDependencies>();
+                dependencies.ConcurrencyDetector.Returns(callInfo => Substitute.For<IConcurrencyDetector>());
+                dependencies.CommandLogger.Returns(callInfo => Substitute.For<IDiagnosticsLogger<DbLoggerCategory.Database.Command>>());
+                dependencies.RawSqlCommandBuilder.Returns(callInfo => rawSqlCommandBuilder);
+                dependencies.RelationalConnection.Returns(callInfo => Substitute.For<IRelationalConnection>());
+
+                var serviceProvider = Substitute.For<IServiceProvider>();
+                serviceProvider.GetService(Arg.Is<Type>(t => t == typeof(IDatabaseFacadeDependencies))).Returns(callInfo => dependencies);
+
+                ((IInfrastructure<IServiceProvider>)mockedDbContext).Instance.Returns(callInfo => serviceProvider);
+
+                var databaseFacade = Substitute.For<DatabaseFacade>(mockedDbContext);
+                mockedDbContext.Database.Returns(callInfo => databaseFacade);
+            }
 
             return mockedDbContext;
         }
