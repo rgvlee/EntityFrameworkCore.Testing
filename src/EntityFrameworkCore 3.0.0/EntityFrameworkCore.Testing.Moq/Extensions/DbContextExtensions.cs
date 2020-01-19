@@ -128,8 +128,7 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
 
             if (existingRawSqlCommandBuilder != null)
             {
-                var rawSqlCommandBuilderMock = Mock.Get(existingRawSqlCommandBuilder);
-                rawSqlCommandBuilderMock.Setup(m =>
+                Mock.Get(existingRawSqlCommandBuilder).Setup(m =>
                         m.Build(
                             It.Is<string>(s => s.Contains(sql, StringComparison.CurrentCultureIgnoreCase)),
                             It.Is<IEnumerable<object>>(p => ParameterMatchingHelper.DoInvocationParametersMatchSetUpParameters(parameters, p))

@@ -123,7 +123,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
             rawSqlCommand.ParameterValues.Returns(callInfo => new Dictionary<string, object>());
 
             var existingRawSqlCommandBuilder =
-                (((IInfrastructure<IServiceProvider>)mockedDbContext).Instance.GetService(typeof(IDatabaseFacadeDependencies)) as IRelationalDatabaseFacadeDependencies)?.RawSqlCommandBuilder;
+                (((IInfrastructure<IServiceProvider>) mockedDbContext).Instance.GetService(typeof(IDatabaseFacadeDependencies)) as IRelationalDatabaseFacadeDependencies)?.RawSqlCommandBuilder;
 
             if (existingRawSqlCommandBuilder != null)
             {
@@ -187,7 +187,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
                 var serviceProvider = Substitute.For<IServiceProvider>();
                 serviceProvider.GetService(Arg.Is<Type>(t => t == typeof(IDatabaseFacadeDependencies))).Returns(callInfo => dependencies);
 
-                ((IInfrastructure<IServiceProvider>)mockedDbContext).Instance.Returns(callInfo => serviceProvider);
+                ((IInfrastructure<IServiceProvider>) mockedDbContext).Instance.Returns(callInfo => serviceProvider);
 
                 var databaseFacade = Substitute.For<DatabaseFacade>(mockedDbContext);
                 mockedDbContext.Database.Returns(callInfo => databaseFacade);
