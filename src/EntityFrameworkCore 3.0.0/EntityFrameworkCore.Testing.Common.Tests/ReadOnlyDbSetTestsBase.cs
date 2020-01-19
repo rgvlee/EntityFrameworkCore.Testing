@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Threading.Tasks;
 using AutoFixture;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -81,6 +82,42 @@ namespace EntityFrameworkCore.Testing.Common.Tests
             {
                 Assert.That(actualResult1, Is.False);
                 Assert.That(actualResult2, Is.True);
+            });
+        }
+
+        [Test]
+        public virtual async Task AsAsyncEnumerable_ReturnsAsyncEnumerable()
+        {
+            var expectedResult = Fixture.Create<TEntity>();
+            AddToReadOnlySource(DbSet, expectedResult);
+
+            var asyncEnumerable = DbSet.AsAsyncEnumerable();
+
+            var actualResults = new List<TEntity>();
+            await foreach (var item in asyncEnumerable)
+            {
+                actualResults.Add(item);
+            }
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(actualResults.Single(), Is.EqualTo(expectedResult));
+                Assert.That(actualResults.Single(), Is.EqualTo(expectedResult));
+            });
+        }
+
+        [Test]
+        public virtual void AsQueryable_ReturnsQueryable()
+        {
+            var expectedResult = Fixture.Create<TEntity>();
+            AddToReadOnlySource(DbSet, expectedResult);
+
+            var queryable = DbSet.AsQueryable();
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(queryable.Single(), Is.EqualTo(expectedResult));
+                Assert.That(queryable.Single(), Is.EqualTo(expectedResult));
             });
         }
 
