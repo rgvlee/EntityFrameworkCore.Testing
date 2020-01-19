@@ -1,19 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata>
     <id>EntityFrameworkCore.Testing.Moq</id>
-    <version>2.0.3</version>
+    <version>2.0.4</version>
     <authors>rgvlee</authors>
     <owners>rgvlee</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <licenseUrl>https://github.com/rgvlee/EntityFrameworkCore.Testing/blob/master/LICENSE</licenseUrl>
+    <license type="file">LICENSE</license>
     <projectUrl>https://github.com/rgvlee/EntityFrameworkCore.Testing</projectUrl>
-    <description>
-      A mocking library using Moq that extends the EntityFrameworkCore in-memory provider to provide support for FromSqlRaw/Interpolated and ExecuteSqlRaw/Interpolated operations, queries (DbQuery&lt;TQuery&gt; and read only DbSet&lt;TEntity&gt;) and unsupported queryable operations (ElementAt, SkipWhile, TakeWhile etc), providing you with a functionally complete DbContext to use in tests.
-    </description>
-    <copyright>Copyright (c) 2019 Lee Anderson</copyright>
-    <tags>moq mock EntityFrameworkCore efcore entity framework core EntityFramework InMemory In-Memory DbContext Context testing test tests FromSql FromSqlRaw ExecuteSqlCommand ExecuteSqlRaw DbQuery query</tags>
+    <description>A mocking library for EntityFrameworkCore (EFCore) using Moq. Provides a functionally complete DbContext for your tests.
+
+This is achieved by extending the in-memory provider, mocking relational and queryable operations to provide support for Queries/Keyless DbSets, FromSqlRaw/FromSqlInterpolated, ExecuteSqlCommand/ExecuteSqlRaw/ExecuteSqlInterpolated, and async LINQ operations.
+
+Support is also provided for other LINQ operations not supported by the in-memory provider, such as ElementAt, SkipWhile, TakeWhile, etc.</description>
+    <copyright>Copyright (c) 2020 Lee Anderson</copyright>
+    <tags>EntityFrameworkCore EFCore Moq mock testing</tags>
     <repository url="https://github.com/rgvlee/EntityFrameworkCore.Testing" />
     <dependencies>
       <group targetFramework=".NETStandard2.0">
@@ -26,11 +27,8 @@
     </dependencies>
   </metadata>
   <files>
-    <file
-      src="src\EntityFrameworkCore 3.0.0\EntityFrameworkCore.Testing.Common\bin\Release\netstandard2.1\EntityFrameworkCore.Testing.Common.dll"
-      target="lib\netstandard2.1" />
-    <file
-      src="src\EntityFrameworkCore 3.0.0\EntityFrameworkCore.Testing.Moq\bin\Release\netstandard2.1\EntityFrameworkCore.Testing.Moq.dll"
-      target="lib\netstandard2.1" />
+    <file src="src\EntityFrameworkCore 3.0.0\EntityFrameworkCore.Testing.Common\bin\Release\netstandard2.1\EntityFrameworkCore.Testing.Common.dll" target="lib\netstandard2.1" />
+    <file src="src\EntityFrameworkCore 3.0.0\EntityFrameworkCore.Testing.Moq\bin\Release\netstandard2.1\EntityFrameworkCore.Testing.Moq.dll" target="lib\netstandard2.1" />
+    <file src="LICENSE" />
   </files>
 </package>
