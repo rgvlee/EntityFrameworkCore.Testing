@@ -3,26 +3,28 @@ __*Moq and NSubstitute mocking libraries for EntityFrameworkCore*__
 
 EntityFrameworkCore.Testing is an EntityFrameworkCore mocking library for Moq and NSubstitute. It's designed to be used in conjunction with the [Microsoft in-memory provider](https://docs.microsoft.com/en-us/ef/core/miscellaneous/testing/in-memory), extending it's functionality by providing support for:
 - FromSql *(EntityFrameworkCore 2.1.0-2.2.6)*
-- FromSqlRaw *(EntityFrameworkCore 3.0.0)*
-- FromSqlInterpolated *(EntityFrameworkCore 3.0.0)*
+- FromSqlRaw *(EntityFrameworkCore 3.\*)*
+- FromSqlInterpolated *(EntityFrameworkCore 3.\*)*
 - ExecuteSqlCommand
-- ExecuteSqlRaw *(EntityFrameworkCore 3.0.0)*
-- ExecuteSqlInterpolated *(EntityFrameworkCore 3.0.0)*
-- DbQuery\<TQuery\>
-- Keyless DbSet\<TEntity\> *(EntityFrameworkCore 3.0.0)*
+- ExecuteSqlRaw *(EntityFrameworkCore 3.\*)*
+- ExecuteSqlInterpolated *(EntityFrameworkCore 3.\*)*
+- Queries (DbQuery<TQuery>)
+- Keyless Sets (ModelBuilder.Entity<TEntity>().HasNoKey()) *(EntityFrameworkCore 3.\*)*
+
+In addition to the above, support has been added for the following LINQ operations that not supported by the in-memory provider:
 - ElementAt
 - ElementAtOrDefault
-- Indexed Select (Queryable.Select(Func\<T, int, TResult\>))
+- Indexed Select (Queryable.Select(Func<T, int, TResult>))
 - SkipWhile
 - TakeWhile
-- Indexed TakeWhile (Queryable.Select(Func\<T, int, bool\>))
+- Indexed TakeWhile (Queryable.Select(Func<T, int, bool>))
 
-There may be more functionality that isn't supported by the in-memory provider; this is what I've discovered/added support for so far. If you come across anything I've missed let me know so I can add support for it.
+It's quite a list and there may be more functionality that is not supported by the in-memory provider that I haven't yet found. If you come across anything I've missed let me know so I can add support for it.
 
-In addition to the above you also get all of the benefits of using a mocking framework (e.g., the ability to verify method invocation).
+In addition to the above you also get all of the benefits of using a mocking framework e.g., the ability to verify method invocation.
 
 ## NuGet Packages
-#### EntityFrameworkCore 3.0.0+
+#### EntityFrameworkCore 3.\*
 - [EntityFrameworkCore.Testing.Moq](https://www.nuget.org/packages/EntityFrameworkCore.Testing.Moq/2.0.4)
 - [EntityFrameworkCore.Testing.NSubstitute](https://www.nuget.org/packages/EntityFrameworkCore.Testing.NSubstitute/2.0.4)
 #### EntityFrameworkCore 2.1.0-2.2.6
@@ -32,10 +34,10 @@ In addition to the above you also get all of the benefits of using a mocking fra
 # Moq
 
 ## Creating a mocked DbContext
-There are two ways you can create the mocked `DbContext`:
+There are two ways you can create the mocked DbContext:
 
 ### Creating by type
-This method requires that you have a `DbContext` with a constructor that has a single `DbContextOptions<TDbContext>` or `DbContextOptions` parameter - with the most specific constructor being used.
+This requires you to have a DbContext with a constructor that has a single DbContextOptions<TDbContext> or DbContextOptions parameter - with the most specific constructor being used. For more information have a look at the [documentation provided by Microsoft](https://docs.microsoft.com/en-us/ef/core/miscellaneous/testing/in-memory#add-a-constructor-for-testing) regarding adding such a constructor.
 
 ``` C#
 public class MyDbContext : DbContext
@@ -44,7 +46,7 @@ public class MyDbContext : DbContext
 }
 
 [Test]
-public void Method_WithSpecifiedInput_ReturnsAResult()
+public void Method_WithSpecifiedInput_ReturnsExpectedResult()
 {
     var mockedDbContext = Create.MockedDbContextFor<MyDbContext>();
      
@@ -52,10 +54,10 @@ public void Method_WithSpecifiedInput_ReturnsAResult()
 }
 ```
 
-The library supports creation using a parameterless constructor if that's all you have, however the assumption is that using such a constructor will result in a usable `DbContext`. To be clear, this library is intended to extend the in-memory provider and as such I don't recommend falling back on this unless you know what you're doing.
+The library supports creation using a parameterless constructor if that's all you have, however the assumption is that using such a constructor will result in a usable DbContext. To be clear, this library is intended to extend the in-memory provider and I don't recommend using a parameterless constructor unless you know what you're doing.
 
 ### Creating by type using a specific constructor on your DbContext
-If you're like me your `DbContext` constructor will have other parameters; loggers, current user and so on. Simply provide the constructor parameters for the constructor you want the library to use.
+If you're like me your DbContext constructor will have other parameters; logger, current user and so on. Simply provide the constructor parameters for the constructor you want the library to use.
 
 ``` C#
 public class MyDbContextWithConstructorParameters : DbContext
@@ -66,7 +68,7 @@ public class MyDbContextWithConstructorParameters : DbContext
 }
 
 [Test]
-public void AnotherMethod_WithSpecifiedInput_ReturnsAResult()
+public void AnotherMethod_WithSpecifiedInput_ReturnsExpectedResult()
 {
     var mockedDbContext = Create.MockedDbContextFor<MyDbContextWithConstructorParameters>(
         Mock.Of<ILogger<MyDbContextWithConstructorParameters>>(),
@@ -80,7 +82,7 @@ public void AnotherMethod_WithSpecifiedInput_ReturnsAResult()
 ## Example usage
 
 ### Basic usage
-- Create a mocked `DbContext`
+- Create a mocked DbContext
 - Consume
 
 ``` C#
@@ -104,7 +106,7 @@ public void SetAddAndPersist_Item_AddsAndPersistsItem()
 ```
 
 ### FromSql
-- Specify a `FromSql` result
+- Specify a FromSql result
 - Consume
 
 ``` C#
@@ -129,9 +131,11 @@ public void FromSql_AnyStoredProcedureWithNoParameters_ReturnsExpectedResult()
 ```
 
 ### FromSql with SQL/Parameters
-The following example shows how to specify a result for a specific `FromSql` invocation.
+The following example shows how to specify a result for a specific FromSql invocation.
 
-The __sql__ matching is case insensitive and supports partial matches; in the example I've left out the schema name and it'll match on just the stored procedure name. The __parameters__ matching is case insensitive and supports partial sequence matching however it does not support partial matches on the parameter name/value; in this example we're only specifying one of the parameters. You only need to specify the bare distinct minimum.
+The __sql__ matching is case insensitive and supports partial matches; in the example I've left out the schema name and it'll match on just the stored procedure name.
+
+The __parameters__ matching is case insensitive and supports partial parameters sequence matching however it does not support partial name/value matches on individual parameters; in this example we're only specifying one of the parameters.
 
 ``` C#
 [Test]
@@ -155,11 +159,11 @@ public void FromSql_SpecifiedStoredProcedureAndParameters_ReturnsExpectedResult(
 }
 ```
 
-### FromSqlRaw/FromSqlInterpolated (EntityFrameworkCore 3.0.0)
+### FromSqlRaw/FromSqlInterpolated (EntityFrameworkCore 3.\*)
 As above except the method names have *Raw and *Interpolated suffixes.
 
 ### Queries
-Queries are initialized automatically but you'll want to seed them to do anything useful with them. Use the `AddToReadOnlySource` , `AddRangeToReadOnlySource` and `ClearReadOnlySource` extensions to seed/manipulate the query source.
+Queries are initialized automatically but you'll want to seed them to do anything useful with them. Use the AddToReadOnlySource , AddRangeToReadOnlySource and ClearReadOnlySource extensions to seed/manipulate the query source.
 
 ``` C#
 [Test]
@@ -179,13 +183,13 @@ public void QueryAddRangeToReadOnlySource_Enumeration_AddsEnumerationElementsToQ
 }
 ```
 
-Specifying a `FromSql` result for a query is exactly the same as for a set.
+Specifying a FromSql result for a query is exactly the same as for a set.
 
-### Keyless DbSets (EntityFrameworkCore 3.0.0)
+### Keyless Sets (EntityFrameworkCore 3.\*)
 As above. 
 
 ### ExecuteSqlCommand
-Specifying an `ExecuteSqlCommand` result is similar to `FromSql` with the main difference being the return type. `ExecuteSqlCommand` always returns an `int`.
+Specifying an ExecuteSqlCommand result is similar to FromSql with the main difference being the return type. ExecuteSqlCommand returns an int - the number of rows affected by the SQL statement passed to it.
 
 ``` C#
 [Test]
@@ -225,9 +229,9 @@ public void ExecuteSqlCommand_SpecifiedStoredProcedureAndSqlParameters_ReturnsEx
 ```
 
 ### ExecuteSqlCommand with a callback
-All of the ExecuteSql* extensions accept an optional `Action<string, IEnumerable<object>>` parameter which allows you to do something post ExecuteSql* invocation e.g., you're invoking a stored procedure which deletes rows in a table, the result of which forms part of your assertion(s).
+All of the ExecuteSql* extensions accept an optional Action<string, IEnumerable<object>> parameter which allows you to do something post ExecuteSql* invocation e.g., you're invoking a stored procedure which deletes rows in a table, the result of which forms part of your assertion(s).
 
-The following shows a basic example where invoking `ExecuteSqlCommand` deletes a specified number of rows from a set. You have access to the SQL and parameters that were provided to the ExecuteSql* invocation in the callback so you're covered for cases where you need to set the value of an output parameter.
+The following shows a basic example where invoking ExecuteSqlCommand deletes a specified number of rows from a set. You have access to the SQL and parameters that were provided to the ExecuteSql* invocation in the callback so you're covered for cases where you need to set the value of an output parameter.
 
 ``` C#
 [Test]
@@ -263,7 +267,7 @@ public void ExecuteSqlCommandWithCallback_InvokesCallback()
 }
 ```
 
-### ExecuteSqlRaw/ExecuteSqlInterpolated (EntityFrameworkCore 3.0.0)
+### ExecuteSqlRaw/ExecuteSqlInterpolated (EntityFrameworkCore 3.\*)
 As above except the method names have *Raw and *Interpolated suffixes instead of *Command.
 
 ### Async operations
@@ -272,12 +276,12 @@ Whenever you add a FromSql* or ExecuteSql* result, the library sets up both the 
 Additionally the library intercepts LINQ operations and returns an async emumerable/query provider to provide support for async LINQ operations that are not supported by the in-memory provider.
 
 ### The rest
-LINQ queryable operations such as `ElementAt`, indexed `Select`, `SkipWhile` etc just work as you would expect, there is nothing additional you need to do.
+LINQ queryable operations such as ElementAt, indexed Select, SkipWhile etc just work as you would expect, there is nothing additional you need to do.
 
 ### Performing Verify operations
-The `Create` factory always returns the mocked object, not the `Mock<TDbContext>` itself, so you'll need to get the mock using `Mock.Get<T>(T mocked)` if you want to perform specific operations on the mock itself.
+The Create factory always returns the mocked object, not the Mock<TDbContext> itself, so you'll need to get the mock using Mock.Get<T>(T mocked) if you want to perform specific operations on the mock itself.
 
-Keep in mind that the `DbContext`, each `DbSet<TEntity>`, each `DbQuery<TQuery>`, and the query provider for each `DbSet<TEntity>` and `DbQuery<TQuery>` are all separate mocks; you need to invoke the `Verify` operation on the appropriate mock.
+Keep in mind that the DbContext, each DbSet<TEntity>, each DbQuery<TQuery>, and the query provider for each DbSet<TEntity> and DbQuery<TQuery> are all separate mocks; you need to invoke the Verify operation on the appropriate mock.
 
 ``` C#
 [Test]
@@ -307,14 +311,14 @@ public void AddRangeThenSaveChanges_CanAssertInvocationCount()
 }
 ```
 
-### Getting the Mock itself
-The `Create` factory always returns the mocked object. This is deliberate as once created there should be no further set up required (other than what the EntityFrameworkCore.Testing interface provides of course). That being said the `Mock<T>` is always accessible using `Mock.Get<T>(T mocked)`.
+### Getting the Mock<T> itself
+The Create factory always returns the mocked object. This is deliberate as once created there should be no further set up required (other than what the EntityFrameworkCore.Testing interface provides of course). That being said the Mock<T> is always accessible using Mock.Get<T>(T mocked).
 
 # NSubstitute
-As above! The only difference is if you want to mocks themselves. For Moq you need to invoke `Mock.Get<T>(T mocked)` to get it. For NSubstitute you don't need to do this.
+As above! The only difference is if you want to mocks themselves. For Moq you need to invoke Mock.Get<T>(T mocked) to get it. For NSubstitute you don't need to do this.
 
 ### Performing Received operations
-Received operations can be performed directly on the substitute as you would expect. Keep in mind that the `DbContext`, each `DbSet<TEntity>`, each `DbQuery<TQuery>`, and the query provider for each `DbSet<TEntity>` and `DbQuery<TQuery>` are all separate substitutes; you need to invoke the `Received` operation on the appropriate substitute.
+Received operations can be performed directly on the substitute as you would expect. Keep in mind that the DbContext, each DbSet<TEntity>, each DbQuery<TQuery>, and the query provider for each DbSet<TEntity> and DbQuery<TQuery> are all separate substitutes; you need to invoke the Received operation on the appropriate substitute.
 
 ``` C#
 [Test]
