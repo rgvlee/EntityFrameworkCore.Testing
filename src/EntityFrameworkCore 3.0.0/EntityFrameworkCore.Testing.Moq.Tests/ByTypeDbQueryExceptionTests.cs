@@ -16,6 +16,6 @@ namespace EntityFrameworkCore.Testing.Moq.Tests
 
         protected TestDbContext MockedDbContext;
 
-        protected override DbSet<TestQuery> DbSet => MockedDbContext.Set<TestQuery>();
+        protected override DbSet<TestQuery> DbSet => MockedDbContext.Query<TestQuery>();
     }
 }

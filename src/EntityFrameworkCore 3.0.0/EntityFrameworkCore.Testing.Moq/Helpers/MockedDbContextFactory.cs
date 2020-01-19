@@ -141,20 +141,25 @@ namespace EntityFrameworkCore.Testing.Moq.Helpers
         {
             var mockedReadOnlyDbSet = DbContextToMock.Set<TEntity>().CreateMockedReadOnlyDbSet();
 
-            var property = typeof(TDbContext).GetProperties().SingleOrDefault(p => p.PropertyType == typeof(DbSet<TEntity>) || p.PropertyType == typeof(DbQuery<TEntity>));
-
-            if (property != null)
+            var dbSetProperty = typeof(TDbContext).GetProperties().SingleOrDefault(p => p.PropertyType == typeof(DbSet<TEntity>));
+            if (dbSetProperty != null)
             {
-                var setExpression = ExpressionHelper.CreatePropertyExpression<TDbContext, DbSet<TEntity>>(property);
+                var setExpression = ExpressionHelper.CreatePropertyExpression<TDbContext, DbSet<TEntity>>(dbSetProperty);
                 dbContextMock.Setup(setExpression).Returns(mockedReadOnlyDbSet);
-            }
-            else
-            {
-                Logger.LogDebug($"Could not find a DbContext property for type '{typeof(TEntity)}'");
+                dbContextMock.Setup(m => m.Set<TEntity>()).Returns(mockedReadOnlyDbSet);
+                return;
             }
 
-            dbContextMock.Setup(m => m.Set<TEntity>()).Returns(mockedReadOnlyDbSet);
-            dbContextMock.Setup(m => m.Query<TEntity>()).Returns((DbQuery<TEntity>) mockedReadOnlyDbSet);
+            var dbQueryProperty = typeof(TDbContext).GetProperties().SingleOrDefault(p => p.PropertyType == typeof(DbQuery<TEntity>));
+            if (dbQueryProperty != null)
+            {
+                var setExpression = ExpressionHelper.CreatePropertyExpression<TDbContext, DbQuery<TEntity>>(dbQueryProperty);
+                dbContextMock.Setup(setExpression).Returns(mockedReadOnlyDbSet);
+                dbContextMock.Setup(m => m.Query<TEntity>()).Returns(mockedReadOnlyDbSet);
+                return;
+            }
+            
+            Logger.LogDebug($"Could not find a DbContext property for type '{typeof(TEntity)}'");
         }
     }
 }

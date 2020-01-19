@@ -19,7 +19,7 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
         /// <param name="readOnlyDbSet">The readonly db set to mock.</param>
         /// <returns>A mocked readonly db set.</returns>
         [Obsolete("This will be removed in a future version. Use EntityFrameworkCore.Testing.Moq.Create.MockedDbContextFor with the params object[] parameter instead.")]
-        public static DbSet<TEntity> CreateMockedReadOnlyDbSet<TEntity>(this DbSet<TEntity> readOnlyDbSet)
+        public static DbQuery<TEntity> CreateMockedReadOnlyDbSet<TEntity>(this DbSet<TEntity> readOnlyDbSet)
             where TEntity : class
         {
             EnsureArgument.IsNotNull(readOnlyDbSet, nameof(readOnlyDbSet));
