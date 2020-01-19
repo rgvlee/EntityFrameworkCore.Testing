@@ -133,7 +133,7 @@ public void FromSql_AnyStoredProcedureWithNoParameters_ReturnsExpectedResult()
 ### FromSql with SQL/Parameters
 The following example shows how to specify a result for a specific FromSql invocation.
 
-String matching (sql and individual parameter name/value) is case insensitive. Additionally you do not need to provide every parameter, just set up what you need to make your result matching distinct.
+String matching (SQL and individual parameter name/value) is case insensitive. Additionally you do not need to provide every parameter, just set up what you need to make your result matching distinct.
 
 In the example I've left out the stored procedure schema name and I'm only specifying one of the parameters.
 
@@ -186,7 +186,7 @@ public void QueryAddRangeToReadOnlySource_Enumeration_AddsEnumerationElementsToQ
 Specifying a FromSql result for a query is exactly the same as for a set.
 
 ### Keyless Sets (EntityFrameworkCore 3.\*)
-As above. 
+See the Queries section above.
 
 ### ExecuteSqlCommand
 Specifying an ExecuteSqlCommand result is similar to FromSql with the main difference being the return type. ExecuteSqlCommand returns an int - the number of rows affected by the SQL statement passed to it.
@@ -229,7 +229,7 @@ public void ExecuteSqlCommand_SpecifiedStoredProcedureAndSqlParameters_ReturnsEx
 ```
 
 ### ExecuteSqlCommand with a callback
-All of the ExecuteSql* extensions accept an optional Action\<string, IEnumerable\<object\>\> parameter which allows you to do something post ExecuteSql* invocation e.g., you're invoking a stored procedure which deletes rows in a table, the result of which forms part of your assertion(s).
+All of the AddExecuteSql\*Result extensions accept an optional Action\<string, IEnumerable\<object\>\> parameter which allows you to do something post ExecuteSql* invocation e.g., you're invoking a stored procedure which deletes rows in a table, the result of which forms part of your assertion(s).
 
 The following shows a basic example where invoking ExecuteSqlCommand deletes a specified number of rows from a set. You have access to the SQL and parameters that were provided to the ExecuteSql* invocation in the callback so you're covered for cases where you need to set the value of an output parameter.
 
