@@ -85,7 +85,7 @@ public void AnotherMethod_WithSpecifiedInput_ReturnsAResult()
 
 ``` C#
 [Test]
-public void SetAddAndPersist_Item_AddAndPersistsItem()
+public void SetAddAndPersist_Item_AddsAndPersistsItem()
 {
     var mockedDbContext = Create.MockedDbContextFor<TestDbContext>();
 
@@ -163,7 +163,7 @@ Queries are initialized automatically but you'll want to seed them to do anythin
 
 ``` C#
 [Test]
-public void QueryAddRangeToReadOnlySource_Enumeration_AddsToQuerySource()
+public void QueryAddRangeToReadOnlySource_Enumeration_AddsEnumerationElementsToQuerySource()
 {
     var mockedDbContext = Create.MockedDbContextFor<TestDbContext>();
 
@@ -179,7 +179,7 @@ public void QueryAddRangeToReadOnlySource_Enumeration_AddsToQuerySource()
 }
 ```
 
-Specifying a `FromSql` result for a query is exactly the same as a set.
+Specifying a `FromSql` result for a query is exactly the same as for a set.
 
 ### Keyless DbSets (EntityFrameworkCore 3.0.0)
 As above. 
