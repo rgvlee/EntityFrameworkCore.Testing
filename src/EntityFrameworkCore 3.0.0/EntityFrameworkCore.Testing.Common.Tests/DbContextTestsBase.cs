@@ -408,6 +408,26 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         }
 
         [Test]
+        public void ExecuteSqlCommandWithMultipleSetUps_SpecifiedSql_ReturnsExpectedResult()
+        {
+            var sql = "sp_NoParams1";
+            var expectedResult = 1;
+            AddExecuteSqlCommandResult(MockedDbContext, sql, expectedResult);
+            AddExecuteSqlCommandResult(MockedDbContext, "sp_NoParams2", 2);
+
+#pragma warning disable 618
+            var actualResult1 = MockedDbContext.Database.ExecuteSqlCommand("[dbo].sp_NoParams1");
+            var actualResult2 = MockedDbContext.Database.ExecuteSqlCommand("[dbo].sp_NoParams1");
+#pragma warning restore 618
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(actualResult1, Is.EqualTo(expectedResult));
+                Assert.That(actualResult2, Is.EqualTo(actualResult1));
+            });
+        }
+
+        [Test]
         public void ExecuteSqlInterpolated_AnySql_ReturnsExpectedResult()
         {
             var expectedResult = 1;

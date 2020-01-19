@@ -368,5 +368,23 @@ namespace EntityFrameworkCore.Testing.Common.Tests
                 Assert.That(actualResult2, Is.EqualTo(actualResult1));
             });
         }
+
+        [Test]
+        public void ExecuteSqlCommandWithMultipleSetUps_SpecifiedSql_ReturnsExpectedResult()
+        {
+            var sql = "sp_NoParams1";
+            var expectedResult = 1;
+            AddExecuteSqlCommandResult(MockedDbContext, sql, expectedResult);
+            AddExecuteSqlCommandResult(MockedDbContext, "sp_NoParams2", 2);
+
+            var actualResult1 = MockedDbContext.Database.ExecuteSqlCommand("[dbo].sp_NoParams1");
+            var actualResult2 = MockedDbContext.Database.ExecuteSqlCommand("[dbo].sp_NoParams1");
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(actualResult1, Is.EqualTo(expectedResult));
+                Assert.That(actualResult2, Is.EqualTo(actualResult1));
+            });
+        }
     }
 }
