@@ -8,16 +8,16 @@ EntityFrameworkCore.Testing is an EntityFrameworkCore mocking library for Moq an
 - ExecuteSqlCommand
 - ExecuteSqlRaw *(EntityFrameworkCore 3.\*)*
 - ExecuteSqlInterpolated *(EntityFrameworkCore 3.\*)*
-- Queries (DbQuery<TQuery>)
-- Keyless Sets (ModelBuilder.Entity<TEntity>().HasNoKey()) *(EntityFrameworkCore 3.\*)*
+- Queries (DbQuery\<TQuery\>)
+- Keyless Sets (ModelBuilder.Entity\<TEntity\>().HasNoKey()) *(EntityFrameworkCore 3.\*)*
 
 In addition to the above, support has been added for the following LINQ operations that not supported by the in-memory provider:
 - ElementAt
 - ElementAtOrDefault
-- Indexed Select (Queryable.Select(Func<T, int, TResult>))
+- Indexed Select (Queryable.Select(Func\<T, int, TResult\>))
 - SkipWhile
 - TakeWhile
-- Indexed TakeWhile (Queryable.Select(Func<T, int, bool>))
+- Indexed TakeWhile (Queryable.Select(Func\<T, int, bool\>))
 
 It's quite a list and there may be more functionality that is not supported by the in-memory provider that I haven't yet found. If you come across anything I've missed let me know so I can add support for it.
 
@@ -37,7 +37,7 @@ In addition to the above you also get all of the benefits of using a mocking fra
 There are two ways you can create the mocked DbContext:
 
 ### Creating by type
-This requires you to have a DbContext with a constructor that has a single DbContextOptions<TDbContext> or DbContextOptions parameter - with the most specific constructor being used. For more information have a look at the [documentation provided by Microsoft](https://docs.microsoft.com/en-us/ef/core/miscellaneous/testing/in-memory#add-a-constructor-for-testing) regarding adding such a constructor.
+This requires you to have a DbContext with a constructor that has a single DbContextOptions\<TDbContext\> or DbContextOptions parameter - with the most specific constructor being used. For more information have a look at the [documentation provided by Microsoft](https://docs.microsoft.com/en-us/ef/core/miscellaneous/testing/in-memory#add-a-constructor-for-testing) regarding adding such a constructor.
 
 ``` C#
 public class MyDbContext : DbContext
@@ -229,7 +229,7 @@ public void ExecuteSqlCommand_SpecifiedStoredProcedureAndSqlParameters_ReturnsEx
 ```
 
 ### ExecuteSqlCommand with a callback
-All of the ExecuteSql* extensions accept an optional Action<string, IEnumerable<object>> parameter which allows you to do something post ExecuteSql* invocation e.g., you're invoking a stored procedure which deletes rows in a table, the result of which forms part of your assertion(s).
+All of the ExecuteSql* extensions accept an optional Action\<string, IEnumerable\<object\>\> parameter which allows you to do something post ExecuteSql* invocation e.g., you're invoking a stored procedure which deletes rows in a table, the result of which forms part of your assertion(s).
 
 The following shows a basic example where invoking ExecuteSqlCommand deletes a specified number of rows from a set. You have access to the SQL and parameters that were provided to the ExecuteSql* invocation in the callback so you're covered for cases where you need to set the value of an output parameter.
 
@@ -279,9 +279,9 @@ Additionally the library intercepts LINQ operations and returns an async emumera
 LINQ queryable operations such as ElementAt, indexed Select, SkipWhile etc just work as you would expect, there is nothing additional you need to do.
 
 ### Performing Verify operations
-The Create factory always returns the mocked object, not the Mock<TDbContext> itself, so you'll need to get the mock using Mock.Get<T>(T mocked) if you want to perform specific operations on the mock itself.
+The Create factory always returns the mocked object, not the Mock\<TDbContext\> itself, so you'll need to get the mock using Mock.Get\<T\>(T mocked) if you want to perform specific operations on the mock itself.
 
-Keep in mind that the DbContext, each DbSet<TEntity>, each DbQuery<TQuery>, and the query provider for each DbSet<TEntity> and DbQuery<TQuery> are all separate mocks; you need to invoke the Verify operation on the appropriate mock.
+Keep in mind that the DbContext, each DbSet\<TEntity\>, each DbQuery\<TQuery\>, and the query provider for each DbSet\<TEntity\> and DbQuery\<TQuery\> are all separate mocks; you need to invoke the Verify operation on the appropriate mock.
 
 ``` C#
 [Test]
@@ -311,14 +311,14 @@ public void AddRangeThenSaveChanges_CanAssertInvocationCount()
 }
 ```
 
-### Getting the Mock<T> itself
-The Create factory always returns the mocked object. This is deliberate as once created there should be no further set up required (other than what the EntityFrameworkCore.Testing interface provides of course). That being said the Mock<T> is always accessible using Mock.Get<T>(T mocked).
+### Getting the Mock\<T\> itself
+The Create factory always returns the mocked object. This is deliberate as once created there should be no further set up required (other than what the EntityFrameworkCore.Testing interface provides of course). That being said the Mock\<T\> is always accessible using Mock.Get\<T\>(T mocked).
 
 # NSubstitute
-As above! The only difference is if you want to mocks themselves. For Moq you need to invoke Mock.Get<T>(T mocked) to get it. For NSubstitute you don't need to do this.
+As above! The only difference is if you want to mocks themselves. For Moq you need to invoke Mock.Get\<T\>(T mocked) to get it. For NSubstitute you don't need to do this.
 
 ### Performing Received operations
-Received operations can be performed directly on the substitute as you would expect. Keep in mind that the DbContext, each DbSet<TEntity>, each DbQuery<TQuery>, and the query provider for each DbSet<TEntity> and DbQuery<TQuery> are all separate substitutes; you need to invoke the Received operation on the appropriate substitute.
+Received operations can be performed directly on the substitute as you would expect. Keep in mind that the DbContext, each DbSet\<TEntity\>, each DbQuery\<TQuery\>, and the query provider for each DbSet\<TEntity\> and DbQuery\<TQuery\> are all separate substitutes; you need to invoke the Received operation on the appropriate substitute.
 
 ``` C#
 [Test]
