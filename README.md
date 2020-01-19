@@ -315,7 +315,7 @@ public void AddRangeThenSaveChanges_CanAssertInvocationCount()
 The Create factory always returns the mocked object. This is deliberate as once created there should be no further set up required (other than what the EntityFrameworkCore.Testing interface provides of course). That being said the Mock\<T\> is always accessible using Mock.Get\<T\>(T mocked).
 
 # NSubstitute
-As above! The only difference is if you want to mocks themselves. For Moq you need to invoke Mock.Get\<T\>(T mocked) to get it. For NSubstitute you don't need to do this.
+As above! The only difference is if you want the mock itself. For Moq you need to invoke Mock.Get\<T\>(T mocked) to get it. For NSubstitute you don't need to do this.
 
 ### Performing Received operations
 Received operations can be performed directly on the substitute as you would expect. Keep in mind that the DbContext, each DbSet\<TEntity\>, each DbQuery\<TQuery\>, and the query provider for each DbSet\<TEntity\> and DbQuery\<TQuery\> are all separate substitutes; you need to invoke the Received operation on the appropriate substitute.
