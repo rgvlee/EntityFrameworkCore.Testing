@@ -75,7 +75,7 @@ namespace EntityFrameworkCore.Testing.Moq.PackageVerification.Tests
         }
 
         [Test]
-        public void SetAddAndPersist_Item_AddAndPersistsItem()
+        public void SetAddAndPersist_Item_AddsAndPersistsItem()
         {
             var mockedDbContext = Create.MockedDbContextFor<TestDbContext>();
 
@@ -132,7 +132,7 @@ namespace EntityFrameworkCore.Testing.Moq.PackageVerification.Tests
         }
 
         [Test]
-        public void QueryAddRangeToReadOnlySource_Enumeration_AddsToQuerySource()
+        public void QueryAddRangeToReadOnlySource_Enumeration_AddsEnumerationElementsToQuerySource()
         {
             var mockedDbContext = Create.MockedDbContextFor<TestDbContext>();
 
