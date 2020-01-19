@@ -35,6 +35,44 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         protected abstract TDbContext CreateMockedDbContext();
 
         [Test]
+        public virtual void AsQueryable_ReturnsQueryable()
+        {
+            var expectedResult = Fixture.Create<TEntity>();
+            DbSet.Add(expectedResult);
+            MockedDbContext.SaveChanges();
+
+            var queryable = DbSet.AsQueryable();
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(queryable.Single(), Is.EqualTo(expectedResult));
+                Assert.That(queryable.Single(), Is.EqualTo(expectedResult));
+            });
+        }
+
+        [Test]
+        public virtual async Task AsAsyncEnumerable_ReturnsAsyncEnumerable()
+        {
+            var expectedResult = Fixture.Create<TEntity>();
+            DbSet.Add(expectedResult);
+            MockedDbContext.SaveChanges();
+
+            var asyncEnumerable = DbSet.AsAsyncEnumerable();
+
+            var actualResults = new List<TEntity>();
+            await foreach (var item in asyncEnumerable)
+            {
+                actualResults.Add(item);
+            }
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(actualResults.Single(), Is.EqualTo(expectedResult));
+                Assert.That(actualResults.Single(), Is.EqualTo(expectedResult));
+            });
+        }
+
+        [Test]
         public virtual void AddAndPersist_Item_AddsAndPersistsItem()
         {
             var expectedResult = Fixture.Create<TEntity>();
