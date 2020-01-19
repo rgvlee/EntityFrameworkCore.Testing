@@ -11,7 +11,7 @@ EntityFrameworkCore.Testing is an EntityFrameworkCore mocking library for Moq an
 - Queries (DbQuery\<TQuery\>)
 - Keyless Sets (ModelBuilder.Entity\<TEntity\>().HasNoKey()) *(EntityFrameworkCore 3.\*)*
 
-In addition to the above, support has been added for the following LINQ operations that not supported by the in-memory provider:
+In addition to the above, support has been added for the following LINQ operations that are not supported by the in-memory provider:
 - ElementAt
 - ElementAtOrDefault
 - Indexed Select (Queryable.Select(Func\<T, int, TResult\>))
@@ -34,7 +34,7 @@ In addition to the above you also get all of the benefits of using a mocking fra
 # Moq
 
 ## Creating a mocked DbContext
-There are two ways you can create the mocked DbContext:
+There are two ways you can create a mocked DbContext:
 
 ### Creating by type
 This requires you to have a DbContext with a constructor that has a single DbContextOptions\<TDbContext\> or DbContextOptions parameter - with the most specific constructor being used. For more information have a look at the [documentation provided by Microsoft](https://docs.microsoft.com/en-us/ef/core/miscellaneous/testing/in-memory#add-a-constructor-for-testing) regarding adding such a constructor.
@@ -54,7 +54,7 @@ public void Method_WithSpecifiedInput_ReturnsExpectedResult()
 }
 ```
 
-The library supports creation using a parameterless constructor if that's all you have, however the assumption is that using such a constructor will result in a usable DbContext. To be clear, this library is intended to extend the in-memory provider and I don't recommend using a parameterless constructor unless you know what you're doing.
+The library supports creation using a parameterless constructor if that's all you have, however the assumption is that using such a constructor will result in a usable DbContext. To be clear, this library is intended to extend the in-memory provider and I don't recommend using a parameterless constructor unless you know what you are doing.
 
 ### Creating by type using a specific constructor on your DbContext
 If you're like me your DbContext constructor will have other parameters; logger, current user and so on. Simply provide the constructor parameters for the constructor you want the library to use.
@@ -133,9 +133,9 @@ public void FromSql_AnyStoredProcedureWithNoParameters_ReturnsExpectedResult()
 ### FromSql with SQL/Parameters
 The following example shows how to specify a result for a specific FromSql invocation.
 
-The __sql__ matching is case insensitive and supports partial matches; in the example I've left out the schema name and it'll match on just the stored procedure name.
+String matching (sql and individual parameter name/value) is case insensitive. Additionally you do not need to provide every parameter, just set up what you need to make your result matching distinct.
 
-The __parameters__ matching is case insensitive and supports partial parameters sequence matching however it does not support partial name/value matches on individual parameters; in this example we're only specifying one of the parameters.
+In the example I've left out the stored procedure schema name and I'm only specifying one of the parameters.
 
 ``` C#
 [Test]
@@ -148,7 +148,7 @@ public void FromSql_SpecifiedStoredProcedureAndParameters_ReturnsExpectedResult(
 
     mockedDbContext.Set<TestEntity>().AddFromSqlResult("sp_Specified", sqlParameters, expectedResult);
 
-    var actualResult = mockedDbContext.Set<TestEntity>().FromSql("[dbo].[sp_Specified] @SomeParameter1 @SomeParameter2", new SqlParameter("@someparameter2", "Value2")).ToList();
+    var actualResult = mockedDbContext.Set<TestEntity>().FromSql("[dbo].[sp_Specified] @SomeParameter1 @SomeParameter2", new SqlParameter("@someparameter1", "Value1"), new SqlParameter("@someparameter2", "Value2")).ToList();
 
     Assert.Multiple(() =>
     {

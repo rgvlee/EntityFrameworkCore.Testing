@@ -120,7 +120,7 @@ namespace EntityFrameworkCore.Testing.Moq.PackageVerification.Tests
 
             mockedDbContext.Set<TestEntity>().AddFromSqlRawResult("sp_Specified", sqlParameters, expectedResult);
 
-            var actualResult = mockedDbContext.Set<TestEntity>().FromSqlRaw("[dbo].[sp_Specified] @SomeParameter1 @SomeParameter2", new SqlParameter("@someparameter2", "Value2")).ToList();
+            var actualResult = mockedDbContext.Set<TestEntity>().FromSqlRaw("[dbo].[sp_Specified] @SomeParameter1 @SomeParameter2", new SqlParameter("@someparameter1", "Value1"), new SqlParameter("@someparameter2", "Value2")).ToList();
 
             Assert.Multiple(() =>
             {
