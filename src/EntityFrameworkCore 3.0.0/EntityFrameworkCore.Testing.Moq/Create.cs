@@ -17,7 +17,7 @@ namespace EntityFrameworkCore.Testing.Moq
         public static TDbContext MockedDbContextFor<TDbContext>(params object[] constructorParameters)
             where TDbContext : DbContext
         {
-            return new MockedDbContextFactory<TDbContext>(constructorParameters).Create();
+            return new MockedDbContextFactory<TDbContext>(constructorParameters).Create().MockedDbContext;
         }
 
         /// <summary>

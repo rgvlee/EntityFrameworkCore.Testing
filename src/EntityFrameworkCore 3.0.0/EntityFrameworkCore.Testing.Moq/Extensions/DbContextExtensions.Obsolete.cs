@@ -18,7 +18,7 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
         public static TDbContext CreateMockedDbContext<TDbContext>(this TDbContext dbContextToMock)
             where TDbContext : DbContext
         {
-            return new MockedDbContextFactory<TDbContext>().Create();
+            return new MockedDbContextFactory<TDbContext>().Create().MockedDbContext;
         }
 
         /// <summary>Creates and sets up a mocked db context.</summary>
@@ -30,7 +30,7 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
         public static TDbContext CreateMock<TDbContext>(this TDbContext dbContextToMock)
             where TDbContext : DbContext
         {
-            return new MockedDbContextFactory<TDbContext>().Create();
+            return new MockedDbContextFactory<TDbContext>().Create().MockedDbContext;
         }
 
         /// <summary>Sets up ExecuteSqlCommand invocations to return a specified result.</summary>

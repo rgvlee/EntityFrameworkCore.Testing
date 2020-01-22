@@ -18,7 +18,7 @@ namespace EntityFrameworkCore.Testing.Moq.Helpers
         public static TDbContext MockedDbContextFor<TDbContext>(TDbContext dbContextToMock)
             where TDbContext : DbContext
         {
-            return new MockedDbContextFactory<TDbContext>().Create();
+            return new MockedDbContextFactory<TDbContext>().Create().MockedDbContext;
         }
 
         /// <summary>Creates a mocked db context.</summary>
@@ -29,7 +29,7 @@ namespace EntityFrameworkCore.Testing.Moq.Helpers
         public static TDbContext MockedDbContextFor<TDbContext>()
             where TDbContext : DbContext
         {
-            return new MockedDbContextFactory<TDbContext>().Create();
+            return new MockedDbContextFactory<TDbContext>().Create().MockedDbContext;
         }
 
         /// <summary>Creates a mocked db context.</summary>
@@ -40,7 +40,7 @@ namespace EntityFrameworkCore.Testing.Moq.Helpers
         public static TDbContext MockedDbContextFor<TDbContext>(Func<TDbContext> factory)
             where TDbContext : DbContext
         {
-            return new MockedDbContextFactory<TDbContext>().Create();
+            return new MockedDbContextFactory<TDbContext>().Create().MockedDbContext;
         }
 
         /// <summary>Creates a mocked db set.</summary>

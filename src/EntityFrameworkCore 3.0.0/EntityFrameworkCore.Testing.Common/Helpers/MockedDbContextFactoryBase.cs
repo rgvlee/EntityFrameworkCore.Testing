@@ -11,7 +11,6 @@ namespace EntityFrameworkCore.Testing.Common.Helpers
         protected static readonly ILogger Logger = LoggerHelper.CreateLogger(typeof(MockedDbContextFactoryBase<TDbContext>));
 
         protected readonly object[] ConstructorParameters;
-        protected readonly TDbContext DbContextToMock;
         protected readonly object[] DefaultConstructorParameters;
 
         /// <summary>Constructor.</summary>
@@ -40,14 +39,12 @@ namespace EntityFrameworkCore.Testing.Common.Helpers
                     DefaultConstructorParameters = new object[] {new DbContextOptionsBuilder().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options};
                 }
             }
-
-            DbContextToMock = (TDbContext) Activator.CreateInstance(typeof(TDbContext), ConstructorParametersProvided ? ConstructorParameters : DefaultConstructorParameters);
         }
 
         protected bool ConstructorParametersProvided => ConstructorParameters != null && ConstructorParameters.Any();
 
         /// <summary>Creates and sets up a mocked db context.</summary>
         /// <returns>A mocked db context.</returns>
-        public abstract TDbContext Create();
+        public abstract (TDbContext MockedDbContext, TDbContext DbContext) Create();
     }
 }

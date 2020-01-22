@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-    <Version>2.0.4</Version>
+    <version>2.1.0</version>
     <Authors>rgvlee</Authors>
     <Company>rgvlee</Company>
     <Description>Common library for EntityFrameworkCore.Testing.* libraries.</Description>
