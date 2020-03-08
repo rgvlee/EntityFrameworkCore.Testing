@@ -22,15 +22,15 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
 
             //This is deliberate; we cannot cast a Mock<DbSet<>> to a Mock<DbQuery<>> and we still need to support the latter
             var mockedDbQuery = (DbQuery<TEntity>) Substitute.For(new[] {
-                    typeof(DbQuery<TEntity>)
-                    , typeof(IAsyncEnumerable<TEntity>)
-                    , typeof(IEnumerable)
-                    , typeof(IEnumerable<TEntity>)
-                    , typeof(IInfrastructure<IServiceProvider>)
-                    , typeof(IListSource)
-                    , typeof(IQueryable<TEntity>)
-                }
-                , new object[] { });
+                    typeof(DbQuery<TEntity>),
+                    typeof(IAsyncEnumerable<TEntity>),
+                    typeof(IEnumerable),
+                    typeof(IEnumerable<TEntity>),
+                    typeof(IInfrastructure<IServiceProvider>),
+                    typeof(IListSource),
+                    typeof(IQueryable<TEntity>)
+                },
+                new object[] { });
 
             var queryable = new List<TEntity>().AsQueryable();
 

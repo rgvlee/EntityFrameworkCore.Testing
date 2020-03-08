@@ -22,15 +22,15 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
             EnsureArgument.IsNotNull(dbSet, nameof(dbSet));
 
             var mockedDbSet = (DbSet<TEntity>) Substitute.For(new[] {
-                    typeof(DbSet<TEntity>)
-                    , typeof(IAsyncEnumerableAccessor<TEntity>)
-                    , typeof(IEnumerable)
-                    , typeof(IEnumerable<TEntity>)
-                    , typeof(IInfrastructure<IServiceProvider>)
-                    , typeof(IListSource)
-                    , typeof(IQueryable<TEntity>)
-                }
-                , new object[] { });
+                    typeof(DbSet<TEntity>),
+                    typeof(IAsyncEnumerableAccessor<TEntity>),
+                    typeof(IEnumerable),
+                    typeof(IEnumerable<TEntity>),
+                    typeof(IInfrastructure<IServiceProvider>),
+                    typeof(IListSource),
+                    typeof(IQueryable<TEntity>)
+                },
+                new object[] { });
 
             mockedDbSet.Add(Arg.Any<TEntity>()).Returns(callInfo => dbSet.Add(callInfo.Arg<TEntity>()));
             mockedDbSet.AddAsync(Arg.Any<TEntity>(), Arg.Any<CancellationToken>()).Returns(callInfo => dbSet.AddAsync(callInfo.Arg<TEntity>(), callInfo.Arg<CancellationToken>()));

@@ -21,15 +21,15 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Helpers
         public override TDbContext Create()
         {
             var mockedDbContext = (TDbContext) Substitute.For(new[] {
-                    typeof(TDbContext)
-                    , typeof(IEnumerable<object>)
-                    , typeof(IDbContextDependencies)
-                    , typeof(IDbQueryCache)
-                    , typeof(IDbSetCache)
-                    , typeof(IInfrastructure<IServiceProvider>)
-                    , typeof(IDbContextPoolable)
-                }
-                , ConstructorParameters.ToArray());
+                    typeof(TDbContext),
+                    typeof(IEnumerable<object>),
+                    typeof(IDbContextDependencies),
+                    typeof(IDbQueryCache),
+                    typeof(IDbSetCache),
+                    typeof(IInfrastructure<IServiceProvider>),
+                    typeof(IDbContextPoolable)
+                },
+                ConstructorParameters.ToArray());
 
             mockedDbContext.Add(Arg.Any<object>()).Returns(callInfo => DbContext.Add(callInfo.Arg<object>()));
             mockedDbContext.AddAsync(Arg.Any<object>(), Arg.Any<CancellationToken>())

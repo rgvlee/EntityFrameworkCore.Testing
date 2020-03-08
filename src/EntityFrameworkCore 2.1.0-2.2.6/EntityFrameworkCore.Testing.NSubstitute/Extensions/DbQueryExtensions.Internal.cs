@@ -18,14 +18,14 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
             EnsureArgument.IsNotNull(dbQuery, nameof(dbQuery));
 
             var mockedDbQuery = (DbQuery<TQuery>) Substitute.For(new[] {
-                    typeof(DbQuery<TQuery>)
-                    , typeof(IAsyncEnumerableAccessor<TQuery>)
-                    , typeof(IEnumerable)
-                    , typeof(IEnumerable<TQuery>)
-                    , typeof(IInfrastructure<IServiceProvider>)
-                    , typeof(IQueryable<TQuery>)
-                }
-                , new object[] { });
+                    typeof(DbQuery<TQuery>),
+                    typeof(IAsyncEnumerableAccessor<TQuery>),
+                    typeof(IEnumerable),
+                    typeof(IEnumerable<TQuery>),
+                    typeof(IInfrastructure<IServiceProvider>),
+                    typeof(IQueryable<TQuery>)
+                },
+                new object[] { });
 
             var queryable = new List<TQuery>().AsQueryable();
 

@@ -84,8 +84,8 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
                 existingRawSqlCommandBuilder)
             {
                 existingRawSqlCommandBuilder.Build(
-                        Arg.Is<string>(s => s.Contains(sql, StringComparison.CurrentCultureIgnoreCase))
-                        , Arg.Is<IEnumerable<object>>(p => ParameterMatchingHelper.DoInvocationParametersMatchSetUpParameters(parameters, p)))
+                        Arg.Is<string>(s => s.Contains(sql, StringComparison.CurrentCultureIgnoreCase)),
+                        Arg.Is<IEnumerable<object>>(p => ParameterMatchingHelper.DoInvocationParametersMatchSetUpParameters(parameters, p)))
                     .Returns(callInfo => rawSqlCommand)
                     .AndDoes(callInfo =>
                     {
@@ -112,8 +112,8 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
                     });
 
                 rawSqlCommandBuilder.Build(
-                        Arg.Is<string>(s => s.Contains(sql, StringComparison.CurrentCultureIgnoreCase))
-                        , Arg.Is<IEnumerable<object>>(p => ParameterMatchingHelper.DoInvocationParametersMatchSetUpParameters(parameters, p)))
+                        Arg.Is<string>(s => s.Contains(sql, StringComparison.CurrentCultureIgnoreCase)),
+                        Arg.Is<IEnumerable<object>>(p => ParameterMatchingHelper.DoInvocationParametersMatchSetUpParameters(parameters, p)))
                     .Returns(callInfo => rawSqlCommand)
                     .AndDoes(callInfo =>
                     {

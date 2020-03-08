@@ -34,8 +34,8 @@ namespace EntityFrameworkCore.Testing.NSubstitute.PackageVerification.Tests
         [Test]
         public void AnotherMethod_WithSpecifiedInput_ReturnsAResult()
         {
-            var mockedDbContext = Create.MockedDbContextFor<MyDbContextWithConstructorParameters>(Substitute.For<ILogger<MyDbContextWithConstructorParameters>>()
-                , new DbContextOptionsBuilder<MyDbContextWithConstructorParameters>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
+            var mockedDbContext = Create.MockedDbContextFor<MyDbContextWithConstructorParameters>(Substitute.For<ILogger<MyDbContextWithConstructorParameters>>(),
+                new DbContextOptionsBuilder<MyDbContextWithConstructorParameters>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
 
             //...
         }
@@ -54,9 +54,9 @@ namespace EntityFrameworkCore.Testing.NSubstitute.PackageVerification.Tests
             var rowsToDelete = mockedDbContext.Set<TestEntity>().Take(numberOfRowsToDelete).ToList();
             var remainingRows = mockedDbContext.Set<TestEntity>().Skip(numberOfRowsToDelete).ToList();
 
-            mockedDbContext.AddExecuteSqlCommandResult("usp_MyStoredProc"
-                , numberOfRowsToDelete
-                , (providedSql, providedParameters) =>
+            mockedDbContext.AddExecuteSqlCommandResult("usp_MyStoredProc",
+                numberOfRowsToDelete,
+                (providedSql, providedParameters) =>
                 {
                     mockedDbContext.Set<TestEntity>().RemoveRange(rowsToDelete);
                     mockedDbContext.SaveChanges();

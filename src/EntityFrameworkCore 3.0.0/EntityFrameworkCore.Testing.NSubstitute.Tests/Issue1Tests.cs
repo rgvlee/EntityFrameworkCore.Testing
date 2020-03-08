@@ -24,8 +24,8 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Tests
         public async Task ExecuteSqlRawAsync_SpecifiedSqlAndSqlParameter_ReturnsExpectedResultAndSetsOutputParameterValue()
         {
             var mockedDbContext = Create.MockedDbContextFor<TestDbContext>();
-            mockedDbContext.AddExecuteSqlRawResult(-1
-                , (sql, parameters) =>
+            mockedDbContext.AddExecuteSqlRawResult(-1,
+                (sql, parameters) =>
                 {
                     ((SqlParameter) parameters.ElementAt(0)).Value = "Cookie";
                 });
@@ -44,8 +44,8 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Tests
         public void GiveMeCookie_SetsOutputParameterValue()
         {
             var mockedDbContext = Create.MockedDbContextFor<TestDbContext>();
-            mockedDbContext.AddExecuteSqlRawResult(-1
-                , (sql, parameters) =>
+            mockedDbContext.AddExecuteSqlRawResult(-1,
+                (sql, parameters) =>
                 {
                     ((SqlParameter) parameters.ElementAt(0)).Value = "Cookie";
                 });
@@ -59,8 +59,8 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Tests
         public void CreateMockedDbContextFor_ParametersForSpecificConstructor_CreatesSubstitute()
         {
             var testContext = Create.MockedDbContextFor<MyContext>(
-                new DbContextOptionsBuilder<MyContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).EnableSensitiveDataLogging().Options
-                , Substitute.For<ITimeProvider>());
+                new DbContextOptionsBuilder<MyContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).EnableSensitiveDataLogging().Options,
+                Substitute.For<ITimeProvider>());
 
             Assert.Multiple(() =>
             {

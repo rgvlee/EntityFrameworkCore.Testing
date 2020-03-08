@@ -70,8 +70,8 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         [Test]
         public void HasConstructorWithParameterOfTypeForTypeWithGenericDbContextOptionsConstructor_GenericDbContextOptions_ReturnsTrue()
         {
-            Assert.That(typeof(TypeWithGenericDbContextOptionsConstructor).HasConstructorWithParameterOfType(typeof(DbContextOptions<TypeWithGenericDbContextOptionsConstructor>))
-                , Is.True);
+            Assert.That(typeof(TypeWithGenericDbContextOptionsConstructor).HasConstructorWithParameterOfType(typeof(DbContextOptions<TypeWithGenericDbContextOptionsConstructor>)),
+                Is.True);
         }
 
         [Test]

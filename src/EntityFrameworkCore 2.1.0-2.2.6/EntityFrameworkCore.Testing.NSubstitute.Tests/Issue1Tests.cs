@@ -21,8 +21,8 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Tests
         public async Task ExecuteSqlCommandAsync_SpecifiedSqlAndSqlParameter_ReturnsExpectedResultAndSetsOutputParameterValue()
         {
             var mockedDbContext = Create.MockedDbContextFor<TestDbContext>();
-            mockedDbContext.AddExecuteSqlCommandResult(-1
-                , (sql, parameters) =>
+            mockedDbContext.AddExecuteSqlCommandResult(-1,
+                (sql, parameters) =>
                 {
                     ((SqlParameter) parameters.ElementAt(0)).Value = "Cookie";
                 });
@@ -41,8 +41,8 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Tests
         public void GiveMeCookie_SetsOutputParameterValue()
         {
             var mockedDbContext = Create.MockedDbContextFor<TestDbContext>();
-            mockedDbContext.AddExecuteSqlCommandResult(-1
-                , (sql, parameters) =>
+            mockedDbContext.AddExecuteSqlCommandResult(-1,
+                (sql, parameters) =>
                 {
                     ((SqlParameter) parameters.ElementAt(0)).Value = "Cookie";
                 });

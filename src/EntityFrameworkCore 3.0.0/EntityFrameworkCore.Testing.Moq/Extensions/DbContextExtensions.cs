@@ -142,8 +142,8 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
             if (existingRawSqlCommandBuilder != null)
             {
                 Mock.Get(existingRawSqlCommandBuilder)
-                    .Setup(m => m.Build(It.Is<string>(s => s.Contains(sql, StringComparison.CurrentCultureIgnoreCase))
-                        , It.Is<IEnumerable<object>>(p => ParameterMatchingHelper.DoInvocationParametersMatchSetUpParameters(parameters, p))))
+                    .Setup(m => m.Build(It.Is<string>(s => s.Contains(sql, StringComparison.CurrentCultureIgnoreCase)),
+                        It.Is<IEnumerable<object>>(p => ParameterMatchingHelper.DoInvocationParametersMatchSetUpParameters(parameters, p))))
                     .Returns((string providedSql, IEnumerable<object> providedParameters) => rawSqlCommand)
                     .Callback((string providedSql, IEnumerable<object> providedParameters) =>
                     {
@@ -164,8 +164,8 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
                     .Throws<InvalidOperationException>();
 
                 rawSqlCommandBuilderMock
-                    .Setup(m => m.Build(It.Is<string>(s => s.Contains(sql, StringComparison.CurrentCultureIgnoreCase))
-                        , It.Is<IEnumerable<object>>(p => ParameterMatchingHelper.DoInvocationParametersMatchSetUpParameters(parameters, p))))
+                    .Setup(m => m.Build(It.Is<string>(s => s.Contains(sql, StringComparison.CurrentCultureIgnoreCase)),
+                        It.Is<IEnumerable<object>>(p => ParameterMatchingHelper.DoInvocationParametersMatchSetUpParameters(parameters, p))))
                     .Returns((string providedSql, IEnumerable<object> providedParameters) => rawSqlCommand)
                     .Callback((string providedSql, IEnumerable<object> providedParameters) =>
                     {
