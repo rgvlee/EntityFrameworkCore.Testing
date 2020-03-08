@@ -50,7 +50,9 @@
             </summary>
         </member>
         <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.DbContextExtensions.AddExecuteSqlInterpolatedResult``1(``0,System.Int32,System.Action{System.String,System.Collections.Generic.IEnumerable{System.Object}})">
-            <summary>Sets up ExecuteSqlInterpolated invocations to return a specified result.</summary>
+            <summary>
+                Sets up ExecuteSqlInterpolated invocations to return a specified result.
+            </summary>
             <typeparam name="TDbContext">The db context type.</typeparam>
             <param name="mockedDbContext">The mocked db context.</param>
             <param name="executeSqlInterpolatedResult">The integer to return when ExecuteSqlInterpolated is invoked.</param>
@@ -58,7 +60,9 @@
             <returns>The mocked db context.</returns>
         </member>
         <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.DbContextExtensions.AddExecuteSqlInterpolatedResult``1(``0,System.FormattableString,System.Int32,System.Action{System.String,System.Collections.Generic.IEnumerable{System.Object}})">
-            <summary>Sets up ExecuteSqlInterpolated invocations containing a specified sql string to return a specified result.</summary>
+            <summary>
+                Sets up ExecuteSqlInterpolated invocations containing a specified sql string to return a specified result.
+            </summary>
             <typeparam name="TDbContext">The db context type.</typeparam>
             <param name="mockedDbContext">The mocked db context.</param>
             <param name="sql">The ExecuteSqlInterpolated sql string. Set up supports case insensitive partial matches.</param>
@@ -67,7 +71,9 @@
             <returns>The mocked db context.</returns>
         </member>
         <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.DbContextExtensions.AddExecuteSqlInterpolatedResult``1(``0,System.String,System.Collections.Generic.IEnumerable{System.Object},System.Int32,System.Action{System.String,System.Collections.Generic.IEnumerable{System.Object}})">
-            <summary>Sets up ExecuteSqlInterpolated invocations containing a specified sql string to return a specified result.</summary>
+            <summary>
+                Sets up ExecuteSqlInterpolated invocations containing a specified sql string to return a specified result.
+            </summary>
             <typeparam name="TDbContext">The db context type.</typeparam>
             <param name="mockedDbContext">The mocked db context.</param>
             <param name="sql">The ExecuteSqlInterpolated sql string. Set up supports case insensitive partial matches.</param>
@@ -77,7 +83,9 @@
             <returns>The mocked db context.</returns>
         </member>
         <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.DbContextExtensions.AddExecuteSqlRawResult``1(``0,System.Int32,System.Action{System.String,System.Collections.Generic.IEnumerable{System.Object}})">
-            <summary>Sets up ExecuteSqlRaw invocations to return a specified result.</summary>
+            <summary>
+                Sets up ExecuteSqlRaw invocations to return a specified result.
+            </summary>
             <typeparam name="TDbContext">The db context type.</typeparam>
             <param name="mockedDbContext">The mocked db context.</param>
             <param name="executeSqlRawResult">The integer to return when ExecuteSqlRaw is invoked.</param>
@@ -85,7 +93,9 @@
             <returns>The mocked db context.</returns>
         </member>
         <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.DbContextExtensions.AddExecuteSqlRawResult``1(``0,System.String,System.Int32,System.Action{System.String,System.Collections.Generic.IEnumerable{System.Object}})">
-            <summary>Sets up ExecuteSqlRaw invocations containing a specified sql string and parameters to return a specified result.</summary>
+            <summary>
+                Sets up ExecuteSqlRaw invocations containing a specified sql string and parameters to return a specified result.
+            </summary>
             <typeparam name="TDbContext">The db context type.</typeparam>
             <param name="mockedDbContext">The mocked db context.</param>
             <param name="sql">The ExecuteSqlRaw sql string. Set up supports case insensitive partial matches.</param>
@@ -94,7 +104,9 @@
             <returns>The mocked db context.</returns>
         </member>
         <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.DbContextExtensions.AddExecuteSqlRawResult``1(``0,System.String,System.Collections.Generic.IEnumerable{System.Object},System.Int32,System.Action{System.String,System.Collections.Generic.IEnumerable{System.Object}})">
-            <summary>Sets up ExecuteSqlRaw invocations containing a specified sql string and parameters to return a specified result.</summary>
+            <summary>
+                Sets up ExecuteSqlRaw invocations containing a specified sql string and parameters to return a specified result.
+            </summary>
             <typeparam name="TDbContext">The db context type.</typeparam>
             <param name="mockedDbContext">The mocked db context.</param>
             <param name="sql">The ExecuteSqlRaw sql string. Set up supports case insensitive partial matches.</param>
@@ -143,18 +155,22 @@
         </member>
         <member name="T:EntityFrameworkCore.Testing.Moq.Extensions.QueryableExtensions">
             <summary>
-                Extensions for queryables.
+                Extensions for queryable collections.
             </summary>
         </member>
         <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.QueryableExtensions.AddFromSqlInterpolatedResult``1(System.Linq.IQueryable{``0},System.Collections.Generic.IEnumerable{``0})">
-            <summary>Sets up FromSqlInterpolated invocations to return a specified result.</summary>
+            <summary>
+                Sets up FromSqlInterpolated invocations to return a specified result.
+            </summary>
             <typeparam name="T">The queryable source type.</typeparam>
             <param name="mockedQueryable">The mocked queryable.</param>
             <param name="fromSqlInterpolatedResult">The FromSqlInterpolated result.</param>
             <returns>The mocked queryable.</returns>
         </member>
         <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.QueryableExtensions.AddFromSqlInterpolatedResult``1(System.Linq.IQueryable{``0},System.FormattableString,System.Collections.Generic.IEnumerable{``0})">
-            <summary>Sets up FromSqlInterpolated invocations to return a specified result.</summary>
+            <summary>
+                Sets up FromSqlInterpolated invocations to return a specified result.
+            </summary>
             <typeparam name="T">The queryable source type.</typeparam>
             <param name="mockedQueryable">The mocked queryable.</param>
             <param name="sql">The FromSqlInterpolated sql string. Set up supports case insensitive partial matches.</param>
@@ -162,7 +178,9 @@
             <returns>The mocked queryable.</returns>
         </member>
         <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.QueryableExtensions.AddFromSqlInterpolatedResult``1(System.Linq.IQueryable{``0},System.String,System.Collections.Generic.IEnumerable{System.Object},System.Collections.Generic.IEnumerable{``0})">
-            <summary>Sets up FromSqlInterpolated invocations to return a specified result.</summary>
+            <summary>
+                Sets up FromSqlInterpolated invocations to return a specified result.
+            </summary>
             <typeparam name="T">The queryable source type.</typeparam>
             <param name="mockedQueryable">The mocked queryable.</param>
             <param name="sql">The FromSqlInterpolated sql string. Set up supports case insensitive partial matches.</param>
@@ -171,14 +189,18 @@
             <returns>The mocked queryable.</returns>
         </member>
         <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.QueryableExtensions.AddFromSqlRawResult``1(System.Linq.IQueryable{``0},System.Collections.Generic.IEnumerable{``0})">
-            <summary>Sets up FromSqlRaw invocations to return a specified result.</summary>
+            <summary>
+                Sets up FromSqlRaw invocations to return a specified result.
+            </summary>
             <typeparam name="T">The queryable source type.</typeparam>
             <param name="mockedQueryable">The mocked queryable.</param>
             <param name="fromSqlRawResult">The FromSqlRaw result.</param>
             <returns>The mocked queryable.</returns>
         </member>
         <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.QueryableExtensions.AddFromSqlRawResult``1(System.Linq.IQueryable{``0},System.String,System.Collections.Generic.IEnumerable{``0})">
-            <summary>Sets up FromSqlRaw invocations containing a specified sql string to return a specified result.</summary>
+            <summary>
+                Sets up FromSqlRaw invocations containing a specified sql string to return a specified result.
+            </summary>
             <typeparam name="T">The queryable source type.</typeparam>
             <param name="mockedQueryable">The mocked queryable.</param>
             <param name="sql">The FromSqlRaw sql string. Set up supports case insensitive partial matches.</param>
@@ -186,7 +208,9 @@
             <returns>The mocked queryable.</returns>
         </member>
         <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.QueryableExtensions.AddFromSqlRawResult``1(System.Linq.IQueryable{``0},System.String,System.Collections.Generic.IEnumerable{System.Object},System.Collections.Generic.IEnumerable{``0})">
-            <summary>Sets up FromSqlRaw invocations containing a specified sql string and parameters to return a specified result.</summary>
+            <summary>
+                Sets up FromSqlRaw invocations containing a specified sql string and parameters to return a specified result.
+            </summary>
             <typeparam name="T">The queryable source type.</typeparam>
             <param name="mockedQueryable">The mocked queryable.</param>
             <param name="sql">The FromSqlRaw sql string. Set up supports case insensitive partial matches.</param>
@@ -196,18 +220,22 @@
         </member>
         <member name="T:EntityFrameworkCore.Testing.Moq.Extensions.QueryProviderExtensions">
             <summary>
-                Extensions for query providers.
+                Extensions for collection query providers.
             </summary>
         </member>
         <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.QueryProviderExtensions.AddFromSqlInterpolatedResult``1(System.Linq.IQueryProvider,System.Collections.Generic.IEnumerable{``0})">
-            <summary>Sets up FromSqlInterpolated invocations to return a specified result.</summary>
+            <summary>
+                Sets up FromSqlInterpolated invocations to return a specified result.
+            </summary>
             <typeparam name="T">The queryable source type.</typeparam>
             <param name="mockedQueryProvider">The mocked query provider.</param>
             <param name="fromSqlInterpolatedResult">The FromSqlInterpolated result.</param>
             <returns>The mocked queryable.</returns>
         </member>
         <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.QueryProviderExtensions.AddFromSqlInterpolatedResult``1(System.Linq.IQueryProvider,System.FormattableString,System.Collections.Generic.IEnumerable{``0})">
-            <summary>Sets up FromSqlInterpolated invocations containing a specified sql string to return a specified result.</summary>
+            <summary>
+                Sets up FromSqlInterpolated invocations containing a specified sql string to return a specified result.
+            </summary>
             <typeparam name="T">The queryable source type.</typeparam>
             <param name="mockedQueryProvider">The mocked query provider.</param>
             <param name="sql">The FromSqlInterpolated sql string. Set up supports case insensitive partial matches.</param>
@@ -215,7 +243,9 @@
             <returns>The mocked queryable.</returns>
         </member>
         <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.QueryProviderExtensions.AddFromSqlInterpolatedResult``1(System.Linq.IQueryProvider,System.String,System.Collections.Generic.IEnumerable{System.Object},System.Collections.Generic.IEnumerable{``0})">
-            <summary>Sets up FromSqlInterpolated invocations containing a specified sql string and parameters to return a specified result.</summary>
+            <summary>
+                Sets up FromSqlInterpolated invocations containing a specified sql string and parameters to return a specified result.
+            </summary>
             <typeparam name="T">The queryable source type.</typeparam>
             <param name="mockedQueryProvider">The mocked query provider.</param>
             <param name="sql">The FromSqlInterpolated sql string. Set up supports case insensitive partial matches.</param>
@@ -224,14 +254,18 @@
             <returns>The mocked query provider.</returns>
         </member>
         <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.QueryProviderExtensions.AddFromSqlRawResult``1(System.Linq.IQueryProvider,System.Collections.Generic.IEnumerable{``0})">
-            <summary>Sets up FromSqlRaw invocations to return a specified result.</summary>
+            <summary>
+                Sets up FromSqlRaw invocations to return a specified result.
+            </summary>
             <typeparam name="T">The queryable source type.</typeparam>
             <param name="mockedQueryProvider">The mocked query provider.</param>
             <param name="fromSqlRawResult">The FromSqlRaw result.</param>
             <returns>The mocked queryable.</returns>
         </member>
         <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.QueryProviderExtensions.AddFromSqlRawResult``1(System.Linq.IQueryProvider,System.String,System.Collections.Generic.IEnumerable{``0})">
-            <summary>Sets up FromSqlRaw invocations containing a specified sql string to return a specified result.</summary>
+            <summary>
+                Sets up FromSqlRaw invocations containing a specified sql string to return a specified result.
+            </summary>
             <typeparam name="T">The queryable source type.</typeparam>
             <param name="mockedQueryProvider">The mocked query provider.</param>
             <param name="sql">The FromSqlRaw sql string. Set up supports case insensitive partial matches.</param>
@@ -239,7 +273,9 @@
             <returns>The mocked queryable.</returns>
         </member>
         <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.QueryProviderExtensions.AddFromSqlRawResult``1(System.Linq.IQueryProvider,System.String,System.Collections.Generic.IEnumerable{System.Object},System.Collections.Generic.IEnumerable{``0})">
-            <summary>Sets up FromSqlRaw invocations containing a specified sql string and parameters to return a specified result.</summary>
+            <summary>
+                Sets up FromSqlRaw invocations containing a specified sql string and parameters to return a specified result.
+            </summary>
             <typeparam name="T">The queryable source type.</typeparam>
             <param name="mockedQueryProvider">The mocked query provider.</param>
             <param name="sql">The FromSqlRaw sql string. Set up supports case insensitive partial matches.</param>
@@ -253,36 +289,48 @@
             </summary>
         </member>
         <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.ReadOnlyDbSetExtensions.AddToReadOnlySource``1(Microsoft.EntityFrameworkCore.DbQuery{``0},``0)">
-            <summary>Adds an item to the end of the mocked readonly db set source.</summary>
+            <summary>
+                Adds an item to the end of the mocked readonly db set source.
+            </summary>
             <typeparam name="TEntity">The entity type.</typeparam>
             <param name="mockedReadOnlyDbSet">The mocked readonly db set.</param>
             <param name="item">The item to be added to the end of the mocked readonly db set source.</param>
         </member>
         <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.ReadOnlyDbSetExtensions.AddToReadOnlySource``1(Microsoft.EntityFrameworkCore.DbSet{``0},``0)">
-            <summary>Adds an item to the end of the mocked readonly db set source.</summary>
+            <summary>
+                Adds an item to the end of the mocked readonly db set source.
+            </summary>
             <typeparam name="TEntity">The entity type.</typeparam>
             <param name="mockedReadOnlyDbSet">The mocked readonly db set.</param>
             <param name="item">The item to be added to the end of the mocked readonly db set source.</param>
         </member>
         <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.ReadOnlyDbSetExtensions.AddRangeToReadOnlySource``1(Microsoft.EntityFrameworkCore.DbQuery{``0},System.Collections.Generic.IEnumerable{``0})">
-            <summary>Adds the items of the specified sequence to the end of the mocked readonly db set source.</summary>
+            <summary>
+                Adds the items of the specified sequence to the end of the mocked readonly db set source.
+            </summary>
             <typeparam name="TEntity">The entity type.</typeparam>
             <param name="mockedReadOnlyDbSet">The mocked readonly db set.</param>
             <param name="items">The sequence whose items should be added to the end of the mocked readonly db set source.</param>
         </member>
         <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.ReadOnlyDbSetExtensions.AddRangeToReadOnlySource``1(Microsoft.EntityFrameworkCore.DbSet{``0},System.Collections.Generic.IEnumerable{``0})">
-            <summary>Adds the items of the specified sequence to the end of the mocked readonly db set source.</summary>
+            <summary>
+                Adds the items of the specified sequence to the end of the mocked readonly db set source.
+            </summary>
             <typeparam name="TEntity">The entity type.</typeparam>
             <param name="mockedReadOnlyDbSet">The mocked readonly db set.</param>
             <param name="items">The sequence whose items should be added to the end of the mocked readonly db set source.</param>
         </member>
         <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.ReadOnlyDbSetExtensions.ClearReadOnlySource``1(Microsoft.EntityFrameworkCore.DbQuery{``0})">
-            <summary>Removes all items from the mocked readonly db set source.</summary>
+            <summary>
+                Removes all items from the mocked readonly db set source.
+            </summary>
             <typeparam name="TEntity">The entity type.</typeparam>
             <param name="mockedReadOnlyDbSet">The mocked readonly db set.</param>
         </member>
         <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.ReadOnlyDbSetExtensions.ClearReadOnlySource``1(Microsoft.EntityFrameworkCore.DbSet{``0})">
-            <summary>Removes all items from the mocked readonly db set source.</summary>
+            <summary>
+                Removes all items from the mocked readonly db set source.
+            </summary>
             <typeparam name="TEntity">The entity type.</typeparam>
             <param name="mockedReadOnlyDbSet">The mocked readonly db set.</param>
         </member>
