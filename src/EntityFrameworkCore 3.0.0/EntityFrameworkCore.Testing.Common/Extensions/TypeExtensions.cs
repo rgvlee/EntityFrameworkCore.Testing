@@ -1,4 +1,5 @@
 ﻿using System;
+using EntityFrameworkCore.Testing.Common.Helpers;
 
 namespace EntityFrameworkCore.Testing.Common.Extensions
 {
@@ -24,7 +25,7 @@ namespace EntityFrameworkCore.Testing.Common.Extensions
         {
             EnsureArgument.IsNotNull(type, nameof(type));
             EnsureArgument.IsNotNull(parameterType, nameof(parameterType));
-            return type.HasConstructorWithParametersOfType(new[] {parameterType});
+            return type.HasConstructorWithParametersOfType(new[] { parameterType });
         }
 
         public static bool HasConstructorWithParametersOfType(this Type type, Type[] parameterTypes)

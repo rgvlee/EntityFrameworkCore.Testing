@@ -113,7 +113,7 @@ namespace EntityFrameworkCore.Testing.Common
                 typeof(AsyncQueryProvider<T>)
                     .GetMethod(nameof(InternalExecuteAsync), BindingFlags.Instance | BindingFlags.NonPublic)
                     .MakeGenericMethod(typeof(TResult).GetGenericArguments())
-                    .Invoke(this, new object[] {expression, cancellationToken});
+                    .Invoke(this, new object[] { expression, cancellationToken });
         }
 
         internal Task<TResult> InternalExecuteAsync<TResult>(Expression expression, CancellationToken cancellationToken)

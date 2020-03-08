@@ -1,4 +1,5 @@
 ﻿using System;
+using EntityFrameworkCore.Testing.Common.Helpers;
 
 namespace EntityFrameworkCore.Testing.Common.Extensions
 {

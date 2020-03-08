@@ -126,4 +126,7 @@
   <data name="StringNullOrEmpty" xml:space="preserve">
     <value>Value required for '{0}'.</value>
   </data>
+  <data name="UnableToFindSuitableDbContextConstructor" xml:space="preserve">
+    <value>Unable to find a suitable constructor. TDbContext must have a parameterless or DbContextOptions/DbContextOptions&lt;TDbContext&gt; constructor.</value>
+  </data>
 </root>
