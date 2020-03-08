@@ -8,7 +8,6 @@ using EntityFrameworkCore.Testing.Common.Helpers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
-using NSubstitute.ExceptionExtensions;
 using NSubstitute.Extensions;
 
 namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
@@ -17,42 +16,6 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
     public static partial class QueryProviderExtensions
     {
         private static readonly ILogger Logger = LoggerHelper.CreateLogger(typeof(QueryProviderExtensions));
-
-        /// <summary>Creates a mocked query provider.</summary>
-        /// <typeparam name="T">The query provider source item type.</typeparam>
-        /// <param name="queryProviderToMock">The query provider to mock.</param>
-        /// <param name="enumerable">The query provider source.</param>
-        /// <returns>A mocked query provider.</returns>
-        [Obsolete("This will be removed in a future version. Use EntityFrameworkCore.Testing.NSubstitute.Create.MockedQueryProviderFor instead.")]
-        public static IQueryProvider CreateMockedQueryProvider<T>(this IQueryProvider queryProviderToMock, IEnumerable<T> enumerable)
-            where T : class
-        {
-            EnsureArgument.IsNotNull(queryProviderToMock, nameof(queryProviderToMock));
-            EnsureArgument.IsNotNull(enumerable, nameof(enumerable));
-
-            var mockedQueryProvider = Substitute.ForPartsOf<AsyncQueryProvider<T>>(enumerable.AsQueryable());
-
-            mockedQueryProvider
-                .Configure()
-                .CreateQuery<T>(Arg.Is<MethodCallExpression>(mce => mce.Method.Name.Equals(nameof(RelationalQueryableExtensions.FromSql))))
-                .Throws(callInfo =>
-                {
-                    Logger.LogDebug("Catch all exception invoked");
-                    return new NotSupportedException();
-                });
-
-            return mockedQueryProvider;
-        }
-
-        internal static void SetSource<T>(this AsyncQueryProvider<T> mockedQueryProvider, IEnumerable<T> enumerable)
-            where T : class
-        {
-            EnsureArgument.IsNotNull(mockedQueryProvider, nameof(mockedQueryProvider));
-            EnsureArgument.IsNotNull(enumerable, nameof(enumerable));
-
-            var queryable = enumerable.AsQueryable();
-            mockedQueryProvider.Configure().Source.Returns(callInfo => queryable);
-        }
 
         /// <summary>Sets up FromSql invocations to return a specified result.</summary>
         /// <typeparam name="T">The queryable source type.</typeparam>

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading;
-using EntityFrameworkCore.Testing.Common;
+using EntityFrameworkCore.Testing.Common.Helpers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Query.Internal;
@@ -12,15 +12,12 @@ using NSubstitute;
 
 namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
 {
-    /// <summary>Extensions for the db set type.</summary>
+    /// <summary>
+    ///     Extensions for db sets.
+    /// </summary>
     public static partial class DbSetExtensions
     {
-        /// <summary>Creates and sets up a mocked db set.</summary>
-        /// <typeparam name="TEntity">The entity type.</typeparam>
-        /// <param name="dbSet">The db set to mock/proxy.</param>
-        /// <returns>A mocked db set.</returns>
-        [Obsolete("This will be removed in a future version. Use EntityFrameworkCore.Testing.NSubstitute.Create.MockedDbContextFor with the params object[] parameter instead.")]
-        public static DbSet<TEntity> CreateMockedDbSet<TEntity>(this DbSet<TEntity> dbSet)
+        internal static DbSet<TEntity> CreateMockedDbSet<TEntity>(this DbSet<TEntity> dbSet)
             where TEntity : class
         {
             EnsureArgument.IsNotNull(dbSet, nameof(dbSet));
