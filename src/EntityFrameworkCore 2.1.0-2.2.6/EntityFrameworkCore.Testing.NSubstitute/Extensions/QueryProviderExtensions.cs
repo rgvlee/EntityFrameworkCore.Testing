@@ -108,7 +108,10 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
         {
             //NSubstitute invokes this method during set up; this is not desired
             //If this method is invoked with a null mce it was invoked during set up
-            if (mce == null) return false;
+            if (mce == null)
+            {
+                return false;
+            }
 
             //EnsureArgument.IsNotNull(mce, nameof(mce));
             EnsureArgument.IsNotNull(parameters, nameof(parameters));

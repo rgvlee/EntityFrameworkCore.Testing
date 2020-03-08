@@ -20,7 +20,10 @@ namespace EntityFrameworkCore.Testing.Common.Helpers
         public static string IsNotNullOrEmpty(string @string, string argumentName)
 
         {
-            if (!string.IsNullOrEmpty(@string)) return @string;
+            if (!string.IsNullOrEmpty(@string))
+            {
+                return @string;
+            }
 
             IsNotNull(argumentName, nameof(argumentName));
             IsNotNullOrEmpty(argumentName, nameof(argumentName));
@@ -39,7 +42,10 @@ namespace EntityFrameworkCore.Testing.Common.Helpers
         /// <exception cref="ArgumentNullException">If the argument is null.</exception>
         public static T IsNotNull<T>(T argument, string argumentName)
         {
-            if (argument != null) return argument;
+            if (argument != null)
+            {
+                return argument;
+            }
 
             IsNotNull(argumentName, nameof(argumentName));
             IsNotNullOrEmpty(argumentName, nameof(argumentName));
@@ -60,7 +66,10 @@ namespace EntityFrameworkCore.Testing.Common.Helpers
         {
             IsNotNull(collection, argumentName);
 
-            if (collection.Any()) return collection;
+            if (collection.Any())
+            {
+                return collection;
+            }
 
             IsNotNull(argumentName, nameof(argumentName));
             IsNotNullOrEmpty(argumentName, nameof(argumentName));

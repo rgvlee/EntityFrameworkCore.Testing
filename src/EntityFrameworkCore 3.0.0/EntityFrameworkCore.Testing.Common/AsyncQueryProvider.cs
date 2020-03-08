@@ -91,6 +91,7 @@ namespace EntityFrameworkCore.Testing.Common
         public virtual TResult Execute<TResult>(Expression expression)
         {
             if (expression is MethodCallExpression methodCallExpression)
+            {
                 if (methodCallExpression.Method.Name.Equals(nameof(Queryable.ElementAt)) || methodCallExpression.Method.Name.Equals(nameof(Queryable.ElementAtOrDefault)))
                 {
                     var mce = methodCallExpression;
@@ -99,6 +100,7 @@ namespace EntityFrameworkCore.Testing.Common
                         ? Source.Cast<TResult>().ToList().ElementAt(index)
                         : Source.Cast<TResult>().ToList().ElementAtOrDefault(index);
                 }
+            }
 
             return Source.Provider.Execute<TResult>(expression);
         }

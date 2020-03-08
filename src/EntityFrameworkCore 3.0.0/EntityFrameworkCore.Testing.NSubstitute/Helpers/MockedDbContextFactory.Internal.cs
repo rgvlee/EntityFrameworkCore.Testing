@@ -23,11 +23,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Helpers
         public override TDbContext Create()
         {
             var mockedDbContext = (TDbContext) Substitute.For(new[] {
-                    typeof(TDbContext),
-                    typeof(IDbContextDependencies),
-                    typeof(IDbSetCache),
-                    typeof(IInfrastructure<IServiceProvider>),
-                    typeof(IDbContextPoolable)
+                    typeof(TDbContext), typeof(IDbContextDependencies), typeof(IDbSetCache), typeof(IInfrastructure<IServiceProvider>), typeof(IDbContextPoolable)
                 },
                 ConstructorParameters.ToArray());
 
