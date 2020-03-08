@@ -246,7 +246,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         public void ExecuteSqlCommand_SpecifiedSqlWithSqlParameterParameters_ReturnsExpectedResult()
         {
             var sql = "sp_WithParams";
-            var parameters = new List<SqlParameter> {new SqlParameter("@SomeParameter2", "Value2")};
+            var parameters = new List<SqlParameter> { new SqlParameter("@SomeParameter2", "Value2") };
             var expectedResult = 1;
             AddExecuteSqlCommandResult(MockedDbContext, sql, parameters, expectedResult);
 
@@ -266,8 +266,8 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         public void ExecuteSqlCommand_SpecifiedSqlWithSqlParameterParametersThatDoNotMatchSetUp_ThrowsException()
         {
             var sql = "sp_WithParams";
-            var setUpParameters = new List<SqlParameter> {new SqlParameter("@SomeParameter3", "Value3")};
-            var invocationParameters = new List<SqlParameter> {new SqlParameter("@SomeParameter1", "Value1"), new SqlParameter("@SomeParameter2", "Value2")};
+            var setUpParameters = new List<SqlParameter> { new SqlParameter("@SomeParameter3", "Value3") };
+            var invocationParameters = new List<SqlParameter> { new SqlParameter("@SomeParameter1", "Value1"), new SqlParameter("@SomeParameter2", "Value2") };
             var expectedResult = 1;
             AddExecuteSqlCommandResult(MockedDbContext, sql, setUpParameters, expectedResult);
 
@@ -288,7 +288,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         public void ExecuteSqlCommand_SpecifiedSqlWithStringParameterParameters_ReturnsExpectedResult()
         {
             var sql = "sp_WithParams";
-            var parameters = new List<string> {"Value2"};
+            var parameters = new List<string> { "Value2" };
             var expectedResult = 1;
             AddExecuteSqlCommandResult(MockedDbContext, sql, parameters, expectedResult);
 
@@ -371,7 +371,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         public async Task ExecuteSqlCommandAsync_SpecifiedSqlWithSqlParameterParameters_ReturnsExpectedResult()
         {
             var sql = "sp_WithParams";
-            var parameters = new List<SqlParameter> {new SqlParameter("@SomeParameter2", "Value2")};
+            var parameters = new List<SqlParameter> { new SqlParameter("@SomeParameter2", "Value2") };
             var expectedResult = 1;
             AddExecuteSqlCommandResult(MockedDbContext, sql, parameters, expectedResult);
 
@@ -391,7 +391,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         public async Task ExecuteSqlCommandAsync_SpecifiedSqlWithStringParameterParameters_ReturnsExpectedResult()
         {
             var sql = "sp_WithParams";
-            var parameters = new List<string> {"Value2"};
+            var parameters = new List<string> { "Value2" };
             var expectedResult = 1;
             AddExecuteSqlCommandResult(MockedDbContext, sql, parameters, expectedResult);
 
@@ -447,7 +447,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         public void ExecuteSqlInterpolated_SpecifiedFormattableStringWithSqlParameterParameters_ReturnsExpectedResult()
         {
             var sql = "sp_WithParams";
-            var parameters = new List<SqlParameter> {new SqlParameter("@SomeParameter2", "Value2")};
+            var parameters = new List<SqlParameter> { new SqlParameter("@SomeParameter2", "Value2") };
             var expectedResult = 1;
             AddExecuteSqlInterpolatedResult(MockedDbContext, sql, parameters, expectedResult);
 
@@ -465,8 +465,8 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         public void ExecuteSqlInterpolated_SpecifiedFormattableStringWithSqlParameterParametersThatDoNotMatchSetUp_ThrowsException()
         {
             var sql = "sp_WithParams";
-            var setUpParameters = new List<SqlParameter> {new SqlParameter("@SomeParameter3", "Value3")};
-            var invocationParameters = new List<SqlParameter> {new SqlParameter("@SomeParameter1", "Value1"), new SqlParameter("@SomeParameter2", "Value2")};
+            var setUpParameters = new List<SqlParameter> { new SqlParameter("@SomeParameter3", "Value3") };
+            var invocationParameters = new List<SqlParameter> { new SqlParameter("@SomeParameter1", "Value1"), new SqlParameter("@SomeParameter2", "Value2") };
             var expectedResult = 1;
             AddExecuteSqlInterpolatedResult(MockedDbContext, sql, setUpParameters, expectedResult);
 
@@ -540,7 +540,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         public async Task ExecuteSqlInterpolatedAsync_SpecifiedFormattableStringWithSqlParameterParameters_ReturnsExpectedResult()
         {
             var sql = "sp_WithParams";
-            var parameters = new List<SqlParameter> {new SqlParameter("@SomeParameter2", "Value2")};
+            var parameters = new List<SqlParameter> { new SqlParameter("@SomeParameter2", "Value2") };
             var expectedResult = 1;
             AddExecuteSqlInterpolatedResult(MockedDbContext, sql, parameters, expectedResult);
 
@@ -558,7 +558,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         public async Task ExecuteSqlInterpolatedAsync_SpecifiedFormattableStringWithStringParameterParameters_ReturnsExpectedResult()
         {
             var sql = "sp_WithParams";
-            var parameters = new List<string> {"Value2"};
+            var parameters = new List<string> { "Value2" };
             var expectedResult = 1;
             AddExecuteSqlInterpolatedResult(MockedDbContext, sql, parameters, expectedResult);
 
@@ -605,7 +605,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         [Test]
         public void ExecuteSqlInterpolatedUsingFormattableStringSetUp_SpecifiedFormattableStringWithStringParameterParameters_ReturnsExpectedResult()
         {
-            var parameters = new List<string> {"Value2"};
+            var parameters = new List<string> { "Value2" };
             var sql = (FormattableString) $"[sp_WithParams] {parameters[0]}";
             var expectedResult = 1;
             AddExecuteSqlInterpolatedResult(MockedDbContext, sql, expectedResult);
@@ -623,7 +623,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         [Test]
         public void ExecuteSqlInterpolatedUsingFormattableStringSetUp_SpecifiedFormattableStringWithStringParameterParametersThatDoesNotMatchSetUp_ThrowsException()
         {
-            var parameters = new List<string> {"Value2"};
+            var parameters = new List<string> { "Value2" };
             var sql = (FormattableString) $"[sp_WithParams] {parameters[0]}";
             var expectedResult = 1;
             AddExecuteSqlInterpolatedResult(MockedDbContext, sql, expectedResult);
@@ -642,7 +642,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         public void ExecuteSqlInterpolatedUsingSqlAndParameterSetUp_SpecifiedFormattableStringWithStringParameterParameters_ReturnsExpectedResult()
         {
             var sql = "sp_WithParams";
-            var parameters = new List<string> {"Value2"};
+            var parameters = new List<string> { "Value2" };
             var expectedResult = 1;
             AddExecuteSqlInterpolatedResult(MockedDbContext, sql, parameters, expectedResult);
 
@@ -706,7 +706,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         public void ExecuteSqlRaw_SpecifiedSqlWithSqlParameterParameters_ReturnsExpectedResult()
         {
             var sql = "sp_WithParams";
-            var parameters = new List<SqlParameter> {new SqlParameter("@SomeParameter2", "Value2")};
+            var parameters = new List<SqlParameter> { new SqlParameter("@SomeParameter2", "Value2") };
             var expectedResult = 1;
             AddExecuteSqlRawResult(MockedDbContext, sql, parameters, expectedResult);
 
@@ -724,8 +724,8 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         public void ExecuteSqlRaw_SpecifiedSqlWithSqlParameterParametersThatDoNotMatchSetUp_ThrowsException()
         {
             var sql = "sp_WithParams";
-            var setUpParameters = new List<SqlParameter> {new SqlParameter("@SomeParameter3", "Value3")};
-            var invocationParameters = new List<SqlParameter> {new SqlParameter("@SomeParameter1", "Value1"), new SqlParameter("@SomeParameter2", "Value2")};
+            var setUpParameters = new List<SqlParameter> { new SqlParameter("@SomeParameter3", "Value3") };
+            var invocationParameters = new List<SqlParameter> { new SqlParameter("@SomeParameter1", "Value1"), new SqlParameter("@SomeParameter2", "Value2") };
             var expectedResult = 1;
             AddExecuteSqlRawResult(MockedDbContext, sql, setUpParameters, expectedResult);
 
@@ -744,7 +744,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         public void ExecuteSqlRaw_SpecifiedSqlWithStringParameterParameters_ReturnsExpectedResult()
         {
             var sql = "sp_WithParams";
-            var parameters = new List<string> {"Value2"};
+            var parameters = new List<string> { "Value2" };
             var expectedResult = 1;
             AddExecuteSqlRawResult(MockedDbContext, sql, parameters, expectedResult);
 
@@ -817,7 +817,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         public async Task ExecuteSqlRawAsync_SpecifiedSqlWithSqlParameterParameters_ReturnsExpectedResult()
         {
             var sql = "sp_WithParams";
-            var parameters = new List<SqlParameter> {new SqlParameter("@SomeParameter2", "Value2")};
+            var parameters = new List<SqlParameter> { new SqlParameter("@SomeParameter2", "Value2") };
             var expectedResult = 1;
             AddExecuteSqlRawResult(MockedDbContext, sql, parameters, expectedResult);
 
@@ -835,7 +835,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         public async Task ExecuteSqlRawAsync_SpecifiedSqlWithStringParameterParameters_ReturnsExpectedResult()
         {
             var sql = "sp_WithParams";
-            var parameters = new List<string> {"Value2"};
+            var parameters = new List<string> { "Value2" };
             var expectedResult = 1;
             AddExecuteSqlRawResult(MockedDbContext, sql, parameters, expectedResult);
 

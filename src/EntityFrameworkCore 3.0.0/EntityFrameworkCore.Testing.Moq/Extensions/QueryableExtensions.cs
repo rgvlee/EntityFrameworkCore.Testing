@@ -6,7 +6,7 @@ using EntityFrameworkCore.Testing.Common.Helpers;
 namespace EntityFrameworkCore.Testing.Moq.Extensions
 {
     /// <summary>
-    /// Extensions for queryables.
+    ///     Extensions for queryables.
     /// </summary>
     public static class QueryableExtensions
     {

@@ -115,13 +115,13 @@ namespace EntityFrameworkCore.Testing.Common.Tests
             var selectedItem = items.Last();
             var whereResult = DbSet.Where(x => x.Equals(selectedItem)).ToList();
 
-            var selectResult = DbSet.Select(x => new {Item = x}).ToList();
+            var selectResult = DbSet.Select(x => new { Item = x }).ToList();
 
             Assert.Multiple(() =>
             {
                 Assert.That(singleResult, Is.EqualTo(items[0]));
                 Assert.That(toListResult, Is.EquivalentTo(items));
-                Assert.That(whereResult, Is.EquivalentTo(new List<TEntity> {selectedItem}));
+                Assert.That(whereResult, Is.EquivalentTo(new List<TEntity> { selectedItem }));
                 for (var i = 0; i < items.Count; i++)
                 {
                     Assert.That(selectResult[i].Item, Is.EqualTo(items[i]));

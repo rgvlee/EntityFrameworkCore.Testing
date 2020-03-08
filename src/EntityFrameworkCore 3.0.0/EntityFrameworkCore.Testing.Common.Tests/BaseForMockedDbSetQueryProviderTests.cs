@@ -27,7 +27,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         [Test]
         public virtual void FormattableStringSetUpFromSqlInterpolated_SpecifiedSqlWithStringParameterParameters_ReturnsExpectedResult()
         {
-            var parameters = new List<string> {"Value2"};
+            var parameters = new List<string> { "Value2" };
             var sql = (FormattableString) $"[sp_WithParams] {parameters[0]}";
 
             var expectedResult = Fixture.CreateMany<TEntity>().ToList();
@@ -93,7 +93,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         public virtual void FromSqlInterpolated_SpecifiedSqlWithSqlParameterParameters_ReturnsExpectedResult()
         {
             var sql = "sp_WithParams";
-            var parameters = new List<SqlParameter> {new SqlParameter("@SomeParameter2", "Value2")};
+            var parameters = new List<SqlParameter> { new SqlParameter("@SomeParameter2", "Value2") };
             var expectedResult = Fixture.CreateMany<TEntity>().ToList();
             AddFromSqlInterpolatedResult(DbSet, sql, parameters, expectedResult);
 
@@ -111,8 +111,8 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         public virtual void FromSqlInterpolated_SpecifiedSqlWithSqlParameterParametersThatDoNotMatchSetUp_ThrowsException()
         {
             var sql = "sp_WithParams";
-            var setUpParameters = new List<SqlParameter> {new SqlParameter("@SomeParameter3", "Value3")};
-            var invocationParameters = new List<SqlParameter> {new SqlParameter("@SomeParameter1", "Value1"), new SqlParameter("@SomeParameter2", "Value2")};
+            var setUpParameters = new List<SqlParameter> { new SqlParameter("@SomeParameter3", "Value3") };
+            var invocationParameters = new List<SqlParameter> { new SqlParameter("@SomeParameter1", "Value1"), new SqlParameter("@SomeParameter2", "Value2") };
             var expectedResult = Fixture.CreateMany<TEntity>().ToList();
             AddFromSqlInterpolatedResult(DbSet, sql, setUpParameters, expectedResult);
 
@@ -131,7 +131,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         public virtual void FromSqlInterpolated_SpecifiedSqlWithStringParameterParameters_ReturnsExpectedResult()
         {
             var sql = "sp_WithParams";
-            var parameters = new List<string> {"Value2"};
+            var parameters = new List<string> { "Value2" };
             var expectedResult = Fixture.CreateMany<TEntity>().ToList();
             AddFromSqlInterpolatedResult(DbSet, sql, parameters, expectedResult);
 
@@ -177,7 +177,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
             var expectedResult1 = Fixture.CreateMany<TEntity>().ToList();
 
             var sql2 = "sp_WithParams";
-            var parameters2 = new List<SqlParameter> {new SqlParameter("@SomeParameter1", "Value1"), new SqlParameter("@SomeParameter2", "Value2")};
+            var parameters2 = new List<SqlParameter> { new SqlParameter("@SomeParameter1", "Value1"), new SqlParameter("@SomeParameter2", "Value2") };
             var expectedResult2 = Fixture.CreateMany<TEntity>().ToList();
 
             AddFromSqlRawResult(DbSet, sql1, expectedResult1);
@@ -230,7 +230,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         public virtual void FromSqlRaw_SpecifiedSqlWithSqlParameterParameters_ReturnsExpectedResult()
         {
             var sql = "sp_WithParams";
-            var parameters = new List<SqlParameter> {new SqlParameter("@SomeParameter2", "Value2")};
+            var parameters = new List<SqlParameter> { new SqlParameter("@SomeParameter2", "Value2") };
             var expectedResult = Fixture.CreateMany<TEntity>().ToList();
             AddFromSqlRawResult(DbSet, sql, parameters, expectedResult);
 
@@ -248,8 +248,8 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         public virtual void FromSqlRaw_SpecifiedSqlWithSqlParameterParametersThatDoNotMatchSetUp_ThrowsException()
         {
             var sql = "sp_WithParams";
-            var setUpParameters = new List<SqlParameter> {new SqlParameter("@SomeParameter3", "Value3")};
-            var invocationParameters = new List<SqlParameter> {new SqlParameter("@SomeParameter1", "Value1"), new SqlParameter("@SomeParameter2", "Value2")};
+            var setUpParameters = new List<SqlParameter> { new SqlParameter("@SomeParameter3", "Value3") };
+            var invocationParameters = new List<SqlParameter> { new SqlParameter("@SomeParameter1", "Value1"), new SqlParameter("@SomeParameter2", "Value2") };
             var expectedResult = Fixture.CreateMany<TEntity>().ToList();
             AddFromSqlRawResult(DbSet, sql, setUpParameters, expectedResult);
 
@@ -268,7 +268,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         public virtual void FromSqlRaw_SpecifiedSqlWithStringParameterParameters_ReturnsExpectedResult()
         {
             var sql = "sp_WithParams";
-            var parameters = new List<string> {"Value2"};
+            var parameters = new List<string> { "Value2" };
             var expectedResult = Fixture.CreateMany<TEntity>().ToList();
             AddFromSqlRawResult(DbSet, sql, parameters, expectedResult);
 

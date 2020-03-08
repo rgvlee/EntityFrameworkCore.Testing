@@ -1,5 +1,4 @@
-﻿using EntityFrameworkCore.Testing.Common;
-using EntityFrameworkCore.Testing.Common.Helpers;
+﻿using EntityFrameworkCore.Testing.Common.Helpers;
 using EntityFrameworkCore.Testing.NSubstitute.Helpers;
 using Microsoft.EntityFrameworkCore;
 

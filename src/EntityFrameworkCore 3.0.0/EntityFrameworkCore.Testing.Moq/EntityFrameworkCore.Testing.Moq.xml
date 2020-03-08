@@ -143,7 +143,7 @@
         </member>
         <member name="T:EntityFrameworkCore.Testing.Moq.Extensions.QueryableExtensions">
             <summary>
-            Extensions for queryables.
+                Extensions for queryables.
             </summary>
         </member>
         <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.QueryableExtensions.AddFromSqlInterpolatedResult``1(System.Linq.IQueryable{``0},System.Collections.Generic.IEnumerable{``0})">

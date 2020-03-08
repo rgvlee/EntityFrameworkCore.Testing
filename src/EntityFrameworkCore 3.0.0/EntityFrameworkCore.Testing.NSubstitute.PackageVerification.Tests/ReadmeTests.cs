@@ -115,7 +115,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.PackageVerification.Tests
         {
             var mockedDbContext = Create.MockedDbContextFor<TestDbContext>();
 
-            var sqlParameters = new List<SqlParameter> {new SqlParameter("@SomeParameter2", "Value2")};
+            var sqlParameters = new List<SqlParameter> { new SqlParameter("@SomeParameter2", "Value2") };
             var expectedResult = Fixture.CreateMany<TestEntity>().ToList();
 
             mockedDbContext.Set<TestEntity>().AddFromSqlRawResult("sp_Specified", sqlParameters, expectedResult);
@@ -167,7 +167,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.PackageVerification.Tests
             var mockedDbContext = Create.MockedDbContextFor<TestDbContext>();
 
             var commandText = "sp_WithParams";
-            var sqlParameters = new List<SqlParameter> {new SqlParameter("@SomeParameter2", "Value2")};
+            var sqlParameters = new List<SqlParameter> { new SqlParameter("@SomeParameter2", "Value2") };
             var expectedResult = 1;
 
             mockedDbContext.AddExecuteSqlCommandResult(commandText, sqlParameters, expectedResult);
