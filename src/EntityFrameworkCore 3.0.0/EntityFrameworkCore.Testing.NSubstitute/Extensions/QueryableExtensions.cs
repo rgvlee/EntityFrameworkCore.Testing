@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using EntityFrameworkCore.Testing.Common;
+using EntityFrameworkCore.Testing.Common.Helpers;
 
 namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
 {
-    /// <summary>Extensions for queryable types.</summary>
+    /// <summary>
+    ///     Extensions for queryables.
+    /// </summary>
     public static class QueryableExtensions
     {
         /// <summary>Sets up FromSqlInterpolated invocations to return a specified result.</summary>

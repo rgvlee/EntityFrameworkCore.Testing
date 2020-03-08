@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using EntityFrameworkCore.Testing.Common;
 using EntityFrameworkCore.Testing.Common.Helpers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
@@ -17,7 +16,9 @@ using NSubstitute.ExceptionExtensions;
 
 namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
 {
-    /// <summary>Extensions for the db context type.</summary>
+    /// <summary>
+    ///     Extensions for db contexts.
+    /// </summary>
     public static partial class DbContextExtensions
     {
         private static readonly ILogger Logger = LoggerHelper.CreateLogger(typeof(DbContextExtensions));

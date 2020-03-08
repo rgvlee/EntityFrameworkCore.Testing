@@ -15,94 +15,91 @@ using Moq;
 
 namespace EntityFrameworkCore.Testing.Moq.Helpers
 {
-    public class MockedDbContextFactory<TDbContext> : MockedDbContextFactoryBase<TDbContext> where TDbContext : DbContext
+    internal class MockedDbContextFactory<TDbContext> : BaseMockedDbContextFactory<TDbContext> where TDbContext : DbContext
     {
-        public MockedDbContextFactory(params object[] constructorParameters) : base(constructorParameters) { }
+        public MockedDbContextFactory(MockedDbContextFactoryOptions<TDbContext> options) : base(options) { }
 
-        /// <summary>Creates and sets up a mocked db context.</summary>
-        /// <returns>A mocked db context.</returns>
-        public override (TDbContext MockedDbContext, TDbContext DbContext) Create()
+        public override TDbContext Create()
         {
-            var dbContext = (TDbContext)Activator.CreateInstance(typeof(TDbContext), ConstructorParametersProvided ? ConstructorParameters : DefaultConstructorParameters);
-            var dbContextMock = new Mock<TDbContext>(ConstructorParametersProvided ? ConstructorParameters : DefaultConstructorParameters);
+            var dbContextMock = new Mock<TDbContext>(ConstructorParameters.ToArray());
 
-            dbContextMock.Setup(m => m.Add(It.IsAny<object>())).Returns((object providedEntity) => dbContext.Add(providedEntity));
-            dbContextMock.Setup(m => m.AddAsync(It.IsAny<object>(), It.IsAny<CancellationToken>())).Returns((object providedEntity, CancellationToken providedCancellationToken) => dbContext.AddAsync(providedEntity, providedCancellationToken));
-            dbContextMock.Setup(m => m.AddRange(It.IsAny<object[]>())).Callback((object[] providedEntities) => dbContext.AddRange(providedEntities));
-            dbContextMock.Setup(m => m.AddRange(It.IsAny<IEnumerable<object>>())).Callback((IEnumerable<object> providedEntities) => dbContext.AddRange(providedEntities));
-            dbContextMock.Setup(m => m.AddRangeAsync(It.IsAny<object[]>(), It.IsAny<CancellationToken>())).Returns((object[] providedEntities, CancellationToken providedCancellationToken) => dbContext.AddRangeAsync(providedEntities, providedCancellationToken));
-            dbContextMock.Setup(m => m.AddRangeAsync(It.IsAny<IEnumerable<object>>(), It.IsAny<CancellationToken>())).Returns((IEnumerable<object> providedEntities, CancellationToken providedCancellationToken) => dbContext.AddRangeAsync(providedEntities, providedCancellationToken));
+            dbContextMock.Setup(m => m.Add(It.IsAny<object>())).Returns((object providedEntity) => DbContext.Add(providedEntity));
+            dbContextMock.Setup(m => m.AddAsync(It.IsAny<object>(), It.IsAny<CancellationToken>())).Returns((object providedEntity, CancellationToken providedCancellationToken) => DbContext.AddAsync(providedEntity, providedCancellationToken));
+            dbContextMock.Setup(m => m.AddRange(It.IsAny<object[]>())).Callback((object[] providedEntities) => DbContext.AddRange(providedEntities));
+            dbContextMock.Setup(m => m.AddRange(It.IsAny<IEnumerable<object>>())).Callback((IEnumerable<object> providedEntities) => DbContext.AddRange(providedEntities));
+            dbContextMock.Setup(m => m.AddRangeAsync(It.IsAny<object[]>(), It.IsAny<CancellationToken>())).Returns((object[] providedEntities, CancellationToken providedCancellationToken) => DbContext.AddRangeAsync(providedEntities, providedCancellationToken));
+            dbContextMock.Setup(m => m.AddRangeAsync(It.IsAny<IEnumerable<object>>(), It.IsAny<CancellationToken>())).Returns((IEnumerable<object> providedEntities, CancellationToken providedCancellationToken) => DbContext.AddRangeAsync(providedEntities, providedCancellationToken));
 
-            dbContextMock.Setup(m => m.Attach(It.IsAny<object>())).Returns((object providedEntity) => dbContext.Attach(providedEntity));
-            dbContextMock.Setup(m => m.AttachRange(It.IsAny<object[]>())).Callback((object[] providedEntities) => dbContext.AttachRange(providedEntities));
-            dbContextMock.Setup(m => m.AttachRange(It.IsAny<IEnumerable<object>>())).Callback((IEnumerable<object> providedEntities) => dbContext.AttachRange(providedEntities));
+            dbContextMock.Setup(m => m.Attach(It.IsAny<object>())).Returns((object providedEntity) => DbContext.Attach(providedEntity));
+            dbContextMock.Setup(m => m.AttachRange(It.IsAny<object[]>())).Callback((object[] providedEntities) => DbContext.AttachRange(providedEntities));
+            dbContextMock.Setup(m => m.AttachRange(It.IsAny<IEnumerable<object>>())).Callback((IEnumerable<object> providedEntities) => DbContext.AttachRange(providedEntities));
 
-            dbContextMock.As<IDbContextDependencies>().Setup(m => m.ChangeDetector).Returns(((IDbContextDependencies) dbContext).ChangeDetector);
-            dbContextMock.Setup(m => m.ChangeTracker).Returns(dbContext.ChangeTracker);
-            dbContextMock.Setup(m => m.ContextId).Returns(dbContext.ContextId);
-            dbContextMock.Setup(m => m.Database).Returns(dbContext.Database);
-            dbContextMock.Setup(m => m.Dispose()).Callback(dbContext.Dispose);
-            dbContextMock.Setup(m => m.DisposeAsync()).Callback(() => dbContext.DisposeAsync());
-            dbContextMock.As<IDbContextDependencies>().Setup(m => m.EntityFinderFactory).Returns(((IDbContextDependencies) dbContext).EntityFinderFactory);
-            dbContextMock.As<IDbContextDependencies>().Setup(m => m.EntityGraphAttacher).Returns(((IDbContextDependencies) dbContext).EntityGraphAttacher);
-            dbContextMock.Setup(m => m.Entry(It.IsAny<object>())).Returns((object providedEntity) => dbContext.Entry(providedEntity));
+            dbContextMock.As<IDbContextDependencies>().Setup(m => m.ChangeDetector).Returns(((IDbContextDependencies) DbContext).ChangeDetector);
+            dbContextMock.Setup(m => m.ChangeTracker).Returns(DbContext.ChangeTracker);
+            dbContextMock.Setup(m => m.ContextId).Returns(DbContext.ContextId);
+            dbContextMock.Setup(m => m.Database).Returns(DbContext.Database);
+            dbContextMock.Setup(m => m.Dispose()).Callback(DbContext.Dispose);
+            dbContextMock.Setup(m => m.DisposeAsync()).Callback(() => DbContext.DisposeAsync());
+            dbContextMock.As<IDbContextDependencies>().Setup(m => m.EntityFinderFactory).Returns(((IDbContextDependencies) DbContext).EntityFinderFactory);
+            dbContextMock.As<IDbContextDependencies>().Setup(m => m.EntityGraphAttacher).Returns(((IDbContextDependencies) DbContext).EntityGraphAttacher);
+            dbContextMock.Setup(m => m.Entry(It.IsAny<object>())).Returns((object providedEntity) => DbContext.Entry(providedEntity));
 
-            dbContextMock.Setup(m => m.Find(It.IsAny<Type>(), It.IsAny<object[]>())).Returns((Type providedEntityType, object[] providedKeyValues) => dbContext.Find(providedEntityType, providedKeyValues));
-            dbContextMock.Setup(m => m.FindAsync(It.IsAny<Type>(), It.IsAny<object[]>())).Returns((Type providedEntityType, object[] providedKeyValues) => dbContext.FindAsync(providedEntityType, providedKeyValues));
-            dbContextMock.Setup(m => m.FindAsync(It.IsAny<Type>(), It.IsAny<object[]>(), It.IsAny<CancellationToken>())).Returns((Type providedEntityType, object[] providedKeyValues, CancellationToken providedCancellationToken) => dbContext.FindAsync(providedEntityType, providedKeyValues, providedCancellationToken));
+            dbContextMock.Setup(m => m.Find(It.IsAny<Type>(), It.IsAny<object[]>())).Returns((Type providedEntityType, object[] providedKeyValues) => DbContext.Find(providedEntityType, providedKeyValues));
+            dbContextMock.Setup(m => m.FindAsync(It.IsAny<Type>(), It.IsAny<object[]>())).Returns((Type providedEntityType, object[] providedKeyValues) => DbContext.FindAsync(providedEntityType, providedKeyValues));
+            dbContextMock.Setup(m => m.FindAsync(It.IsAny<Type>(), It.IsAny<object[]>(), It.IsAny<CancellationToken>())).Returns((Type providedEntityType, object[] providedKeyValues, CancellationToken providedCancellationToken) => DbContext.FindAsync(providedEntityType, providedKeyValues, providedCancellationToken));
 
-            dbContextMock.As<IDbSetCache>().Setup(m => m.GetOrAddSet(It.IsAny<IDbSetSource>(), It.IsAny<Type>())).Returns((IDbSetSource providedSource, Type providedType) => ((IDbSetCache) dbContext).GetOrAddSet(providedSource, providedType));
-            dbContextMock.As<IDbContextDependencies>().Setup(m => m.InfrastructureLogger).Returns(((IDbContextDependencies) dbContext).InfrastructureLogger);
-            dbContextMock.As<IInfrastructure<IServiceProvider>>().Setup(m => m.Instance).Returns(((IInfrastructure<IServiceProvider>) dbContext).Instance);
-            dbContextMock.As<IDbContextDependencies>().Setup(m => m.Model).Returns(((IDbContextDependencies) dbContext).Model);
-            dbContextMock.As<IDbContextDependencies>().Setup(m => m.QueryProvider).Returns(((IDbContextDependencies) dbContext).QueryProvider);
+            dbContextMock.As<IDbSetCache>().Setup(m => m.GetOrAddSet(It.IsAny<IDbSetSource>(), It.IsAny<Type>())).Returns((IDbSetSource providedSource, Type providedType) => ((IDbSetCache) DbContext).GetOrAddSet(providedSource, providedType));
+            dbContextMock.As<IDbContextDependencies>().Setup(m => m.InfrastructureLogger).Returns(((IDbContextDependencies) DbContext).InfrastructureLogger);
+            dbContextMock.As<IInfrastructure<IServiceProvider>>().Setup(m => m.Instance).Returns(((IInfrastructure<IServiceProvider>) DbContext).Instance);
+            dbContextMock.As<IDbContextDependencies>().Setup(m => m.Model).Returns(((IDbContextDependencies) DbContext).Model);
+            dbContextMock.As<IDbContextDependencies>().Setup(m => m.QueryProvider).Returns(((IDbContextDependencies) DbContext).QueryProvider);
 
-            dbContextMock.Setup(m => m.Remove(It.IsAny<object>())).Returns((object providedEntity) => dbContext.Remove(providedEntity));
-            dbContextMock.Setup(m => m.RemoveRange(It.IsAny<IEnumerable<object>>())).Callback((IEnumerable<object> providedEntities) => dbContext.RemoveRange(providedEntities));
-            dbContextMock.Setup(m => m.RemoveRange(It.IsAny<object[]>())).Callback((object[] providedEntities) => dbContext.RemoveRange(providedEntities));
+            dbContextMock.Setup(m => m.Remove(It.IsAny<object>())).Returns((object providedEntity) => DbContext.Remove(providedEntity));
+            dbContextMock.Setup(m => m.RemoveRange(It.IsAny<IEnumerable<object>>())).Callback((IEnumerable<object> providedEntities) => DbContext.RemoveRange(providedEntities));
+            dbContextMock.Setup(m => m.RemoveRange(It.IsAny<object[]>())).Callback((object[] providedEntities) => DbContext.RemoveRange(providedEntities));
 
-            dbContextMock.As<IDbContextPoolable>().Setup(m => m.ResetState()).Callback(((IDbContextPoolable) dbContext).ResetState);
-            dbContextMock.As<IDbContextPoolable>().Setup(m => m.ResetStateAsync(It.IsAny<CancellationToken>())).Callback((CancellationToken providedCancellationToken) => ((IDbContextPoolable) dbContext).ResetStateAsync(providedCancellationToken));
-            dbContextMock.As<IDbContextPoolable>().Setup(m => m.Resurrect(It.IsAny<DbContextPoolConfigurationSnapshot>())).Callback((DbContextPoolConfigurationSnapshot providedConfigurationSnapshot) => ((IDbContextPoolable) dbContext).Resurrect(providedConfigurationSnapshot));
+            dbContextMock.As<IDbContextPoolable>().Setup(m => m.ResetState()).Callback(((IDbContextPoolable) DbContext).ResetState);
+            dbContextMock.As<IDbContextPoolable>().Setup(m => m.ResetStateAsync(It.IsAny<CancellationToken>())).Callback((CancellationToken providedCancellationToken) => ((IDbContextPoolable) DbContext).ResetStateAsync(providedCancellationToken));
+            dbContextMock.As<IDbContextPoolable>().Setup(m => m.Resurrect(It.IsAny<DbContextPoolConfigurationSnapshot>())).Callback((DbContextPoolConfigurationSnapshot providedConfigurationSnapshot) => ((IDbContextPoolable) DbContext).Resurrect(providedConfigurationSnapshot));
 
-            dbContextMock.Setup(m => m.SaveChanges()).Returns(dbContext.SaveChanges);
-            dbContextMock.Setup(m => m.SaveChanges(It.IsAny<bool>())).Returns((bool providedAcceptAllChangesOnSuccess) => dbContext.SaveChanges(providedAcceptAllChangesOnSuccess));
-            dbContextMock.Setup(m => m.SaveChangesAsync(It.IsAny<CancellationToken>())).Returns((CancellationToken providedCancellationToken) => dbContext.SaveChangesAsync(providedCancellationToken));
-            dbContextMock.Setup(m => m.SaveChangesAsync(It.IsAny<bool>(), It.IsAny<CancellationToken>())).Returns((bool providedAcceptAllChangesOnSuccess, CancellationToken providedCancellationToken) => dbContext.SaveChangesAsync(providedAcceptAllChangesOnSuccess, providedCancellationToken));
+            dbContextMock.Setup(m => m.SaveChanges()).Returns(DbContext.SaveChanges);
+            dbContextMock.Setup(m => m.SaveChanges(It.IsAny<bool>())).Returns((bool providedAcceptAllChangesOnSuccess) => DbContext.SaveChanges(providedAcceptAllChangesOnSuccess));
+            dbContextMock.Setup(m => m.SaveChangesAsync(It.IsAny<CancellationToken>())).Returns((CancellationToken providedCancellationToken) => DbContext.SaveChangesAsync(providedCancellationToken));
+            dbContextMock.Setup(m => m.SaveChangesAsync(It.IsAny<bool>(), It.IsAny<CancellationToken>())).Returns((bool providedAcceptAllChangesOnSuccess, CancellationToken providedCancellationToken) => DbContext.SaveChangesAsync(providedAcceptAllChangesOnSuccess, providedCancellationToken));
 
-            dbContextMock.As<IDbContextPoolable>().Setup(m => m.SetPool(It.IsAny<IDbContextPool>())).Callback((IDbContextPool providedContextPool) => ((IDbContextPoolable) dbContext).SetPool(providedContextPool));
-            dbContextMock.As<IDbContextDependencies>().Setup(m => m.SetSource).Returns(((IDbContextDependencies) dbContext).SetSource);
-            dbContextMock.As<IDbContextPoolable>().Setup(m => m.SnapshotConfiguration()).Returns(((IDbContextPoolable) dbContext).SnapshotConfiguration());
-            dbContextMock.As<IDbContextDependencies>().Setup(m => m.StateManager).Returns(((IDbContextDependencies) dbContext).StateManager);
+            dbContextMock.As<IDbContextPoolable>().Setup(m => m.SetPool(It.IsAny<IDbContextPool>())).Callback((IDbContextPool providedContextPool) => ((IDbContextPoolable) DbContext).SetPool(providedContextPool));
+            dbContextMock.As<IDbContextDependencies>().Setup(m => m.SetSource).Returns(((IDbContextDependencies) DbContext).SetSource);
+            dbContextMock.As<IDbContextPoolable>().Setup(m => m.SnapshotConfiguration()).Returns(((IDbContextPoolable) DbContext).SnapshotConfiguration());
+            dbContextMock.As<IDbContextDependencies>().Setup(m => m.StateManager).Returns(((IDbContextDependencies) DbContext).StateManager);
 
-            dbContextMock.Setup(m => m.Update(It.IsAny<object>())).Returns((object providedEntity) => dbContext.Update(providedEntity));
+            dbContextMock.Setup(m => m.Update(It.IsAny<object>())).Returns((object providedEntity) => DbContext.Update(providedEntity));
 
-            dbContextMock.As<IDbContextDependencies>().Setup(m => m.UpdateLogger).Returns(((IDbContextDependencies) dbContext).UpdateLogger);
+            dbContextMock.As<IDbContextDependencies>().Setup(m => m.UpdateLogger).Returns(((IDbContextDependencies) DbContext).UpdateLogger);
 
-            dbContextMock.Setup(m => m.UpdateRange(It.IsAny<IEnumerable<object>>())).Callback((IEnumerable<object> providedEntities) => dbContext.UpdateRange(providedEntities));
-            dbContextMock.Setup(m => m.UpdateRange(It.IsAny<object[]>())).Callback((object[] providedEntities) => dbContext.UpdateRange(providedEntities));
+            dbContextMock.Setup(m => m.UpdateRange(It.IsAny<IEnumerable<object>>())).Callback((IEnumerable<object> providedEntities) => DbContext.UpdateRange(providedEntities));
+            dbContextMock.Setup(m => m.UpdateRange(It.IsAny<object[]>())).Callback((object[] providedEntities) => DbContext.UpdateRange(providedEntities));
 
-            foreach (var entity in dbContext.Model.GetEntityTypes().Where(x => x.FindPrimaryKey() != null))
+            foreach (var entity in DbContext.Model.GetEntityTypes().Where(x => x.FindPrimaryKey() != null))
             {
                 typeof(MockedDbContextFactory<TDbContext>)
                     .GetMethod(nameof(SetUpDbSetFor), BindingFlags.Instance | BindingFlags.NonPublic)
-                    .MakeGenericMethod(entity.ClrType).Invoke(this, new object[] {dbContextMock, dbContext });
+                    .MakeGenericMethod(entity.ClrType).Invoke(this, new object[] { dbContextMock });
             }
 
-            foreach (var entity in dbContext.Model.GetEntityTypes().Where(x => x.FindPrimaryKey() == null))
+            foreach (var entity in DbContext.Model.GetEntityTypes().Where(x => x.FindPrimaryKey() == null))
             {
                 typeof(MockedDbContextFactory<TDbContext>)
                     .GetMethod(nameof(SetUpReadOnlyDbSetFor), BindingFlags.Instance | BindingFlags.NonPublic)
-                    .MakeGenericMethod(entity.ClrType).Invoke(this, new object[] {dbContextMock, dbContext });
+                    .MakeGenericMethod(entity.ClrType).Invoke(this, new object[] { dbContextMock });
             }
 
-            return (MockedDbContext: dbContextMock.Object, DbContext: dbContext);
+            return dbContextMock.Object;
         }
 
-        private void SetUpDbSetFor<TEntity>(Mock<TDbContext> dbContextMock, TDbContext dbContext)
+        private void SetUpDbSetFor<TEntity>(Mock<TDbContext> dbContextMock)
             where TEntity : class
         {
-            var mockedDbSet = dbContext.Set<TEntity>().CreateMockedDbSet();
+            var mockedDbSet = DbContext.Set<TEntity>().CreateMockedDbSet();
 
             var property = typeof(TDbContext).GetProperties().SingleOrDefault(p => p.PropertyType == typeof(DbSet<TEntity>));
 
@@ -118,29 +115,29 @@ namespace EntityFrameworkCore.Testing.Moq.Helpers
 
             dbContextMock.Setup(m => m.Set<TEntity>()).Returns(mockedDbSet);
 
-            dbContextMock.Setup(m => m.Add(It.IsAny<TEntity>())).Returns((TEntity providedEntity) => dbContext.Add(providedEntity));
-            dbContextMock.Setup(m => m.AddAsync(It.IsAny<TEntity>(), It.IsAny<CancellationToken>())).Returns((TEntity providedEntity, CancellationToken providedCancellationToken) => dbContext.AddAsync(providedEntity, providedCancellationToken));
+            dbContextMock.Setup(m => m.Add(It.IsAny<TEntity>())).Returns((TEntity providedEntity) => DbContext.Add(providedEntity));
+            dbContextMock.Setup(m => m.AddAsync(It.IsAny<TEntity>(), It.IsAny<CancellationToken>())).Returns((TEntity providedEntity, CancellationToken providedCancellationToken) => DbContext.AddAsync(providedEntity, providedCancellationToken));
 
-            dbContextMock.Setup(m => m.Attach(It.IsAny<TEntity>())).Returns((TEntity providedEntity) => dbContext.Attach(providedEntity));
-            dbContextMock.Setup(m => m.AttachRange(It.IsAny<object[]>())).Callback((object[] providedEntities) => dbContext.AttachRange(providedEntities));
-            dbContextMock.Setup(m => m.AttachRange(It.IsAny<IEnumerable<object>>())).Callback((IEnumerable<object> providedEntities) => dbContext.AttachRange(providedEntities));
+            dbContextMock.Setup(m => m.Attach(It.IsAny<TEntity>())).Returns((TEntity providedEntity) => DbContext.Attach(providedEntity));
+            dbContextMock.Setup(m => m.AttachRange(It.IsAny<object[]>())).Callback((object[] providedEntities) => DbContext.AttachRange(providedEntities));
+            dbContextMock.Setup(m => m.AttachRange(It.IsAny<IEnumerable<object>>())).Callback((IEnumerable<object> providedEntities) => DbContext.AttachRange(providedEntities));
 
-            dbContextMock.Setup(m => m.Entry(It.IsAny<TEntity>())).Returns((TEntity providedEntity) => dbContext.Entry(providedEntity));
+            dbContextMock.Setup(m => m.Entry(It.IsAny<TEntity>())).Returns((TEntity providedEntity) => DbContext.Entry(providedEntity));
 
-            dbContextMock.Setup(m => m.Find<TEntity>(It.IsAny<object[]>())).Returns((object[] providedKeyValues) => dbContext.Find<TEntity>(providedKeyValues));
-            dbContextMock.Setup(m => m.Find(typeof(TEntity), It.IsAny<object[]>())).Returns((Type providedType, object[] providedKeyValues) => dbContext.Find(providedType, providedKeyValues));
-            dbContextMock.Setup(m => m.FindAsync<TEntity>(It.IsAny<object[]>())).Returns((object[] providedKeyValues) => dbContext.FindAsync<TEntity>(providedKeyValues));
-            dbContextMock.Setup(m => m.FindAsync<TEntity>(It.IsAny<object[]>(), It.IsAny<CancellationToken>())).Returns((object[] providedKeyValues, CancellationToken providedCancellationToken) => dbContext.FindAsync<TEntity>(providedKeyValues, providedCancellationToken));
+            dbContextMock.Setup(m => m.Find<TEntity>(It.IsAny<object[]>())).Returns((object[] providedKeyValues) => DbContext.Find<TEntity>(providedKeyValues));
+            dbContextMock.Setup(m => m.Find(typeof(TEntity), It.IsAny<object[]>())).Returns((Type providedType, object[] providedKeyValues) => DbContext.Find(providedType, providedKeyValues));
+            dbContextMock.Setup(m => m.FindAsync<TEntity>(It.IsAny<object[]>())).Returns((object[] providedKeyValues) => DbContext.FindAsync<TEntity>(providedKeyValues));
+            dbContextMock.Setup(m => m.FindAsync<TEntity>(It.IsAny<object[]>(), It.IsAny<CancellationToken>())).Returns((object[] providedKeyValues, CancellationToken providedCancellationToken) => DbContext.FindAsync<TEntity>(providedKeyValues, providedCancellationToken));
 
-            dbContextMock.Setup(m => m.Remove(It.IsAny<TEntity>())).Returns((TEntity providedEntity) => dbContext.Remove(providedEntity));
+            dbContextMock.Setup(m => m.Remove(It.IsAny<TEntity>())).Returns((TEntity providedEntity) => DbContext.Remove(providedEntity));
 
-            dbContextMock.Setup(m => m.Update(It.IsAny<TEntity>())).Returns((TEntity providedEntity) => dbContext.Update(providedEntity));
+            dbContextMock.Setup(m => m.Update(It.IsAny<TEntity>())).Returns((TEntity providedEntity) => DbContext.Update(providedEntity));
         }
 
-        private void SetUpReadOnlyDbSetFor<TEntity>(Mock<TDbContext> dbContextMock, TDbContext dbContext)
+        private void SetUpReadOnlyDbSetFor<TEntity>(Mock<TDbContext> dbContextMock)
             where TEntity : class
         {
-            var mockedReadOnlyDbSet = dbContext.Set<TEntity>().CreateMockedReadOnlyDbSet();
+            var mockedReadOnlyDbSet = DbContext.Set<TEntity>().CreateMockedReadOnlyDbSet();
 
             var dbSetProperty = typeof(TDbContext).GetProperties().SingleOrDefault(p => p.PropertyType == typeof(DbSet<TEntity>));
             if (dbSetProperty != null)
