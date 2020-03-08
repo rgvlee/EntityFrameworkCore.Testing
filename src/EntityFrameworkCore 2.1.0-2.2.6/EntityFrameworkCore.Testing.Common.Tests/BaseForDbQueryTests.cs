@@ -10,8 +10,8 @@ using NUnit.Framework;
 namespace EntityFrameworkCore.Testing.Common.Tests
 {
     [TestFixture]
-    public abstract class DbQueryTestsBase<TQuery> : MockQueryableTestsBase<TQuery>
-        where TQuery : TestEntityBase
+    public abstract class BaseForDbQueryTests<TQuery> : BaseForMockedQueryableTests<TQuery>
+        where TQuery : BaseTestEntity
     {
         protected override void SeedQueryableSource()
         {

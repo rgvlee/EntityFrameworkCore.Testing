@@ -2,7 +2,7 @@
 
 namespace EntityFrameworkCore.Testing.Common.Tests
 {
-    public abstract class TestEntityBase
+    public abstract class BaseTestEntity
     {
         public virtual Guid Guid { get; set; }
 

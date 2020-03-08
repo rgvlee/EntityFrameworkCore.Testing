@@ -11,7 +11,7 @@ using NUnit.Framework;
 namespace EntityFrameworkCore.Testing.Common.Tests
 {
     [TestFixture]
-    public abstract class DbContextTestsBase<TDbContext> : TestBase
+    public abstract class BaseForDbContextTests<TDbContext> : BaseForTests
         where TDbContext : DbContext
     {
         protected TDbContext MockedDbContext;

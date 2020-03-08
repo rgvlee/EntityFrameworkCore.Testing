@@ -11,8 +11,8 @@ using NUnit.Framework;
 namespace EntityFrameworkCore.Testing.Common.Tests
 {
     [TestFixture]
-    public abstract class MockQueryableTestsBase<T> : QueryableTestsBase<T>
-        where T : TestEntityBase
+    public abstract class BaseForMockedQueryableTests<T> : BaseForQueryableTests<T>
+        where T : BaseTestEntity
     {
         protected abstract void AddFromSqlResult(IQueryable<T> mockedQueryable, IEnumerable<T> expectedResult);
         protected abstract void AddFromSqlResult(IQueryable<T> mockedQueryable, string sql, IEnumerable<T> expectedResult);

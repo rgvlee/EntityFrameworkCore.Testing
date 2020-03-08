@@ -6,9 +6,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="..\EntityFrameworkCore.Testing.Common.Tests\BaseTestEntity.cs" Link="BaseTestEntity.cs" />
     <Compile Include="..\EntityFrameworkCore.Testing.Common.Tests\TestDbContext.cs" Link="TestDbContext.cs" />
     <Compile Include="..\EntityFrameworkCore.Testing.Common.Tests\TestEntity.cs" Link="TestEntity.cs" />
-    <Compile Include="..\EntityFrameworkCore.Testing.Common.Tests\TestEntityBase.cs" Link="TestEntityBase.cs" />
     <Compile Include="..\EntityFrameworkCore.Testing.Common.Tests\TestQuery.cs" Link="TestQuery.cs" />
   </ItemGroup>
 

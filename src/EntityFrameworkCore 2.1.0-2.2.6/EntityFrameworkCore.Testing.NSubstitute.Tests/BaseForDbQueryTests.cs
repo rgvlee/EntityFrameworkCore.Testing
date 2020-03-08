@@ -8,7 +8,7 @@ using NUnit.Framework;
 namespace EntityFrameworkCore.Testing.NSubstitute.Tests
 {
     [TestFixture]
-    public abstract class DbQueryTestsBase<T> : Common.Tests.DbQueryTestsBase<T> where T : TestEntityBase
+    public abstract class BaseForDbQueryTests<T> : Common.Tests.BaseForDbQueryTests<T> where T : BaseTestEntity
     {
         [SetUp]
         public override void SetUp()

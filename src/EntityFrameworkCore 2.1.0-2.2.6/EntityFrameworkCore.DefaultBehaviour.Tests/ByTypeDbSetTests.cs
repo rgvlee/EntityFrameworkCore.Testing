@@ -8,7 +8,7 @@ using NUnit.Framework;
 namespace EntityFrameworkCore.DefaultBehaviour.Tests
 {
     [TestFixture]
-    public class ByTypeDbSetTests : QueryableTestsBase<TestEntity>
+    public class ByTypeDbSetTests : BaseForQueryableTests<TestEntity>
     {
         [SetUp]
         public override void SetUp()
