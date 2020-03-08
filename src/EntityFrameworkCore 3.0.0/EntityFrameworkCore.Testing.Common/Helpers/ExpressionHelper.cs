@@ -4,10 +4,14 @@ using System.Reflection;
 
 namespace EntityFrameworkCore.Testing.Common.Helpers
 {
-    /// <summary>A helper for creating expressions.</summary>
+    /// <summary>
+    ///     A helper for creating expressions.
+    /// </summary>
     public static class ExpressionHelper
     {
-        /// <summary>Creates a property expression for the specified property.</summary>
+        /// <summary>
+        ///     Creates a property expression for the specified property.
+        /// </summary>
         /// <typeparam name="TParameter">The expression parameter.</typeparam>
         /// <typeparam name="TProperty">The expression property.</typeparam>
         /// <param name="propertyInfo">The property info of the property to create the expression for.</param>
@@ -20,7 +24,9 @@ namespace EntityFrameworkCore.Testing.Common.Helpers
             return Expression.Lambda<Func<TParameter, TProperty>>(Expression.Property(parameter, propertyInfo), parameter);
         }
 
-        /// <summary>Creates a method expression for the specified method.</summary>
+        /// <summary>
+        ///     Creates a method expression for the specified method.
+        /// </summary>
         /// <typeparam name="TParameter">The expression parameter.</typeparam>
         /// <typeparam name="TMethod">The expression method.</typeparam>
         /// <param name="methodInfo">The method info of the method to create the expression for.</param>

@@ -86,5 +86,14 @@ namespace EntityFrameworkCore.Testing.Common {
                 return ResourceManager.GetString("StringNullOrEmpty", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to find a suitable constructor. TDbContext must have a parameterless or DbContextOptions/DbContextOptions&lt;TDbContext&gt; constructor..
+        /// </summary>
+        public static string UnableToFindSuitableDbContextConstructor {
+            get {
+                return ResourceManager.GetString("UnableToFindSuitableDbContextConstructor", resourceCulture);
+            }
+        }
     }
 }

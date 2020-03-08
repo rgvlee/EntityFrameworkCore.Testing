@@ -70,7 +70,8 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         [Test]
         public void HasConstructorWithParameterOfTypeForTypeWithGenericDbContextOptionsConstructor_GenericDbContextOptions_ReturnsTrue()
         {
-            Assert.That(typeof(TypeWithGenericDbContextOptionsConstructor).HasConstructorWithParameterOfType(typeof(DbContextOptions<TypeWithGenericDbContextOptionsConstructor>)), Is.True);
+            Assert.That(typeof(TypeWithGenericDbContextOptionsConstructor).HasConstructorWithParameterOfType(typeof(DbContextOptions<TypeWithGenericDbContextOptionsConstructor>)),
+                Is.True);
         }
 
         [Test]
@@ -89,9 +90,9 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         public void GetConstructor_ParentAndChildParameterTypes_ReturnsConstructor()
         {
             var type = typeof(TypeWithParentParameterConstructor);
-            var ci1 = type.GetConstructor(new[] {typeof(ParentParameter)});
-            var ci2 = type.GetConstructor(new[] {typeof(ChildParameter)});
-            var ci3 = type.GetConstructor(new[] {typeof(string)});
+            var ci1 = type.GetConstructor(new[] { typeof(ParentParameter) });
+            var ci2 = type.GetConstructor(new[] { typeof(ChildParameter) });
+            var ci3 = type.GetConstructor(new[] { typeof(string) });
 
             Assert.Multiple(() =>
             {

@@ -1,4 +1,4 @@
 ﻿namespace EntityFrameworkCore.Testing.Common.Tests
 {
-    public class TestQuery : TestEntityBase { }
+    public class TestQuery : BaseTestEntity { }
 }

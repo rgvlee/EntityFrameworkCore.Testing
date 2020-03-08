@@ -10,7 +10,7 @@ using NUnit.Framework;
 namespace EntityFrameworkCore.DefaultBehaviour.Tests
 {
     [TestFixture]
-    public class ByTypeDbSetTests : QueryableTestsBase<TestEntity>
+    public class ByTypeDbSetTests : BaseForQueryableTests<TestEntity>
     {
         [SetUp]
         public override void SetUp()
@@ -25,9 +25,7 @@ namespace EntityFrameworkCore.DefaultBehaviour.Tests
 
         protected override void SeedQueryableSource()
         {
-            var itemsToAdd = Fixture.Build<TestEntity>()
-                .With(p => p.FixedDateTime, DateTime.Parse("2019-01-01"))
-                .CreateMany().ToList();
+            var itemsToAdd = Fixture.Build<TestEntity>().With(p => p.FixedDateTime, DateTime.Parse("2019-01-01")).CreateMany().ToList();
             DbContext.Set<TestEntity>().AddRange(itemsToAdd);
             DbContext.SaveChanges();
             ItemsAddedToQueryableSource = itemsToAdd;

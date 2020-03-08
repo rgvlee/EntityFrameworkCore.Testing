@@ -6,10 +6,14 @@ using System.Text;
 
 namespace EntityFrameworkCore.Testing.Common.Helpers
 {
-    /// <summary>A helper for parameter matching.</summary>
+    /// <summary>
+    ///     A helper for parameter matching.
+    /// </summary>
     public class ParameterMatchingHelper
     {
-        /// <summary>Determines whether the invocation parameters match the set up parameters.</summary>
+        /// <summary>
+        ///     Determines whether the invocation parameters match the set up parameters.
+        /// </summary>
         /// <param name="setUpParameters">The set up parameters.</param>
         /// <param name="invocationParameters">The invocation parameters.</param>
         /// <returns>true the invocation parameters are a partial or full match of the set up parameters.</returns>
@@ -31,8 +35,7 @@ namespace EntityFrameworkCore.Testing.Common.Helpers
 
                 foreach (var invocationParameter in invocationParametersAsList.Skip(startAt))
                 {
-                    if (invocationParameter is DbParameter dbInvocationParameter &&
-                        setUpParameter is DbParameter dbSetUpParameter)
+                    if (invocationParameter is DbParameter dbInvocationParameter && setUpParameter is DbParameter dbSetUpParameter)
                     {
                         if (dbInvocationParameter.ParameterName == null && dbSetUpParameter.ParameterName != null ||
                             dbInvocationParameter.ParameterName != null && dbSetUpParameter.ParameterName == null ||
@@ -41,8 +44,7 @@ namespace EntityFrameworkCore.Testing.Common.Helpers
                             continue;
                         }
 
-                        if (dbInvocationParameter.Value is string stringDbInvocationParameterValue &&
-                            dbSetUpParameter.Value is string stringDbSetUpParameterValue)
+                        if (dbInvocationParameter.Value is string stringDbInvocationParameterValue && dbSetUpParameter.Value is string stringDbSetUpParameterValue)
                         {
                             if (!stringDbInvocationParameterValue.Equals(stringDbSetUpParameterValue, StringComparison.CurrentCultureIgnoreCase))
                             {
@@ -56,8 +58,7 @@ namespace EntityFrameworkCore.Testing.Common.Helpers
 
                         matches.Add(setUpParameter, invocationParameter);
                     }
-                    else if (invocationParameter is string stringInvocationParameterValue &&
-                             setUpParameter is string stringSetUpParameterValue)
+                    else if (invocationParameter is string stringInvocationParameterValue && setUpParameter is string stringSetUpParameterValue)
                     {
                         if (stringInvocationParameterValue.Equals(stringSetUpParameterValue, StringComparison.CurrentCultureIgnoreCase))
                         {
@@ -74,7 +75,9 @@ namespace EntityFrameworkCore.Testing.Common.Helpers
             return matches.Count == setUpParametersAsList.Count;
         }
 
-        /// <summary>Converts a sequence of invocation parameters to a string of parameter names and values.</summary>
+        /// <summary>
+        ///     Converts a sequence of invocation parameters to a string of parameter names and values.
+        /// </summary>
         /// <param name="invocationParameters">The invocation parameters.</param>
         /// <returns>A string of parameter names and values.</returns>
         public static string StringifyParameters(IEnumerable<object> invocationParameters)
