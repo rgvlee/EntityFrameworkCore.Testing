@@ -6,7 +6,7 @@ using NUnit.Framework;
 namespace EntityFrameworkCore.DefaultBehaviour.Tests
 {
     [TestFixture]
-    public class DbContextTests : TestBase
+    public class DbContextTests : BaseForTests
     {
         [SetUp]
         public override void SetUp()
