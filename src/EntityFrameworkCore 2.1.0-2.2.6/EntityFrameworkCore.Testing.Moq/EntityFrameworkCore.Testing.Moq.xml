@@ -4,24 +4,47 @@
         <name>EntityFrameworkCore.Testing.Moq</name>
     </assembly>
     <members>
+        <member name="T:EntityFrameworkCore.Testing.Moq.Build">
+            <summary>
+                Provides builders that create mocked instances.
+            </summary>
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.Moq.Build.MockFor``1">
+            <summary>
+                Provides a mocked db context builder.
+            </summary>
+            <typeparam name="TDbContext">The db context type.</typeparam>
+            <returns>A mocked db context builder.</returns>
+        </member>
         <member name="T:EntityFrameworkCore.Testing.Moq.Create">
-            <summary>Factory for creating mocked instances.</summary>
+            <summary>
+                Factory for creating mocked instances.
+            </summary>
         </member>
         <member name="M:EntityFrameworkCore.Testing.Moq.Create.MockedDbContextFor``1(System.Object[])">
-            <summary>Creates a mocked db context.</summary>
+            <summary>
+                Creates a mocked db context.
+            </summary>
             <typeparam name="TDbContext">The db context type.</typeparam>
-            <param name="constructorParameters">The db context constructor parameters.</param>
+            <param name="constructorParameters">
+                The parameters that will be used to create the mocked db context and, if one is not provided,
+                the in-memory context that the mocked db context will use for in-memory provider supported operations.
+            </param>
             <returns>A mocked db context.</returns>
-            <remarks>If you do not provide any constructor arguments this method attempt to create TDbContext via a constructor with a single DbContextOptionsBuilder parameter.</remarks>
+            <remarks>
+                If you do not provide any constructor arguments this method attempt to create a TDbContext
+                via a constructor with a single DbContextOptionsBuilder parameter or a parameterless constructor.
+            </remarks>
         </member>
         <member name="M:EntityFrameworkCore.Testing.Moq.Create.MockedQueryProviderFor``1(System.Linq.IQueryable{``0})">
-            <summary>Creates a mocked query provider.</summary>
+            <summary>
+                Creates a mocked query provider.
+            </summary>
             <typeparam name="T">The queryable type.</typeparam>
             <param name="queryable">The query provider source.</param>
             <returns>A mocked query provider.</returns>
         </member>
         <member name="T:EntityFrameworkCore.Testing.Moq.Extensions.DbContextExtensions">
-            <summary>Extensions for the db context type.</summary>
             <summary>Extensions for the db context type.</summary>
         </member>
         <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.DbContextExtensions.AddExecuteSqlCommandResult``1(``0,System.Int32,System.Action{System.String,System.Collections.Generic.IEnumerable{System.Object}})">
@@ -51,56 +74,10 @@
             <param name="callback">Operations to perform after ExecuteSqlCommand is invoked.</param>
             <returns>The mocked db context.</returns>
         </member>
-        <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.DbContextExtensions.CreateMock``1(``0)">
-            <summary>Creates and sets up a mocked db context.</summary>
-            <typeparam name="TDbContext">The db context type.</typeparam>
-            <param name="dbContextToMock">The db context to mock/proxy.</param>
-            <returns>A mocked db context.</returns>
-            <remarks>dbContextToMock would typically be an in-memory database instance.</remarks>
-        </member>
-        <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.DbContextExtensions.CreateMockedDbContext``1(``0)">
-            <summary>Creates and sets up a mocked db context.</summary>
-            <typeparam name="TDbContext">The db context type.</typeparam>
-            <param name="dbContextToMock">The db context to mock/proxy.</param>
-            <returns>A mocked db context.</returns>
-            <remarks>dbContextToMock would typically be an in-memory database instance.</remarks>
-        </member>
-        <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.DbContextExtensions.AddExecuteSqlCommandResult``1(``0,System.Int32,System.Action)">
-            <summary>Sets up ExecuteSqlCommand invocations to return a specified result.</summary>
-            <typeparam name="TDbContext">The db context type.</typeparam>
-            <param name="mockedDbContext">The mocked db context.</param>
-            <param name="executeSqlCommandResult">The integer to return when ExecuteSqlCommand is invoked.</param>
-            <param name="callback">Operations to perform after ExecuteSqlCommand is invoked.</param>
-            <returns>The mocked db context.</returns>
-        </member>
-        <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.DbContextExtensions.AddExecuteSqlCommandResult``1(``0,System.String,System.Int32,System.Action)">
-            <summary>Sets up ExecuteSqlCommand invocations containing a specified sql string to return a specified result.</summary>
-            <typeparam name="TDbContext">The db context type.</typeparam>
-            <param name="mockedDbContext">The mocked db context.</param>
-            <param name="sql">The ExecuteSqlCommand sql string. Set up supports case insensitive partial matches.</param>
-            <param name="executeSqlCommandResult">The integer to return when ExecuteSqlCommand is invoked.</param>
-            <param name="callback">Operations to perform after ExecuteSqlCommand is invoked.</param>
-            <returns>The mocked db context.</returns>
-        </member>
-        <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.DbContextExtensions.AddExecuteSqlCommandResult``1(``0,System.String,System.Collections.Generic.IEnumerable{System.Object},System.Int32,System.Action)">
-            <summary>Sets up ExecuteSqlCommand invocations containing a specified sql string and parameters to return a specified result.</summary>
-            <typeparam name="TDbContext">The db context type.</typeparam>
-            <param name="mockedDbContext">The mocked db context.</param>
-            <param name="sql">The ExecuteSqlCommand sql string. Set up supports case insensitive partial matches.</param>
-            <param name="parameters">The ExecuteSqlCommand parameters. Set up supports case insensitive partial parameter sequence matching.</param>
-            <param name="executeSqlCommandResult">The integer to return when ExecuteSqlCommand is invoked.</param>
-            <param name="callback">Operations to perform after ExecuteSqlCommand is invoked.</param>
-            <returns>The mocked db context.</returns>
-        </member>
         <member name="T:EntityFrameworkCore.Testing.Moq.Extensions.DbQueryExtensions">
-            <summary>Extensions for the db query type.</summary>
-            <summary>Extensions for the db query type.</summary>
-        </member>
-        <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.DbQueryExtensions.CreateMockedDbQuery``1(Microsoft.EntityFrameworkCore.DbQuery{``0})">
-            <summary>Creates and sets up a mocked db query.</summary>
-            <typeparam name="TQuery">The query type.</typeparam>
-            <param name="dbQuery">The db query to mock.</param>
-            <returns>A mocked db query.</returns>
+            <summary>
+                Extensions for db queries.
+            </summary>
         </member>
         <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.DbQueryExtensions.AddToReadOnlySource``1(Microsoft.EntityFrameworkCore.DbQuery{``0},``0)">
             <summary>Adds an item to the end of the mocked db query source.</summary>
@@ -119,44 +96,10 @@
             <typeparam name="TQuery">The query type.</typeparam>
             <param name="mockedDbQuery">The mocked db query.</param>
         </member>
-        <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.DbQueryExtensions.CreateMock``1(Microsoft.EntityFrameworkCore.DbQuery{``0})">
-            <summary>Creates and sets up a mocked db query.</summary>
-            <typeparam name="TQuery">The query type.</typeparam>
-            <param name="dbQuery">The db query to mock.</param>
-            <returns>A mocked db query.</returns>
-        </member>
-        <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.DbQueryExtensions.Add``1(Microsoft.EntityFrameworkCore.DbQuery{``0},``0)">
-            <summary>Adds an item to the end of the mocked db query source.</summary>
-            <typeparam name="TQuery">The query type.</typeparam>
-            <param name="mockedDbQuery">The mocked db query.</param>
-            <param name="item">The item to be added to the end of the mocked db query source.</param>
-        </member>
-        <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.DbQueryExtensions.AddRange``1(Microsoft.EntityFrameworkCore.DbQuery{``0},System.Collections.Generic.IEnumerable{``0})">
-            <summary>Adds the items of the specified sequence to the end of the mocked db query source.</summary>
-            <typeparam name="TQuery">The query type.</typeparam>
-            <param name="mockedDbQuery">The mocked db query.</param>
-            <param name="items">The sequence whose items should be added to the end of the mocked db query source.</param>
-        </member>
-        <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.DbQueryExtensions.Clear``1(Microsoft.EntityFrameworkCore.DbQuery{``0})">
-            <summary>Removes all items from the mocked db query source.</summary>
-            <typeparam name="TQuery">The query type.</typeparam>
-            <param name="mockedDbQuery">The mocked db query.</param>
-        </member>
         <member name="T:EntityFrameworkCore.Testing.Moq.Extensions.DbSetExtensions">
-            <summary>Extensions for the db set type.</summary>
-            <summary>Extensions for the db set type.</summary>
-        </member>
-        <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.DbSetExtensions.CreateMockedDbSet``1(Microsoft.EntityFrameworkCore.DbSet{``0})">
-            <summary>Creates and sets up a mocked db set.</summary>
-            <typeparam name="TEntity">The entity type.</typeparam>
-            <param name="dbSet">The db set to mock/proxy.</param>
-            <returns>A mocked db set.</returns>
-        </member>
-        <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.DbSetExtensions.CreateMock``1(Microsoft.EntityFrameworkCore.DbSet{``0})">
-            <summary>Creates and sets up a mocked db set.</summary>
-            <typeparam name="TEntity">The entity type.</typeparam>
-            <param name="dbSet">The db set to mock/proxy.</param>
-            <returns>A mocked db set.</returns>
+            <summary>
+                Extensions for db sets.
+            </summary>
         </member>
         <member name="T:EntityFrameworkCore.Testing.Moq.Extensions.QueryableExtensions">
             <summary>Extensions for queryable types.</summary>
@@ -186,15 +129,9 @@
             <returns>The mocked queryable.</returns>
         </member>
         <member name="T:EntityFrameworkCore.Testing.Moq.Extensions.QueryProviderExtensions">
-            <summary>Extensions for query provider and mock query provider types.</summary>
-            <summary>Extensions for query provider and mock query provider types.</summary>
-        </member>
-        <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.QueryProviderExtensions.CreateMockedQueryProvider``1(System.Linq.IQueryProvider,System.Collections.Generic.IEnumerable{``0})">
-            <summary>Creates a mocked query provider.</summary>
-            <typeparam name="T">The query provider source item type.</typeparam>
-            <param name="queryProviderToMock">The query provider to mock.</param>
-            <param name="enumerable">The query provider source.</param>
-            <returns>A mocked query provider.</returns>
+            <summary>
+                Extensions for query providers.
+            </summary>
         </member>
         <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.QueryProviderExtensions.AddFromSqlResult``1(System.Linq.IQueryProvider,System.Collections.Generic.IEnumerable{``0})">
             <summary>Sets up FromSql invocations to return a specified result.</summary>
@@ -220,56 +157,31 @@
             <param name="fromSqlResult">The sequence to return when FromSql is invoked.</param>
             <returns>The mocked query provider.</returns>
         </member>
-        <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.QueryProviderExtensions.CreateMock``1(System.Linq.IQueryProvider,System.Collections.Generic.IEnumerable{``0})">
-            <summary>Creates a mocked query provider.</summary>
-            <typeparam name="T">The query provider source item type.</typeparam>
-            <param name="queryProviderToMock">The query provider to mock.</param>
-            <param name="enumerable">The query provider source.</param>
-            <returns>A mocked query provider.</returns>
-        </member>
-        <member name="T:EntityFrameworkCore.Testing.Moq.Helpers.Create">
-            <summary>Factory for creating mocked instances.</summary>
-        </member>
-        <member name="M:EntityFrameworkCore.Testing.Moq.Helpers.Create.MockedDbContextFor``1(``0)">
-            <summary>Creates a mocked db context.</summary>
-            <typeparam name="TDbContext">The db context type.</typeparam>
-            <param name="dbContextToMock">The db context to mock.</param>
-            <returns>A mocked db context.</returns>
-        </member>
-        <member name="M:EntityFrameworkCore.Testing.Moq.Helpers.Create.MockedDbContextFor``1">
-            <summary>Creates a mocked db context.</summary>
-            <typeparam name="TDbContext">The db context type.</typeparam>
-            <returns>A mocked db context.</returns>
-            <remarks>TDbContext must have a constructor with a single parameter of type DbContextOptionsBuilder.</remarks>
-        </member>
-        <member name="M:EntityFrameworkCore.Testing.Moq.Helpers.Create.MockedDbContextFor``1(System.Func{``0})">
-            <summary>Creates a mocked db context.</summary>
-            <typeparam name="TDbContext">The db context type.</typeparam>
-            <param name="factory">A factory method that will create an instance of TDbContext.</param>
-            <returns>A mocked db context.</returns>
-        </member>
-        <member name="M:EntityFrameworkCore.Testing.Moq.Helpers.Create.MockedDbSetFor``1(Microsoft.EntityFrameworkCore.DbSet{``0})">
-            <summary>Creates a mocked db set.</summary>
-            <typeparam name="TEntity">The entity type.</typeparam>
-            <param name="dbSetToMock">The db set to mock.</param>
-            <returns>A mocked db set.</returns>
-        </member>
-        <member name="M:EntityFrameworkCore.Testing.Moq.Helpers.Create.MockedDbQueryFor``1(Microsoft.EntityFrameworkCore.DbQuery{``0})">
-            <summary>Creates a mocked db query.</summary>
-            <typeparam name="TQuery">The query type.</typeparam>
-            <param name="dbQueryToMock">The db query to mock.</param>
-            <returns>A mocked db query.</returns>
-        </member>
-        <member name="M:EntityFrameworkCore.Testing.Moq.Helpers.Create.MockedQueryProviderFor``1(System.Linq.IQueryable{``0})">
+        <member name="T:EntityFrameworkCore.Testing.Moq.Helpers.MockedDbContextBuilder`1">
             <summary>
-                Creates a mocked query provider.
+                The mocked db context builder.
             </summary>
-            <typeparam name="T">The queryable type.</typeparam>
-            <param name="queryable">The query provider source.</param>
-            <returns>A mocked query provider.</returns>
+            <typeparam name="TDbContext">The db context type.</typeparam>
         </member>
-        <member name="M:EntityFrameworkCore.Testing.Moq.Helpers.MockedDbContextFactory`1.Create">
-            <summary>Creates and sets up a mocked db context.</summary>
+        <member name="M:EntityFrameworkCore.Testing.Moq.Helpers.MockedDbContextBuilder`1.UsingConstructorWithParameters(System.Object[])">
+            <summary>
+                The parameters that will be used to create the mocked db context and, if one is not provided,
+                the in-memory context that the mocked db context will use for in-memory provider supported operations.
+            </summary>
+            <param name="constructorParameters">
+                The constructor parameters.
+            </param>
+            <returns>The mocked db context builder.</returns>
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.Moq.Helpers.MockedDbContextBuilder`1.UsingDbContext(`0)">
+            <summary>
+                The db context instance that the mocked db context will use for in-memory provider supported operations.
+            </summary>
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.Moq.Helpers.MockedDbContextBuilder`1.Create">
+            <summary>
+                Creates the mocked db context.
+            </summary>
             <returns>A mocked db context.</returns>
         </member>
     </members>

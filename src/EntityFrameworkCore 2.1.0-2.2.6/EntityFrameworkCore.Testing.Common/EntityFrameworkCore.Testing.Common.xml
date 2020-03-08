@@ -28,32 +28,6 @@
         <member name="M:EntityFrameworkCore.Testing.Common.AsyncQueryProvider`1.ExecuteAsync``1(System.Linq.Expressions.Expression,System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="T:EntityFrameworkCore.Testing.Common.EnsureArgument">
-            <summary>A helper to perform checks on arguments.</summary>
-        </member>
-        <member name="M:EntityFrameworkCore.Testing.Common.EnsureArgument.IsNotNullOrEmpty(System.String,System.String)">
-            <summary>Ensures that a string argument is not null or empty.</summary>
-            <param name="string">The string argument.</param>
-            <param name="argumentName">The argument name.</param>
-            <returns>The string argument.</returns>
-            <exception cref="T:System.ArgumentNullException">If the string argument is null.</exception>
-            <exception cref="T:System.ArgumentException">If the string argument is empty.</exception>
-        </member>
-        <member name="M:EntityFrameworkCore.Testing.Common.EnsureArgument.IsNotNull``1(``0,System.String)">
-            <summary>Ensures that an argument is not null.</summary>
-            <typeparam name="T">The argument type.</typeparam>
-            <param name="argument">The argument.</param>
-            <param name="argumentName">The argument name.</param>
-            <returns>The argument.</returns>
-            <exception cref="T:System.ArgumentNullException">If the argument is null.</exception>
-        </member>
-        <member name="M:EntityFrameworkCore.Testing.Common.EnsureArgument.IsNotEmpty``1(System.Collections.Generic.IEnumerable{``0},System.String)">
-            <summary>Ensures that a sequence is not empty.</summary>
-            <typeparam name="T">The enumerable item type.</typeparam>
-            <param name="enumerable">The enumerable argument.</param>
-            <param name="argumentName">The enumerable argument name.</param>
-            <returns>The enumerable argument.</returns>
-        </member>
         <member name="T:EntityFrameworkCore.Testing.Common.ExceptionMessages">
             <summary>
               A strongly-typed resource class, for looking up localized strings, etc.
@@ -85,6 +59,11 @@
               Looks up a localized string similar to Value required for &apos;{0}&apos;..
             </summary>
         </member>
+        <member name="P:EntityFrameworkCore.Testing.Common.ExceptionMessages.UnableToFindSuitableDbContextConstructor">
+            <summary>
+              Looks up a localized string similar to Unable to find a suitable constructor. TDbContext must have a parameterless or DbContextOptions/DbContextOptions&lt;TDbContext&gt; constructor..
+            </summary>
+        </member>
         <member name="T:EntityFrameworkCore.Testing.Common.Extensions.StringExtensions">
             <summary>Extensions for the <see cref="T:System.String" /> type.</summary>
         </member>
@@ -103,6 +82,66 @@
             <param name="type">The type to get the default value for.</param>
             <returns>The default value for the specified type.</returns>
         </member>
+        <member name="T:EntityFrameworkCore.Testing.Common.Helpers.BaseMockedDbContextFactory`1">
+            <summary>
+                The base mocked db context factory.
+            </summary>
+            <typeparam name="TDbContext">The db context type.</typeparam>
+        </member>
+        <member name="F:EntityFrameworkCore.Testing.Common.Helpers.BaseMockedDbContextFactory`1.Logger">
+            <summary>
+                The logger instance.
+            </summary>
+        </member>
+        <member name="F:EntityFrameworkCore.Testing.Common.Helpers.BaseMockedDbContextFactory`1.ConstructorParameters">
+            <summary>
+                The parameters that will be used to create the mocked db context and, if one is not provided,
+                the in-memory context that the mocked db context will use for in-memory provider supported operations.
+            </summary>
+        </member>
+        <member name="F:EntityFrameworkCore.Testing.Common.Helpers.BaseMockedDbContextFactory`1.DbContext">
+            <summary>
+                The db context instance that the mocked db context will use for in-memory provider supported operations.
+            </summary>
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.Common.Helpers.BaseMockedDbContextFactory`1.#ctor(EntityFrameworkCore.Testing.Common.Helpers.MockedDbContextFactoryOptions{`0})">
+            <summary>
+                Constructor.
+            </summary>
+            <param name="options">The mocked db context factory options.</param>
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.Common.Helpers.BaseMockedDbContextFactory`1.Create">
+            <summary>
+                Creates and sets up a mocked db context.
+            </summary>
+            <returns>A mocked db context.</returns>
+        </member>
+        <member name="T:EntityFrameworkCore.Testing.Common.Helpers.EnsureArgument">
+            <summary>A helper to perform checks on arguments.</summary>
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.Common.Helpers.EnsureArgument.IsNotNullOrEmpty(System.String,System.String)">
+            <summary>Ensures that a string argument is not null or empty.</summary>
+            <param name="string">The string argument.</param>
+            <param name="argumentName">The argument name.</param>
+            <returns>The string argument.</returns>
+            <exception cref="T:System.ArgumentNullException">If the string argument is null.</exception>
+            <exception cref="T:System.ArgumentException">If the string argument is empty.</exception>
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.Common.Helpers.EnsureArgument.IsNotNull``1(``0,System.String)">
+            <summary>Ensures that an argument is not null.</summary>
+            <typeparam name="T">The argument type.</typeparam>
+            <param name="argument">The argument.</param>
+            <param name="argumentName">The argument name.</param>
+            <returns>The argument.</returns>
+            <exception cref="T:System.ArgumentNullException">If the argument is null.</exception>
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.Common.Helpers.EnsureArgument.IsNotEmpty``1(System.Collections.Generic.IEnumerable{``0},System.String)">
+            <summary>Ensures that a sequence is not empty.</summary>
+            <typeparam name="T">The enumerable item type.</typeparam>
+            <param name="enumerable">The enumerable argument.</param>
+            <param name="argumentName">The enumerable argument name.</param>
+            <returns>The enumerable argument.</returns>
+        </member>
         <member name="T:EntityFrameworkCore.Testing.Common.Helpers.ExpressionHelper">
             <summary>A helper for creating expressions.</summary>
         </member>
@@ -112,6 +151,33 @@
             <typeparam name="TProperty">The expression property.</typeparam>
             <param name="propertyInfo">The property info of the property to create the expression for.</param>
             <returns>A property expression for the specified property.</returns>
+        </member>
+        <member name="T:EntityFrameworkCore.Testing.Common.Helpers.IMockedDbContextBuilder`1">
+            <summary>
+                The mocked db context builder.
+            </summary>
+            <typeparam name="TDbContext">The db context type.</typeparam>
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.Common.Helpers.IMockedDbContextBuilder`1.UsingConstructorWithParameters(System.Object[])">
+            <summary>
+                The parameters that will be used to create the mocked db context and, if one is not provided,
+                the in-memory context that the mocked db context will use for in-memory provider supported operations.
+            </summary>
+            <param name="constructorParameters">
+                The constructor parameters.
+            </param>
+            <returns>The mocked db context builder.</returns>
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.Common.Helpers.IMockedDbContextBuilder`1.UsingDbContext(`0)">
+            <summary>
+                The db context instance that the mocked db context will use for in-memory provider supported operations.
+            </summary>
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.Common.Helpers.IMockedDbContextBuilder`1.Create">
+            <summary>
+                Creates the mocked db context.
+            </summary>
+            <returns>A mocked db context.</returns>
         </member>
         <member name="T:EntityFrameworkCore.Testing.Common.Helpers.LoggerHelper">
             <summary>A helper for creating loggers.</summary>
@@ -134,13 +200,22 @@
             <param name="type">The type.</param>
             <returns>A new logger instance.</returns>
         </member>
-        <member name="M:EntityFrameworkCore.Testing.Common.Helpers.MockedDbContextFactoryBase`1.#ctor(System.Object[])">
-            <summary>Constructor.</summary>
-            <param name="constructorParameters">The db context constructor parameters.</param>
+        <member name="T:EntityFrameworkCore.Testing.Common.Helpers.MockedDbContextFactoryOptions`1">
+            <summary>
+                The mocked db context factory options.
+            </summary>
+            <typeparam name="TDbContext">The db context type.</typeparam>
         </member>
-        <member name="M:EntityFrameworkCore.Testing.Common.Helpers.MockedDbContextFactoryBase`1.Create">
-            <summary>Creates and sets up a mocked db context.</summary>
-            <returns>A mocked db context.</returns>
+        <member name="P:EntityFrameworkCore.Testing.Common.Helpers.MockedDbContextFactoryOptions`1.DbContext">
+            <summary>
+                The db context instance that the mocked db context will use for in-memory provider supported operations.
+            </summary>
+        </member>
+        <member name="P:EntityFrameworkCore.Testing.Common.Helpers.MockedDbContextFactoryOptions`1.ConstructorParameters">
+            <summary>
+                The parameters that will be used to create the mocked db context and, if one is not provided,
+                the in-memory context that the mocked db context will use for in-memory provider supported operations.
+            </summary>
         </member>
         <member name="T:EntityFrameworkCore.Testing.Common.Helpers.ParameterMatchingHelper">
             <summary>A helper for parameter matching.</summary>
