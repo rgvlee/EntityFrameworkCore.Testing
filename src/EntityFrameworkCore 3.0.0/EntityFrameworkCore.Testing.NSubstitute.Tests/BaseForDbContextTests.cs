@@ -7,7 +7,7 @@ using NUnit.Framework;
 namespace EntityFrameworkCore.Testing.NSubstitute.Tests
 {
     [TestFixture]
-    public class DbContextTestsBase<T> : Common.Tests.DbContextTestsBase<T> where T : DbContext
+    public class BaseForDbContextTests<T> : Common.Tests.BaseForDbContextTests<T> where T : DbContext
     {
         public override void AddExecuteSqlCommandResult(T mockedDbContext, int expectedResult)
         {

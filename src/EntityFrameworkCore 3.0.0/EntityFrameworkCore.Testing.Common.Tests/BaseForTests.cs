@@ -6,7 +6,7 @@ using NUnit.Framework;
 namespace EntityFrameworkCore.Testing.Common.Tests
 {
     [TestFixture]
-    public abstract class TestBase
+    public abstract class BaseForTests
     {
         [SetUp]
         public virtual void SetUp()
@@ -17,6 +17,6 @@ namespace EntityFrameworkCore.Testing.Common.Tests
 
         protected Fixture Fixture;
 
-        protected static readonly ILogger Logger = LoggerHelper.CreateLogger(typeof(TestBase));
+        protected static readonly ILogger Logger = LoggerHelper.CreateLogger(typeof(BaseForTests));
     }
 }

@@ -1,19 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using EntityFrameworkCore.Testing.Common.Tests;
-using EntityFrameworkCore.Testing.NSubstitute.Extensions;
+using EntityFrameworkCore.Testing.Moq.Extensions;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 
-namespace EntityFrameworkCore.Testing.NSubstitute.Tests
+namespace EntityFrameworkCore.Testing.Moq.Tests
 {
     [TestFixture]
-    public abstract class DbSetTestsBase<T> : DbSetTestsBase<TestDbContext, T> where T : TestEntityBase
+    public abstract class BaseForDbQueryTests<T> : BaseForReadOnlyDbSetTests<T> where T : BaseTestEntity
     {
-        protected override TestDbContext CreateMockedDbContext()
+        [SetUp]
+        public override void SetUp()
         {
-            return Create.MockedDbContextFor<TestDbContext>();
+            MockedDbContext = Create.MockedDbContextFor<TestDbContext>();
+            base.SetUp();
         }
+
+        protected TestDbContext MockedDbContext;
 
         protected override void AddFromSqlRawResult(DbSet<T> mockedDbSet, IEnumerable<T> expectedResult)
         {
@@ -43,6 +47,21 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Tests
         protected override void AddFromSqlInterpolatedResult(DbSet<T> mockedDbSet, string sql, IEnumerable<object> parameters, IEnumerable<T> expectedResult)
         {
             mockedDbSet.AddFromSqlInterpolatedResult(sql, parameters, expectedResult);
+        }
+
+        protected override void AddToReadOnlySource(DbSet<T> mockedDbQuery, T item)
+        {
+            mockedDbQuery.AddToReadOnlySource(item);
+        }
+
+        protected override void AddRangeToReadOnlySource(DbSet<T> mockedDbQuery, IEnumerable<T> items)
+        {
+            mockedDbQuery.AddRangeToReadOnlySource(items);
+        }
+
+        protected override void ClearReadOnlySource(DbSet<T> mockedDbQuery)
+        {
+            mockedDbQuery.ClearReadOnlySource();
         }
     }
 }

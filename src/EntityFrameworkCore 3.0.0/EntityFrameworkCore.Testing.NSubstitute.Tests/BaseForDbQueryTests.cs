@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using EntityFrameworkCore.Testing.Common.Tests;
-using EntityFrameworkCore.Testing.Moq.Extensions;
+using EntityFrameworkCore.Testing.NSubstitute.Extensions;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 
-namespace EntityFrameworkCore.Testing.Moq.Tests
+namespace EntityFrameworkCore.Testing.NSubstitute.Tests
 {
     [TestFixture]
-    public abstract class DbQueryTestsBase<T> : ReadOnlyDbSetTestsBase<T> where T : TestEntityBase
+    public abstract class BaseForDbQueryTests<T> : BaseForReadOnlyDbSetTests<T> where T : BaseTestEntity
     {
         [SetUp]
         public override void SetUp()

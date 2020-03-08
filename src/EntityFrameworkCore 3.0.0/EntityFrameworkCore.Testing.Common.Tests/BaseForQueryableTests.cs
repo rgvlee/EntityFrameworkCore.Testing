@@ -11,8 +11,8 @@ using NUnit.Framework;
 namespace EntityFrameworkCore.Testing.Common.Tests
 {
     [TestFixture]
-    public abstract class QueryableTestsBase<T> : TestBase
-        where T : TestEntityBase
+    public abstract class BaseForQueryableTests<T> : BaseForTests
+        where T : BaseTestEntity
     {
         protected abstract IQueryable<T> Queryable { get; }
         protected abstract void SeedQueryableSource();

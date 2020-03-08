@@ -11,8 +11,8 @@ using NUnit.Framework;
 namespace EntityFrameworkCore.Testing.Common.Tests
 {
     [TestFixture]
-    public abstract class ReadOnlyDbSetTestsBase<TEntity> : MockedDbSetQueryProviderTestsBase<TEntity>
-        where TEntity : TestEntityBase
+    public abstract class BaseForReadOnlyDbSetTests<TEntity> : BaseForMockedDbSetQueryProviderTests<TEntity>
+        where TEntity : BaseTestEntity
     {
         protected override void SeedQueryableSource()
         {

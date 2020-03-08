@@ -9,9 +9,9 @@ using NUnit.Framework;
 namespace EntityFrameworkCore.Testing.Common.Tests
 {
     [TestFixture]
-    public abstract class DbSetTestsBase<TDbContext, TEntity> : MockedDbSetQueryProviderTestsBase<TEntity>
+    public abstract class BaseForDbSetTests<TDbContext, TEntity> : BaseForMockedDbSetQueryProviderTests<TEntity>
         where TDbContext : DbContext
-        where TEntity : TestEntityBase
+        where TEntity : BaseTestEntity
     {
         [SetUp]
         public override void SetUp()
