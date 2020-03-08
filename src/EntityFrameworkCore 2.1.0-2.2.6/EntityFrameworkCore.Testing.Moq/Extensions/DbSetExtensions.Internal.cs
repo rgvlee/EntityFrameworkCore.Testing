@@ -17,18 +17,19 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
     /// </summary>
     public static class DbSetExtensions
     {
-        internal static DbSet<TEntity> CreateMockedDbSet<TEntity>(this DbSet<TEntity> dbSet)
-            where TEntity : class
+        internal static DbSet<TEntity> CreateMockedDbSet<TEntity>(this DbSet<TEntity> dbSet) where TEntity : class
         {
             EnsureArgument.IsNotNull(dbSet, nameof(dbSet));
 
             var dbSetMock = new Mock<DbSet<TEntity>>();
 
             dbSetMock.Setup(m => m.Add(It.IsAny<TEntity>())).Returns((TEntity providedEntity) => dbSet.Add(providedEntity));
-            dbSetMock.Setup(m => m.AddAsync(It.IsAny<TEntity>(), It.IsAny<CancellationToken>())).Returns((TEntity providedEntity, CancellationToken providedCancellationToken) => dbSet.AddAsync(providedEntity, providedCancellationToken));
+            dbSetMock.Setup(m => m.AddAsync(It.IsAny<TEntity>(), It.IsAny<CancellationToken>()))
+                .Returns((TEntity providedEntity, CancellationToken providedCancellationToken) => dbSet.AddAsync(providedEntity, providedCancellationToken));
             dbSetMock.Setup(m => m.AddRange(It.IsAny<IEnumerable<TEntity>>())).Callback((IEnumerable<TEntity> providedEntities) => dbSet.AddRange(providedEntities));
             dbSetMock.Setup(m => m.AddRange(It.IsAny<TEntity[]>())).Callback((TEntity[] providedEntities) => dbSet.AddRange(providedEntities));
-            dbSetMock.Setup(m => m.AddRangeAsync(It.IsAny<IEnumerable<TEntity>>(), It.IsAny<CancellationToken>())).Returns((IEnumerable<TEntity> providedEntities, CancellationToken providedCancellationToken) => dbSet.AddRangeAsync(providedEntities, providedCancellationToken));
+            dbSetMock.Setup(m => m.AddRangeAsync(It.IsAny<IEnumerable<TEntity>>(), It.IsAny<CancellationToken>()))
+                .Returns((IEnumerable<TEntity> providedEntities, CancellationToken providedCancellationToken) => dbSet.AddRangeAsync(providedEntities, providedCancellationToken));
             dbSetMock.Setup(m => m.AddRangeAsync(It.IsAny<TEntity[]>())).Returns((TEntity[] providedEntities) => dbSet.AddRangeAsync(providedEntities));
 
             dbSetMock.As<IAsyncEnumerableAccessor<TEntity>>().Setup(m => m.AsyncEnumerable).Returns(((IAsyncEnumerableAccessor<TEntity>) dbSet).AsyncEnumerable);
@@ -44,7 +45,8 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
 
             dbSetMock.Setup(m => m.Find(It.IsAny<object[]>())).Returns((object[] providedKeyValues) => dbSet.Find(providedKeyValues));
             dbSetMock.Setup(m => m.FindAsync(It.IsAny<object[]>())).Returns((object[] providedKeyValues) => dbSet.FindAsync(providedKeyValues));
-            dbSetMock.Setup(m => m.FindAsync(It.IsAny<object[]>(), It.IsAny<CancellationToken>())).Returns((object[] providedKeyValues, CancellationToken providedCancellationToken) => dbSet.FindAsync(providedKeyValues, providedCancellationToken));
+            dbSetMock.Setup(m => m.FindAsync(It.IsAny<object[]>(), It.IsAny<CancellationToken>()))
+                .Returns((object[] providedKeyValues, CancellationToken providedCancellationToken) => dbSet.FindAsync(providedKeyValues, providedCancellationToken));
 
             dbSetMock.As<IEnumerable>().Setup(m => m.GetEnumerator()).Returns(() => ((IEnumerable) dbSet).GetEnumerator());
             dbSetMock.As<IEnumerable<TEntity>>().Setup(m => m.GetEnumerator()).Returns(() => ((IEnumerable<TEntity>) dbSet).GetEnumerator());

@@ -22,20 +22,24 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
     {
         private static readonly ILogger Logger = LoggerHelper.CreateLogger(typeof(DbContextExtensions));
 
-        /// <summary>Sets up ExecuteSqlInterpolated invocations to return a specified result.</summary>
+        /// <summary>
+        ///     Sets up ExecuteSqlInterpolated invocations to return a specified result.
+        /// </summary>
         /// <typeparam name="TDbContext">The db context type.</typeparam>
         /// <param name="mockedDbContext">The mocked db context.</param>
         /// <param name="executeSqlInterpolatedResult">The integer to return when ExecuteSqlInterpolated is invoked.</param>
         /// <param name="callback">Operations to perform after ExecuteSqlCommand is invoked.</param>
         /// <returns>The mocked db context.</returns>
-        public static TDbContext AddExecuteSqlInterpolatedResult<TDbContext>(this TDbContext mockedDbContext, int executeSqlInterpolatedResult, Action<string, IEnumerable<object>> callback = null)
-            where TDbContext : DbContext
+        public static TDbContext AddExecuteSqlInterpolatedResult<TDbContext>(
+            this TDbContext mockedDbContext, int executeSqlInterpolatedResult, Action<string, IEnumerable<object>> callback = null) where TDbContext : DbContext
         {
             EnsureArgument.IsNotNull(mockedDbContext, nameof(mockedDbContext));
             return mockedDbContext.AddExecuteSqlRawResult(string.Empty, new List<object>(), executeSqlInterpolatedResult, callback);
         }
 
-        /// <summary>Sets up ExecuteSqlInterpolated invocations containing a specified sql string to return a specified result.</summary>
+        /// <summary>
+        ///     Sets up ExecuteSqlInterpolated invocations containing a specified sql string to return a specified result.
+        /// </summary>
         /// <typeparam name="TDbContext">The db context type.</typeparam>
         /// <param name="mockedDbContext">The mocked db context.</param>
         /// <param name="sql">The ExecuteSqlInterpolated sql string. Set up supports case insensitive partial matches.</param>
@@ -50,7 +54,9 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
             return mockedDbContext.AddExecuteSqlRawResult(sql.Format, sql.GetArguments(), executeSqlInterpolatedResult, callback);
         }
 
-        /// <summary>Sets up ExecuteSqlInterpolated invocations containing a specified sql string to return a specified result.</summary>
+        /// <summary>
+        ///     Sets up ExecuteSqlInterpolated invocations containing a specified sql string to return a specified result.
+        /// </summary>
         /// <typeparam name="TDbContext">The db context type.</typeparam>
         /// <param name="mockedDbContext">The mocked db context.</param>
         /// <param name="sql">The ExecuteSqlInterpolated sql string. Set up supports case insensitive partial matches.</param>
@@ -66,7 +72,9 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
             return mockedDbContext.AddExecuteSqlRawResult(sql, parameters, executeSqlInterpolatedResult, callback);
         }
 
-        /// <summary>Sets up ExecuteSqlRaw invocations to return a specified result.</summary>
+        /// <summary>
+        ///     Sets up ExecuteSqlRaw invocations to return a specified result.
+        /// </summary>
         /// <typeparam name="TDbContext">The db context type.</typeparam>
         /// <param name="mockedDbContext">The mocked db context.</param>
         /// <param name="executeSqlRawResult">The integer to return when ExecuteSqlRaw is invoked.</param>
@@ -79,21 +87,25 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
             return mockedDbContext.AddExecuteSqlRawResult(string.Empty, new List<object>(), executeSqlRawResult, callback);
         }
 
-        /// <summary>Sets up ExecuteSqlRaw invocations containing a specified sql string and parameters to return a specified result.</summary>
+        /// <summary>
+        ///     Sets up ExecuteSqlRaw invocations containing a specified sql string and parameters to return a specified result.
+        /// </summary>
         /// <typeparam name="TDbContext">The db context type.</typeparam>
         /// <param name="mockedDbContext">The mocked db context.</param>
         /// <param name="sql">The ExecuteSqlRaw sql string. Set up supports case insensitive partial matches.</param>
         /// <param name="executeSqlRawResult">The integer to return when ExecuteSqlRaw is invoked.</param>
         /// <param name="callback">Operations to perform after ExecuteSqlCommand is invoked.</param>
         /// <returns>The mocked db context.</returns>
-        public static TDbContext AddExecuteSqlRawResult<TDbContext>(this TDbContext mockedDbContext, string sql, int executeSqlRawResult, Action<string, IEnumerable<object>> callback = null)
-            where TDbContext : DbContext
+        public static TDbContext AddExecuteSqlRawResult<TDbContext>(
+            this TDbContext mockedDbContext, string sql, int executeSqlRawResult, Action<string, IEnumerable<object>> callback = null) where TDbContext : DbContext
         {
             EnsureArgument.IsNotNull(mockedDbContext, nameof(mockedDbContext));
             return mockedDbContext.AddExecuteSqlRawResult(sql, new List<object>(), executeSqlRawResult, callback);
         }
 
-        /// <summary>Sets up ExecuteSqlRaw invocations containing a specified sql string and parameters to return a specified result.</summary>
+        /// <summary>
+        ///     Sets up ExecuteSqlRaw invocations containing a specified sql string and parameters to return a specified result.
+        /// </summary>
         /// <typeparam name="TDbContext">The db context type.</typeparam>
         /// <param name="mockedDbContext">The mocked db context.</param>
         /// <param name="sql">The ExecuteSqlRaw sql string. Set up supports case insensitive partial matches.</param>
@@ -110,13 +122,12 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
             EnsureArgument.IsNotNull(parameters, nameof(parameters));
 
             var relationalCommandMock = new Mock<IRelationalCommand>();
-            relationalCommandMock
-                .Setup(m => m.ExecuteNonQuery(It.IsAny<RelationalCommandParameterObject>()))
+            relationalCommandMock.Setup(m => m.ExecuteNonQuery(It.IsAny<RelationalCommandParameterObject>()))
                 .Returns((RelationalCommandParameterObject providedRelationalCommandParameterObject) => executeSqlRawResult);
 
-            relationalCommandMock
-                .Setup(m => m.ExecuteNonQueryAsync(It.IsAny<RelationalCommandParameterObject>(), It.IsAny<CancellationToken>()))
-                .Returns((RelationalCommandParameterObject providedRelationalCommandParameterObject, CancellationToken providedCancellationToken) => Task.FromResult(executeSqlRawResult));
+            relationalCommandMock.Setup(m => m.ExecuteNonQueryAsync(It.IsAny<RelationalCommandParameterObject>(), It.IsAny<CancellationToken>()))
+                .Returns((RelationalCommandParameterObject providedRelationalCommandParameterObject, CancellationToken providedCancellationToken) =>
+                    Task.FromResult(executeSqlRawResult));
             var relationalCommand = relationalCommandMock.Object;
 
             var rawSqlCommandMock = new Mock<RawSqlCommand>(MockBehavior.Strict, relationalCommand, new Dictionary<string, object>());
@@ -125,16 +136,14 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
             var rawSqlCommand = rawSqlCommandMock.Object;
 
             var existingRawSqlCommandBuilder =
-                (((IInfrastructure<IServiceProvider>) mockedDbContext).Instance.GetService(typeof(IDatabaseFacadeDependencies)) as IRelationalDatabaseFacadeDependencies)?.RawSqlCommandBuilder;
+                (((IInfrastructure<IServiceProvider>) mockedDbContext).Instance.GetService(typeof(IDatabaseFacadeDependencies)) as IRelationalDatabaseFacadeDependencies)
+                ?.RawSqlCommandBuilder;
 
             if (existingRawSqlCommandBuilder != null)
             {
-                Mock.Get(existingRawSqlCommandBuilder).Setup(m =>
-                        m.Build(
-                            It.Is<string>(s => s.Contains(sql, StringComparison.CurrentCultureIgnoreCase)),
-                            It.Is<IEnumerable<object>>(p => ParameterMatchingHelper.DoInvocationParametersMatchSetUpParameters(parameters, p))
-                        )
-                    )
+                Mock.Get(existingRawSqlCommandBuilder)
+                    .Setup(m => m.Build(It.Is<string>(s => s.Contains(sql, StringComparison.CurrentCultureIgnoreCase))
+                        , It.Is<IEnumerable<object>>(p => ParameterMatchingHelper.DoInvocationParametersMatchSetUpParameters(parameters, p))))
                     .Returns((string providedSql, IEnumerable<object> providedParameters) => rawSqlCommand)
                     .Callback((string providedSql, IEnumerable<object> providedParameters) =>
                     {
@@ -150,17 +159,13 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
             else
             {
                 var rawSqlCommandBuilderMock = new Mock<IRawSqlCommandBuilder>();
-                rawSqlCommandBuilderMock
-                    .Setup(m => m.Build(It.IsAny<string>(), It.IsAny<IEnumerable<object>>()))
+                rawSqlCommandBuilderMock.Setup(m => m.Build(It.IsAny<string>(), It.IsAny<IEnumerable<object>>()))
                     .Callback((string providedSql, IEnumerable<object> providedParameters) => Logger.LogDebug("Catch all exception invoked"))
                     .Throws<InvalidOperationException>();
 
-                rawSqlCommandBuilderMock.Setup(m =>
-                        m.Build(
-                            It.Is<string>(s => s.Contains(sql, StringComparison.CurrentCultureIgnoreCase)),
-                            It.Is<IEnumerable<object>>(p => ParameterMatchingHelper.DoInvocationParametersMatchSetUpParameters(parameters, p))
-                        )
-                    )
+                rawSqlCommandBuilderMock
+                    .Setup(m => m.Build(It.Is<string>(s => s.Contains(sql, StringComparison.CurrentCultureIgnoreCase))
+                        , It.Is<IEnumerable<object>>(p => ParameterMatchingHelper.DoInvocationParametersMatchSetUpParameters(parameters, p))))
                     .Returns((string providedSql, IEnumerable<object> providedParameters) => rawSqlCommand)
                     .Callback((string providedSql, IEnumerable<object> providedParameters) =>
                     {

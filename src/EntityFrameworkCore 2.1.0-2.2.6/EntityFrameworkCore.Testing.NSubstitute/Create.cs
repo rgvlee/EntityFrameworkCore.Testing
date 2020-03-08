@@ -23,8 +23,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute
         ///     If you do not provide any constructor arguments this method attempt to create a TDbContext
         ///     via a constructor with a single DbContextOptionsBuilder parameter or a parameterless constructor.
         /// </remarks>
-        public static TDbContext MockedDbContextFor<TDbContext>(params object[] constructorParameters)
-            where TDbContext : DbContext
+        public static TDbContext MockedDbContextFor<TDbContext>(params object[] constructorParameters) where TDbContext : DbContext
         {
             return Build.MockFor<TDbContext>().UsingConstructorWithParameters(constructorParameters).Create();
         }
@@ -35,8 +34,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute
         /// <typeparam name="T">The queryable type.</typeparam>
         /// <param name="queryable">The query provider source.</param>
         /// <returns>A mocked query provider.</returns>
-        public static IQueryProvider MockedQueryProviderFor<T>(IQueryable<T> queryable)
-            where T : class
+        public static IQueryProvider MockedQueryProviderFor<T>(IQueryable<T> queryable) where T : class
         {
             EnsureArgument.IsNotNull(queryable, nameof(queryable));
             return queryable.Provider.CreateMockedQueryProvider(queryable);

@@ -11,17 +11,22 @@ using NUnit.Framework;
 namespace EntityFrameworkCore.Testing.Common.Tests
 {
     [TestFixture]
-    public abstract class BaseForDbContextTests<TDbContext> : BaseForTests
-        where TDbContext : DbContext
+    public abstract class BaseForDbContextTests<TDbContext> : BaseForTests where TDbContext : DbContext
     {
         protected TDbContext MockedDbContext;
 
         public abstract void AddExecuteSqlCommandResult(TDbContext mockedDbContext, int expectedResult);
+
         public abstract void AddExecuteSqlCommandResult(TDbContext mockedDbContext, int expectedResult, Action<string, IEnumerable<object>> callback);
+
         public abstract void AddExecuteSqlCommandResult(TDbContext mockedDbContext, string sql, int expectedResult);
+
         public abstract void AddExecuteSqlCommandResult(TDbContext mockedDbContext, string sql, int expectedResult, Action<string, IEnumerable<object>> callback);
+
         public abstract void AddExecuteSqlCommandResult(TDbContext mockedDbContext, string sql, IEnumerable<object> parameters, int expectedResult);
-        public abstract void AddExecuteSqlCommandResult(TDbContext mockedDbContext, string sql, IEnumerable<object> parameters, int expectedResult, Action<string, IEnumerable<object>> callback);
+
+        public abstract void AddExecuteSqlCommandResult(
+            TDbContext mockedDbContext, string sql, IEnumerable<object> parameters, int expectedResult, Action<string, IEnumerable<object>> callback);
 
         public static IEnumerable<TestCaseData> ExecuteSqlCommandWithCallback_InvokesCallback_TestCases()
         {
@@ -47,15 +52,13 @@ namespace EntityFrameworkCore.Testing.Common.Tests
             }
 
             var parameters = new List<object>();
-            if (!string.IsNullOrWhiteSpace(parameterName) &&
-                parameterValue != null)
+            if (!string.IsNullOrWhiteSpace(parameterName) && parameterValue != null)
             {
                 parameters.Add(new SqlParameter(parameterName, parameterValue));
             }
 
             Logger.LogDebug("Setting up ExecuteSqlCommand");
-            if (!string.IsNullOrWhiteSpace(sql) &&
-                parameters.Any())
+            if (!string.IsNullOrWhiteSpace(sql) && parameters.Any())
             {
                 AddExecuteSqlCommandResult(MockedDbContext, sql, parameters, expectedResult, Callback);
             }
@@ -73,8 +76,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
             Logger.LogDebug("Invoking ExecuteSqlCommand");
             var actualResult1 = default(int);
             var actualResult2 = default(int);
-            if (!string.IsNullOrWhiteSpace(sql) &&
-                parameters.Any())
+            if (!string.IsNullOrWhiteSpace(sql) && parameters.Any())
             {
                 actualResult1 = MockedDbContext.Database.ExecuteSqlCommand(sql, parameters);
                 actualResult2 = MockedDbContext.Database.ExecuteSqlCommand(sql, parameters);
@@ -120,15 +122,13 @@ namespace EntityFrameworkCore.Testing.Common.Tests
             }
 
             var parameters = new List<object>();
-            if (!string.IsNullOrWhiteSpace(parameterName) &&
-                parameterValue != null)
+            if (!string.IsNullOrWhiteSpace(parameterName) && parameterValue != null)
             {
                 parameters.Add(new SqlParameter(parameterName, parameterValue));
             }
 
             Logger.LogDebug("Setting up ExecuteSqlCommand");
-            if (!string.IsNullOrWhiteSpace(sql) &&
-                parameters.Any())
+            if (!string.IsNullOrWhiteSpace(sql) && parameters.Any())
             {
                 AddExecuteSqlCommandResult(MockedDbContext, sql, parameters, expectedResult, Callback);
             }
@@ -146,8 +146,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
             Logger.LogDebug("Invoking ExecuteSqlCommand");
             var actualResult1 = default(int);
             var actualResult2 = default(int);
-            if (!string.IsNullOrWhiteSpace(sql) &&
-                parameters.Any())
+            if (!string.IsNullOrWhiteSpace(sql) && parameters.Any())
             {
                 actualResult1 = await MockedDbContext.Database.ExecuteSqlCommandAsync(sql, parameters);
                 actualResult2 = await MockedDbContext.Database.ExecuteSqlCommandAsync(sql, parameters);
@@ -226,7 +225,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         public void ExecuteSqlCommand_SpecifiedSqlWithSqlParameterParameters_ReturnsExpectedResult()
         {
             var sql = "sp_WithParams";
-            var parameters = new List<SqlParameter> {new SqlParameter("@SomeParameter2", "Value2")};
+            var parameters = new List<SqlParameter> { new SqlParameter("@SomeParameter2", "Value2") };
             var expectedResult = 1;
             AddExecuteSqlCommandResult(MockedDbContext, sql, parameters, expectedResult);
 
@@ -244,8 +243,8 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         public void ExecuteSqlCommand_SpecifiedSqlWithSqlParameterParametersThatDoNotMatchSetUp_ThrowsException()
         {
             var sql = "sp_WithParams";
-            var setUpParameters = new List<SqlParameter> {new SqlParameter("@SomeParameter3", "Value3")};
-            var invocationParameters = new List<SqlParameter> {new SqlParameter("@SomeParameter1", "Value1"), new SqlParameter("@SomeParameter2", "Value2")};
+            var setUpParameters = new List<SqlParameter> { new SqlParameter("@SomeParameter3", "Value3") };
+            var invocationParameters = new List<SqlParameter> { new SqlParameter("@SomeParameter1", "Value1"), new SqlParameter("@SomeParameter2", "Value2") };
             var expectedResult = 1;
             AddExecuteSqlCommandResult(MockedDbContext, sql, setUpParameters, expectedResult);
 
@@ -264,7 +263,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         public void ExecuteSqlCommand_SpecifiedSqlWithStringParameterParameters_ReturnsExpectedResult()
         {
             var sql = "sp_WithParams";
-            var parameters = new List<string> {"Value2"};
+            var parameters = new List<string> { "Value2" };
             var expectedResult = 1;
             AddExecuteSqlCommandResult(MockedDbContext, sql, parameters, expectedResult);
 
@@ -337,7 +336,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         public async Task ExecuteSqlCommandAsync_SpecifiedSqlWithSqlParameterParameters_ReturnsExpectedResult()
         {
             var sql = "sp_WithParams";
-            var parameters = new List<SqlParameter> {new SqlParameter("@SomeParameter2", "Value2")};
+            var parameters = new List<SqlParameter> { new SqlParameter("@SomeParameter2", "Value2") };
             var expectedResult = 1;
             AddExecuteSqlCommandResult(MockedDbContext, sql, parameters, expectedResult);
 
@@ -355,7 +354,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         public async Task ExecuteSqlCommandAsync_SpecifiedSqlWithStringParameterParameters_ReturnsExpectedResult()
         {
             var sql = "sp_WithParams";
-            var parameters = new List<string> {"Value2"};
+            var parameters = new List<string> { "Value2" };
             var expectedResult = 1;
             AddExecuteSqlCommandResult(MockedDbContext, sql, parameters, expectedResult);
 

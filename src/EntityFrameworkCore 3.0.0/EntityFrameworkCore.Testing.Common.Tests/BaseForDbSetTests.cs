@@ -9,8 +9,7 @@ using NUnit.Framework;
 namespace EntityFrameworkCore.Testing.Common.Tests
 {
     [TestFixture]
-    public abstract class BaseForDbSetTests<TDbContext, TEntity> : BaseForMockedDbSetQueryProviderTests<TEntity>
-        where TDbContext : DbContext
+    public abstract class BaseForDbSetTests<TDbContext, TEntity> : BaseForMockedDbSetQueryProviderTests<TEntity> where TDbContext : DbContext
         where TEntity : BaseTestEntity
     {
         [SetUp]
@@ -22,9 +21,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
 
         protected override void SeedQueryableSource()
         {
-            var itemsToAdd = Fixture.Build<TEntity>()
-                .With(p => p.FixedDateTime, DateTime.Parse("2019-01-01"))
-                .CreateMany().ToList();
+            var itemsToAdd = Fixture.Build<TEntity>().With(p => p.FixedDateTime, DateTime.Parse("2019-01-01")).CreateMany().ToList();
             DbSet.AddRange(itemsToAdd);
             MockedDbContext.SaveChanges();
             ItemsAddedToQueryableSource = itemsToAdd;

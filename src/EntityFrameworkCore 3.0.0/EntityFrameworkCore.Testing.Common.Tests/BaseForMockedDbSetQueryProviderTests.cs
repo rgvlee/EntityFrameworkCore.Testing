@@ -11,15 +11,18 @@ using NUnit.Framework;
 namespace EntityFrameworkCore.Testing.Common.Tests
 {
     [TestFixture]
-    public abstract class BaseForMockedDbSetQueryProviderTests<TEntity> : BaseForQueryableTests<TEntity>
-        where TEntity : BaseTestEntity
+    public abstract class BaseForMockedDbSetQueryProviderTests<TEntity> : BaseForQueryableTests<TEntity> where TEntity : BaseTestEntity
     {
         protected abstract void AddFromSqlRawResult(DbSet<TEntity> mockedDbSet, IEnumerable<TEntity> expectedResult);
+
         protected abstract void AddFromSqlRawResult(DbSet<TEntity> mockedDbSet, string sql, IEnumerable<TEntity> expectedResult);
+
         protected abstract void AddFromSqlRawResult(DbSet<TEntity> mockedDbSet, string sql, IEnumerable<object> parameters, IEnumerable<TEntity> expectedResult);
 
         protected abstract void AddFromSqlInterpolatedResult(DbSet<TEntity> mockedDbSet, IEnumerable<TEntity> expectedResult);
+
         protected abstract void AddFromSqlInterpolatedResult(DbSet<TEntity> mockedDbSet, FormattableString sql, IEnumerable<TEntity> expectedResult);
+
         protected abstract void AddFromSqlInterpolatedResult(DbSet<TEntity> mockedDbSet, string sql, IEnumerable<object> parameters, IEnumerable<TEntity> expectedResult);
 
         protected DbSet<TEntity> DbSet => (DbSet<TEntity>) Queryable;

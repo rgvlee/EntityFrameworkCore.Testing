@@ -7,8 +7,7 @@ using NUnit.Framework;
 namespace EntityFrameworkCore.Testing.Common.Tests
 {
     [TestFixture]
-    public abstract class ReadOnlyDbSetExceptionTests<TEntity> : BaseForTests
-        where TEntity : BaseTestEntity
+    public abstract class ReadOnlyDbSetExceptionTests<TEntity> : BaseForTests where TEntity : BaseTestEntity
     {
         protected abstract DbSet<TEntity> DbSet { get; }
 
@@ -19,7 +18,9 @@ namespace EntityFrameworkCore.Testing.Common.Tests
             {
                 DbSet.Add(Fixture.Create<TEntity>());
             });
-            Assert.That(ex.Message, Is.EqualTo($"Unable to track an instance of type '{typeof(TEntity).Name}' because it does not have a primary key. Only entity types with primary keys may be tracked."));
+            Assert.That(ex.Message
+                , Is.EqualTo(
+                    $"Unable to track an instance of type '{typeof(TEntity).Name}' because it does not have a primary key. Only entity types with primary keys may be tracked."));
         }
 
         [Test]
@@ -29,7 +30,9 @@ namespace EntityFrameworkCore.Testing.Common.Tests
             {
                 await DbSet.AddAsync(Fixture.Create<TEntity>());
             });
-            Assert.That(ex.Message, Is.EqualTo($"Unable to track an instance of type '{typeof(TEntity).Name}' because it does not have a primary key. Only entity types with primary keys may be tracked."));
+            Assert.That(ex.Message
+                , Is.EqualTo(
+                    $"Unable to track an instance of type '{typeof(TEntity).Name}' because it does not have a primary key. Only entity types with primary keys may be tracked."));
         }
 
         [Test]
@@ -39,7 +42,9 @@ namespace EntityFrameworkCore.Testing.Common.Tests
             {
                 DbSet.AddRange(Fixture.CreateMany<TEntity>());
             });
-            Assert.That(ex.Message, Is.EqualTo($"Unable to track an instance of type '{typeof(TEntity).Name}' because it does not have a primary key. Only entity types with primary keys may be tracked."));
+            Assert.That(ex.Message
+                , Is.EqualTo(
+                    $"Unable to track an instance of type '{typeof(TEntity).Name}' because it does not have a primary key. Only entity types with primary keys may be tracked."));
         }
 
         [Test]
@@ -49,7 +54,9 @@ namespace EntityFrameworkCore.Testing.Common.Tests
             {
                 await DbSet.AddRangeAsync(Fixture.CreateMany<TEntity>());
             });
-            Assert.That(ex.Message, Is.EqualTo($"Unable to track an instance of type '{typeof(TEntity).Name}' because it does not have a primary key. Only entity types with primary keys may be tracked."));
+            Assert.That(ex.Message
+                , Is.EqualTo(
+                    $"Unable to track an instance of type '{typeof(TEntity).Name}' because it does not have a primary key. Only entity types with primary keys may be tracked."));
         }
 
         [Test]
@@ -59,7 +66,9 @@ namespace EntityFrameworkCore.Testing.Common.Tests
             {
                 DbSet.Attach(Fixture.Create<TEntity>());
             });
-            Assert.That(ex.Message, Is.EqualTo($"Unable to track an instance of type '{typeof(TEntity).Name}' because it does not have a primary key. Only entity types with primary keys may be tracked."));
+            Assert.That(ex.Message
+                , Is.EqualTo(
+                    $"Unable to track an instance of type '{typeof(TEntity).Name}' because it does not have a primary key. Only entity types with primary keys may be tracked."));
         }
 
         [Test]
@@ -69,7 +78,9 @@ namespace EntityFrameworkCore.Testing.Common.Tests
             {
                 DbSet.AttachRange(Fixture.CreateMany<TEntity>());
             });
-            Assert.That(ex.Message, Is.EqualTo($"Unable to track an instance of type '{typeof(TEntity).Name}' because it does not have a primary key. Only entity types with primary keys may be tracked."));
+            Assert.That(ex.Message
+                , Is.EqualTo(
+                    $"Unable to track an instance of type '{typeof(TEntity).Name}' because it does not have a primary key. Only entity types with primary keys may be tracked."));
         }
 
         [Test]
@@ -118,7 +129,9 @@ namespace EntityFrameworkCore.Testing.Common.Tests
             {
                 DbSet.Remove(Fixture.Create<TEntity>());
             });
-            Assert.That(ex.Message, Is.EqualTo($"Unable to track an instance of type '{typeof(TEntity).Name}' because it does not have a primary key. Only entity types with primary keys may be tracked."));
+            Assert.That(ex.Message
+                , Is.EqualTo(
+                    $"Unable to track an instance of type '{typeof(TEntity).Name}' because it does not have a primary key. Only entity types with primary keys may be tracked."));
         }
 
         [Test]
@@ -128,7 +141,9 @@ namespace EntityFrameworkCore.Testing.Common.Tests
             {
                 DbSet.RemoveRange(Fixture.CreateMany<TEntity>());
             });
-            Assert.That(ex.Message, Is.EqualTo($"Unable to track an instance of type '{typeof(TEntity).Name}' because it does not have a primary key. Only entity types with primary keys may be tracked."));
+            Assert.That(ex.Message
+                , Is.EqualTo(
+                    $"Unable to track an instance of type '{typeof(TEntity).Name}' because it does not have a primary key. Only entity types with primary keys may be tracked."));
         }
 
         [Test]
@@ -138,7 +153,9 @@ namespace EntityFrameworkCore.Testing.Common.Tests
             {
                 DbSet.Update(Fixture.Create<TEntity>());
             });
-            Assert.That(ex.Message, Is.EqualTo($"Unable to track an instance of type '{typeof(TEntity).Name}' because it does not have a primary key. Only entity types with primary keys may be tracked."));
+            Assert.That(ex.Message
+                , Is.EqualTo(
+                    $"Unable to track an instance of type '{typeof(TEntity).Name}' because it does not have a primary key. Only entity types with primary keys may be tracked."));
         }
 
         [Test]
@@ -148,7 +165,9 @@ namespace EntityFrameworkCore.Testing.Common.Tests
             {
                 DbSet.UpdateRange(Fixture.CreateMany<TEntity>());
             });
-            Assert.That(ex.Message, Is.EqualTo($"Unable to track an instance of type '{typeof(TEntity).Name}' because it does not have a primary key. Only entity types with primary keys may be tracked."));
+            Assert.That(ex.Message
+                , Is.EqualTo(
+                    $"Unable to track an instance of type '{typeof(TEntity).Name}' because it does not have a primary key. Only entity types with primary keys may be tracked."));
         }
     }
 }

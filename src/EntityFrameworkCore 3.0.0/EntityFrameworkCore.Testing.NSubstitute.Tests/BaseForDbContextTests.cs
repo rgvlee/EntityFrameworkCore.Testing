@@ -44,7 +44,8 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Tests
 #pragma warning restore 618
         }
 
-        public override void AddExecuteSqlCommandResult(T mockedDbContext, string sql, IEnumerable<object> parameters, int expectedResult, Action<string, IEnumerable<object>> callback)
+        public override void AddExecuteSqlCommandResult(
+            T mockedDbContext, string sql, IEnumerable<object> parameters, int expectedResult, Action<string, IEnumerable<object>> callback)
         {
 #pragma warning disable 618
             mockedDbContext.AddExecuteSqlCommandResult(sql, parameters, expectedResult, callback);

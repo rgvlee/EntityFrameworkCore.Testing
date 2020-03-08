@@ -10,12 +10,13 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
     /// </summary>
     public static partial class DbQueryExtensions
     {
-        /// <summary>Adds an item to the end of the mocked db query source.</summary>
+        /// <summary>
+        ///     Adds an item to the end of the mocked db query source.
+        /// </summary>
         /// <typeparam name="TQuery">The query type.</typeparam>
         /// <param name="mockedDbQuery">The mocked db query.</param>
         /// <param name="item">The item to be added to the end of the mocked db query source.</param>
-        public static void AddToReadOnlySource<TQuery>(this DbQuery<TQuery> mockedDbQuery, TQuery item)
-            where TQuery : class
+        public static void AddToReadOnlySource<TQuery>(this DbQuery<TQuery> mockedDbQuery, TQuery item) where TQuery : class
         {
             EnsureArgument.IsNotNull(mockedDbQuery, nameof(mockedDbQuery));
             EnsureArgument.IsNotNull(item, nameof(item));
@@ -27,12 +28,13 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
             mockedDbQuery.SetSource(queryable);
         }
 
-        /// <summary>Adds the items of the specified sequence to the end of the mocked db query source.</summary>
+        /// <summary>
+        ///     Adds the items of the specified sequence to the end of the mocked db query source.
+        /// </summary>
         /// <typeparam name="TQuery">The query type.</typeparam>
         /// <param name="mockedDbQuery">The mocked db query.</param>
         /// <param name="items">The sequence whose items should be added to the end of the mocked db query source.</param>
-        public static void AddRangeToReadOnlySource<TQuery>(this DbQuery<TQuery> mockedDbQuery, IEnumerable<TQuery> items)
-            where TQuery : class
+        public static void AddRangeToReadOnlySource<TQuery>(this DbQuery<TQuery> mockedDbQuery, IEnumerable<TQuery> items) where TQuery : class
         {
             EnsureArgument.IsNotNull(mockedDbQuery, nameof(mockedDbQuery));
             EnsureArgument.IsNotEmpty(items, nameof(items));
@@ -44,11 +46,12 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
             mockedDbQuery.SetSource(queryable);
         }
 
-        /// <summary>Removes all items from the mocked db query source.</summary>
+        /// <summary>
+        ///     Removes all items from the mocked db query source.
+        /// </summary>
         /// <typeparam name="TQuery">The query type.</typeparam>
         /// <param name="mockedDbQuery">The mocked db query.</param>
-        public static void ClearReadOnlySource<TQuery>(this DbQuery<TQuery> mockedDbQuery)
-            where TQuery : class
+        public static void ClearReadOnlySource<TQuery>(this DbQuery<TQuery> mockedDbQuery) where TQuery : class
         {
             EnsureArgument.IsNotNull(mockedDbQuery, nameof(mockedDbQuery));
             mockedDbQuery.SetSource(new List<TQuery>());

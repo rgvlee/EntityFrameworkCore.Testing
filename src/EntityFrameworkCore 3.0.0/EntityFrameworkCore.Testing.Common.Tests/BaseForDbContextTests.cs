@@ -11,24 +11,33 @@ using NUnit.Framework;
 namespace EntityFrameworkCore.Testing.Common.Tests
 {
     [TestFixture]
-    public abstract class BaseForDbContextTests<TDbContext> : BaseForTests
-        where TDbContext : DbContext
+    public abstract class BaseForDbContextTests<TDbContext> : BaseForTests where TDbContext : DbContext
     {
         protected TDbContext MockedDbContext;
 
         public abstract void AddExecuteSqlCommandResult(TDbContext mockedDbContext, int expectedResult);
+
         public abstract void AddExecuteSqlCommandResult(TDbContext mockedDbContext, int expectedResult, Action<string, IEnumerable<object>> callback);
+
         public abstract void AddExecuteSqlCommandResult(TDbContext mockedDbContext, string sql, int expectedResult);
+
         public abstract void AddExecuteSqlCommandResult(TDbContext mockedDbContext, string sql, int expectedResult, Action<string, IEnumerable<object>> callback);
+
         public abstract void AddExecuteSqlCommandResult(TDbContext mockedDbContext, string sql, IEnumerable<object> parameters, int expectedResult);
-        public abstract void AddExecuteSqlCommandResult(TDbContext mockedDbContext, string sql, IEnumerable<object> parameters, int expectedResult, Action<string, IEnumerable<object>> callback);
+
+        public abstract void AddExecuteSqlCommandResult(
+            TDbContext mockedDbContext, string sql, IEnumerable<object> parameters, int expectedResult, Action<string, IEnumerable<object>> callback);
 
         public abstract void AddExecuteSqlInterpolatedResult(TDbContext mockedDbContext, int expectedResult);
+
         public abstract void AddExecuteSqlInterpolatedResult(TDbContext mockedDbContext, FormattableString sql, int expectedResult);
+
         public abstract void AddExecuteSqlInterpolatedResult(TDbContext mockedDbContext, string sql, IEnumerable<object> parameters, int expectedResult);
 
         public abstract void AddExecuteSqlRawResult(TDbContext mockedDbContext, int expectedResult);
+
         public abstract void AddExecuteSqlRawResult(TDbContext mockedDbContext, string sql, int expectedResult);
+
         public abstract void AddExecuteSqlRawResult(TDbContext mockedDbContext, string sql, IEnumerable<object> parameters, int expectedResult);
 
         public static IEnumerable<TestCaseData> ExecuteSqlCommandWithCallback_InvokesCallback_TestCases()
@@ -55,15 +64,13 @@ namespace EntityFrameworkCore.Testing.Common.Tests
             }
 
             var parameters = new List<object>();
-            if (!string.IsNullOrWhiteSpace(parameterName) &&
-                parameterValue != null)
+            if (!string.IsNullOrWhiteSpace(parameterName) && parameterValue != null)
             {
                 parameters.Add(new SqlParameter(parameterName, parameterValue));
             }
 
             Logger.LogDebug("Setting up ExecuteSqlCommand");
-            if (!string.IsNullOrWhiteSpace(sql) &&
-                parameters.Any())
+            if (!string.IsNullOrWhiteSpace(sql) && parameters.Any())
             {
                 AddExecuteSqlCommandResult(MockedDbContext, sql, parameters, expectedResult, Callback);
             }
@@ -83,8 +90,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
             var actualResult2 = default(int);
 
 #pragma warning disable 618
-            if (!string.IsNullOrWhiteSpace(sql) &&
-                parameters.Any())
+            if (!string.IsNullOrWhiteSpace(sql) && parameters.Any())
             {
                 actualResult1 = MockedDbContext.Database.ExecuteSqlCommand(sql, parameters);
                 actualResult2 = MockedDbContext.Database.ExecuteSqlCommand(sql, parameters);
@@ -131,15 +137,13 @@ namespace EntityFrameworkCore.Testing.Common.Tests
             }
 
             var parameters = new List<object>();
-            if (!string.IsNullOrWhiteSpace(parameterName) &&
-                parameterValue != null)
+            if (!string.IsNullOrWhiteSpace(parameterName) && parameterValue != null)
             {
                 parameters.Add(new SqlParameter(parameterName, parameterValue));
             }
 
             Logger.LogDebug("Setting up ExecuteSqlCommand");
-            if (!string.IsNullOrWhiteSpace(sql) &&
-                parameters.Any())
+            if (!string.IsNullOrWhiteSpace(sql) && parameters.Any())
             {
                 AddExecuteSqlCommandResult(MockedDbContext, sql, parameters, expectedResult, Callback);
             }
@@ -159,8 +163,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
             var actualResult2 = default(int);
 
 #pragma warning disable 618
-            if (!string.IsNullOrWhiteSpace(sql) &&
-                parameters.Any())
+            if (!string.IsNullOrWhiteSpace(sql) && parameters.Any())
             {
                 actualResult1 = await MockedDbContext.Database.ExecuteSqlCommandAsync(sql, parameters);
                 actualResult2 = await MockedDbContext.Database.ExecuteSqlCommandAsync(sql, parameters);

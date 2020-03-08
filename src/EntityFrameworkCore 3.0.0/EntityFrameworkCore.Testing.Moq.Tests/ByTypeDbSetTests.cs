@@ -18,15 +18,10 @@ namespace EntityFrameworkCore.Testing.Moq.Tests
 
             var queryProviderMock = Mock.Get(Queryable.Provider);
 
-            queryProviderMock.Verify(
-                m => m.CreateQuery<TestEntity>(It.IsAny<Expression>()),
-                Times.Exactly(2)
-            );
+            queryProviderMock.Verify(m => m.CreateQuery<TestEntity>(It.IsAny<Expression>()), Times.Exactly(2));
 
-            queryProviderMock.Verify(
-                m => m.CreateQuery<TestEntity>(It.Is<MethodCallExpression>(mce => mce.Method.Name.Equals(nameof(System.Linq.Queryable.Select)))),
-                Times.Exactly(2)
-            );
+            queryProviderMock.Verify(m => m.CreateQuery<TestEntity>(It.Is<MethodCallExpression>(mce => mce.Method.Name.Equals(nameof(System.Linq.Queryable.Select))))
+                , Times.Exactly(2));
         }
     }
 }

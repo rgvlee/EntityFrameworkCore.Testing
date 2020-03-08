@@ -34,7 +34,8 @@ namespace EntityFrameworkCore.Testing.Moq.Tests
             mockedDbContext.AddExecuteSqlCommandResult(sql, parameters, expectedResult);
         }
 
-        public override void AddExecuteSqlCommandResult(T mockedDbContext, string sql, IEnumerable<object> parameters, int expectedResult, Action<string, IEnumerable<object>> callback)
+        public override void AddExecuteSqlCommandResult(
+            T mockedDbContext, string sql, IEnumerable<object> parameters, int expectedResult, Action<string, IEnumerable<object>> callback)
         {
             mockedDbContext.AddExecuteSqlCommandResult(sql, parameters, expectedResult, callback);
         }

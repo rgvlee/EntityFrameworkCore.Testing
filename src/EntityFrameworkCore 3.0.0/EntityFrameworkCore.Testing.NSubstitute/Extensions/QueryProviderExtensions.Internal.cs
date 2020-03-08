@@ -13,16 +13,14 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
 {
     public static partial class QueryProviderExtensions
     {
-        internal static IQueryProvider CreateMockedQueryProvider<T>(this IQueryProvider queryProviderToMock, IEnumerable<T> enumerable)
-            where T : class
+        internal static IQueryProvider CreateMockedQueryProvider<T>(this IQueryProvider queryProviderToMock, IEnumerable<T> collection) where T : class
         {
             EnsureArgument.IsNotNull(queryProviderToMock, nameof(queryProviderToMock));
-            EnsureArgument.IsNotNull(enumerable, nameof(enumerable));
+            EnsureArgument.IsNotNull(collection, nameof(collection));
 
-            var mockedQueryProvider = Substitute.ForPartsOf<AsyncQueryProvider<T>>(enumerable.AsQueryable());
+            var mockedQueryProvider = Substitute.ForPartsOf<AsyncQueryProvider<T>>(collection.AsQueryable());
 
-            mockedQueryProvider
-                .Configure()
+            mockedQueryProvider.Configure()
                 .CreateQuery<T>(Arg.Is<MethodCallExpression>(mce => mce.Method.Name.Equals("FromSqlOnQueryable")))
                 .Throws(callInfo =>
                 {
@@ -33,13 +31,12 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
             return mockedQueryProvider;
         }
 
-        internal static void SetSource<T>(this AsyncQueryProvider<T> mockedQueryProvider, IEnumerable<T> enumerable)
-            where T : class
+        internal static void SetSource<T>(this AsyncQueryProvider<T> mockedQueryProvider, IEnumerable<T> source) where T : class
         {
             EnsureArgument.IsNotNull(mockedQueryProvider, nameof(mockedQueryProvider));
-            EnsureArgument.IsNotNull(enumerable, nameof(enumerable));
+            EnsureArgument.IsNotNull(source, nameof(source));
 
-            var queryable = enumerable.AsQueryable();
+            var queryable = source.AsQueryable();
             mockedQueryProvider.Configure().Source.Returns(callInfo => queryable);
         }
     }

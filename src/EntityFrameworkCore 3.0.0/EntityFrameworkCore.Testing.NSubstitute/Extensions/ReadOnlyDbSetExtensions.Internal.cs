@@ -16,29 +16,26 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
 {
     public static partial class ReadOnlyDbSetExtensions
     {
-        internal static DbQuery<TEntity> CreateMockedReadOnlyDbSet<TEntity>(this DbSet<TEntity> readOnlyDbSet)
-            where TEntity : class
+        internal static DbQuery<TEntity> CreateMockedReadOnlyDbSet<TEntity>(this DbSet<TEntity> readOnlyDbSet) where TEntity : class
         {
             EnsureArgument.IsNotNull(readOnlyDbSet, nameof(readOnlyDbSet));
 
             //This is deliberate; we cannot cast a Mock<DbSet<>> to a Mock<DbQuery<>> and we still need to support the latter
-            var mockedDbQuery = (DbQuery<TEntity>)
-                Substitute.For(
-                    new[] {
-                        typeof(DbQuery<TEntity>),
-                        typeof(IAsyncEnumerable<TEntity>),
-                        typeof(IEnumerable),
-                        typeof(IEnumerable<TEntity>),
-                        typeof(IInfrastructure<IServiceProvider>),
-                        typeof(IListSource),
-                        typeof(IQueryable<TEntity>)
-                    },
-                    new object[] { }
-                );
+            var mockedDbQuery = (DbQuery<TEntity>) Substitute.For(new[] {
+                    typeof(DbQuery<TEntity>)
+                    , typeof(IAsyncEnumerable<TEntity>)
+                    , typeof(IEnumerable)
+                    , typeof(IEnumerable<TEntity>)
+                    , typeof(IInfrastructure<IServiceProvider>)
+                    , typeof(IListSource)
+                    , typeof(IQueryable<TEntity>)
+                }
+                , new object[] { });
 
             var queryable = new List<TEntity>().AsQueryable();
 
-            var invalidOperationException = new InvalidOperationException($"Unable to track an instance of type '{typeof(TEntity).Name}' because it does not have a primary key. Only entity types with primary keys may be tracked.");
+            var invalidOperationException = new InvalidOperationException(
+                $"Unable to track an instance of type '{typeof(TEntity).Name}' because it does not have a primary key. Only entity types with primary keys may be tracked.");
 
             mockedDbQuery.Add(Arg.Any<TEntity>()).Throws(callInfo => invalidOperationException);
             mockedDbQuery.AddAsync(Arg.Any<TEntity>(), Arg.Any<CancellationToken>()).Throws(callInfo => invalidOperationException);
@@ -62,11 +59,10 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
 
             ((IAsyncEnumerable<TEntity>) mockedDbQuery).GetAsyncEnumerator(Arg.Any<CancellationToken>())
                 .Returns(callInfo =>
-                    {
-                        return new AsyncEnumerable<TEntity>(queryable).GetAsyncEnumerator(callInfo.Arg<CancellationToken>());
-                        //return ((IAsyncEnumerable<TEntity>)queryable).GetAsyncEnumerator(callInfo.Arg<CancellationToken>());
-                    }
-                );
+                {
+                    return new AsyncEnumerable<TEntity>(queryable).GetAsyncEnumerator(callInfo.Arg<CancellationToken>());
+                    //return ((IAsyncEnumerable<TEntity>)queryable).GetAsyncEnumerator(callInfo.Arg<CancellationToken>());
+                });
 
             ((IEnumerable) mockedDbQuery).GetEnumerator().Returns(callInfo => queryable.GetEnumerator());
             ((IEnumerable<TEntity>) mockedDbQuery).GetEnumerator().Returns(callInfo => queryable.GetEnumerator());
@@ -75,7 +71,8 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
 
             ((IInfrastructure<IServiceProvider>) mockedDbQuery).Instance.Returns(callInfo => ((IInfrastructure<IServiceProvider>) readOnlyDbSet).Instance);
 
-            mockedDbQuery.Local.Throws(callInfo => new InvalidOperationException($"The invoked method is cannot be used for the entity type '{typeof(TEntity).Name}' because it does not have a primary key."));
+            mockedDbQuery.Local.Throws(callInfo =>
+                new InvalidOperationException($"The invoked method is cannot be used for the entity type '{typeof(TEntity).Name}' because it does not have a primary key."));
 
             mockedDbQuery.Remove(Arg.Any<TEntity>()).Throws(callInfo => invalidOperationException);
             mockedDbQuery.When(x => x.RemoveRange(Arg.Any<IEnumerable<TEntity>>())).Do(callInfo => throw invalidOperationException);
@@ -104,8 +101,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
             return mockedDbQuery;
         }
 
-        internal static void SetSource<TEntity>(this DbSet<TEntity> mockedReadOnlyDbSet, IEnumerable<TEntity> source)
-            where TEntity : class
+        internal static void SetSource<TEntity>(this DbSet<TEntity> mockedReadOnlyDbSet, IEnumerable<TEntity> source) where TEntity : class
         {
             EnsureArgument.IsNotNull(mockedReadOnlyDbSet, nameof(mockedReadOnlyDbSet));
             EnsureArgument.IsNotNull(source, nameof(source));
@@ -117,11 +113,10 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
 
             ((IAsyncEnumerable<TEntity>) mockedReadOnlyDbSet).GetAsyncEnumerator(Arg.Any<CancellationToken>())
                 .Returns(callInfo =>
-                    {
-                        return new AsyncEnumerable<TEntity>(queryable).GetAsyncEnumerator(callInfo.Arg<CancellationToken>());
-                        //return ((IAsyncEnumerable<TEntity>)queryable).GetAsyncEnumerator(callInfo.Arg<CancellationToken>());
-                    }
-                );
+                {
+                    return new AsyncEnumerable<TEntity>(queryable).GetAsyncEnumerator(callInfo.Arg<CancellationToken>());
+                    //return ((IAsyncEnumerable<TEntity>)queryable).GetAsyncEnumerator(callInfo.Arg<CancellationToken>());
+                });
 
             ((IEnumerable) mockedReadOnlyDbSet).GetEnumerator().Returns(callInfo => queryable.GetEnumerator());
             ((IEnumerable<TEntity>) mockedReadOnlyDbSet).GetEnumerator().Returns(callInfo => queryable.GetEnumerator());

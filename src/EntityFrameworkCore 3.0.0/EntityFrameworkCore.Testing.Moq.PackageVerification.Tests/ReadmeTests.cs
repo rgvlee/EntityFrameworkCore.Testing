@@ -33,10 +33,8 @@ namespace EntityFrameworkCore.Testing.Moq.PackageVerification.Tests
         [Test]
         public void AnotherMethod_WithSpecifiedInput_ReturnsAResult()
         {
-            var mockedDbContext = Create.MockedDbContextFor<MyDbContextWithConstructorParameters>(
-                Mock.Of<ILogger<MyDbContextWithConstructorParameters>>(),
-                new DbContextOptionsBuilder<MyDbContextWithConstructorParameters>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options
-            );
+            var mockedDbContext = Create.MockedDbContextFor<MyDbContextWithConstructorParameters>(Mock.Of<ILogger<MyDbContextWithConstructorParameters>>()
+                , new DbContextOptionsBuilder<MyDbContextWithConstructorParameters>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
 
             //...
         }
@@ -55,11 +53,13 @@ namespace EntityFrameworkCore.Testing.Moq.PackageVerification.Tests
             var rowsToDelete = mockedDbContext.Set<TestEntity>().Take(numberOfRowsToDelete).ToList();
             var remainingRows = mockedDbContext.Set<TestEntity>().Skip(numberOfRowsToDelete).ToList();
 
-            mockedDbContext.AddExecuteSqlCommandResult("usp_MyStoredProc", numberOfRowsToDelete, (providedSql, providedParameters) =>
-            {
-                mockedDbContext.Set<TestEntity>().RemoveRange(rowsToDelete);
-                mockedDbContext.SaveChanges();
-            });
+            mockedDbContext.AddExecuteSqlCommandResult("usp_MyStoredProc"
+                , numberOfRowsToDelete
+                , (providedSql, providedParameters) =>
+                {
+                    mockedDbContext.Set<TestEntity>().RemoveRange(rowsToDelete);
+                    mockedDbContext.SaveChanges();
+                });
 
             //Act
             var actualResult = mockedDbContext.Database.ExecuteSqlCommand($"usp_MyStoredProc {numberOfRowsToDelete}");
@@ -120,7 +120,9 @@ namespace EntityFrameworkCore.Testing.Moq.PackageVerification.Tests
 
             mockedDbContext.Set<TestEntity>().AddFromSqlRawResult("sp_Specified", sqlParameters, expectedResult);
 
-            var actualResult = mockedDbContext.Set<TestEntity>().FromSqlRaw("[dbo].[sp_Specified] @SomeParameter1 @SomeParameter2", new SqlParameter("@someparameter1", "Value1"), new SqlParameter("@someparameter2", "Value2")).ToList();
+            var actualResult = mockedDbContext.Set<TestEntity>()
+                .FromSqlRaw("[dbo].[sp_Specified] @SomeParameter1 @SomeParameter2", new SqlParameter("@someparameter1", "Value1"), new SqlParameter("@someparameter2", "Value2"))
+                .ToList();
 
             Assert.Multiple(() =>
             {
@@ -210,9 +212,8 @@ namespace EntityFrameworkCore.Testing.Moq.PackageVerification.Tests
 
         public class MyDbContextWithConstructorParameters : DbContext
         {
-            public MyDbContextWithConstructorParameters(
-                ILogger<MyDbContextWithConstructorParameters> logger,
-                DbContextOptions<MyDbContextWithConstructorParameters> options) : base(options) { }
+            public MyDbContextWithConstructorParameters(ILogger<MyDbContextWithConstructorParameters> logger, DbContextOptions<MyDbContextWithConstructorParameters> options) :
+                base(options) { }
         }
     }
 }

@@ -10,14 +10,11 @@ using NUnit.Framework;
 namespace EntityFrameworkCore.Testing.Common.Tests
 {
     [TestFixture]
-    public abstract class BaseForDbQueryTests<TQuery> : BaseForMockedQueryableTests<TQuery>
-        where TQuery : BaseTestEntity
+    public abstract class BaseForDbQueryTests<TQuery> : BaseForMockedQueryableTests<TQuery> where TQuery : BaseTestEntity
     {
         protected override void SeedQueryableSource()
         {
-            var itemsToAdd = Fixture.Build<TQuery>()
-                .With(p => p.FixedDateTime, DateTime.Parse("2019-01-01"))
-                .CreateMany().ToList();
+            var itemsToAdd = Fixture.Build<TQuery>().With(p => p.FixedDateTime, DateTime.Parse("2019-01-01")).CreateMany().ToList();
             AddRangeToReadOnlySource(DbQuery, itemsToAdd);
             //MockedDbContext.SaveChanges();
             ItemsAddedToQueryableSource = itemsToAdd;
@@ -26,7 +23,9 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         protected DbQuery<TQuery> DbQuery => (DbQuery<TQuery>) Queryable;
 
         protected abstract void AddToReadOnlySource(DbQuery<TQuery> mockedDbQuery, TQuery item);
+
         protected abstract void AddRangeToReadOnlySource(DbQuery<TQuery> mockedDbQuery, IEnumerable<TQuery> items);
+
         protected abstract void ClearReadOnlySource(DbQuery<TQuery> mockedDbQuery);
 
         [Test]
@@ -124,7 +123,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
             var expectedResult1 = Fixture.CreateMany<TQuery>().ToList();
 
             var sql2 = "sp_WithParams";
-            var parameters2 = new List<SqlParameter> {new SqlParameter("@SomeParameter1", "Value1"), new SqlParameter("@SomeParameter2", "Value2")};
+            var parameters2 = new List<SqlParameter> { new SqlParameter("@SomeParameter1", "Value1"), new SqlParameter("@SomeParameter2", "Value2") };
             var expectedResult2 = Fixture.CreateMany<TQuery>().ToList();
 
             AddFromSqlResult(DbQuery, sql1, expectedResult1);

@@ -9,25 +9,23 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Query.Internal;
 using NSubstitute;
 
-namespace EntityFrameworkCore.Testing.NSubstitute.Extensions {
+namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
+{
     public static partial class DbQueryExtensions
     {
-        internal static DbQuery<TQuery> CreateMockedDbQuery<TQuery>(this DbQuery<TQuery> dbQuery)
-            where TQuery : class
+        internal static DbQuery<TQuery> CreateMockedDbQuery<TQuery>(this DbQuery<TQuery> dbQuery) where TQuery : class
         {
             EnsureArgument.IsNotNull(dbQuery, nameof(dbQuery));
 
-            var mockedDbQuery = (DbQuery<TQuery>)
-                Substitute.For(new[] {
-                        typeof(DbQuery<TQuery>),
-                        typeof(IAsyncEnumerableAccessor<TQuery>),
-                        typeof(IEnumerable),
-                        typeof(IEnumerable<TQuery>),
-                        typeof(IInfrastructure<IServiceProvider>),
-                        typeof(IQueryable<TQuery>)
-                    },
-                    new object[] { }
-                );
+            var mockedDbQuery = (DbQuery<TQuery>) Substitute.For(new[] {
+                    typeof(DbQuery<TQuery>)
+                    , typeof(IAsyncEnumerableAccessor<TQuery>)
+                    , typeof(IEnumerable)
+                    , typeof(IEnumerable<TQuery>)
+                    , typeof(IInfrastructure<IServiceProvider>)
+                    , typeof(IQueryable<TQuery>)
+                }
+                , new object[] { });
 
             var queryable = new List<TQuery>().AsQueryable();
 
@@ -45,8 +43,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions {
             return mockedDbQuery;
         }
 
-        internal static void SetSource<TQuery>(this DbQuery<TQuery> mockedDbQuery, IEnumerable<TQuery> source)
-            where TQuery : class
+        internal static void SetSource<TQuery>(this DbQuery<TQuery> mockedDbQuery, IEnumerable<TQuery> source) where TQuery : class
         {
             EnsureArgument.IsNotNull(mockedDbQuery, nameof(mockedDbQuery));
             EnsureArgument.IsNotNull(source, nameof(source));

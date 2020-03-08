@@ -21,10 +21,11 @@ namespace EntityFrameworkCore.Testing.Moq.Tests
         public async Task ExecuteSqlRawAsync_SpecifiedSqlAndSqlParameter_ReturnsExpectedResultAndSetsOutputParameterValue()
         {
             var mockedDbContext = Create.MockedDbContextFor<TestDbContext>();
-            mockedDbContext.AddExecuteSqlRawResult(-1, (sql, parameters) =>
-            {
-                ((SqlParameter) parameters.ElementAt(0)).Value = "Cookie";
-            });
+            mockedDbContext.AddExecuteSqlRawResult(-1
+                , (sql, parameters) =>
+                {
+                    ((SqlParameter) parameters.ElementAt(0)).Value = "Cookie";
+                });
 
             var outcomeParam = new SqlParameter("Outcome", SqlDbType.VarChar, 500) { Direction = ParameterDirection.Output };
             var result = await mockedDbContext.Database.ExecuteSqlRawAsync(@"EXEC [GiveMeCookie] @Outcome = @Outcome OUT", outcomeParam);
@@ -40,10 +41,11 @@ namespace EntityFrameworkCore.Testing.Moq.Tests
         public void GiveMeCookie_SetsOutputParameterValue()
         {
             var mockedDbContext = Create.MockedDbContextFor<TestDbContext>();
-            mockedDbContext.AddExecuteSqlRawResult(-1, (sql, parameters) =>
-            {
-                ((SqlParameter) parameters.ElementAt(0)).Value = "Cookie";
-            });
+            mockedDbContext.AddExecuteSqlRawResult(-1
+                , (sql, parameters) =>
+                {
+                    ((SqlParameter) parameters.ElementAt(0)).Value = "Cookie";
+                });
 
             var service = new MyService(mockedDbContext);
 

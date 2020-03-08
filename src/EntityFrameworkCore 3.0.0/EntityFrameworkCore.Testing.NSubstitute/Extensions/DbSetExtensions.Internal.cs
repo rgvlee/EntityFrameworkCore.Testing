@@ -17,30 +17,27 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
     /// </summary>
     public static class DbSetExtensions
     {
-        internal static DbSet<TEntity> CreateMockedDbSet<TEntity>(this DbSet<TEntity> dbSet)
-            where TEntity : class
+        internal static DbSet<TEntity> CreateMockedDbSet<TEntity>(this DbSet<TEntity> dbSet) where TEntity : class
         {
             EnsureArgument.IsNotNull(dbSet, nameof(dbSet));
 
-            var mockedDbSet = (DbSet<TEntity>)
-                Substitute.For(
-                    new[] {
-                        typeof(DbSet<TEntity>),
-                        typeof(IAsyncEnumerable<TEntity>),
-                        typeof(IEnumerable),
-                        typeof(IEnumerable<TEntity>),
-                        typeof(IInfrastructure<IServiceProvider>),
-                        typeof(IListSource),
-                        typeof(IQueryable<TEntity>)
-                    },
-                    new object[] { }
-                );
+            var mockedDbSet = (DbSet<TEntity>) Substitute.For(new[] {
+                    typeof(DbSet<TEntity>)
+                    , typeof(IAsyncEnumerable<TEntity>)
+                    , typeof(IEnumerable)
+                    , typeof(IEnumerable<TEntity>)
+                    , typeof(IInfrastructure<IServiceProvider>)
+                    , typeof(IListSource)
+                    , typeof(IQueryable<TEntity>)
+                }
+                , new object[] { });
 
             mockedDbSet.Add(Arg.Any<TEntity>()).Returns(callInfo => dbSet.Add(callInfo.Arg<TEntity>()));
             mockedDbSet.AddAsync(Arg.Any<TEntity>(), Arg.Any<CancellationToken>()).Returns(callInfo => dbSet.AddAsync(callInfo.Arg<TEntity>(), callInfo.Arg<CancellationToken>()));
             mockedDbSet.When(x => x.AddRange(Arg.Any<IEnumerable<TEntity>>())).Do(callInfo => dbSet.AddRange(callInfo.Arg<IEnumerable<TEntity>>()));
             mockedDbSet.When(x => x.AddRange(Arg.Any<TEntity[]>())).Do(callInfo => dbSet.AddRange(callInfo.Arg<TEntity[]>()));
-            mockedDbSet.AddRangeAsync(Arg.Any<IEnumerable<TEntity>>(), Arg.Any<CancellationToken>()).Returns(callInfo => dbSet.AddRangeAsync(callInfo.Arg<IEnumerable<TEntity>>(), callInfo.Arg<CancellationToken>()));
+            mockedDbSet.AddRangeAsync(Arg.Any<IEnumerable<TEntity>>(), Arg.Any<CancellationToken>())
+                .Returns(callInfo => dbSet.AddRangeAsync(callInfo.Arg<IEnumerable<TEntity>>(), callInfo.Arg<CancellationToken>()));
             mockedDbSet.AddRangeAsync(Arg.Any<TEntity[]>()).Returns(callInfo => dbSet.AddRangeAsync(callInfo.Arg<TEntity[]>()));
 
             mockedDbSet.Attach(Arg.Any<TEntity>()).Returns(callInfo => dbSet.Attach(callInfo.Arg<TEntity>()));
@@ -54,9 +51,11 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
 
             mockedDbSet.Find(Arg.Any<object[]>()).Returns(callInfo => dbSet.Find(callInfo.Arg<object[]>()));
             mockedDbSet.FindAsync(Arg.Any<object[]>()).Returns(callInfo => dbSet.FindAsync(callInfo.Arg<object[]>()));
-            mockedDbSet.FindAsync(Arg.Any<object[]>(), Arg.Any<CancellationToken>()).Returns(callInfo => dbSet.FindAsync(callInfo.Arg<object[]>(), callInfo.Arg<CancellationToken>()));
+            mockedDbSet.FindAsync(Arg.Any<object[]>(), Arg.Any<CancellationToken>())
+                .Returns(callInfo => dbSet.FindAsync(callInfo.Arg<object[]>(), callInfo.Arg<CancellationToken>()));
 
-            ((IAsyncEnumerable<TEntity>) mockedDbSet).GetAsyncEnumerator(Arg.Any<CancellationToken>()).Returns(callInfo => ((IAsyncEnumerable<TEntity>) dbSet).GetAsyncEnumerator(callInfo.Arg<CancellationToken>()));
+            ((IAsyncEnumerable<TEntity>) mockedDbSet).GetAsyncEnumerator(Arg.Any<CancellationToken>())
+                .Returns(callInfo => ((IAsyncEnumerable<TEntity>) dbSet).GetAsyncEnumerator(callInfo.Arg<CancellationToken>()));
 
             ((IEnumerable) mockedDbSet).GetEnumerator().Returns(callInfo => ((IEnumerable) dbSet).GetEnumerator());
             ((IEnumerable<TEntity>) mockedDbSet).GetEnumerator().Returns(callInfo => ((IEnumerable<TEntity>) dbSet).GetEnumerator());

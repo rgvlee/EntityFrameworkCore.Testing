@@ -11,11 +11,12 @@ using NUnit.Framework;
 namespace EntityFrameworkCore.Testing.Common.Tests
 {
     [TestFixture]
-    public abstract class BaseForMockedQueryableTests<T> : BaseForQueryableTests<T>
-        where T : BaseTestEntity
+    public abstract class BaseForMockedQueryableTests<T> : BaseForQueryableTests<T> where T : BaseTestEntity
     {
         protected abstract void AddFromSqlResult(IQueryable<T> mockedQueryable, IEnumerable<T> expectedResult);
+
         protected abstract void AddFromSqlResult(IQueryable<T> mockedQueryable, string sql, IEnumerable<T> expectedResult);
+
         protected abstract void AddFromSqlResult(IQueryable<T> mockedQueryable, string sql, IEnumerable<object> parameters, IEnumerable<T> expectedResult);
 
         [Test]
@@ -41,7 +42,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
             var expectedResult1 = Fixture.CreateMany<T>().ToList();
 
             var sql2 = "sp_WithParams";
-            var parameters2 = new List<SqlParameter> {new SqlParameter("@SomeParameter1", "Value1"), new SqlParameter("@SomeParameter2", "Value2")};
+            var parameters2 = new List<SqlParameter> { new SqlParameter("@SomeParameter1", "Value1"), new SqlParameter("@SomeParameter2", "Value2") };
             var expectedResult2 = Fixture.CreateMany<T>().ToList();
 
             AddFromSqlResult(Queryable, sql1, expectedResult1);
@@ -94,7 +95,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         public virtual void FromSql_SpecifiedSqlWithSqlParameterParameters_ReturnsExpectedResult()
         {
             var sql = "sp_WithParams";
-            var parameters = new List<SqlParameter> {new SqlParameter("@SomeParameter2", "Value2")};
+            var parameters = new List<SqlParameter> { new SqlParameter("@SomeParameter2", "Value2") };
             var expectedResult = Fixture.CreateMany<T>().ToList();
             AddFromSqlResult(Queryable, sql, parameters, expectedResult);
 
@@ -112,8 +113,8 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         public virtual void FromSql_SpecifiedSqlWithSqlParameterParametersThatDoNotMatchSetUp_ThrowsException()
         {
             var sql = "sp_WithParams";
-            var setUpParameters = new List<SqlParameter> {new SqlParameter("@SomeParameter3", "Value3")};
-            var invocationParameters = new List<SqlParameter> {new SqlParameter("@SomeParameter1", "Value1"), new SqlParameter("@SomeParameter2", "Value2")};
+            var setUpParameters = new List<SqlParameter> { new SqlParameter("@SomeParameter3", "Value3") };
+            var invocationParameters = new List<SqlParameter> { new SqlParameter("@SomeParameter1", "Value1"), new SqlParameter("@SomeParameter2", "Value2") };
             var expectedResult = Fixture.CreateMany<T>().ToList();
             AddFromSqlResult(Queryable, sql, setUpParameters, expectedResult);
 
@@ -132,7 +133,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         public virtual void FromSql_SpecifiedSqlWithStringParameterParameters_ReturnsExpectedResult()
         {
             var sql = "sp_WithParams";
-            var parameters = new List<string> {"Value2"};
+            var parameters = new List<string> { "Value2" };
             var expectedResult = Fixture.CreateMany<T>().ToList();
             AddFromSqlResult(Queryable, sql, parameters, expectedResult);
 

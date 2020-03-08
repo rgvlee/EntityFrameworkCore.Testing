@@ -13,8 +13,7 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
 {
     public static partial class DbQueryExtensions
     {
-        internal static DbQuery<TQuery> CreateMockedDbQuery<TQuery>(this DbQuery<TQuery> dbQuery)
-            where TQuery : class
+        internal static DbQuery<TQuery> CreateMockedDbQuery<TQuery>(this DbQuery<TQuery> dbQuery) where TQuery : class
         {
             EnsureArgument.IsNotNull(dbQuery, nameof(dbQuery));
 
@@ -36,8 +35,7 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
             return dbQueryMock.Object;
         }
 
-        internal static void SetSource<TQuery>(this DbQuery<TQuery> mockedDbQuery, IEnumerable<TQuery> source)
-            where TQuery : class
+        internal static void SetSource<TQuery>(this DbQuery<TQuery> mockedDbQuery, IEnumerable<TQuery> source) where TQuery : class
         {
             EnsureArgument.IsNotNull(mockedDbQuery, nameof(mockedDbQuery));
             EnsureArgument.IsNotNull(source, nameof(source));

@@ -20,7 +20,9 @@ namespace EntityFrameworkCore.Testing.Common
             Source = source;
         }
 
-        /// <summary>The query provider source.</summary>
+        /// <summary>
+        ///     The query provider source.
+        /// </summary>
         public virtual IQueryable<T> Source { get; set; }
 
         /// <inheritdoc />
@@ -55,8 +57,7 @@ namespace EntityFrameworkCore.Testing.Common
                     }
                 }
 
-                if (methodCallExpression.Method.Name.Equals(nameof(Queryable.SkipWhile)) ||
-                    methodCallExpression.Method.Name.Equals(nameof(Queryable.TakeWhile)))
+                if (methodCallExpression.Method.Name.Equals(nameof(Queryable.SkipWhile)) || methodCallExpression.Method.Name.Equals(nameof(Queryable.TakeWhile)))
                 {
                     var unaryExpression = (UnaryExpression) methodCallExpression.Arguments[1];
                     var predicateExpression = unaryExpression.Operand;
@@ -90,10 +91,7 @@ namespace EntityFrameworkCore.Testing.Common
         public virtual TResult Execute<TResult>(Expression expression)
         {
             if (expression is MethodCallExpression methodCallExpression)
-                if (
-                    methodCallExpression.Method.Name.Equals(nameof(Queryable.ElementAt)) ||
-                    methodCallExpression.Method.Name.Equals(nameof(Queryable.ElementAtOrDefault))
-                )
+                if (methodCallExpression.Method.Name.Equals(nameof(Queryable.ElementAt)) || methodCallExpression.Method.Name.Equals(nameof(Queryable.ElementAtOrDefault)))
                 {
                     var mce = methodCallExpression;
                     var index = (int) ((ConstantExpression) mce.Arguments[1]).Value;
@@ -109,11 +107,9 @@ namespace EntityFrameworkCore.Testing.Common
         public virtual TResult ExecuteAsync<TResult>(Expression expression, CancellationToken cancellationToken)
         {
             //TResult is a Task<T>. The provider requires T.
-            return (TResult)
-                typeof(AsyncQueryProvider<T>)
-                    .GetMethod(nameof(InternalExecuteAsync), BindingFlags.Instance | BindingFlags.NonPublic)
-                    .MakeGenericMethod(typeof(TResult).GetGenericArguments())
-                    .Invoke(this, new object[] { expression, cancellationToken });
+            return (TResult) typeof(AsyncQueryProvider<T>).GetMethod(nameof(InternalExecuteAsync), BindingFlags.Instance | BindingFlags.NonPublic)
+                .MakeGenericMethod(typeof(TResult).GetGenericArguments())
+                .Invoke(this, new object[] { expression, cancellationToken });
         }
 
         internal Task<TResult> InternalExecuteAsync<TResult>(Expression expression, CancellationToken cancellationToken)

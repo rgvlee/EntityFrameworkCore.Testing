@@ -16,13 +16,9 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Tests
         {
             base.Select_ReturnsSequence();
 
-            Queryable.Provider
-                .Received(2)
-                .CreateQuery<TestEntity>(Arg.Any<Expression>());
+            Queryable.Provider.Received(2).CreateQuery<TestEntity>(Arg.Any<Expression>());
 
-            Queryable.Provider
-                .Received(2)
-                .CreateQuery<TestEntity>(Arg.Is<MethodCallExpression>(mce => mce.Method.Name.Equals(nameof(System.Linq.Queryable.Select))));
+            Queryable.Provider.Received(2).CreateQuery<TestEntity>(Arg.Is<MethodCallExpression>(mce => mce.Method.Name.Equals(nameof(System.Linq.Queryable.Select))));
         }
     }
 }

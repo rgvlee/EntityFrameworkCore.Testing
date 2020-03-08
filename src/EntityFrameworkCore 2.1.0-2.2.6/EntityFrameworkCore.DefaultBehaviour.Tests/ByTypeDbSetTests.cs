@@ -23,9 +23,7 @@ namespace EntityFrameworkCore.DefaultBehaviour.Tests
 
         protected override void SeedQueryableSource()
         {
-            var itemsToAdd = Fixture.Build<TestEntity>()
-                .With(p => p.FixedDateTime, DateTime.Parse("2019-01-01"))
-                .CreateMany().ToList();
+            var itemsToAdd = Fixture.Build<TestEntity>().With(p => p.FixedDateTime, DateTime.Parse("2019-01-01")).CreateMany().ToList();
             DbContext.Set<TestEntity>().AddRange(itemsToAdd);
             DbContext.SaveChanges();
             ItemsAddedToQueryableSource = itemsToAdd;

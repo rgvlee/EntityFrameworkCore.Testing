@@ -4,10 +4,14 @@ using System.Reflection;
 
 namespace EntityFrameworkCore.Testing.Common.Helpers
 {
-    /// <summary>A helper for creating expressions.</summary>
+    /// <summary>
+    ///     A helper for creating expressions.
+    /// </summary>
     public static class ExpressionHelper
     {
-        /// <summary>Creates a property expression for the specified property.</summary>
+        /// <summary>
+        ///     Creates a property expression for the specified property.
+        /// </summary>
         /// <typeparam name="TParameter">The expression parameter.</typeparam>
         /// <typeparam name="TProperty">The expression property.</typeparam>
         /// <param name="propertyInfo">The property info of the property to create the expression for.</param>

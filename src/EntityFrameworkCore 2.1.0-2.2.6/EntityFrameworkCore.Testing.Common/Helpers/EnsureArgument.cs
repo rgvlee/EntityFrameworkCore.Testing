@@ -4,10 +4,14 @@ using System.Linq;
 
 namespace EntityFrameworkCore.Testing.Common.Helpers
 {
-    /// <summary>A helper to perform checks on arguments.</summary>
+    /// <summary>
+    ///     A helper to perform checks on arguments.
+    /// </summary>
     public class EnsureArgument
     {
-        /// <summary>Ensures that a string argument is not null or empty.</summary>
+        /// <summary>
+        ///     Ensures that a string argument is not null or empty.
+        /// </summary>
         /// <param name="string">The string argument.</param>
         /// <param name="argumentName">The argument name.</param>
         /// <returns>The string argument.</returns>
@@ -25,7 +29,9 @@ namespace EntityFrameworkCore.Testing.Common.Helpers
             throw ex;
         }
 
-        /// <summary>Ensures that an argument is not null.</summary>
+        /// <summary>
+        ///     Ensures that an argument is not null.
+        /// </summary>
         /// <typeparam name="T">The argument type.</typeparam>
         /// <param name="argument">The argument.</param>
         /// <param name="argumentName">The argument name.</param>
@@ -42,16 +48,19 @@ namespace EntityFrameworkCore.Testing.Common.Helpers
             throw ex;
         }
 
-        /// <summary>Ensures that a sequence is not empty.</summary>
-        /// <typeparam name="T">The enumerable item type.</typeparam>
-        /// <param name="enumerable">The enumerable argument.</param>
-        /// <param name="argumentName">The enumerable argument name.</param>
-        /// <returns>The enumerable argument.</returns>
-        public static IEnumerable<T> IsNotEmpty<T>(IEnumerable<T> enumerable, string argumentName)
+        /// <summary>
+        ///     Ensures that a collection is not empty.
+        /// </summary>
+        /// <typeparam name="T">The type of the items in the collection.</typeparam>
+        /// <param name="collection">The collection.</param>
+        /// <param name="argumentName">The collection argument name.</param>
+        /// <returns>The collection.</returns>
+        /// <exception cref="ArgumentException">If the collection is empty.</exception>
+        public static IEnumerable<T> IsNotEmpty<T>(IEnumerable<T> collection, string argumentName)
         {
-            IsNotNull(enumerable, argumentName);
+            IsNotNull(collection, argumentName);
 
-            if (enumerable.Any()) return enumerable;
+            if (collection.Any()) return collection;
 
             IsNotNull(argumentName, nameof(argumentName));
             IsNotNullOrEmpty(argumentName, nameof(argumentName));

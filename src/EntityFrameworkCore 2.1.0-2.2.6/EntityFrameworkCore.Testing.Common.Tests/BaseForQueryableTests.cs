@@ -10,11 +10,12 @@ using NUnit.Framework;
 namespace EntityFrameworkCore.Testing.Common.Tests
 {
     [TestFixture]
-    public abstract class BaseForQueryableTests<T> : BaseForTests
-        where T : BaseTestEntity
+    public abstract class BaseForQueryableTests<T> : BaseForTests where T : BaseTestEntity
     {
         protected abstract IQueryable<T> Queryable { get; }
+
         protected abstract void SeedQueryableSource();
+
         protected List<T> ItemsAddedToQueryableSource;
 
         [Test]
@@ -382,8 +383,8 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         {
             SeedQueryableSource();
 
-            var actualResult1 = Queryable.Select((x, i) => new {Index = i, Item = x}).Where(x => !x.Index.Equals(0)).Any();
-            var actualResult2 = Queryable.Select((x, i) => new {Index = i, Item = x}).Where(x => !x.Index.Equals(0)).Any();
+            var actualResult1 = Queryable.Select((x, i) => new { Index = i, Item = x }).Where(x => !x.Index.Equals(0)).Any();
+            var actualResult2 = Queryable.Select((x, i) => new { Index = i, Item = x }).Where(x => !x.Index.Equals(0)).Any();
 
             Assert.Multiple(() =>
             {
@@ -659,8 +660,8 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         {
             SeedQueryableSource();
 
-            var actualResult1 = Queryable.Select((x, i) => new {Index = i, Item = x}).ToList();
-            var actualResult2 = Queryable.Select((x, i) => new {Index = i, Item = x}).ToList();
+            var actualResult1 = Queryable.Select((x, i) => new { Index = i, Item = x }).ToList();
+            var actualResult2 = Queryable.Select((x, i) => new { Index = i, Item = x }).ToList();
 
             Assert.Multiple(() =>
             {

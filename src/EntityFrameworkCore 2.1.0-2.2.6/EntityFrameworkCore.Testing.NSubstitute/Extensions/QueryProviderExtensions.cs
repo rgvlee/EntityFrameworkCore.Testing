@@ -12,39 +12,45 @@ using NSubstitute.Extensions;
 
 namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
 {
-    /// <summary>Extensions for query provider and mock query provider types.</summary>
+    /// <summary>
+    ///     Extensions for collection query providers.
+    /// </summary>
     public static partial class QueryProviderExtensions
     {
         private static readonly ILogger Logger = LoggerHelper.CreateLogger(typeof(QueryProviderExtensions));
 
-        /// <summary>Sets up FromSql invocations to return a specified result.</summary>
+        /// <summary>
+        ///     Sets up FromSql invocations to return a specified result.
+        /// </summary>
         /// <typeparam name="T">The queryable source type.</typeparam>
         /// <param name="mockedQueryProvider">The mocked query provider.</param>
         /// <param name="fromSqlResult">The FromSql result.</param>
         /// <returns>The mocked queryable.</returns>
-        public static IQueryProvider AddFromSqlResult<T>(this IQueryProvider mockedQueryProvider, IEnumerable<T> fromSqlResult)
-            where T : class
+        public static IQueryProvider AddFromSqlResult<T>(this IQueryProvider mockedQueryProvider, IEnumerable<T> fromSqlResult) where T : class
         {
             EnsureArgument.IsNotNull(mockedQueryProvider, nameof(mockedQueryProvider));
             mockedQueryProvider.AddFromSqlResult(string.Empty, new List<object>(), fromSqlResult);
             return mockedQueryProvider;
         }
 
-        /// <summary>Sets up FromSql invocations containing a specified sql string to return a specified result.</summary>
+        /// <summary>
+        ///     Sets up FromSql invocations containing a specified sql string to return a specified result.
+        /// </summary>
         /// <typeparam name="T">The queryable source type.</typeparam>
         /// <param name="mockedQueryProvider">The mocked query provider.</param>
         /// <param name="sql">The FromSql sql string. Set up supports case insensitive partial matches.</param>
         /// <param name="fromSqlResult">The FromSql result.</param>
         /// <returns>The mocked queryable.</returns>
-        public static IQueryProvider AddFromSqlResult<T>(this IQueryProvider mockedQueryProvider, string sql, IEnumerable<T> fromSqlResult)
-            where T : class
+        public static IQueryProvider AddFromSqlResult<T>(this IQueryProvider mockedQueryProvider, string sql, IEnumerable<T> fromSqlResult) where T : class
         {
             EnsureArgument.IsNotNull(mockedQueryProvider, nameof(mockedQueryProvider));
             mockedQueryProvider.AddFromSqlResult(sql, new List<object>(), fromSqlResult);
             return mockedQueryProvider;
         }
 
-        /// <summary>Sets up FromSql invocations containing a specified sql string and parameters to return a specified result.</summary>
+        /// <summary>
+        ///     Sets up FromSql invocations containing a specified sql string and parameters to return a specified result.
+        /// </summary>
         /// <typeparam name="T">The queryable source type.</typeparam>
         /// <param name="mockedQueryProvider">The mocked query provider.</param>
         /// <param name="sql">The FromSql sql string. Set up supports case insensitive partial matches.</param>
@@ -64,8 +70,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
             var createQueryResult = new AsyncEnumerable<T>(fromSqlResult);
 
             //TODO: SpecifiedParametersMatchMethodCallExpression is being invoked during set up; is there an alternative way to do this?
-            mockedQueryProvider
-                .Configure()
+            mockedQueryProvider.Configure()
                 .CreateQuery<T>(Arg.Is<MethodCallExpression>(mce => SpecifiedParametersMatchMethodCallExpression(mce, sql, parameters)))
                 .Returns(callInfo =>
                 {
@@ -108,9 +113,9 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
             //EnsureArgument.IsNotNull(mce, nameof(mce));
             EnsureArgument.IsNotNull(parameters, nameof(parameters));
 
-            var result = mce.Method.Name.Equals(nameof(RelationalQueryableExtensions.FromSql))
-                         && SqlMatchesMethodCallExpression(mce, sql)
-                         && ParameterMatchingHelper.DoInvocationParametersMatchSetUpParameters(parameters, (object[]) ((ConstantExpression) mce.Arguments[2]).Value);
+            var result = mce.Method.Name.Equals(nameof(RelationalQueryableExtensions.FromSql)) &&
+                         SqlMatchesMethodCallExpression(mce, sql) &&
+                         ParameterMatchingHelper.DoInvocationParametersMatchSetUpParameters(parameters, (object[]) ((ConstantExpression) mce.Arguments[2]).Value);
 
             Logger.LogDebug($"Match? {result}");
 

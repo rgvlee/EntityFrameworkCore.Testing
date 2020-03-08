@@ -15,9 +15,10 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
         /// <param name="executeSqlCommandResult">The integer to return when ExecuteSqlCommand is invoked.</param>
         /// <param name="callback">Operations to perform after ExecuteSqlCommand is invoked.</param>
         /// <returns>The mocked db context.</returns>
-        [Obsolete("This method will remain until EntityFrameworkCore no longer supports DbContext.Database.ExecuteSqlCommand(RawSqlString sql, params object[] parameters) method. Use DbContextExtensions.AddExecuteSqlRawResult instead.")]
-        public static TDbContext AddExecuteSqlCommandResult<TDbContext>(this TDbContext mockedDbContext, int executeSqlCommandResult, Action<string, IEnumerable<object>> callback = null)
-            where TDbContext : DbContext
+        [Obsolete(
+            "This method will remain until EntityFrameworkCore no longer supports DbContext.Database.ExecuteSqlCommand(RawSqlString sql, params object[] parameters) method. Use DbContextExtensions.AddExecuteSqlRawResult instead.")]
+        public static TDbContext AddExecuteSqlCommandResult<TDbContext>(
+            this TDbContext mockedDbContext, int executeSqlCommandResult, Action<string, IEnumerable<object>> callback = null) where TDbContext : DbContext
         {
             EnsureArgument.IsNotNull(mockedDbContext, nameof(mockedDbContext));
             return mockedDbContext.AddExecuteSqlRawResult(executeSqlCommandResult, callback);
@@ -32,9 +33,10 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
         /// <param name="executeSqlCommandResult">The integer to return when ExecuteSqlCommand is invoked.</param>
         /// <param name="callback">Operations to perform after ExecuteSqlCommand is invoked.</param>
         /// <returns>The mocked db context.</returns>
-        [Obsolete("This method will remain until EntityFrameworkCore no longer supports DbContext.Database.ExecuteSqlCommand(RawSqlString sql, params object[] parameters) method. Use DbContextExtensions.AddExecuteSqlRawResult instead.")]
-        public static TDbContext AddExecuteSqlCommandResult<TDbContext>(this TDbContext mockedDbContext, string sql, int executeSqlCommandResult, Action<string, IEnumerable<object>> callback = null)
-            where TDbContext : DbContext
+        [Obsolete(
+            "This method will remain until EntityFrameworkCore no longer supports DbContext.Database.ExecuteSqlCommand(RawSqlString sql, params object[] parameters) method. Use DbContextExtensions.AddExecuteSqlRawResult instead.")]
+        public static TDbContext AddExecuteSqlCommandResult<TDbContext>(
+            this TDbContext mockedDbContext, string sql, int executeSqlCommandResult, Action<string, IEnumerable<object>> callback = null) where TDbContext : DbContext
         {
             EnsureArgument.IsNotNull(mockedDbContext, nameof(mockedDbContext));
             return mockedDbContext.AddExecuteSqlRawResult(sql, executeSqlCommandResult, callback);
@@ -50,8 +52,10 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
         /// <param name="executeSqlCommandResult">The integer to return when ExecuteSqlCommand is invoked.</param>
         /// <param name="callback">Operations to perform after ExecuteSqlCommand is invoked.</param>
         /// <returns>The mocked db context.</returns>
-        [Obsolete("This method will remain until EntityFrameworkCore no longer supports DbContext.Database.ExecuteSqlCommand(RawSqlString sql, params object[] parameters) method. Use DbContextExtensions.AddExecuteSqlRawResult instead.")]
-        public static TDbContext AddExecuteSqlCommandResult<TDbContext>(this TDbContext mockedDbContext, string sql, IEnumerable<object> parameters, int executeSqlCommandResult, Action<string, IEnumerable<object>> callback = null)
+        [Obsolete(
+            "This method will remain until EntityFrameworkCore no longer supports DbContext.Database.ExecuteSqlCommand(RawSqlString sql, params object[] parameters) method. Use DbContextExtensions.AddExecuteSqlRawResult instead.")]
+        public static TDbContext AddExecuteSqlCommandResult<TDbContext>(
+            this TDbContext mockedDbContext, string sql, IEnumerable<object> parameters, int executeSqlCommandResult, Action<string, IEnumerable<object>> callback = null)
             where TDbContext : DbContext
         {
             EnsureArgument.IsNotNull(mockedDbContext, nameof(mockedDbContext));

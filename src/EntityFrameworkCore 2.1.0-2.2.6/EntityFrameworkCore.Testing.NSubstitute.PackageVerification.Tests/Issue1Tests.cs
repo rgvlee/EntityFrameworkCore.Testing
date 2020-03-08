@@ -21,12 +21,13 @@ namespace EntityFrameworkCore.Testing.NSubstitute.PackageVerification.Tests
         public async Task ExecuteSqlCommandAsync_SpecifiedSqlAndSqlParameter_ReturnsExpectedResultAndSetsOutputParameterValue()
         {
             var mockedDbContext = Create.MockedDbContextFor<TestDbContext>();
-            mockedDbContext.AddExecuteSqlCommandResult(-1, (sql, parameters) =>
-            {
-                ((SqlParameter) parameters.ElementAt(0)).Value = "Cookie";
-            });
+            mockedDbContext.AddExecuteSqlCommandResult(-1
+                , (sql, parameters) =>
+                {
+                    ((SqlParameter) parameters.ElementAt(0)).Value = "Cookie";
+                });
 
-            var outcomeParam = new SqlParameter("Outcome", SqlDbType.VarChar, 500) {Direction = ParameterDirection.Output};
+            var outcomeParam = new SqlParameter("Outcome", SqlDbType.VarChar, 500) { Direction = ParameterDirection.Output };
             var result = await mockedDbContext.Database.ExecuteSqlCommandAsync(@"EXEC [GiveMeCookie] @Outcome = @Outcome OUT", outcomeParam);
 
             Assert.Multiple(() =>
@@ -40,10 +41,11 @@ namespace EntityFrameworkCore.Testing.NSubstitute.PackageVerification.Tests
         public void GiveMeCookie_SetsOutputParameterValue()
         {
             var mockedDbContext = Create.MockedDbContextFor<TestDbContext>();
-            mockedDbContext.AddExecuteSqlCommandResult(-1, (sql, parameters) =>
-            {
-                ((SqlParameter) parameters.ElementAt(0)).Value = "Cookie";
-            });
+            mockedDbContext.AddExecuteSqlCommandResult(-1
+                , (sql, parameters) =>
+                {
+                    ((SqlParameter) parameters.ElementAt(0)).Value = "Cookie";
+                });
 
             var service = new MyService(mockedDbContext);
 
@@ -61,7 +63,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.PackageVerification.Tests
 
             public async Task<string> GiveMeCookie()
             {
-                var outcomeParam = new SqlParameter("Outcome", SqlDbType.VarChar, 500) {Direction = ParameterDirection.Output};
+                var outcomeParam = new SqlParameter("Outcome", SqlDbType.VarChar, 500) { Direction = ParameterDirection.Output };
                 await _context.Database.ExecuteSqlCommandAsync(@"EXEC [GiveMeCookie] @Outcome = @Outcome OUT", outcomeParam);
                 return outcomeParam.Value.ToString();
             }

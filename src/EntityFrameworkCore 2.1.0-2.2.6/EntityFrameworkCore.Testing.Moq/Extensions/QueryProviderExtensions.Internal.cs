@@ -12,17 +12,15 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
 {
     public static partial class QueryProviderExtensions
     {
-        internal static IQueryProvider CreateMockedQueryProvider<T>(this IQueryProvider queryProviderToMock, IEnumerable<T> enumerable)
-            where T : class
+        internal static IQueryProvider CreateMockedQueryProvider<T>(this IQueryProvider queryProviderToMock, IEnumerable<T> collection) where T : class
         {
             EnsureArgument.IsNotNull(queryProviderToMock, nameof(queryProviderToMock));
-            EnsureArgument.IsNotNull(enumerable, nameof(enumerable));
+            EnsureArgument.IsNotNull(collection, nameof(collection));
 
-            var queryProviderMock = new Mock<AsyncQueryProvider<T>>(enumerable.AsQueryable());
+            var queryProviderMock = new Mock<AsyncQueryProvider<T>>(collection.AsQueryable());
             queryProviderMock.CallBase = true;
 
-            queryProviderMock
-                .As<IQueryProvider>()
+            queryProviderMock.As<IQueryProvider>()
                 .Setup(m => m.CreateQuery<T>(It.Is<MethodCallExpression>(mce => mce.Method.Name.Equals(nameof(RelationalQueryableExtensions.FromSql)))))
                 .Callback((Expression providedExpression) =>
                 {
@@ -33,15 +31,14 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
             return queryProviderMock.Object;
         }
 
-        internal static void SetSource<T>(this AsyncQueryProvider<T> mockedQueryProvider, IEnumerable<T> enumerable)
-            where T : class
+        internal static void SetSource<T>(this AsyncQueryProvider<T> mockedQueryProvider, IEnumerable<T> source) where T : class
         {
             EnsureArgument.IsNotNull(mockedQueryProvider, nameof(mockedQueryProvider));
-            EnsureArgument.IsNotNull(enumerable, nameof(enumerable));
+            EnsureArgument.IsNotNull(source, nameof(source));
 
             var queryProviderMock = Mock.Get(mockedQueryProvider);
 
-            var queryable = enumerable.AsQueryable();
+            var queryable = source.AsQueryable();
             queryProviderMock.Setup(m => m.Source).Returns(queryable);
         }
     }

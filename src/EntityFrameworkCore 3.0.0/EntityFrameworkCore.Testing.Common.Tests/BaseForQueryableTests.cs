@@ -11,11 +11,12 @@ using NUnit.Framework;
 namespace EntityFrameworkCore.Testing.Common.Tests
 {
     [TestFixture]
-    public abstract class BaseForQueryableTests<T> : BaseForTests
-        where T : BaseTestEntity
+    public abstract class BaseForQueryableTests<T> : BaseForTests where T : BaseTestEntity
     {
         protected abstract IQueryable<T> Queryable { get; }
+
         protected abstract void SeedQueryableSource();
+
         protected List<T> ItemsAddedToQueryableSource;
 
         [Test]
