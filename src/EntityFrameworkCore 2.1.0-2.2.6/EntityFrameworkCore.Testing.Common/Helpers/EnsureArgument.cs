@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace EntityFrameworkCore.Testing.Common
+namespace EntityFrameworkCore.Testing.Common.Helpers
 {
     /// <summary>A helper to perform checks on arguments.</summary>
     public class EnsureArgument
