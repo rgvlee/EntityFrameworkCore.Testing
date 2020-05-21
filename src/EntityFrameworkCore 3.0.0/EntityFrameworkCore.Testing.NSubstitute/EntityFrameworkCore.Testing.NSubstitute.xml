@@ -340,21 +340,6 @@
             </summary>
             <typeparam name="TDbContext">The db context type.</typeparam>
         </member>
-        <member name="M:EntityFrameworkCore.Testing.NSubstitute.Helpers.MockedDbContextBuilder`1.UsingConstructorWithParameters(System.Object[])">
-            <summary>
-                The parameters that will be used to create the mocked db context and, if one is not provided,
-                the in-memory context that the mocked db context will use for in-memory provider supported operations.
-            </summary>
-            <param name="constructorParameters">
-                The constructor parameters.
-            </param>
-            <returns>The mocked db context builder.</returns>
-        </member>
-        <member name="M:EntityFrameworkCore.Testing.NSubstitute.Helpers.MockedDbContextBuilder`1.UsingDbContext(`0)">
-            <summary>
-                The db context instance that the mocked db context will use for in-memory provider supported operations.
-            </summary>
-        </member>
         <member name="M:EntityFrameworkCore.Testing.NSubstitute.Helpers.MockedDbContextBuilder`1.Create">
             <summary>
                 Creates the mocked db context.
