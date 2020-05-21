@@ -92,6 +92,38 @@
             <param name="type">The type to get the default value for.</param>
             <returns>The default value for the specified type.</returns>
         </member>
+        <member name="T:EntityFrameworkCore.Testing.Common.Helpers.BaseMockedDbContextBuilder`1">
+            <summary>
+                The mocked db context builder.
+            </summary>
+            <typeparam name="TDbContext">The db context type.</typeparam>
+        </member>
+        <member name="F:EntityFrameworkCore.Testing.Common.Helpers.BaseMockedDbContextBuilder`1.Options">
+            <summary>
+                The create factory options.
+            </summary>
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.Common.Helpers.BaseMockedDbContextBuilder`1.UsingConstructorWithParameters(System.Object[])">
+            <summary>
+                The parameters that will be used to create the mocked db context and, if one is not provided,
+                the in-memory context that the mocked db context will use for in-memory provider supported operations.
+            </summary>
+            <param name="constructorParameters">
+                The constructor parameters.
+            </param>
+            <returns>The mocked db context builder.</returns>
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.Common.Helpers.BaseMockedDbContextBuilder`1.UsingDbContext(`0)">
+            <summary>
+                The db context instance that the mocked db context will use for in-memory provider supported operations.
+            </summary>
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.Common.Helpers.BaseMockedDbContextBuilder`1.Create">
+            <summary>
+                Creates the mocked db context.
+            </summary>
+            <returns>A mocked db context.</returns>
+        </member>
         <member name="T:EntityFrameworkCore.Testing.Common.Helpers.BaseMockedDbContextFactory`1">
             <summary>
                 The base mocked db context factory.

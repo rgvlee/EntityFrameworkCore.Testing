@@ -25,7 +25,9 @@ namespace EntityFrameworkCore.Testing.Moq
         /// </remarks>
         public static TDbContext MockedDbContextFor<TDbContext>(params object[] constructorParameters) where TDbContext : DbContext
         {
-            return Build.MockFor<TDbContext>().UsingConstructorWithParameters(constructorParameters).Create();
+            return constructorParameters != null && constructorParameters.Any()
+                ? Build.MockFor<TDbContext>().UsingConstructorWithParameters(constructorParameters).Create()
+                : Build.MockFor<TDbContext>().Create();
         }
 
         /// <summary>
