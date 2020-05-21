@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Common;
 using System.Linq;
 using System.Text;
+using Microsoft.Extensions.Logging;
 
 namespace EntityFrameworkCore.Testing.Common.Helpers
 {
@@ -11,6 +13,8 @@ namespace EntityFrameworkCore.Testing.Common.Helpers
     /// </summary>
     public class ParameterMatchingHelper
     {
+        private static readonly ILogger Logger = LoggerHelper.CreateLogger(typeof(ParameterMatchingHelper));
+
         /// <summary>
         ///     Determines whether the invocation parameters match the set up parameters.
         /// </summary>
@@ -28,51 +32,76 @@ namespace EntityFrameworkCore.Testing.Common.Helpers
             var setUpParametersAsList = setUpParameters.ToList();
             var invocationParametersAsList = invocationParameters.ToList();
 
-            var matches = new Dictionary<object, object>();
-            foreach (var setUpParameter in setUpParametersAsList)
+            var matches = new Dictionary<int, int>();
+            for (var i = 0; i < invocationParametersAsList.Count; i++)
             {
-                var startAt = matches.Any() ? invocationParametersAsList.IndexOf(matches.Last().Value) : 0;
+                var invocationParameter = invocationParametersAsList[i];
+                Logger.LogDebug($"Checking invocationParameter '{invocationParameter}'");
+                matches.Add(i, -1);
 
-                foreach (var invocationParameter in invocationParametersAsList.Skip(startAt))
+                //What was the last set up parameter matched?
+                var startAt = matches.Any() ? matches.Max(x => x.Value) + 1 : 0;
+                Logger.LogDebug($"startAt: {startAt}");
+
+                for (var j = 0; j < setUpParametersAsList.Count; j++)
                 {
-                    if (invocationParameter is DbParameter dbInvocationParameter && setUpParameter is DbParameter dbSetUpParameter)
-                    {
-                        if (dbInvocationParameter.ParameterName == null && dbSetUpParameter.ParameterName != null ||
-                            dbInvocationParameter.ParameterName != null && dbSetUpParameter.ParameterName == null ||
-                            !dbInvocationParameter.ParameterName.Equals(dbSetUpParameter.ParameterName, StringComparison.CurrentCultureIgnoreCase))
-                        {
-                            continue;
-                        }
+                    var setUpParameter = setUpParametersAsList[j];
+                    Logger.LogDebug($"Checking setUpParameter '{setUpParameter}'");
 
-                        if (dbInvocationParameter.Value is string stringDbInvocationParameterValue && dbSetUpParameter.Value is string stringDbSetUpParameterValue)
-                        {
-                            if (!stringDbInvocationParameterValue.Equals(stringDbSetUpParameterValue, StringComparison.CurrentCultureIgnoreCase))
-                            {
-                                continue;
-                            }
-                        }
-                        else if (!dbInvocationParameter.Value.Equals(dbSetUpParameter.Value))
-                        {
-                            continue;
-                        }
+                    if (invocationParameter is DbParameter dbInvocationParameter &&
+                        setUpParameter is DbParameter dbSetUpParameter &&
+                        DoesInvocationParameterMatchSetUpParameter(dbSetUpParameter, dbInvocationParameter))
+                    {
+                        matches[i] = j;
+                        break;
+                    }
 
-                        matches.Add(setUpParameter, invocationParameter);
-                    }
-                    else if (invocationParameter is string stringInvocationParameterValue && setUpParameter is string stringSetUpParameterValue)
+                    if (DoesInvocationParameterValueMatchSetUpParameterValue(setUpParameter, invocationParameter))
                     {
-                        if (stringInvocationParameterValue.Equals(stringSetUpParameterValue, StringComparison.CurrentCultureIgnoreCase))
-                        {
-                            matches.Add(setUpParameter, invocationParameter);
-                        }
-                    }
-                    else if (invocationParameter.Equals(setUpParameter))
-                    {
-                        matches.Add(setUpParameter, invocationParameter);
+                        matches[i] = j;
+                        break;
                     }
                 }
             }
 
-            return matches.Count == setUpParametersAsList.Count;
+            Logger.LogDebug($"Match summary '{string.Join(Environment.NewLine, matches.Select(x => $"{x.Key}: {x.Value}"))}'");
+
+            return matches.Count(x => x.Value > -1) >= setUpParametersAsList.Count;
+        }
+
+        private static bool DoesInvocationParameterValueMatchSetUpParameterValue(object setUpParameter, object invocationParameter)
+        {
+            if (invocationParameter == setUpParameter)
+            {
+                return true;
+            }
+
+            if (invocationParameter != null && setUpParameter != null && invocationParameter.Equals(setUpParameter))
+            {
+                return true;
+            }
+
+            if (invocationParameter is string stringInvocationParameterValue &&
+                setUpParameter is string stringSetUpParameterValue &&
+                stringInvocationParameterValue.Equals(stringSetUpParameterValue, StringComparison.CurrentCultureIgnoreCase))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        private static bool DoesInvocationParameterMatchSetUpParameter(IDataParameter setUpParameter, IDataParameter invocationParameter)
+        {
+            var setUpParameterParameterName = setUpParameter.ParameterName ?? string.Empty;
+            var invocationParameterParameterName = invocationParameter.ParameterName ?? string.Empty;
+
+            if (invocationParameterParameterName.Equals(setUpParameterParameterName, StringComparison.CurrentCultureIgnoreCase))
+            {
+                return false;
+            }
+
+            return DoesInvocationParameterValueMatchSetUpParameterValue(setUpParameter.Value, invocationParameter.Value);
         }
 
         /// <summary>
