@@ -385,7 +385,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
                 Assert.That(actualResult2, Is.EqualTo(actualResult1));
             });
         }
-        
+
         [Test]
         public void Query_TypeNotIncludedInModel_ThrowsException()
         {
