@@ -48,6 +48,11 @@
               Looks up a localized string similar to Value required for &apos;{0}&apos; (type: &apos;{1}&apos;)..
             </summary>
         </member>
+        <member name="P:EntityFrameworkCore.Testing.Common.ExceptionMessages.CannotCreateDbSetTypeNotIncludedInModel">
+            <summary>
+              Looks up a localized string similar to Cannot create a DbSet for &apos;{0}&apos; because this type is not included in the model for the context..
+            </summary>
+        </member>
         <member name="P:EntityFrameworkCore.Testing.Common.ExceptionMessages.EnumerationEmpty">
             <summary>
               Looks up a localized string similar to Enumeration &apos;{0}&apos; (type: &apos;{1}&apos;) must contain 1 or more elements..
