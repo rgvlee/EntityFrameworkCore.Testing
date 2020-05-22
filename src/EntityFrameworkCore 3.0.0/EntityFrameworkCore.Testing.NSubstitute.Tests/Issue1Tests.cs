@@ -4,9 +4,11 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using Castle.DynamicProxy;
+using EntityFrameworkCore.Testing.Common.Helpers;
 using EntityFrameworkCore.Testing.Common.Tests;
 using EntityFrameworkCore.Testing.NSubstitute.Extensions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using NSubstitute;
 using NUnit.Framework;
 
@@ -17,7 +19,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Tests
         [SetUp]
         public virtual void SetUp()
         {
-            //LoggerHelper.LoggerFactory.AddConsole(LogLevel.Debug);
+            LoggerHelper.LoggerFactory = LoggerFactory.Create(builder => builder.AddConsole().SetMinimumLevel(LogLevel.Debug));
         }
 
         [Test]

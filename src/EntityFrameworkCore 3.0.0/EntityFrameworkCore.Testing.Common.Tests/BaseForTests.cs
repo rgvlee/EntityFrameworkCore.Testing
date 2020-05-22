@@ -11,7 +11,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         [SetUp]
         public virtual void SetUp()
         {
-            LoggerHelper.LoggerFactory.AddConsole(LogLevel.Debug);
+            LoggerHelper.LoggerFactory = LoggerFactory.Create(builder => builder.AddConsole().SetMinimumLevel(LogLevel.Debug));
             Fixture = new Fixture();
         }
 

@@ -130,7 +130,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         }
 
         [Test]
-        public virtual void FromSql_SpecifiedSqlWithStringParameterParameters_ReturnsExpectedResult()
+        public virtual void FromSql_SpecifiedSqlWithStringParameters_ReturnsExpectedResult()
         {
             var sql = "sp_WithParams";
             var parameters = new List<string> { "Value2" };

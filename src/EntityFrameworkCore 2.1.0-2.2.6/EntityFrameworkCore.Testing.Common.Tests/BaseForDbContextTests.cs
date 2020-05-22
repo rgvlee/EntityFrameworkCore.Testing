@@ -260,7 +260,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         }
 
         [Test]
-        public void ExecuteSqlCommand_SpecifiedSqlWithStringParameterParameters_ReturnsExpectedResult()
+        public void ExecuteSqlCommand_SpecifiedSqlWithStringParameters_ReturnsExpectedResult()
         {
             var sql = "sp_WithParams";
             var parameters = new List<string> { "Value2" };
@@ -351,7 +351,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         }
 
         [Test]
-        public async Task ExecuteSqlCommandAsync_SpecifiedSqlWithStringParameterParameters_ReturnsExpectedResult()
+        public async Task ExecuteSqlCommandAsync_SpecifiedSqlWithStringParameters_ReturnsExpectedResult()
         {
             var sql = "sp_WithParams";
             var parameters = new List<string> { "Value2" };

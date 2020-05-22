@@ -288,7 +288,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         }
 
         [Test]
-        public void ExecuteSqlCommand_SpecifiedSqlWithStringParameterParameters_ReturnsExpectedResult()
+        public void ExecuteSqlCommand_SpecifiedSqlWithStringParameters_ReturnsExpectedResult()
         {
             var sql = "sp_WithParams";
             var parameters = new List<string> { "Value2" };
@@ -391,7 +391,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         }
 
         [Test]
-        public async Task ExecuteSqlCommandAsync_SpecifiedSqlWithStringParameterParameters_ReturnsExpectedResult()
+        public async Task ExecuteSqlCommandAsync_SpecifiedSqlWithStringParameters_ReturnsExpectedResult()
         {
             var sql = "sp_WithParams";
             var parameters = new List<string> { "Value2" };
@@ -558,7 +558,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         }
 
         [Test]
-        public async Task ExecuteSqlInterpolatedAsync_SpecifiedFormattableStringWithStringParameterParameters_ReturnsExpectedResult()
+        public async Task ExecuteSqlInterpolatedAsync_SpecifiedFormattableStringWithStringParameters_ReturnsExpectedResult()
         {
             var sql = "sp_WithParams";
             var parameters = new List<string> { "Value2" };
@@ -606,7 +606,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         }
 
         [Test]
-        public void ExecuteSqlInterpolatedUsingFormattableStringSetUp_SpecifiedFormattableStringWithStringParameterParameters_ReturnsExpectedResult()
+        public void ExecuteSqlInterpolatedUsingFormattableStringSetUp_SpecifiedFormattableStringWithStringParameters_ReturnsExpectedResult()
         {
             var parameters = new List<string> { "Value2" };
             var sql = (FormattableString) $"[sp_WithParams] {parameters[0]}";
@@ -624,7 +624,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         }
 
         [Test]
-        public void ExecuteSqlInterpolatedUsingFormattableStringSetUp_SpecifiedFormattableStringWithStringParameterParametersThatDoesNotMatchSetUp_ThrowsException()
+        public void ExecuteSqlInterpolatedUsingFormattableStringSetUp_SpecifiedFormattableStringWithStringParametersThatDoesNotMatchSetUp_ThrowsException()
         {
             var parameters = new List<string> { "Value2" };
             var sql = (FormattableString) $"[sp_WithParams] {parameters[0]}";
@@ -642,7 +642,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         }
 
         [Test]
-        public void ExecuteSqlInterpolatedUsingSqlAndParameterSetUp_SpecifiedFormattableStringWithStringParameterParameters_ReturnsExpectedResult()
+        public void ExecuteSqlInterpolatedUsingSqlAndParameterSetUp_SpecifiedFormattableStringWithStringParameters_ReturnsExpectedResult()
         {
             var sql = "sp_WithParams";
             var parameters = new List<string> { "Value2" };
@@ -744,7 +744,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         }
 
         [Test]
-        public void ExecuteSqlRaw_SpecifiedSqlWithStringParameterParameters_ReturnsExpectedResult()
+        public void ExecuteSqlRaw_SpecifiedSqlWithStringParameters_ReturnsExpectedResult()
         {
             var sql = "sp_WithParams";
             var parameters = new List<string> { "Value2" };
@@ -835,7 +835,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         }
 
         [Test]
-        public async Task ExecuteSqlRawAsync_SpecifiedSqlWithStringParameterParameters_ReturnsExpectedResult()
+        public async Task ExecuteSqlRawAsync_SpecifiedSqlWithStringParameters_ReturnsExpectedResult()
         {
             var sql = "sp_WithParams";
             var parameters = new List<string> { "Value2" };
