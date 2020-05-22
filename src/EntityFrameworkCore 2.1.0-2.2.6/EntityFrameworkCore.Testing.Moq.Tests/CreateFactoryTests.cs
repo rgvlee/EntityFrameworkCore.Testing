@@ -3,12 +3,13 @@ using System.Linq;
 using Castle.DynamicProxy;
 using EntityFrameworkCore.Testing.Common.Helpers;
 using EntityFrameworkCore.Testing.Common.Tests;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using NUnit.Framework;
 
 namespace EntityFrameworkCore.Testing.Moq.Tests
 {
-    public partial class CreateFactoryTests
+    public class CreateFactoryTests
     {
         [SetUp]
         public virtual void SetUp()
@@ -31,7 +32,7 @@ namespace EntityFrameworkCore.Testing.Moq.Tests
         [Test]
         public void CreateMockedQueryProviderFor_Queryable_CreatesMockedQueryProvider()
         {
-            var dbContextToMock = new TestDbContext(DbContextOptions);
+            var dbContextToMock = new TestDbContext(new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
 
             var mocked = Create.MockedQueryProviderFor(dbContextToMock.TestView.AsQueryable());
 

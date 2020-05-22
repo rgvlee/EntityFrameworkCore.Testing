@@ -6,7 +6,7 @@ using NUnit.Framework;
 namespace EntityFrameworkCore.Testing.Moq.Tests
 {
     [TestFixture]
-    public class DbContextTestsUsingConstructorParameters : DbContextTestsBase<TestDbContext>
+    public class DbContextTestsUsingConstructorParameters : BaseForDbContextTests<TestDbContext>
     {
         [SetUp]
         public override void SetUp()

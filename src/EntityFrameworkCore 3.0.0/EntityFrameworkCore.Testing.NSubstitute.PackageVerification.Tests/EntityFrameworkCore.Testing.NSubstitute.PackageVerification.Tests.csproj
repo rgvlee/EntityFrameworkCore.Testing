@@ -6,16 +6,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="..\EntityFrameworkCore.Testing.Common.Tests\BaseTestEntity.cs" Link="BaseTestEntity.cs" />
     <Compile Include="..\EntityFrameworkCore.Testing.Common.Tests\TestDbContext.cs" Link="TestDbContext.cs" />
     <Compile Include="..\EntityFrameworkCore.Testing.Common.Tests\TestEntity.cs" Link="TestEntity.cs" />
-    <Compile Include="..\EntityFrameworkCore.Testing.Common.Tests\TestEntityBase.cs" Link="TestEntityBase.cs" />
     <Compile Include="..\EntityFrameworkCore.Testing.Common.Tests\TestQuery.cs" Link="TestQuery.cs" />
     <Compile Include="..\EntityFrameworkCore.Testing.Common.Tests\TestReadOnlyEntity.cs" Link="TestReadOnlyEntity.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AutoFixture" Version="4.11.0" />
-    <PackageReference Include="EntityFrameworkCore.Testing.NSubstitute" Version="2.0.3" />
+    <PackageReference Include="EntityFrameworkCore.Testing.NSubstitute" Version="2.2.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="3.1.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.1" />
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="3.1.0" />
@@ -25,8 +25,8 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.4.0" />
-    <PackageReference Include="System.Data.SqlClient" Version="4.8.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.1" />
   </ItemGroup>
 
 </Project>

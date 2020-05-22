@@ -7,7 +7,7 @@ using NUnit.Framework;
 namespace EntityFrameworkCore.Testing.NSubstitute.Tests
 {
     [TestFixture]
-    public class ByTypeDbSetTests : DbSetTestsBase<TestEntity>
+    public class ByTypeDbSetTests : BaseForDbSetTests<TestEntity>
     {
         protected override IQueryable<TestEntity> Queryable => MockedDbContext.Set<TestEntity>();
 
@@ -18,8 +18,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Tests
 
             Queryable.Provider.Received(2).CreateQuery<TestEntity>(Arg.Any<Expression>());
 
-            Queryable.Provider.Received(2).CreateQuery<TestEntity>(
-                Arg.Is<MethodCallExpression>(mce => mce.Method.Name.Equals(nameof(System.Linq.Queryable.Select))));
+            Queryable.Provider.Received(2).CreateQuery<TestEntity>(Arg.Is<MethodCallExpression>(mce => mce.Method.Name.Equals(nameof(System.Linq.Queryable.Select))));
         }
     }
 }

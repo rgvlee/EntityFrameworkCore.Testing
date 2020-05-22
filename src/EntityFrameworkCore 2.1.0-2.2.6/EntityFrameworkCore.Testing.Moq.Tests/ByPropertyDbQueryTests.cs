@@ -5,7 +5,7 @@ using NUnit.Framework;
 namespace EntityFrameworkCore.Testing.Moq.Tests
 {
     [TestFixture]
-    public class ByPropertyDbQueryTests : DbQueryTestsBase<TestQuery>
+    public class ByPropertyDbQueryTests : BaseForDbQueryTests<TestQuery>
     {
         protected override IQueryable<TestQuery> Queryable => MockedDbContext.TestView;
     }

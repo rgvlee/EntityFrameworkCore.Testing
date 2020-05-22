@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using EntityFrameworkCore.Testing.Common;
 using EntityFrameworkCore.Testing.Common.Tests;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
@@ -6,7 +8,7 @@ using NUnit.Framework;
 namespace EntityFrameworkCore.DefaultBehaviour.Tests
 {
     [TestFixture]
-    public class DbContextTests : TestBase
+    public class DbContextTests : BaseForTests
     {
         [SetUp]
         public override void SetUp()
@@ -41,6 +43,26 @@ namespace EntityFrameworkCore.DefaultBehaviour.Tests
             Assert.Throws<InvalidOperationException>(() =>
             {
                 var actualResult = DbContext.Database.ExecuteSqlRaw("sp_NoParams");
+            });
+        }
+
+        [Test]
+        public virtual void Query_TypeNotIncludedInModel_ThrowsException()
+        {
+            Assert.Multiple(() =>
+            {
+                var ex = Assert.Throws<InvalidOperationException>(() => DbContext.Query<NotRegisteredEntity>().ToList());
+                Assert.That(ex.Message, Is.EqualTo(string.Format(ExceptionMessages.CannotCreateDbSetTypeNotIncludedInModel, nameof(NotRegisteredEntity))));
+            });
+        }
+
+        [Test]
+        public virtual void Set_TypeNotIncludedInModel_ThrowsException()
+        {
+            Assert.Multiple(() =>
+            {
+                var ex = Assert.Throws<InvalidOperationException>(() => DbContext.Set<NotRegisteredEntity>().ToList());
+                Assert.That(ex.Message, Is.EqualTo(string.Format(ExceptionMessages.CannotCreateDbSetTypeNotIncludedInModel, nameof(NotRegisteredEntity))));
             });
         }
     }

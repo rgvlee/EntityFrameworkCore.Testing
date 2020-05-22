@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using AutoFixture;
+using EntityFrameworkCore.Testing.Common.Helpers;
 using EntityFrameworkCore.Testing.Common.Tests;
 using EntityFrameworkCore.Testing.NSubstitute.Extensions;
 using Microsoft.Data.SqlClient;
@@ -19,7 +20,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.PackageVerification.Tests
         [SetUp]
         public virtual void SetUp()
         {
-            //LoggerHelper.LoggerFactory.AddConsole(LogLevel.Debug);
+            LoggerHelper.LoggerFactory = LoggerFactory.Create(builder => builder.AddConsole().SetMinimumLevel(LogLevel.Debug));
         }
 
         [Test]
@@ -33,10 +34,8 @@ namespace EntityFrameworkCore.Testing.NSubstitute.PackageVerification.Tests
         [Test]
         public void AnotherMethod_WithSpecifiedInput_ReturnsAResult()
         {
-            var mockedDbContext = Create.MockedDbContextFor<MyDbContextWithConstructorParameters>(
-                Substitute.For<ILogger<MyDbContextWithConstructorParameters>>(),
-                new DbContextOptionsBuilder<MyDbContextWithConstructorParameters>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options
-            );
+            var mockedDbContext = Create.MockedDbContextFor<MyDbContextWithConstructorParameters>(Substitute.For<ILogger<MyDbContextWithConstructorParameters>>(),
+                new DbContextOptionsBuilder<MyDbContextWithConstructorParameters>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
 
             //...
         }
@@ -55,11 +54,13 @@ namespace EntityFrameworkCore.Testing.NSubstitute.PackageVerification.Tests
             var rowsToDelete = mockedDbContext.Set<TestEntity>().Take(numberOfRowsToDelete).ToList();
             var remainingRows = mockedDbContext.Set<TestEntity>().Skip(numberOfRowsToDelete).ToList();
 
-            mockedDbContext.AddExecuteSqlCommandResult("usp_MyStoredProc", numberOfRowsToDelete, (providedSql, providedParameters) =>
-            {
-                mockedDbContext.Set<TestEntity>().RemoveRange(rowsToDelete);
-                mockedDbContext.SaveChanges();
-            });
+            mockedDbContext.AddExecuteSqlCommandResult("usp_MyStoredProc",
+                numberOfRowsToDelete,
+                (providedSql, providedParameters) =>
+                {
+                    mockedDbContext.Set<TestEntity>().RemoveRange(rowsToDelete);
+                    mockedDbContext.SaveChanges();
+                });
 
             //Act
             var actualResult = mockedDbContext.Database.ExecuteSqlCommand($"usp_MyStoredProc {numberOfRowsToDelete}");
@@ -115,12 +116,14 @@ namespace EntityFrameworkCore.Testing.NSubstitute.PackageVerification.Tests
         {
             var mockedDbContext = Create.MockedDbContextFor<TestDbContext>();
 
-            var sqlParameters = new List<SqlParameter> {new SqlParameter("@SomeParameter2", "Value2")};
+            var sqlParameters = new List<SqlParameter> { new SqlParameter("@SomeParameter2", "Value2") };
             var expectedResult = Fixture.CreateMany<TestEntity>().ToList();
 
             mockedDbContext.Set<TestEntity>().AddFromSqlRawResult("sp_Specified", sqlParameters, expectedResult);
 
-            var actualResult = mockedDbContext.Set<TestEntity>().FromSqlRaw("[dbo].[sp_Specified] @SomeParameter1 @SomeParameter2", new SqlParameter("@someparameter1", "Value1"), new SqlParameter("@someparameter2", "Value2")).ToList();
+            var actualResult = mockedDbContext.Set<TestEntity>()
+                .FromSqlRaw("[dbo].[sp_Specified] @SomeParameter1 @SomeParameter2", new SqlParameter("@someparameter1", "Value1"), new SqlParameter("@someparameter2", "Value2"))
+                .ToList();
 
             Assert.Multiple(() =>
             {
@@ -167,7 +170,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.PackageVerification.Tests
             var mockedDbContext = Create.MockedDbContextFor<TestDbContext>();
 
             var commandText = "sp_WithParams";
-            var sqlParameters = new List<SqlParameter> {new SqlParameter("@SomeParameter2", "Value2")};
+            var sqlParameters = new List<SqlParameter> { new SqlParameter("@SomeParameter2", "Value2") };
             var expectedResult = 1;
 
             mockedDbContext.AddExecuteSqlCommandResult(commandText, sqlParameters, expectedResult);
@@ -206,9 +209,8 @@ namespace EntityFrameworkCore.Testing.NSubstitute.PackageVerification.Tests
 
         public class MyDbContextWithConstructorParameters : DbContext
         {
-            public MyDbContextWithConstructorParameters(
-                ILogger<MyDbContextWithConstructorParameters> logger,
-                DbContextOptions<MyDbContextWithConstructorParameters> options) : base(options) { }
+            public MyDbContextWithConstructorParameters(ILogger<MyDbContextWithConstructorParameters> logger, DbContextOptions<MyDbContextWithConstructorParameters> options) :
+                base(options) { }
         }
     }
 }

@@ -4,22 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
-using System.Threading.Tasks;
+using EntityFrameworkCore.Testing.Common.Extensions;
 
 namespace EntityFrameworkCore.Testing.Common
 {
-    public static class EnumerableExtensions
-    {
-        public static async IAsyncEnumerable<T> ToAsyncEnumerable<T>(this IEnumerable<T> enumerable)
-        {
-            foreach (var item in enumerable)
-            {
-                await Task.Delay(0);
-                yield return item;
-            }
-        }
-    }
-
     public class AsyncEnumerable<T> : IAsyncEnumerable<T>, IOrderedQueryable<T>, IEnumerable<T>, IEnumerable, IOrderedQueryable, IQueryable, IQueryable<T>
     {
         private readonly IEnumerable<T> _enumerable;

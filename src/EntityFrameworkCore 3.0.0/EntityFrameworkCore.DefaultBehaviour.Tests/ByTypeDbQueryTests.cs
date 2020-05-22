@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Threading.Tasks;
 using EntityFrameworkCore.Testing.Common.Tests;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
@@ -11,7 +10,7 @@ namespace EntityFrameworkCore.DefaultBehaviour.Tests
     public class ByTypeDbQueryTests
     {
         [SetUp]
-        public void SetUp()
+        public virtual void SetUp()
         {
             DbContext = new TestDbContext(new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
         }
@@ -20,7 +19,7 @@ namespace EntityFrameworkCore.DefaultBehaviour.Tests
         protected DbQuery<TestQuery> DbQuery => DbContext.Query<TestQuery>();
 
         [Test]
-        public virtual async Task AsAsyncEnumerable_ReturnsAsyncEnumerable()
+        public virtual void AsAsyncEnumerable_ReturnsAsyncEnumerable()
         {
             var asyncEnumerable = DbQuery.AsAsyncEnumerable();
 

@@ -5,7 +5,7 @@ using NUnit.Framework;
 namespace EntityFrameworkCore.Testing.NSubstitute.Tests
 {
     [TestFixture]
-    public class ByPropertyReadOnlyDbSetTests : DbQueryTestsBase<TestReadOnlyEntity>
+    public class ByPropertyReadOnlyDbSetTests : BaseForDbQueryTests<TestReadOnlyEntity>
     {
         protected override IQueryable<TestReadOnlyEntity> Queryable => MockedDbContext.Set<TestReadOnlyEntity>();
     }
