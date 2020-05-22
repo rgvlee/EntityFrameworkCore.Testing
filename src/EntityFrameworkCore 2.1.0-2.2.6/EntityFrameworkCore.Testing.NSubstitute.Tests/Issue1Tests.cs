@@ -1,7 +1,9 @@
-﻿using System.Data;
+﻿using System;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
+using Castle.DynamicProxy;
 using EntityFrameworkCore.Testing.Common.Helpers;
 using EntityFrameworkCore.Testing.Common.Tests;
 using EntityFrameworkCore.Testing.NSubstitute.Extensions;
@@ -29,7 +31,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Tests
                     ((SqlParameter) parameters.ElementAt(0)).Value = "Cookie";
                 });
 
-            var outcomeParam = new SqlParameter("Outcome", SqlDbType.VarChar, 500) { Direction = ParameterDirection.Output };
+            var outcomeParam = new SqlParameter("Outcome", SqlDbType.NVarChar, 255) { Direction = ParameterDirection.Output };
             var result = await mockedDbContext.Database.ExecuteSqlCommandAsync(@"EXEC [GiveMeCookie] @Outcome = @Outcome OUT", outcomeParam);
 
             Assert.Multiple(() =>
@@ -40,35 +42,17 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Tests
         }
 
         [Test]
-        public void GiveMeCookie_SetsOutputParameterValue()
+        public void CreateMockedDbContextFor_ParametersForSpecificConstructor_CreatesSubstitute()
         {
-            var mockedDbContext = Create.MockedDbContextFor<TestDbContext>();
-            mockedDbContext.AddExecuteSqlCommandResult(-1,
-                (sql, parameters) =>
-                {
-                    ((SqlParameter) parameters.ElementAt(0)).Value = "Cookie";
-                });
+            var testContext = Create.MockedDbContextFor<TestDbContext>(new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString())
+                .EnableSensitiveDataLogging()
+                .Options);
 
-            var service = new MyService(mockedDbContext);
-
-            Assert.That(service.GiveMeCookie().Result, Is.EqualTo("Cookie"));
-        }
-
-        public class MyService
-        {
-            private readonly DbContext _context;
-
-            public MyService(DbContext context)
+            Assert.Multiple(() =>
             {
-                _context = context;
-            }
-
-            public async Task<string> GiveMeCookie()
-            {
-                var outcomeParam = new SqlParameter("Outcome", SqlDbType.VarChar, 500) { Direction = ParameterDirection.Output };
-                await _context.Database.ExecuteSqlCommandAsync(@"EXEC [GiveMeCookie] @Outcome = @Outcome OUT", outcomeParam);
-                return outcomeParam.Value.ToString();
-            }
+                Assert.That(testContext, Is.Not.Null);
+                Assert.That(ProxyUtil.IsProxy(testContext), Is.True);
+            });
         }
     }
 }

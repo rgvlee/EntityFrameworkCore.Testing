@@ -29,7 +29,7 @@ namespace EntityFrameworkCore.Testing.Moq.Tests
                     ((SqlParameter) parameters.ElementAt(0)).Value = "Cookie";
                 });
 
-            var outcomeParam = new SqlParameter("Outcome", SqlDbType.VarChar, 500) { Direction = ParameterDirection.Output };
+            var outcomeParam = new SqlParameter("Outcome", SqlDbType.NVarChar, 255) { Direction = ParameterDirection.Output };
             var result = await mockedDbContext.Database.ExecuteSqlCommandAsync(@"EXEC [GiveMeCookie] @Outcome = @Outcome OUT", outcomeParam);
 
             Assert.Multiple(() =>
@@ -37,38 +37,6 @@ namespace EntityFrameworkCore.Testing.Moq.Tests
                 Assert.AreEqual(-1, result);
                 Assert.That(outcomeParam.Value.ToString(), Is.EqualTo("Cookie"));
             });
-        }
-
-        [Test]
-        public void GiveMeCookie_SetsOutputParameterValue()
-        {
-            var mockedDbContext = Create.MockedDbContextFor<TestDbContext>();
-            mockedDbContext.AddExecuteSqlCommandResult(-1,
-                (sql, parameters) =>
-                {
-                    ((SqlParameter) parameters.ElementAt(0)).Value = "Cookie";
-                });
-
-            var service = new MyService(mockedDbContext);
-
-            Assert.That(service.GiveMeCookie().Result, Is.EqualTo("Cookie"));
-        }
-
-        public class MyService
-        {
-            private readonly DbContext _context;
-
-            public MyService(DbContext context)
-            {
-                _context = context;
-            }
-
-            public async Task<string> GiveMeCookie()
-            {
-                var outcomeParam = new SqlParameter("Outcome", SqlDbType.VarChar, 500) { Direction = ParameterDirection.Output };
-                await _context.Database.ExecuteSqlCommandAsync(@"EXEC [GiveMeCookie] @Outcome = @Outcome OUT", outcomeParam);
-                return outcomeParam.Value.ToString();
-            }
         }
     }
 }
