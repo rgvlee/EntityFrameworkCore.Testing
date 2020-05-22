@@ -9,7 +9,6 @@ using EntityFrameworkCore.Testing.Common.Tests;
 using EntityFrameworkCore.Testing.NSubstitute.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using NSubstitute;
 using NUnit.Framework;
 
 namespace EntityFrameworkCore.Testing.NSubstitute.Tests
@@ -32,7 +31,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Tests
                     ((SqlParameter) parameters.ElementAt(0)).Value = "Cookie";
                 });
 
-            var outcomeParam = new SqlParameter("Outcome", SqlDbType.VarChar, 500) { Direction = ParameterDirection.Output };
+            var outcomeParam = new SqlParameter("Outcome", SqlDbType.NVarChar, 255) { Direction = ParameterDirection.Output };
             var result = await mockedDbContext.Database.ExecuteSqlRawAsync(@"EXEC [GiveMeCookie] @Outcome = @Outcome OUT", outcomeParam);
 
             Assert.Multiple(() =>
@@ -43,56 +42,17 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Tests
         }
 
         [Test]
-        public void GiveMeCookie_SetsOutputParameterValue()
-        {
-            var mockedDbContext = Create.MockedDbContextFor<TestDbContext>();
-            mockedDbContext.AddExecuteSqlRawResult(-1,
-                (sql, parameters) =>
-                {
-                    ((SqlParameter) parameters.ElementAt(0)).Value = "Cookie";
-                });
-
-            var service = new MyService(mockedDbContext);
-
-            Assert.That(service.GiveMeCookie().Result, Is.EqualTo("Cookie"));
-        }
-
-        [Test]
         public void CreateMockedDbContextFor_ParametersForSpecificConstructor_CreatesSubstitute()
         {
-            var testContext = Create.MockedDbContextFor<MyContext>(
-                new DbContextOptionsBuilder<MyContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).EnableSensitiveDataLogging().Options,
-                Substitute.For<ITimeProvider>());
+            var testContext = Create.MockedDbContextFor<TestDbContext>(new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString())
+                .EnableSensitiveDataLogging()
+                .Options);
 
             Assert.Multiple(() =>
             {
                 Assert.That(testContext, Is.Not.Null);
                 Assert.That(ProxyUtil.IsProxy(testContext), Is.True);
             });
-        }
-
-        public class MyService
-        {
-            private readonly DbContext _context;
-
-            public MyService(DbContext context)
-            {
-                _context = context;
-            }
-
-            public async Task<string> GiveMeCookie()
-            {
-                var outcomeParam = new SqlParameter("Outcome", SqlDbType.VarChar, 500) { Direction = ParameterDirection.Output };
-                await _context.Database.ExecuteSqlRawAsync(@"EXEC [GiveMeCookie] @Outcome = @Outcome OUT", outcomeParam);
-                return outcomeParam.Value.ToString();
-            }
-        }
-
-        public interface ITimeProvider { }
-
-        public class MyContext : DbContext
-        {
-            public MyContext(DbContextOptions<MyContext> options, ITimeProvider timeProvider) : base(options) { }
         }
     }
 }
