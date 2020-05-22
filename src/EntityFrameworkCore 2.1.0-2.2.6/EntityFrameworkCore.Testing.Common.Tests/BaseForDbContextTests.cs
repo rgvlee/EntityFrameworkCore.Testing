@@ -385,5 +385,25 @@ namespace EntityFrameworkCore.Testing.Common.Tests
                 Assert.That(actualResult2, Is.EqualTo(actualResult1));
             });
         }
+
+        [Test]
+        public void Query_TypeNotIncludedInModel_ThrowsException()
+        {
+            Assert.Multiple(() =>
+            {
+                var ex = Assert.Throws<InvalidOperationException>(() => MockedDbContext.Query<NotRegisteredEntity>().ToList());
+                Assert.That(ex.Message, Is.EqualTo(string.Format(ExceptionMessages.CannotCreateDbSetTypeNotIncludedInModel, nameof(NotRegisteredEntity))));
+            });
+        }
+
+        [Test]
+        public void Set_TypeNotIncludedInModel_ThrowsException()
+        {
+            Assert.Multiple(() =>
+            {
+                var ex = Assert.Throws<InvalidOperationException>(() => MockedDbContext.Set<NotRegisteredEntity>().ToList());
+                Assert.That(ex.Message, Is.EqualTo(string.Format(ExceptionMessages.CannotCreateDbSetTypeNotIncludedInModel, nameof(NotRegisteredEntity))));
+            });
+        }
     }
 }

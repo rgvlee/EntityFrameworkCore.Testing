@@ -70,6 +70,15 @@ namespace EntityFrameworkCore.Testing.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cannot create a DbSet for &apos;{0}&apos; because this type is not included in the model for the context..
+        /// </summary>
+        public static string CannotCreateDbSetTypeNotIncludedInModel {
+            get {
+                return ResourceManager.GetString("CannotCreateDbSetTypeNotIncludedInModel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enumeration &apos;{0}&apos; (type: &apos;{1}&apos;) must contain 1 or more elements..
         /// </summary>
         public static string EnumerationEmpty {
