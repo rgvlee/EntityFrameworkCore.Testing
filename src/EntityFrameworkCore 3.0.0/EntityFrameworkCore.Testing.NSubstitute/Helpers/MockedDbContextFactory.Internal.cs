@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
+using NSubstitute.Core;
 using NSubstitute.Extensions;
 
 namespace EntityFrameworkCore.Testing.NSubstitute.Helpers
@@ -27,6 +28,9 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Helpers
                 },
                 ConstructorParameters.ToArray());
 
+            var router = SubstitutionContext.Current.GetCallRouterFor(mockedDbContext);
+            router.RegisterCustomCallHandlerFactory(state => new NoSetUpHandler());
+            
             mockedDbContext.Add(Arg.Any<object>()).Returns(callInfo => DbContext.Add(callInfo.Arg<object>()));
             mockedDbContext.AddAsync(Arg.Any<object>(), Arg.Any<CancellationToken>())
                 .Returns(callInfo => DbContext.AddAsync(callInfo.Arg<object>(), callInfo.Arg<CancellationToken>()));

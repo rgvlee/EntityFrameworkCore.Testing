@@ -23,6 +23,8 @@ namespace EntityFrameworkCore.Testing.Moq.Helpers
         {
             var dbContextMock = new Mock<TDbContext>(ConstructorParameters.ToArray());
 
+            dbContextMock.DefaultValueProvider = new NoSetUpDefaultValueProvider();
+
             dbContextMock.Setup(m => m.Add(It.IsAny<object>())).Returns((object providedEntity) => DbContext.Add(providedEntity));
             dbContextMock.Setup(m => m.AddAsync(It.IsAny<object>(), It.IsAny<CancellationToken>()))
                 .Returns((object providedEntity, CancellationToken providedCancellationToken) => DbContext.AddAsync(providedEntity, providedCancellationToken));
