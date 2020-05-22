@@ -14,7 +14,7 @@ namespace EntityFrameworkCore.Testing.Moq.Tests
         [SetUp]
         public virtual void SetUp()
         {
-            LoggerHelper.LoggerFactory.AddConsole(LogLevel.Debug);
+            LoggerHelper.LoggerFactory = LoggerFactory.Create(builder => builder.AddConsole().SetMinimumLevel(LogLevel.Debug));
         }
 
         [Test]

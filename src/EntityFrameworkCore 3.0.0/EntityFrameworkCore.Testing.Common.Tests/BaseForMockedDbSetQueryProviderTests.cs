@@ -28,7 +28,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         protected DbSet<TEntity> DbSet => (DbSet<TEntity>) Queryable;
 
         [Test]
-        public virtual void FormattableStringSetUpFromSqlInterpolated_SpecifiedSqlWithStringParameterParameters_ReturnsExpectedResult()
+        public virtual void FormattableStringSetUpFromSqlInterpolated_SpecifiedSqlWithStringParameters_ReturnsExpectedResult()
         {
             var parameters = new List<string> { "Value2" };
             var sql = (FormattableString) $"[sp_WithParams] {parameters[0]}";
@@ -131,7 +131,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         }
 
         [Test]
-        public virtual void FromSqlInterpolated_SpecifiedSqlWithStringParameterParameters_ReturnsExpectedResult()
+        public virtual void FromSqlInterpolated_SpecifiedSqlWithStringParameters_ReturnsExpectedResult()
         {
             var sql = "sp_WithParams";
             var parameters = new List<string> { "Value2" };
@@ -268,7 +268,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         }
 
         [Test]
-        public virtual void FromSqlRaw_SpecifiedSqlWithStringParameterParameters_ReturnsExpectedResult()
+        public virtual void FromSqlRaw_SpecifiedSqlWithStringParameters_ReturnsExpectedResult()
         {
             var sql = "sp_WithParams";
             var parameters = new List<string> { "Value2" };

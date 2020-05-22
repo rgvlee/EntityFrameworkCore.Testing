@@ -26,7 +26,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Tests
         [SetUp]
         public virtual void SetUp()
         {
-            LoggerHelper.LoggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
+            LoggerHelper.LoggerFactory = LoggerFactory.Create(builder => builder.AddConsole().SetMinimumLevel(LogLevel.Debug));
             _fixture = new Fixture();
         }
 

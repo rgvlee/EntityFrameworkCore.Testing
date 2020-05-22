@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using AutoFixture;
+using EntityFrameworkCore.Testing.Common.Helpers;
 using EntityFrameworkCore.Testing.Common.Tests;
 using EntityFrameworkCore.Testing.Moq.Extensions;
 using Microsoft.Data.SqlClient;
@@ -19,7 +20,7 @@ namespace EntityFrameworkCore.Testing.Moq.PackageVerification.Tests
         [SetUp]
         public virtual void SetUp()
         {
-            //LoggerHelper.LoggerFactory.AddConsole(LogLevel.Debug);
+            LoggerHelper.LoggerFactory = LoggerFactory.Create(builder => builder.AddConsole().SetMinimumLevel(LogLevel.Debug));
         }
 
         [Test]
