@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using EntityFrameworkCore.Testing.Common.Helpers;
+using Microsoft.EntityFrameworkCore;
 
 namespace EntityFrameworkCore.Testing.Moq.Extensions
 {
@@ -31,10 +33,25 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
         /// <param name="sql">The FromSql sql string. Set up supports case insensitive partial matches.</param>
         /// <param name="fromSqlResult">The FromSql result.</param>
         /// <returns>The mocked queryable.</returns>
-        public static IQueryable<T> AddFromSqlResult<T>(this IQueryable<T> mockedQueryable, string sql, IEnumerable<T> fromSqlResult) where T : class
+        public static IQueryable<T> AddFromSqlResult<T>(this IQueryable<T> mockedQueryable, RawSqlString sql, IEnumerable<T> fromSqlResult) where T : class
         {
             EnsureArgument.IsNotNull(mockedQueryable, nameof(mockedQueryable));
-            mockedQueryable.Provider.AddFromSqlResult(sql, new List<object>(), fromSqlResult);
+            mockedQueryable.Provider.AddFromSqlResult(sql.Format, new List<object>(), fromSqlResult);
+            return mockedQueryable;
+        }
+
+        /// <summary>
+        ///     Sets up FromSql invocations containing a specified sql string to return a specified result.
+        /// </summary>
+        /// <typeparam name="T">The queryable source type.</typeparam>
+        /// <param name="mockedQueryable">The mocked queryable.</param>
+        /// <param name="sql">The FromSql sql string. Set up supports case insensitive partial matches.</param>
+        /// <param name="fromSqlResult">The FromSql result.</param>
+        /// <returns>The mocked queryable.</returns>
+        public static IQueryable<T> AddFromSqlResult<T>(this IQueryable<T> mockedQueryable, FormattableString sql, IEnumerable<T> fromSqlResult) where T : class
+        {
+            EnsureArgument.IsNotNull(mockedQueryable, nameof(mockedQueryable));
+            mockedQueryable.Provider.AddFromSqlResult(sql.Format, sql.GetArguments(), fromSqlResult);
             return mockedQueryable;
         }
 
