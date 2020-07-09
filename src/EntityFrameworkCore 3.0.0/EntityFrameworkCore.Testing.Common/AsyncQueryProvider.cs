@@ -48,12 +48,12 @@ namespace EntityFrameworkCore.Testing.Common
                     if (predicateExpression.Type.GetGenericArguments().ToList().Count.Equals(3))
                     {
                         var predicate = ((Expression<Func<T, int, TElement>>) predicateExpression).Compile();
-                        return Source.Cast<T>().ToList().Select((x, i) => predicate(x, i)).AsQueryable();
+                        return new AsyncEnumerable<TElement>(Source.Cast<T>().ToList().Select((x, i) => predicate(x, i)));
                     }
                     else
                     {
                         var predicate = ((Expression<Func<T, TElement>>) predicateExpression).Compile();
-                        return Source.Cast<T>().ToList().Select(x => predicate(x)).AsQueryable();
+                        return new AsyncEnumerable<TElement>(Source.Cast<T>().ToList().Select(x => predicate(x)));
                     }
                 }
 
