@@ -15,7 +15,7 @@ namespace EntityFrameworkCore.Testing.Moq.Helpers
         ///     Creates the mocked db context.
         /// </summary>
         /// <returns>A mocked db context.</returns>
-        public override TDbContext Create()
+        public override TDbContext Build()
         {
             var factory = new MockedDbContextFactory<TDbContext>(Options);
             return factory.Create();

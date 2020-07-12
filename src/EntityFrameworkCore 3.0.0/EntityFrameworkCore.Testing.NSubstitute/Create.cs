@@ -26,8 +26,8 @@ namespace EntityFrameworkCore.Testing.NSubstitute
         public static TDbContext MockedDbContextFor<TDbContext>(params object[] constructorParameters) where TDbContext : DbContext
         {
             return constructorParameters != null && constructorParameters.Any()
-                ? Build.MockedDbContextFor<TDbContext>().UsingConstructorWithParameters(constructorParameters).Create()
-                : Build.MockedDbContextFor<TDbContext>().Create();
+                ? Build.MockedDbContextFor<TDbContext>().UsingConstructorWithParameters(constructorParameters).Build()
+                : Build.MockedDbContextFor<TDbContext>().Build();
         }
 
         /// <summary>

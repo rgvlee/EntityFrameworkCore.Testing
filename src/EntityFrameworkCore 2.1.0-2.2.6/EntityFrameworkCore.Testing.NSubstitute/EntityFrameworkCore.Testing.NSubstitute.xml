@@ -212,7 +212,7 @@
             </summary>
             <typeparam name="TDbContext">The db context type.</typeparam>
         </member>
-        <member name="M:EntityFrameworkCore.Testing.NSubstitute.Helpers.MockedDbContextBuilder`1.Create">
+        <member name="M:EntityFrameworkCore.Testing.NSubstitute.Helpers.MockedDbContextBuilder`1.Build">
             <summary>
                 Creates the mocked db context.
             </summary>

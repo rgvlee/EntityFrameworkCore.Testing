@@ -9,12 +9,12 @@
     <Compile Include="..\EntityFrameworkCore.Testing.Common.Tests\BaseTestEntity.cs" Link="BaseTestEntity.cs" />
     <Compile Include="..\EntityFrameworkCore.Testing.Common.Tests\TestDbContext.cs" Link="TestDbContext.cs" />
     <Compile Include="..\EntityFrameworkCore.Testing.Common.Tests\TestEntity.cs" Link="TestEntity.cs" />
-    <Compile Include="..\EntityFrameworkCore.Testing.Common.Tests\TestQuery.cs" Link="TestQuery.cs" />
+    <Compile Include="..\EntityFrameworkCore.Testing.Common.Tests\ViewEntity.cs" Link="ViewEntity.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AutoFixture" Version="4.11.0" />
-    <PackageReference Include="EntityFrameworkCore.Testing.NSubstitute" Version="1.1.0" />
+    <PackageReference Include="EntityFrameworkCore.Testing.NSubstitute" Version="1.1.2-rc03" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="2.2.6" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.6" />
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="2.2.0" />
