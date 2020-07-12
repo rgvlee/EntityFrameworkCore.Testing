@@ -16,7 +16,7 @@ namespace EntityFrameworkCore.Testing.Moq
         /// </summary>
         /// <typeparam name="TDbContext">The db context type.</typeparam>
         /// <returns>A mocked db context builder.</returns>
-        public static IMockedDbContextBuilderOptions<TDbContext> MockedDbContextFor<TDbContext>() where TDbContext : DbContext
+        public static IMockedDbContextBuilderFluentUsing<TDbContext> MockedDbContextFor<TDbContext>() where TDbContext : DbContext
         {
             return new MockedDbContextBuilder<TDbContext>();
         }

@@ -16,11 +16,11 @@ namespace EntityFrameworkCore.Testing.Common.Helpers
         ///     The constructor parameters.
         /// </param>
         /// <returns>The mocked db context builder.</returns>
-        IMockedDbContextBuilderFluentAnd<TDbContext> UsingConstructorWithParameters(params object[] constructorParameters);
+        IMockedDbContextBuilderFluentAnd<TDbContext> ConstructorWithParameters(params object[] constructorParameters);
 
         /// <summary>
         ///     The db context instance that the mocked db context will use for in-memory provider supported operations.
         /// </summary>
-        IMockedDbContextBuilderFluentAnd<TDbContext> UsingDbContext(TDbContext dbContext);
+        IMockedDbContextBuilderFluentAnd<TDbContext> DbContext(TDbContext dbContext);
     }
 }

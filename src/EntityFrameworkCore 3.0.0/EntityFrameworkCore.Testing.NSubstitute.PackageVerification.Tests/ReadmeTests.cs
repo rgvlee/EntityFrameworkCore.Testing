@@ -174,7 +174,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.PackageVerification.Tests
         {
             var options = new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
             var dbContextToMock = new TestDbContext(options);
-            var mockedDbContext = Build.MockedDbContextFor<TestDbContext>().UsingDbContext(dbContextToMock).And.UsingConstructorWithParameters(options).Build();
+            var mockedDbContext = Build.MockedDbContextFor<TestDbContext>().Using.DbContext(dbContextToMock).And.ConstructorWithParameters(options).Build();
         }
     }
 }

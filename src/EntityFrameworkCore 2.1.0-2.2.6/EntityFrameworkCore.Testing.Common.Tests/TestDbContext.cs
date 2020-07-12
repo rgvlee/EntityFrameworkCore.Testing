@@ -10,6 +10,8 @@ namespace EntityFrameworkCore.Testing.Common.Tests
 
         public TestDbContext(DbContextOptions<TestDbContext> options) : base(options) { }
 
+        public TestDbContext(ILogger<TestDbContext> logger, DbContextOptions<TestDbContext> options) : base(options) { }
+
         public virtual DbSet<TestEntity> TestEntities { get; set; }
         public virtual DbQuery<ViewEntity> ViewEntities { get; set; }
 

@@ -7,7 +7,7 @@ namespace EntityFrameworkCore.Testing.Common.Helpers
     /// </summary>
     /// <typeparam name="TDbContext">The db context type.</typeparam>
     public abstract class BaseMockedDbContextBuilder<TDbContext> : IMockedDbContextBuilder<TDbContext>, IMockedDbContextBuilderOptions<TDbContext>,
-        IMockedDbContextBuilderFluentAnd<TDbContext> where TDbContext : DbContext
+        IMockedDbContextBuilderFluentAnd<TDbContext>, IMockedDbContextBuilderFluentUsing<TDbContext> where TDbContext : DbContext
     {
         /// <summary>
         ///     The create factory options.
@@ -22,6 +22,8 @@ namespace EntityFrameworkCore.Testing.Common.Helpers
 
         public IMockedDbContextBuilderOptions<TDbContext> And => this;
 
+        public IMockedDbContextBuilderOptions<TDbContext> Using => this;
+
         /// <summary>
         ///     The parameters that will be used to create the mocked db context and, if one is not provided,
         ///     the in-memory context that the mocked db context will use for in-memory provider supported operations.
@@ -30,7 +32,7 @@ namespace EntityFrameworkCore.Testing.Common.Helpers
         ///     The constructor parameters.
         /// </param>
         /// <returns>The mocked db context builder.</returns>
-        public IMockedDbContextBuilderFluentAnd<TDbContext> UsingConstructorWithParameters(params object[] constructorParameters)
+        public IMockedDbContextBuilderFluentAnd<TDbContext> ConstructorWithParameters(params object[] constructorParameters)
         {
             EnsureArgument.IsNotEmpty(constructorParameters, nameof(constructorParameters));
             Options.ConstructorParameters = constructorParameters;
@@ -40,7 +42,7 @@ namespace EntityFrameworkCore.Testing.Common.Helpers
         /// <summary>
         ///     The db context instance that the mocked db context will use for in-memory provider supported operations.
         /// </summary>
-        public IMockedDbContextBuilderFluentAnd<TDbContext> UsingDbContext(TDbContext dbContext)
+        public IMockedDbContextBuilderFluentAnd<TDbContext> DbContext(TDbContext dbContext)
         {
             EnsureArgument.IsNotNull(dbContext, nameof(dbContext));
             Options.DbContext = dbContext;

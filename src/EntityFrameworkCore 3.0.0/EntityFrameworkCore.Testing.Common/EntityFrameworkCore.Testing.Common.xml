@@ -111,7 +111,7 @@
             </summary>
             <returns>A mocked db context.</returns>
         </member>
-        <member name="M:EntityFrameworkCore.Testing.Common.Helpers.BaseMockedDbContextBuilder`1.UsingConstructorWithParameters(System.Object[])">
+        <member name="M:EntityFrameworkCore.Testing.Common.Helpers.BaseMockedDbContextBuilder`1.ConstructorWithParameters(System.Object[])">
             <summary>
                 The parameters that will be used to create the mocked db context and, if one is not provided,
                 the in-memory context that the mocked db context will use for in-memory provider supported operations.
@@ -121,7 +121,7 @@
             </param>
             <returns>The mocked db context builder.</returns>
         </member>
-        <member name="M:EntityFrameworkCore.Testing.Common.Helpers.BaseMockedDbContextBuilder`1.UsingDbContext(`0)">
+        <member name="M:EntityFrameworkCore.Testing.Common.Helpers.BaseMockedDbContextBuilder`1.DbContext(`0)">
             <summary>
                 The db context instance that the mocked db context will use for in-memory provider supported operations.
             </summary>
@@ -230,19 +230,13 @@
             </summary>
             <returns>A mocked db context.</returns>
         </member>
-        <member name="T:EntityFrameworkCore.Testing.Common.Helpers.IMockedDbContextBuilderFluentAnd`1">
-            <summary>
-                The mocked db context builder fluent and joiner.
-            </summary>
-            <typeparam name="TDbContext">The db context type.</typeparam>
-        </member>
         <member name="T:EntityFrameworkCore.Testing.Common.Helpers.IMockedDbContextBuilderOptions`1">
             <summary>
                 The mocked db context builder options.
             </summary>
             <typeparam name="TDbContext">The db context type.</typeparam>
         </member>
-        <member name="M:EntityFrameworkCore.Testing.Common.Helpers.IMockedDbContextBuilderOptions`1.UsingConstructorWithParameters(System.Object[])">
+        <member name="M:EntityFrameworkCore.Testing.Common.Helpers.IMockedDbContextBuilderOptions`1.ConstructorWithParameters(System.Object[])">
             <summary>
                 The parameters that will be used to create the mocked db context and, if one is not provided,
                 the in-memory context that the mocked db context will use for in-memory provider supported operations.
@@ -252,7 +246,7 @@
             </param>
             <returns>The mocked db context builder.</returns>
         </member>
-        <member name="M:EntityFrameworkCore.Testing.Common.Helpers.IMockedDbContextBuilderOptions`1.UsingDbContext(`0)">
+        <member name="M:EntityFrameworkCore.Testing.Common.Helpers.IMockedDbContextBuilderOptions`1.DbContext(`0)">
             <summary>
                 The db context instance that the mocked db context will use for in-memory provider supported operations.
             </summary>
