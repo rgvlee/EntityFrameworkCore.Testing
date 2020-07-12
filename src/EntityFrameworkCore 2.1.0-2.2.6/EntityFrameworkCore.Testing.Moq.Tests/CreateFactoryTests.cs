@@ -1,22 +1,14 @@
 ﻿using System;
 using System.Linq;
 using Castle.DynamicProxy;
-using EntityFrameworkCore.Testing.Common.Helpers;
 using EntityFrameworkCore.Testing.Common.Tests;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using NUnit.Framework;
 
 namespace EntityFrameworkCore.Testing.Moq.Tests
 {
-    public class CreateFactoryTests
+    public class CreateFactoryTests : BaseForTests
     {
-        [SetUp]
-        public virtual void SetUp()
-        {
-            LoggerHelper.LoggerFactory.AddConsole(LogLevel.Debug);
-        }
-
         [Test]
         public void CreateMockedDbContextFor_Type_CreatesMockedDbContext()
         {
