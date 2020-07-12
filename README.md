@@ -17,10 +17,10 @@ It also provides support for the following LINQ queryable operations:
 
 - ElementAt
 - ElementAtOrDefault
-- Indexed Select (`Queryable.Select(Func<T, int, TResult>`))
+- Indexed Select
 - SkipWhile
 - TakeWhile
-- Indexed TakeWhile (`Queryable.Select(Func<T, int, bool>`))
+- Indexed TakeWhile
 
 It's easy to use with implementations for both Moq and NSubstitute.
 
@@ -52,7 +52,7 @@ Your `DbContext` set/query properties must be overridable:
 public virtual DbSet<TestEntity> TestEntities { get; set; }
 ```
 
-## Creating a mocked `DbContext`
+## Creating a mocked DbContext
 
 ### Creating by type
 
@@ -60,7 +60,7 @@ public virtual DbSet<TestEntity> TestEntities { get; set; }
 var mockedDbContext = Create.MockedDbContextFor<TestDbContext>();
 ```
 
-This requires you to have a `DbContext` with a constructor that has a single `DbContextOptions` or `DbContextOptions<TDbContext>` parameter - with the most specific constructor being used. Refer to the [documentation provided by Microsoft](https://docs.microsoft.com/en-us/ef/core/miscellaneous/testing/in-memory#add-a-constructor-for-testing) for further information.
+This requires you to have a `DbContext` with a constructor that has a single `DbContextOptions` or `DbContextOptions<TDbContext>` parameter - with the most specific constructor being used.
 
 ```c#
 public class TestDbContext : DbContext
@@ -74,10 +74,9 @@ public class TestDbContext : DbContext
 Provided it has a `DbContextOptions` or `DbContextOptions<TDbContext>` parameter, you can use any accessible `DbContext` constructor to create the mocked `DbContext`.
 
 ```c#
-var mockedCurrentUser = Mock.Of<ICurrentUser>();
 var mockedLogger = Mock.Of<ILogger<TestDbContext>>();
 var dbContextOptions = new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
-var mockedDbContext = Create.MockedDbContextFor<TestDbContext>(mockedLogger, mockedCurrentUser, dbContextOptions);
+var mockedDbContext = Create.MockedDbContextFor<TestDbContext>(mockedLogger, dbContextOptions);
 ```
 
 ### Advanced creation
@@ -87,19 +86,7 @@ If you need access to the Microsoft in-memory provider instance used by the mock
 ```c#
 var options = new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
 var dbContextToMock = new TestDbContext(options);
-var mockedDbContext = Build.MockedDbContextFor<TestDbContext>()
-    .UsingDbContext(dbContextToMock)
-    .UsingConstructorWithParameters(options)
-    .Create();
-```
-
-Then extend the mock as required:
-
-```c#
-var dbContextMock = Mock.Get(mockedDbContext);
-dbContextMock.Setup(x => x.SaveChanges())
-    .Returns(() => dbContextToMock.SaveChanges())
-    .Callback(() => Console.WriteLine("I am a meat popsicle"));
+var mockedDbContext = Build.MockedDbContextFor<TestDbContext>().UsingDbContext(dbContextToMock).And.UsingConstructorWithParameters(options).Build();
 ```
 
 ## Usage
@@ -155,7 +142,7 @@ Assert.Multiple(() =>
 });
 ```
 
-We can be more specific; The following will return `expectedResult` if the `FromSql` SQL query text contains `usp_StoredProcedureWithParameters` and a `@Parameter2` SQL parameter with a value of `Value2` has been provided:
+The following will return `expectedResult` if the `FromSql` SQL query text contains `usp_StoredProcedureWithParameters` and a `@Parameter2` SQL parameter with a value of `Value2` has been provided:
 
 ```c#
 var expectedResult = Fixture.CreateMany<TestEntity>().ToList();
