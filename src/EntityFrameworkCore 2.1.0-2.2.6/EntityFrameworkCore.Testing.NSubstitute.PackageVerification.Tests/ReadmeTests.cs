@@ -8,6 +8,7 @@ using EntityFrameworkCore.Testing.Common.Tests;
 using EntityFrameworkCore.Testing.NSubstitute.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using NSubstitute;
 using NUnit.Framework;
 
 namespace EntityFrameworkCore.Testing.NSubstitute.PackageVerification.Tests
@@ -158,6 +159,22 @@ namespace EntityFrameworkCore.Testing.NSubstitute.PackageVerification.Tests
                 Assert.That(mockedDbContext.Set<TestEntity>().Count(), Is.EqualTo(itemsToCreate - numberOfRowsToDelete));
                 Assert.That(mockedDbContext.Set<TestEntity>().ToList(), Is.EquivalentTo(remainingRows));
             });
+        }
+
+        [Test]
+        public void CreateExample1()
+        {
+            var mockedLogger = Substitute.For<ILogger<TestDbContext>>();
+            var dbContextOptions = new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
+            var mockedDbContext = Create.MockedDbContextFor<TestDbContext>(mockedLogger, dbContextOptions);
+        }
+
+        [Test]
+        public void CreateExample2()
+        {
+            var options = new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
+            var dbContextToMock = new TestDbContext(options);
+            var mockedDbContext = Build.MockedDbContextFor<TestDbContext>().UsingDbContext(dbContextToMock).And.UsingConstructorWithParameters(options).Build();
         }
     }
 }

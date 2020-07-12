@@ -175,5 +175,21 @@ namespace EntityFrameworkCore.Testing.Moq.PackageVerification.Tests
                 Assert.That(mockedDbContext.Set<TestEntity>().ToList(), Is.EquivalentTo(remainingRows));
             });
         }
+
+        [Test]
+        public void CreateExample1()
+        {
+            var mockedLogger = Mock.Of<ILogger<TestDbContext>>();
+            var dbContextOptions = new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
+            var mockedDbContext = Create.MockedDbContextFor<TestDbContext>(mockedLogger, dbContextOptions);
+        }
+
+        [Test]
+        public void CreateExample2()
+        {
+            var options = new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
+            var dbContextToMock = new TestDbContext(options);
+            var mockedDbContext = Build.MockedDbContextFor<TestDbContext>().UsingDbContext(dbContextToMock).And.UsingConstructorWithParameters(options).Build();
+        }
     }
 }
