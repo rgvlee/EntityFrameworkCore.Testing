@@ -8,9 +8,9 @@ namespace EntityFrameworkCore.Testing.Common.Tests
     {
         private static readonly ILogger Logger = LoggerHelper.CreateLogger(typeof(TestDbContext));
 
-        //public TestDbContext() { }
-
         public TestDbContext(DbContextOptions<TestDbContext> options) : base(options) { }
+
+        public TestDbContext(ILogger<TestDbContext> logger, DbContextOptions<TestDbContext> options) : base(options) { }
 
         public virtual DbSet<TestEntity> TestEntities { get; set; }
         public virtual DbSet<TestReadOnlyEntity> TestReadOnlyEntities { get; set; }
