@@ -3,55 +3,50 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoFixture;
 using Castle.DynamicProxy;
-using EntityFrameworkCore.Testing.Common.Helpers;
 using EntityFrameworkCore.Testing.Common.Tests;
 using EntityFrameworkCore.Testing.NSubstitute.Extensions;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using NUnit.Framework;
 
 namespace EntityFrameworkCore.Testing.NSubstitute.Tests
 {
-    public class Issue1Tests
+    public class Issue1Tests : BaseForTests
     {
-        [SetUp]
-        public virtual void SetUp()
-        {
-            LoggerHelper.LoggerFactory.AddConsole(LogLevel.Debug);
-        }
-
         [Test]
         public async Task ExecuteSqlCommandAsync_SpecifiedSqlAndSqlParameter_ReturnsExpectedResultAndSetsOutputParameterValue()
         {
+            var expectedResult = Fixture.Create<string>();
+
             var mockedDbContext = Create.MockedDbContextFor<TestDbContext>();
             mockedDbContext.AddExecuteSqlCommandResult(-1,
                 (sql, parameters) =>
                 {
-                    ((SqlParameter) parameters.ElementAt(0)).Value = "Cookie";
+                    ((SqlParameter) parameters.ElementAt(0)).Value = expectedResult;
                 });
 
-            var outcomeParam = new SqlParameter("Outcome", SqlDbType.NVarChar, 255) { Direction = ParameterDirection.Output };
-            var result = await mockedDbContext.Database.ExecuteSqlCommandAsync(@"EXEC [GiveMeCookie] @Outcome = @Outcome OUT", outcomeParam);
+            var outputParameter = new SqlParameter("OutputParameter", SqlDbType.NVarChar, 255) { Direction = ParameterDirection.Output };
+            var result = await mockedDbContext.Database.ExecuteSqlCommandAsync(@"EXEC [StoredProcedureWithOutputParameter] @OutputParameter = @Result OUTPUT", outputParameter);
 
             Assert.Multiple(() =>
             {
                 Assert.AreEqual(-1, result);
-                Assert.That(outcomeParam.Value.ToString(), Is.EqualTo("Cookie"));
+                Assert.That(outputParameter.Value.ToString(), Is.EqualTo(expectedResult));
             });
         }
 
         [Test]
         public void CreateMockedDbContextFor_ParametersForSpecificConstructor_CreatesSubstitute()
         {
-            var testContext = Create.MockedDbContextFor<TestDbContext>(new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString())
+            var mockedDbContext = Create.MockedDbContextFor<TestDbContext>(new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString())
                 .EnableSensitiveDataLogging()
                 .Options);
 
             Assert.Multiple(() =>
             {
-                Assert.That(testContext, Is.Not.Null);
-                Assert.That(ProxyUtil.IsProxy(testContext), Is.True);
+                Assert.That(mockedDbContext, Is.Not.Null);
+                Assert.That(ProxyUtil.IsProxy(mockedDbContext), Is.True);
             });
         }
     }
