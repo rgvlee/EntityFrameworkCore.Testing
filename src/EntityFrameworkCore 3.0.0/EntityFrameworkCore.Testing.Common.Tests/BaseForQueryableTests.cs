@@ -685,6 +685,23 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         }
 
         [Test]
+        public virtual async Task SelectAnonymousObjectThenToListAsync_ReturnsList()
+        {
+            SeedQueryableSource();
+
+            var expectedResult = Queryable.Select(x => new { Id = x.Guid }).ToList();
+
+            var actualResult1 = await Queryable.Select(x => new { Id = x.Guid }).ToListAsync();
+            var actualResult2 = await Queryable.Select(x => new { Id = x.Guid }).ToListAsync();
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(actualResult1, Is.EquivalentTo(expectedResult));
+                Assert.That(actualResult2, Is.EquivalentTo(expectedResult));
+            });
+        }
+
+        [Test]
         public virtual void Skip_One_ReturnsSequenceThatDoesNotIncludeFirstItem()
         {
             SeedQueryableSource();
