@@ -1,19 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using AutoFixture;
-using EntityFrameworkCore.Testing.Common.Helpers;
 using EntityFrameworkCore.Testing.Common.Tests;
 using EntityFrameworkCore.Testing.Moq.Extensions;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using NUnit.Framework;
 
 namespace EntityFrameworkCore.Testing.Moq.Tests
 {
-    public class Issue6Tests
+    public class Issue6Tests : BaseForTests
     {
-        private Fixture _fixture;
-
         private static IEnumerable<TestCaseData> FromSqlInterpolated_SpecifiedSqlWithNullParameters_TestCases {
             get
             {
@@ -23,17 +19,10 @@ namespace EntityFrameworkCore.Testing.Moq.Tests
             }
         }
 
-        [SetUp]
-        public virtual void SetUp()
-        {
-            LoggerHelper.LoggerFactory = LoggerFactory.Create(builder => builder.AddConsole().SetMinimumLevel(LogLevel.Debug));
-            _fixture = new Fixture();
-        }
-
         [Test]
         public void FromSqlInterpolated_SpecifiedSqlWithDbNullParameters_ReturnsExpectedResult()
         {
-            var expectedResult = new List<TestEntity> { _fixture.Create<TestEntity>() };
+            var expectedResult = new List<TestEntity> { Fixture.Create<TestEntity>() };
 
             var mockedDbContext = Create.MockedDbContextFor<TestDbContext>();
             mockedDbContext.Set<TestEntity>().AddFromSqlInterpolatedResult($"SELECT * FROM [SqlFunctionWithNullableParameters]({DBNull.Value}, {DBNull.Value})", expectedResult);
@@ -46,7 +35,7 @@ namespace EntityFrameworkCore.Testing.Moq.Tests
         [TestCaseSource(nameof(FromSqlInterpolated_SpecifiedSqlWithNullParameters_TestCases))]
         public void FromSqlInterpolated_SpecifiedSqlWithNullParameters_ReturnsExpectedResult(DateTime? dateTimeValue, int? intValue)
         {
-            var expectedResult = new List<TestEntity> { _fixture.Create<TestEntity>() };
+            var expectedResult = new List<TestEntity> { Fixture.Create<TestEntity>() };
 
             var mockedDbContext = Create.MockedDbContextFor<TestDbContext>();
             mockedDbContext.Set<TestEntity>().AddFromSqlInterpolatedResult($"SELECT * FROM [SqlFunctionWithNullableParameters]({dateTimeValue}, {intValue})", expectedResult);
