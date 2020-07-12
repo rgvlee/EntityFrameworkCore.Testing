@@ -9,7 +9,7 @@
                 Provides builders that create mocked instances.
             </summary>
         </member>
-        <member name="M:EntityFrameworkCore.Testing.Moq.Build.MockFor``1">
+        <member name="M:EntityFrameworkCore.Testing.Moq.Build.MockedDbContextFor``1">
             <summary>
                 Provides a mocked db context builder.
             </summary>

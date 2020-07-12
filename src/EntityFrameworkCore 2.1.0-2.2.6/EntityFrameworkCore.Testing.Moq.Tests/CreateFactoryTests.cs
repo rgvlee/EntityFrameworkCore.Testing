@@ -26,7 +26,7 @@ namespace EntityFrameworkCore.Testing.Moq.Tests
         {
             var dbContextToMock = new TestDbContext(new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
 
-            var mocked = Create.MockedQueryProviderFor(dbContextToMock.TestView.AsQueryable());
+            var mocked = Create.MockedQueryProviderFor(dbContextToMock.ViewEntities.AsQueryable());
 
             Assert.Multiple(() =>
             {

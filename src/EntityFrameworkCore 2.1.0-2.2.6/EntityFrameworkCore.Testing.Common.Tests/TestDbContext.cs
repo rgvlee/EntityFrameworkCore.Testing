@@ -11,12 +11,12 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         public TestDbContext(DbContextOptions<TestDbContext> options) : base(options) { }
 
         public virtual DbSet<TestEntity> TestEntities { get; set; }
-        public virtual DbQuery<TestQuery> TestView { get; set; }
+        public virtual DbQuery<ViewEntity> ViewEntities { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<TestEntity>().HasKey(c => c.Guid);
-            modelBuilder.Query<TestQuery>().ToView("TestQuery");
+            modelBuilder.Query<ViewEntity>().ToView("TestQuery");
         }
 
         public override int SaveChanges()
