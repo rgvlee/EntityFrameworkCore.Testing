@@ -6,11 +6,9 @@
     <version>2.1.0</version>
     <Authors>rgvlee</Authors>
     <Company>rgvlee</Company>
-    <Description>A mocking library for EntityFrameworkCore (EFCore) using Moq. Provides a functionally complete DbContext for your tests.
+    <Description>A mocking library that provides a fully functional system mock for EntityFrameworkCore (EFCore) using Moq.
 
-This is achieved by extending the in-memory provider, mocking relational and queryable operations to provide support for Queries/Keyless DbSets, FromSqlRaw/FromSqlInterpolated, ExecuteSqlCommand/ExecuteSqlRaw/ExecuteSqlInterpolated, and async LINQ operations.
-
-Support is also provided for other LINQ operations not supported by the in-memory provider, such as ElementAt, SkipWhile, TakeWhile, etc.</Description>
+Includes support for queries/keyless db sets, FromSqlRaw/FromSqlInterpolated, ExecuteSqlCommand/ExecuteSqlRaw/ExecuteSqlInterpolated, and async LINQ operations.</Description>
     <Copyright>Copyright (c) 2020 Lee Anderson</Copyright>
     <PackageLicenseUrl></PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/rgvlee/EntityFrameworkCore.Testing</PackageProjectUrl>
