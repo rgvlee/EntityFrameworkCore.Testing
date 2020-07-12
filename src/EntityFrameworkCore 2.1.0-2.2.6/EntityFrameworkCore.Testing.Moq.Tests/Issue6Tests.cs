@@ -19,6 +19,15 @@ namespace EntityFrameworkCore.Testing.Moq.Tests
             }
         }
 
+        private static IEnumerable<TestCaseData> ExecuteSqlCommand_SpecifiedFormattableStringSqlWithNullParameters_TestCases {
+            get
+            {
+                yield return new TestCaseData(null, null);
+                yield return new TestCaseData(null, 1);
+                yield return new TestCaseData(DateTime.Parse("21 May 2020 9:05 PM"), null);
+            }
+        }
+
         [Test]
         public void FromSql_SpecifiedFormattableStringSqlWithDbNullParameters_ReturnsExpectedResult()
         {
@@ -41,6 +50,32 @@ namespace EntityFrameworkCore.Testing.Moq.Tests
             mockedDbContext.Set<TestEntity>().AddFromSqlResult($"SELECT * FROM [SqlFunctionWithNullableParameters]({dateTimeValue}, {intValue})", expectedResult);
 
             var actualResult = mockedDbContext.Set<TestEntity>().FromSql($"SELECT * FROM [SqlFunctionWithNullableParameters]({dateTimeValue}, {intValue})");
+
+            Assert.That(actualResult, Is.EqualTo(expectedResult));
+        }
+
+        [Test]
+        public void ExecuteSqlCommand_SpecifiedFormattableStringSqlWithDbNullParameters_ReturnsExpectedResult()
+        {
+            var expectedResult = Fixture.Create<int>();
+
+            var mockedDbContext = Create.MockedDbContextFor<TestDbContext>();
+            mockedDbContext.AddExecuteSqlCommandResult($"[dbo].[usp_WithNullableParameters]({DBNull.Value}, {DBNull.Value})", expectedResult);
+
+            var actualResult = mockedDbContext.Database.ExecuteSqlCommand($"[dbo].[usp_WithNullableParameters]({DBNull.Value}, {DBNull.Value})");
+
+            Assert.That(actualResult, Is.EqualTo(expectedResult));
+        }
+
+        [TestCaseSource(nameof(ExecuteSqlCommand_SpecifiedFormattableStringSqlWithNullParameters_TestCases))]
+        public void ExecuteSqlCommand_SpecifiedFormattableStringSqlWithNullParameters_ReturnsExpectedResult(DateTime? dateTimeValue, int? intValue)
+        {
+            var expectedResult = Fixture.Create<int>();
+
+            var mockedDbContext = Create.MockedDbContextFor<TestDbContext>();
+            mockedDbContext.AddExecuteSqlCommandResult($"[dbo].[usp_WithNullableParameters]({dateTimeValue}, {intValue})", expectedResult);
+
+            var actualResult = mockedDbContext.Database.ExecuteSqlCommand($"[dbo].[usp_WithNullableParameters]({dateTimeValue}, {intValue})");
 
             Assert.That(actualResult, Is.EqualTo(expectedResult));
         }
