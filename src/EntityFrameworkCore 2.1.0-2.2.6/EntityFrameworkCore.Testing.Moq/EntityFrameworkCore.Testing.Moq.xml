@@ -59,7 +59,18 @@
             <param name="callback">Operations to perform after ExecuteSqlCommand is invoked.</param>
             <returns>The mocked db context.</returns>
         </member>
-        <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.DbContextExtensions.AddExecuteSqlCommandResult``1(``0,System.String,System.Int32,System.Action{System.String,System.Collections.Generic.IEnumerable{System.Object}})">
+        <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.DbContextExtensions.AddExecuteSqlCommandResult``1(``0,Microsoft.EntityFrameworkCore.RawSqlString,System.Int32,System.Action{System.String,System.Collections.Generic.IEnumerable{System.Object}})">
+            <summary>
+                Sets up ExecuteSqlCommand invocations containing a specified sql string to return a specified result.
+            </summary>
+            <typeparam name="TDbContext">The db context type.</typeparam>
+            <param name="mockedDbContext">The mocked db context.</param>
+            <param name="sql">The ExecuteSqlCommand sql string. Set up supports case insensitive partial matches.</param>
+            <param name="executeSqlCommandResult">The integer to return when ExecuteSqlCommand is invoked.</param>
+            <param name="callback">Operations to perform after ExecuteSqlCommand is invoked.</param>
+            <returns>The mocked db context.</returns>
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.DbContextExtensions.AddExecuteSqlCommandResult``1(``0,System.FormattableString,System.Int32,System.Action{System.String,System.Collections.Generic.IEnumerable{System.Object}})">
             <summary>
                 Sets up ExecuteSqlCommand invocations containing a specified sql string to return a specified result.
             </summary>
@@ -129,7 +140,17 @@
             <param name="fromSqlResult">The FromSql result.</param>
             <returns>The mocked queryable.</returns>
         </member>
-        <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.QueryableExtensions.AddFromSqlResult``1(System.Linq.IQueryable{``0},System.String,System.Collections.Generic.IEnumerable{``0})">
+        <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.QueryableExtensions.AddFromSqlResult``1(System.Linq.IQueryable{``0},Microsoft.EntityFrameworkCore.RawSqlString,System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+                Sets up FromSql invocations containing a specified sql string to return a specified result.
+            </summary>
+            <typeparam name="T">The queryable source type.</typeparam>
+            <param name="mockedQueryable">The mocked queryable.</param>
+            <param name="sql">The FromSql sql string. Set up supports case insensitive partial matches.</param>
+            <param name="fromSqlResult">The FromSql result.</param>
+            <returns>The mocked queryable.</returns>
+        </member>
+        <member name="M:EntityFrameworkCore.Testing.Moq.Extensions.QueryableExtensions.AddFromSqlResult``1(System.Linq.IQueryable{``0},System.FormattableString,System.Collections.Generic.IEnumerable{``0})">
             <summary>
                 Sets up FromSql invocations containing a specified sql string to return a specified result.
             </summary>

@@ -2,23 +2,15 @@
 using System.Linq;
 using System.Threading.Tasks;
 using AutoFixture;
-using EntityFrameworkCore.Testing.Common.Helpers;
 using EntityFrameworkCore.Testing.Common.Tests;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query.Internal;
-using Microsoft.Extensions.Logging;
 using NUnit.Framework;
 
 namespace EntityFrameworkCore.Testing.NSubstitute.Tests
 {
-    public class Issue4Tests
+    public class Issue4Tests : BaseForTests
     {
-        [SetUp]
-        public virtual void SetUp()
-        {
-            LoggerHelper.LoggerFactory = LoggerFactory.Create(builder => builder.AddConsole().SetMinimumLevel(LogLevel.Debug));
-        }
-
         [Test]
         public void AsQueryable_Set_ReturnsIQueryableOfTWithMockedQueryProvider()
         {
@@ -33,8 +25,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Tests
         [Test]
         public async Task AsQueryableThenWhereThenSingleOrDefaultAsync_WhereOperationReturnsTrue_ReturnsSingleEntity()
         {
-            var fixture = new Fixture();
-            var entities = fixture.CreateMany<TestEntity>().ToList();
+            var entities = Fixture.CreateMany<TestEntity>().ToList();
             var entityToFind = entities.ElementAt(1);
             var mockedDbContext = Create.MockedDbContextFor<TestDbContext>();
             var mockedSet = mockedDbContext.TestEntities;
@@ -49,8 +40,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Tests
         [Test]
         public async Task AsQueryableThenWhereThenSingleOrDefaultAsync_WhereOperationReturnsFalse_ReturnsDefault()
         {
-            var fixture = new Fixture();
-            var entities = fixture.CreateMany<TestEntity>().ToList();
+            var entities = Fixture.CreateMany<TestEntity>().ToList();
             var mockedDbContext = Create.MockedDbContextFor<TestDbContext>();
             var mockedSet = mockedDbContext.TestEntities;
             mockedSet.AddRange(entities);

@@ -45,10 +45,26 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
         /// <param name="callback">Operations to perform after ExecuteSqlCommand is invoked.</param>
         /// <returns>The mocked db context.</returns>
         public static TDbContext AddExecuteSqlCommandResult<TDbContext>(
-            this TDbContext mockedDbContext, string sql, int executeSqlCommandResult, Action<string, IEnumerable<object>> callback = null) where TDbContext : DbContext
+            this TDbContext mockedDbContext, RawSqlString sql, int executeSqlCommandResult, Action<string, IEnumerable<object>> callback = null) where TDbContext : DbContext
         {
             EnsureArgument.IsNotNull(mockedDbContext, nameof(mockedDbContext));
-            return mockedDbContext.AddExecuteSqlCommandResult(sql, new List<object>(), executeSqlCommandResult, callback);
+            return mockedDbContext.AddExecuteSqlCommandResult(sql.Format, new List<object>(), executeSqlCommandResult, callback);
+        }
+
+        /// <summary>
+        ///     Sets up ExecuteSqlCommand invocations containing a specified sql string to return a specified result.
+        /// </summary>
+        /// <typeparam name="TDbContext">The db context type.</typeparam>
+        /// <param name="mockedDbContext">The mocked db context.</param>
+        /// <param name="sql">The ExecuteSqlCommand sql string. Set up supports case insensitive partial matches.</param>
+        /// <param name="executeSqlCommandResult">The integer to return when ExecuteSqlCommand is invoked.</param>
+        /// <param name="callback">Operations to perform after ExecuteSqlCommand is invoked.</param>
+        /// <returns>The mocked db context.</returns>
+        public static TDbContext AddExecuteSqlCommandResult<TDbContext>(
+            this TDbContext mockedDbContext, FormattableString sql, int executeSqlCommandResult, Action<string, IEnumerable<object>> callback = null) where TDbContext : DbContext
+        {
+            EnsureArgument.IsNotNull(mockedDbContext, nameof(mockedDbContext));
+            return mockedDbContext.AddExecuteSqlCommandResult(sql.Format, sql.GetArguments(), executeSqlCommandResult, callback);
         }
 
         /// <summary>
