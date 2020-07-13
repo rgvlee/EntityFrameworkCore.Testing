@@ -8,7 +8,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <license type="file">LICENSE</license>
     <projectUrl>https://github.com/rgvlee/EntityFrameworkCore.Testing</projectUrl>
-    <description>A mocking library that creates EntityFrameworkCore (EFCore) hybrid system mocks using an EntityFrameworkCore provider and Moq.
+    <description>A mocking library that creates EntityFrameworkCore (EFCore) system mocks using an EntityFrameworkCore provider and Moq.
 
 Includes support for queries/keyless db sets, FromSqlRaw/FromSqlInterpolated, ExecuteSqlCommand/ExecuteSqlRaw/ExecuteSqlInterpolated, and async LINQ operations.</description>
     <copyright>Copyright (c) 2020 Lee Anderson</copyright>

@@ -213,5 +213,23 @@ namespace EntityFrameworkCore.Testing.Moq.PackageVerification.Tests
                 });
             }
         }
+
+        [Test]
+        public void VerifyExample1()
+        {
+            var mockedDbContext = Create.MockedDbContextFor<TestDbContext>();
+
+            mockedDbContext.Set<TestEntity>().AddRange(Fixture.CreateMany<TestEntity>().ToList());
+            mockedDbContext.SaveChanges();
+
+            var dbContextMock = Mock.Get(mockedDbContext);
+            dbContextMock.Verify(m => m.SaveChanges(), Times.Once);
+
+            var byTypeDbSetMock = Mock.Get(mockedDbContext.Set<TestEntity>());
+            byTypeDbSetMock.Verify(m => m.AddRange(It.IsAny<IEnumerable<TestEntity>>()), Times.Once);
+
+            var byPropertyDbSetMock = Mock.Get(mockedDbContext.TestEntities);
+            byPropertyDbSetMock.Verify(m => m.AddRange(It.IsAny<IEnumerable<TestEntity>>()), Times.Once);
+        }
     }
 }

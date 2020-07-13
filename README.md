@@ -2,9 +2,7 @@
 
 ## Overview
 
-Mocking an EntityFrameworkCore `DbContext` is hard. Microsoft recommends that you [shouldn't do it](https://docs.microsoft.com/en-us/ef/core/miscellaneous/testing/#unit-testing).
-
-EntityFrameworkCore.Testing is a hybrid system mock; it creates a `DbContext` mock that acts as a wrapper over an EntityFrameworkCore provider instance. Supported operations are handled by the provider. Everything else is handled by the mock, resulting in a best of both worlds approach. The routing is modelled on the default EntityFrameworkCore provider used by EntityFrameworkCore.Testing, the Microsoft in-memory provider.
+EntityFrameworkCore.Testing is a mocking library that creates EntityFrameworkCore system mocks. The `DbContext` mocks it creates act as a wrapper over an EntityFrameworkCore provider instance. Supported operations are handled by the provider. Everything else is handled by the mock, resulting in a best of both worlds approach. The routing is modelled on the default provider used by EntityFrameworkCore.Testing, the Microsoft in-memory provider.
 
 Configurable support is provided for the following relational operations:
 
@@ -68,9 +66,9 @@ var dbContextOptions = new DbContextOptionsBuilder<TestDbContext>().UseInMemoryD
 var mockedDbContext = Create.MockedDbContextFor<TestDbContext>(mockedLogger, dbContextOptions);
 ```
 
-Both of the above examples automatically create and use a Microsoft in-memory provider instance for the EntityFrameworkCore provider. If you have more than one constructor use the most appropriate (e.g., if `SaveChanges` has a dependency on a current user instance, then use the constructor that satisfies that dependency).
+Both of the above examples automatically create and use a Microsoft in-memory provider instance for the EntityFrameworkCore provider. If you have more than one constructor, use the most appropriate (e.g., if `SaveChanges` has a dependency on a current user instance, then use the constructor that satisfies that dependency).
 
-If you want more control, the builder allows you to provide an EntityFrameworkCore provider instance:
+If you want more control e.g., to specify the EntityFrameworkCore provider instance, use the builder:
 
 ```c#
 var options = new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
@@ -78,12 +76,27 @@ var dbContextToMock = new TestDbContext(options);
 var mockedDbContext = new MockedDbContextBuilder<TestDbContext>().UseDbContext(dbContextToMock).UseConstructorWithParameters(options).MockedDbContext;
 ```
 
-There is no requirement to use the Microsoft in-memory provider. The following example uses SQLite and a `DbContext` with a parameterless constructor:
+There is no requirement to use the Microsoft in-memory provider. The following example uses the SQLite in-memory provider and a `DbContext` with a parameterless constructor:
 
 ```c#
-var options = new DbContextOptionsBuilder<TestDbContext>().UseSqlite(new SqliteConnection("DataSource=:memory:")).Options;
-var dbContextToMock = new TestDbContext(options);
-var mockedDbContext = new MockedDbContextBuilder<TestDbContext>().UseDbContext(dbContextToMock).UseConstructorWithParameters(options).MockedDbContext;
+using (var connection = new SqliteConnection("Filename=:memory:"))
+{
+    connection.Open();
+    var testEntity = Fixture.Create<TestEntity>();
+    var dbContextToMock = new TestDbContext(new DbContextOptionsBuilder<TestDbContext>().UseSqlite(connection).Options);
+    dbContextToMock.Database.EnsureCreated();
+    var mockedDbContext = new MockedDbContextBuilder<TestDbContext>().UseDbContext(dbContextToMock).MockedDbContext;
+
+    mockedDbContext.Set<TestEntity>().Add(testEntity);
+    mockedDbContext.SaveChanges();
+
+    Assert.Multiple(() =>
+    {
+        Assert.AreNotEqual(default(Guid), testEntity.Guid);
+        Assert.DoesNotThrow(() => mockedDbContext.Set<TestEntity>().Single());
+        Assert.AreEqual(testEntity, mockedDbContext.Find<TestEntity>(testEntity.Guid));
+    });
+}
 ```
 
 ## Usage
@@ -258,4 +271,24 @@ Use `AddExecuteSqlRawResult` and `AddExecuteSqlInterpolatedResult` to add result
 
 ### Async and LINQ queryable operations
 
-Whenever you add a from SQL or execute SQL command result, the library sets up both the sync and async methods. It also automatically provides support for all sync and async LINQ queryable operations that are not supported by the Microsoft in-memory provider.
+Whenever you add a from SQL or execute SQL command result, the EntityFrameworkCore.Testing sets up both the sync and async methods. It also automatically provides support for all sync and async LINQ queryable operations that are not supported by the Microsoft in-memory provider.
+
+### Asserting mock invocations
+
+The `DbContext` and each `DbSet<TEntity>`, `DbQuery<TQuery>` and their respective query providers are separate mocks. The following Moq example asserts that the `DbContext.SaveChanges` and `DbSet<TestEntity>.AddRange` methods were both invoked once.
+
+```c#
+var mockedDbContext = Create.MockedDbContextFor<TestDbContext>();
+
+mockedDbContext.Set<TestEntity>().AddRange(Fixture.CreateMany<TestEntity>().ToList());
+mockedDbContext.SaveChanges();
+
+var dbContextMock = Mock.Get(mockedDbContext);
+dbContextMock.Verify(m => m.SaveChanges(), Times.Once);
+
+var byTypeDbSetMock = Mock.Get(mockedDbContext.Set<TestEntity>());
+byTypeDbSetMock.Verify(m => m.AddRange(It.IsAny<IEnumerable<TestEntity>>()), Times.Once);
+
+var byPropertyDbSetMock = Mock.Get(mockedDbContext.TestEntities);
+byPropertyDbSetMock.Verify(m => m.AddRange(It.IsAny<IEnumerable<TestEntity>>()), Times.Once);
+```
