@@ -7,6 +7,7 @@ using EntityFrameworkCore.Testing.Common.Helpers;
 using EntityFrameworkCore.Testing.Common.Tests;
 using EntityFrameworkCore.Testing.NSubstitute.Extensions;
 using EntityFrameworkCore.Testing.NSubstitute.Helpers;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
@@ -174,6 +175,29 @@ namespace EntityFrameworkCore.Testing.NSubstitute.PackageVerification.Tests
             var options = new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
             var dbContextToMock = new TestDbContext(options);
             var mockedDbContext = new MockedDbContextBuilder<TestDbContext>().UseDbContext(dbContextToMock).UseConstructorWithParameters(options).MockedDbContext;
+        }
+
+        [Test]
+        public void CreateExample3()
+        {
+            using (var connection = new SqliteConnection("Filename=:memory:"))
+            {
+                connection.Open();
+                var testEntity = Fixture.Create<TestEntity>();
+                var dbContextToMock = new TestDbContext(new DbContextOptionsBuilder<TestDbContext>().UseSqlite(connection).Options);
+                dbContextToMock.Database.EnsureCreated();
+                var mockedDbContext = new MockedDbContextBuilder<TestDbContext>().UseDbContext(dbContextToMock).MockedDbContext;
+
+                mockedDbContext.Set<TestEntity>().Add(testEntity);
+                mockedDbContext.SaveChanges();
+
+                Assert.Multiple(() =>
+                {
+                    Assert.AreNotEqual(default(Guid), testEntity.Guid);
+                    Assert.DoesNotThrow(() => mockedDbContext.Set<TestEntity>().Single());
+                    Assert.AreEqual(testEntity, mockedDbContext.Find<TestEntity>(testEntity.Guid));
+                });
+            }
         }
     }
 }

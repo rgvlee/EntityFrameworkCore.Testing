@@ -50,7 +50,11 @@ namespace EntityFrameworkCore.Testing.Common.Helpers
                     throw new MissingMethodException(ExceptionMessages.UnableToFindSuitableDbContextConstructor);
                 }
 
-                if (!dbContextType.HasConstructorWithParameterOfType(typeof(DbContextOptions<>)))
+                if (DbContext != null && dbContextType.HasParameterlessConstructor())
+                {
+                    ConstructorParameters = new List<object>();
+                }
+                else if (!dbContextType.HasConstructorWithParameterOfType(typeof(DbContextOptions<>)))
                 {
                     ConstructorParameters = new List<object> { new DbContextOptionsBuilder<TDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options };
                 }
