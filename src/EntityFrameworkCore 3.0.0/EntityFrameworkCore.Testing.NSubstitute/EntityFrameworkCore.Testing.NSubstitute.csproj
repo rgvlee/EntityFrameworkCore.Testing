@@ -6,7 +6,7 @@
     <version>2.1.0</version>
     <Authors>rgvlee</Authors>
     <Company>rgvlee</Company>
-    <Description>A mocking library that provides a fully functional system mock for EntityFrameworkCore (EFCore) using NSubstitute.
+    <Description>A mocking library that creates EntityFrameworkCore (EFCore) hybrid system mocks using an EntityFrameworkCore provider and NSubstitute.
 
 Includes support for queries/keyless db sets, FromSqlRaw/FromSqlInterpolated, ExecuteSqlCommand/ExecuteSqlRaw/ExecuteSqlInterpolated, and async LINQ operations.</Description>
     <Copyright>Copyright (c) 2020 Lee Anderson</Copyright>

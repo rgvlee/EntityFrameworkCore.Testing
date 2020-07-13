@@ -6,7 +6,7 @@
     <Version>1.0.7</Version>
     <Authors>rgvlee</Authors>
     <Company>rgvlee</Company>
-    <Description>A mocking library that provides a fully functional system mock for EntityFrameworkCore (EFCore) using Moq.
+    <Description>A mocking library that creates EntityFrameworkCore (EFCore) hybrid system mocks using an EntityFrameworkCore provider and Moq.
 
 Includes support for queries, FromSql, ExecuteSqlCommand, and async LINQ operations.</Description>
     <Copyright>Copyright (c) 2020 Lee Anderson</Copyright>
