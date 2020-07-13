@@ -1,5 +1,7 @@
 # EntityFrameworkCore.Testing
 
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/6d641ce391264f45b99acee8694a88d6)](https://www.codacy.com/manual/rgvlee/EntityFrameworkCore.Testing?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=rgvlee/EntityFrameworkCore.Testing&amp;utm_campaign=Badge_Grade)
+
 ## Overview
 
 EntityFrameworkCore.Testing is a mocking library that creates EntityFrameworkCore system mocks. These system mocks act as a wrapper over an EntityFrameworkCore provider instance. Operations supported by the provider are handled by the provider and everything else is handled by the mock. Mock behaviour is determined by the default provider used by EntityFrameworkCore.Testing, the Microsoft in-memory provider.
