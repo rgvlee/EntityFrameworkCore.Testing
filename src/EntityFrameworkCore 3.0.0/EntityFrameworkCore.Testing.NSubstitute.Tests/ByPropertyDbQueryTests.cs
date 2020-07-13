@@ -5,8 +5,8 @@ using NUnit.Framework;
 namespace EntityFrameworkCore.Testing.NSubstitute.Tests
 {
     [TestFixture]
-    public class ByPropertyDbQueryTests : BaseForDbQueryTests<TestQuery>
+    public class ByPropertyDbQueryTests : BaseForDbQueryTests<ViewEntity>
     {
-        protected override IQueryable<TestQuery> Queryable => MockedDbContext.TestView;
+        protected override IQueryable<ViewEntity> Queryable => MockedDbContext.ViewEntities;
     }
 }

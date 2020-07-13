@@ -96,7 +96,7 @@ namespace EntityFrameworkCore.Testing.Common.Helpers
             var setUpParameterParameterName = setUpParameter.ParameterName ?? string.Empty;
             var invocationParameterParameterName = invocationParameter.ParameterName ?? string.Empty;
 
-            if (invocationParameterParameterName.Equals(setUpParameterParameterName, StringComparison.CurrentCultureIgnoreCase))
+            if (!invocationParameterParameterName.Equals(setUpParameterParameterName, StringComparison.CurrentCultureIgnoreCase))
             {
                 return false;
             }

@@ -16,7 +16,7 @@ namespace EntityFrameworkCore.DefaultBehaviour.Tests
         }
 
         protected TestDbContext DbContext;
-        protected DbQuery<TestQuery> DbQuery => DbContext.Query<TestQuery>();
+        protected DbQuery<ViewEntity> DbQuery => DbContext.Query<ViewEntity>();
 
         [Test]
         public virtual void AsAsyncEnumerable_ReturnsAsyncEnumerable()

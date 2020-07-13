@@ -9,16 +9,10 @@ namespace EntityFrameworkCore.Testing.Moq.Helpers
     /// <typeparam name="TDbContext">The db context type.</typeparam>
     public class MockedDbContextBuilder<TDbContext> : BaseMockedDbContextBuilder<TDbContext> where TDbContext : DbContext
     {
-        internal MockedDbContextBuilder() { }
-
         /// <summary>
         ///     Creates the mocked db context.
         /// </summary>
         /// <returns>A mocked db context.</returns>
-        public override TDbContext Create()
-        {
-            var factory = new MockedDbContextFactory<TDbContext>(Options);
-            return factory.Create();
-        }
+        public override TDbContext MockedDbContext => new MockedDbContextFactory<TDbContext>(Options).Create();
     }
 }

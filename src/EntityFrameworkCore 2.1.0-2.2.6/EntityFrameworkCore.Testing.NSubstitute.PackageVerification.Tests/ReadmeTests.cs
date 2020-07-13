@@ -6,6 +6,8 @@ using AutoFixture;
 using EntityFrameworkCore.Testing.Common.Helpers;
 using EntityFrameworkCore.Testing.Common.Tests;
 using EntityFrameworkCore.Testing.NSubstitute.Extensions;
+using EntityFrameworkCore.Testing.NSubstitute.Helpers;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
@@ -20,28 +22,113 @@ namespace EntityFrameworkCore.Testing.NSubstitute.PackageVerification.Tests
         [SetUp]
         public virtual void SetUp()
         {
+#pragma warning disable 618
             LoggerHelper.LoggerFactory.AddConsole(LogLevel.Debug);
+#pragma warning restore 618
         }
 
         [Test]
-        public void Method_WithSpecifiedInput_ReturnsAResult()
+        public void UsageExample1()
         {
-            var mockedDbContext = Create.MockedDbContextFor<MyDbContext>();
+            var testEntity = Fixture.Create<TestEntity>();
+            var mockedDbContext = Create.MockedDbContextFor<TestDbContext>();
+            mockedDbContext.Set<TestEntity>().Add(testEntity);
+            mockedDbContext.SaveChanges();
 
-            //...
+            Assert.Multiple(() =>
+            {
+                Assert.AreNotEqual(default(Guid), testEntity.Guid);
+                Assert.DoesNotThrow(() => mockedDbContext.Set<TestEntity>().Single());
+                Assert.AreEqual(testEntity, mockedDbContext.Find<TestEntity>(testEntity.Guid));
+            });
         }
 
         [Test]
-        public void AnotherMethod_WithSpecifiedInput_ReturnsAResult()
+        public void UsageExample3()
         {
-            var mockedDbContext = Create.MockedDbContextFor<MyDbContextWithConstructorParameters>(Substitute.For<ILogger<MyDbContextWithConstructorParameters>>(),
-                new DbContextOptionsBuilder<MyDbContextWithConstructorParameters>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
+            var expectedResult = Fixture.CreateMany<TestEntity>().ToList();
+            var mockedDbContext = Create.MockedDbContextFor<TestDbContext>();
+            mockedDbContext.Set<TestEntity>().AddFromSqlResult(expectedResult);
 
-            //...
+            var actualResult = mockedDbContext.Set<TestEntity>().FromSql("[dbo].[USP_StoredProcedureWithNoParameters]").ToList();
+
+            Assert.Multiple(() =>
+            {
+                Assert.IsNotNull(actualResult);
+                Assert.IsTrue(actualResult.Any());
+                CollectionAssert.AreEquivalent(expectedResult, actualResult);
+            });
         }
 
         [Test]
-        public void ExecuteSqlCommandWithCallback_InvokesCallback()
+        public void UsageExample4()
+        {
+            var expectedResult = Fixture.CreateMany<TestEntity>().ToList();
+            var sqlParameters = new List<SqlParameter> { new SqlParameter("@Parameter2", "Value2") };
+            var mockedDbContext = Create.MockedDbContextFor<TestDbContext>();
+            mockedDbContext.Set<TestEntity>().AddFromSqlResult("usp_StoredProcedureWithParameters", sqlParameters, expectedResult);
+
+            var actualResult = mockedDbContext.Set<TestEntity>()
+                .FromSql("[dbo].[USP_StoredProcedureWithParameters] @Parameter1 @Parameter2", new SqlParameter("@parameter1", "Value1"), new SqlParameter("@parameter2", "value2"))
+                .ToList();
+
+            Assert.Multiple(() =>
+            {
+                Assert.IsNotNull(actualResult);
+                Assert.IsTrue(actualResult.Any());
+                CollectionAssert.AreEquivalent(expectedResult, actualResult);
+            });
+        }
+
+        [Test]
+        public void UsageExample5()
+        {
+            var expectedResult = Fixture.CreateMany<TestEntity>().ToList();
+            var parameter1 = Fixture.Create<DateTime>();
+            var parameter2 = Fixture.Create<string>();
+            var mockedDbContext = Create.MockedDbContextFor<TestDbContext>();
+            mockedDbContext.Set<TestEntity>().AddFromSqlResult($"usp_StoredProcedureWithParameters {parameter1}, {parameter2.ToUpper()}", expectedResult);
+
+            var actualResult = mockedDbContext.Set<TestEntity>().FromSql($"USP_StoredProcedureWithParameters {parameter1}, {parameter2.ToLower()}").ToList();
+
+            Assert.Multiple(() =>
+            {
+                Assert.IsNotNull(actualResult);
+                Assert.IsTrue(actualResult.Any());
+                CollectionAssert.AreEquivalent(expectedResult, actualResult);
+            });
+        }
+
+        [Test]
+        public void UsageExample6()
+        {
+            var expectedResult = Fixture.CreateMany<ViewEntity>().ToList();
+            var mockedDbContext = Create.MockedDbContextFor<TestDbContext>();
+
+            mockedDbContext.Query<ViewEntity>().AddRangeToReadOnlySource(expectedResult);
+
+            Assert.Multiple(() =>
+            {
+                CollectionAssert.AreEquivalent(expectedResult, mockedDbContext.Query<ViewEntity>().ToList());
+                CollectionAssert.AreEquivalent(mockedDbContext.Query<ViewEntity>().ToList(), mockedDbContext.ViewEntities.ToList());
+            });
+        }
+
+        [Test]
+        public void UsageExample7()
+        {
+            var commandText = "usp_StoredProcedureWithNoParameters";
+            var expectedResult = 1;
+            var mockedDbContext = Create.MockedDbContextFor<TestDbContext>();
+            mockedDbContext.AddExecuteSqlCommandResult(commandText, new List<SqlParameter>(), expectedResult);
+
+            var result = mockedDbContext.Database.ExecuteSqlCommand("USP_StoredProcedureWithNoParameters");
+
+            Assert.AreEqual(expectedResult, result);
+        }
+
+        [Test]
+        public void UsageExample8()
         {
             //Arrange
             var mockedDbContext = Create.MockedDbContextFor<TestDbContext>();
@@ -75,142 +162,42 @@ namespace EntityFrameworkCore.Testing.NSubstitute.PackageVerification.Tests
         }
 
         [Test]
-        public void SetAddAndPersist_Item_AddsAndPersistsItem()
+        public void CreateExample1()
         {
-            var mockedDbContext = Create.MockedDbContextFor<TestDbContext>();
+            var mockedLogger = Substitute.For<ILogger<TestDbContext>>();
+            var dbContextOptions = new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
+            var mockedDbContext = Create.MockedDbContextFor<TestDbContext>(mockedLogger, dbContextOptions);
+        }
 
-            var testEntity = Fixture.Create<TestEntity>();
+        [Test]
+        public void CreateExample2()
+        {
+            var options = new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
+            var dbContextToMock = new TestDbContext(options);
+            var mockedDbContext = new MockedDbContextBuilder<TestDbContext>().UseDbContext(dbContextToMock).UseConstructorWithParameters(options).MockedDbContext;
+        }
 
-            mockedDbContext.Set<TestEntity>().Add(testEntity);
-            mockedDbContext.SaveChanges();
-
-            Assert.Multiple(() =>
+        [Test]
+        public void CreateExample3()
+        {
+            using (var connection = new SqliteConnection("Filename=:memory:"))
             {
-                Assert.AreNotEqual(default(Guid), testEntity.Guid);
-                Assert.DoesNotThrow(() => mockedDbContext.Set<TestEntity>().Single());
-                Assert.AreEqual(testEntity, mockedDbContext.Find<TestEntity>(testEntity.Guid));
-            });
-        }
+                connection.Open();
+                var testEntity = Fixture.Create<TestEntity>();
+                var dbContextToMock = new TestDbContext(new DbContextOptionsBuilder<TestDbContext>().UseSqlite(connection).Options);
+                dbContextToMock.Database.EnsureCreated();
+                var mockedDbContext = new MockedDbContextBuilder<TestDbContext>().UseDbContext(dbContextToMock).MockedDbContext;
 
-        [Test]
-        public void FromSql_AnyStoredProcedureWithNoParameters_ReturnsExpectedResult()
-        {
-            var mockedDbContext = Create.MockedDbContextFor<TestDbContext>();
+                mockedDbContext.Set<TestEntity>().Add(testEntity);
+                mockedDbContext.SaveChanges();
 
-            var expectedResult = Fixture.CreateMany<TestEntity>().ToList();
-
-            mockedDbContext.Set<TestEntity>().AddFromSqlResult(expectedResult);
-
-            var actualResult = mockedDbContext.Set<TestEntity>().FromSql("sp_NoParams").ToList();
-
-            Assert.Multiple(() =>
-            {
-                Assert.IsNotNull(actualResult);
-                Assert.IsTrue(actualResult.Any());
-                CollectionAssert.AreEquivalent(expectedResult, actualResult);
-            });
-        }
-
-        [Test]
-        public void FromSql_SpecifiedStoredProcedureAndParameters_ReturnsExpectedResult()
-        {
-            var mockedDbContext = Create.MockedDbContextFor<TestDbContext>();
-
-            var sqlParameters = new List<SqlParameter> { new SqlParameter("@SomeParameter2", "Value2") };
-            var expectedResult = Fixture.CreateMany<TestEntity>().ToList();
-
-            mockedDbContext.Set<TestEntity>().AddFromSqlResult("sp_Specified", sqlParameters, expectedResult);
-
-            var actualResult = mockedDbContext.Set<TestEntity>()
-                .FromSql("[dbo].[sp_Specified] @SomeParameter1 @SomeParameter2", new SqlParameter("@someparameter1", "Value1"), new SqlParameter("@someparameter2", "Value2"))
-                .ToList();
-
-            Assert.Multiple(() =>
-            {
-                Assert.IsNotNull(actualResult);
-                Assert.IsTrue(actualResult.Any());
-                CollectionAssert.AreEquivalent(expectedResult, actualResult);
-            });
-        }
-
-        [Test]
-        public void QueryAddRangeToReadOnlySource_Enumeration_AddsEnumerationElementsToQuerySource()
-        {
-            var mockedDbContext = Create.MockedDbContextFor<TestDbContext>();
-
-            var expectedResult = Fixture.CreateMany<TestQuery>().ToList();
-
-            mockedDbContext.Query<TestQuery>().AddRangeToReadOnlySource(expectedResult);
-
-            Assert.Multiple(() =>
-            {
-                CollectionAssert.AreEquivalent(expectedResult, mockedDbContext.Query<TestQuery>().ToList());
-                CollectionAssert.AreEquivalent(mockedDbContext.Query<TestQuery>().ToList(), mockedDbContext.TestView.ToList());
-            });
-        }
-
-        [Test]
-        public void ExecuteSqlCommand_SpecifiedStoredProcedure_ReturnsExpectedResult()
-        {
-            var mockedDbContext = Create.MockedDbContextFor<TestDbContext>();
-
-            var commandText = "sp_NoParams";
-            var expectedResult = 1;
-
-            mockedDbContext.AddExecuteSqlCommandResult(commandText, new List<SqlParameter>(), expectedResult);
-
-            var result = mockedDbContext.Database.ExecuteSqlCommand("sp_NoParams");
-
-            Assert.AreEqual(expectedResult, result);
-        }
-
-        [Test]
-        public void ExecuteSqlCommand_SpecifiedStoredProcedureAndSqlParameters_ReturnsExpectedResult()
-        {
-            var mockedDbContext = Create.MockedDbContextFor<TestDbContext>();
-
-            var commandText = "sp_WithParams";
-            var sqlParameters = new List<SqlParameter> { new SqlParameter("@SomeParameter2", "Value2") };
-            var expectedResult = 1;
-
-            mockedDbContext.AddExecuteSqlCommandResult(commandText, sqlParameters, expectedResult);
-
-            var result = mockedDbContext.Database.ExecuteSqlCommand("[dbo].[sp_WithParams] @SomeParameter2", sqlParameters);
-
-            Assert.AreEqual(expectedResult, result);
-        }
-
-        [Test]
-        public void AddRangeThenSaveChanges_CanAssertInvocationCount()
-        {
-            var mockedDbContext = Create.MockedDbContextFor<TestDbContext>();
-
-            mockedDbContext.Set<TestEntity>().AddRange(Fixture.CreateMany<TestEntity>().ToList());
-            mockedDbContext.SaveChanges();
-
-            Assert.Multiple(() =>
-            {
-                mockedDbContext.Received(1).SaveChanges();
-
-                //The db set is a mock, so we need to ensure we invoke the verify on the db set mock
-                mockedDbContext.Set<TestEntity>().Received(1).AddRange(Arg.Any<IEnumerable<TestEntity>>());
-
-                //This is the same mock instance as above, just accessed a different way
-                mockedDbContext.TestEntities.Received(1).AddRange(Arg.Any<IEnumerable<TestEntity>>());
-
-                Assert.That(mockedDbContext.TestEntities, Is.SameAs(mockedDbContext.Set<TestEntity>()));
-            });
-        }
-
-        public class MyDbContext : DbContext
-        {
-            public MyDbContext(DbContextOptions<MyDbContext> options) : base(options) { }
-        }
-
-        public class MyDbContextWithConstructorParameters : DbContext
-        {
-            public MyDbContextWithConstructorParameters(ILogger<MyDbContextWithConstructorParameters> logger, DbContextOptions<MyDbContextWithConstructorParameters> options) :
-                base(options) { }
+                Assert.Multiple(() =>
+                {
+                    Assert.AreNotEqual(default(Guid), testEntity.Guid);
+                    Assert.DoesNotThrow(() => mockedDbContext.Set<TestEntity>().Single());
+                    Assert.AreEqual(testEntity, mockedDbContext.Find<TestEntity>(testEntity.Guid));
+                });
+            }
         }
     }
 }

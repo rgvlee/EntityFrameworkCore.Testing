@@ -23,6 +23,20 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Tests
         }
 
         [Test]
+        public async Task AsQueryableThenWhereThenSingleOrDefaultAsync_WhereOperationReturnsFalse_ReturnsDefault()
+        {
+            var entities = Fixture.CreateMany<TestEntity>().ToList();
+            var mockedDbContext = Create.MockedDbContextFor<TestDbContext>();
+            var mockedSet = mockedDbContext.TestEntities;
+            mockedSet.AddRange(entities);
+            mockedDbContext.SaveChanges();
+
+            var result = await mockedSet.AsQueryable().Where(x => x.Guid.Equals(Guid.NewGuid())).SingleOrDefaultAsync();
+
+            Assert.That(result, Is.Null);
+        }
+
+        [Test]
         public async Task AsQueryableThenWhereThenSingleOrDefaultAsync_WhereOperationReturnsTrue_ReturnsSingleEntity()
         {
             var entities = Fixture.CreateMany<TestEntity>().ToList();
@@ -35,20 +49,6 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Tests
             var result = await mockedSet.AsQueryable().Where(x => x.Guid.Equals(entityToFind.Guid)).SingleOrDefaultAsync();
 
             Assert.That(result, Is.EqualTo(entityToFind));
-        }
-
-        [Test]
-        public async Task AsQueryableThenWhereThenSingleOrDefaultAsync_WhereOperationReturnsFalse_ReturnsDefault()
-        {
-            var entities = Fixture.CreateMany<TestEntity>().ToList();
-            var mockedDbContext = Create.MockedDbContextFor<TestDbContext>();
-            var mockedSet = mockedDbContext.TestEntities;
-            mockedSet.AddRange(entities);
-            mockedDbContext.SaveChanges();
-
-            var result = await mockedSet.AsQueryable().Where(x => x.Guid.Equals(Guid.NewGuid())).SingleOrDefaultAsync();
-
-            Assert.That(result, Is.Null);
         }
     }
 }

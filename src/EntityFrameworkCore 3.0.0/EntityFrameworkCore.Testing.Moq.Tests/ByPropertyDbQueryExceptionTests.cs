@@ -5,7 +5,7 @@ using NUnit.Framework;
 namespace EntityFrameworkCore.Testing.Moq.Tests
 {
     [TestFixture]
-    public class ByPropertyDbQueryExceptionTests : ReadOnlyDbSetExceptionTests<TestQuery>
+    public class ByPropertyDbQueryExceptionTests : ReadOnlyDbSetExceptionTests<ViewEntity>
     {
         [SetUp]
         public override void SetUp()
@@ -16,6 +16,6 @@ namespace EntityFrameworkCore.Testing.Moq.Tests
 
         protected TestDbContext MockedDbContext;
 
-        protected override DbSet<TestQuery> DbSet => MockedDbContext.TestView;
+        protected override DbSet<ViewEntity> DbSet => MockedDbContext.ViewEntities;
     }
 }
