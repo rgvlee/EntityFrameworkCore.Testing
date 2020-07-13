@@ -6,6 +6,7 @@ using AutoFixture;
 using EntityFrameworkCore.Testing.Common.Helpers;
 using EntityFrameworkCore.Testing.Common.Tests;
 using EntityFrameworkCore.Testing.Moq.Extensions;
+using EntityFrameworkCore.Testing.Moq.Helpers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Moq;
@@ -189,7 +190,7 @@ namespace EntityFrameworkCore.Testing.Moq.PackageVerification.Tests
         {
             var options = new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
             var dbContextToMock = new TestDbContext(options);
-            var mockedDbContext = Build.MockedDbContextFor<TestDbContext>().Using.DbContext(dbContextToMock).And.ConstructorWithParameters(options).Build();
+            var mockedDbContext = new MockedDbContextBuilder<TestDbContext>().UseDbContext(dbContextToMock).UseConstructorWithParameters(options).MockedDbContext;
         }
     }
 }

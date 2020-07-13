@@ -1,6 +1,7 @@
 using System.Linq;
 using EntityFrameworkCore.Testing.Common.Helpers;
 using EntityFrameworkCore.Testing.Moq.Extensions;
+using EntityFrameworkCore.Testing.Moq.Helpers;
 using Microsoft.EntityFrameworkCore;
 
 namespace EntityFrameworkCore.Testing.Moq
@@ -26,8 +27,8 @@ namespace EntityFrameworkCore.Testing.Moq
         public static TDbContext MockedDbContextFor<TDbContext>(params object[] constructorParameters) where TDbContext : DbContext
         {
             return constructorParameters != null && constructorParameters.Any()
-                ? Build.MockedDbContextFor<TDbContext>().Using.ConstructorWithParameters(constructorParameters).Build()
-                : Build.MockedDbContextFor<TDbContext>().Build();
+                ? new MockedDbContextBuilder<TDbContext>().UseConstructorWithParameters(constructorParameters).MockedDbContext
+                : new MockedDbContextBuilder<TDbContext>().MockedDbContext;
         }
 
         /// <summary>

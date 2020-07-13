@@ -4,18 +4,6 @@
         <name>EntityFrameworkCore.Testing.NSubstitute</name>
     </assembly>
     <members>
-        <member name="T:EntityFrameworkCore.Testing.NSubstitute.Build">
-            <summary>
-                Provides builders that create mocked instances.
-            </summary>
-        </member>
-        <member name="M:EntityFrameworkCore.Testing.NSubstitute.Build.MockedDbContextFor``1">
-            <summary>
-                Provides a mocked db context builder.
-            </summary>
-            <typeparam name="TDbContext">The db context type.</typeparam>
-            <returns>A mocked db context builder.</returns>
-        </member>
         <member name="T:EntityFrameworkCore.Testing.NSubstitute.Create">
             <summary>
                 Factory for creating mocked instances.
@@ -340,7 +328,7 @@
             </summary>
             <typeparam name="TDbContext">The db context type.</typeparam>
         </member>
-        <member name="M:EntityFrameworkCore.Testing.NSubstitute.Helpers.MockedDbContextBuilder`1.Build">
+        <member name="P:EntityFrameworkCore.Testing.NSubstitute.Helpers.MockedDbContextBuilder`1.MockedDbContext">
             <summary>
                 Creates the mocked db context.
             </summary>
