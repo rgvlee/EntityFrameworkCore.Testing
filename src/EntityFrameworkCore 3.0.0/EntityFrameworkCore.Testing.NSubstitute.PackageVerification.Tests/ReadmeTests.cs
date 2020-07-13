@@ -29,7 +29,6 @@ namespace EntityFrameworkCore.Testing.NSubstitute.PackageVerification.Tests
         {
             var testEntity = Fixture.Create<TestEntity>();
             var mockedDbContext = Create.MockedDbContextFor<TestDbContext>();
-
             mockedDbContext.Set<TestEntity>().Add(testEntity);
             mockedDbContext.SaveChanges();
 
@@ -87,7 +86,6 @@ namespace EntityFrameworkCore.Testing.NSubstitute.PackageVerification.Tests
             var parameter1 = Fixture.Create<DateTime>();
             var parameter2 = Fixture.Create<string>();
             var mockedDbContext = Create.MockedDbContextFor<TestDbContext>();
-
             mockedDbContext.Set<TestEntity>().AddFromSqlInterpolatedResult($"usp_StoredProcedureWithParameters {parameter1}, {parameter2.ToUpper()}", expectedResult);
 
             var actualResult = mockedDbContext.Set<TestEntity>().FromSqlInterpolated($"USP_StoredProcedureWithParameters {parameter1}, {parameter2.ToLower()}").ToList();

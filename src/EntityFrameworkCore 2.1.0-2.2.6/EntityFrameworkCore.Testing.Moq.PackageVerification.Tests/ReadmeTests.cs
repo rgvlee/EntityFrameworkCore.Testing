@@ -31,7 +31,6 @@ namespace EntityFrameworkCore.Testing.Moq.PackageVerification.Tests
         {
             var testEntity = Fixture.Create<TestEntity>();
             var mockedDbContext = Create.MockedDbContextFor<TestDbContext>();
-
             mockedDbContext.Set<TestEntity>().Add(testEntity);
             mockedDbContext.SaveChanges();
 
@@ -47,7 +46,6 @@ namespace EntityFrameworkCore.Testing.Moq.PackageVerification.Tests
         public void UsageExample2()
         {
             var mockedDbContext = Create.MockedDbContextFor<TestDbContext>();
-
             mockedDbContext.Set<TestEntity>().AddRange(Fixture.CreateMany<TestEntity>().ToList());
             mockedDbContext.SaveChanges();
 
@@ -102,7 +100,6 @@ namespace EntityFrameworkCore.Testing.Moq.PackageVerification.Tests
             var parameter1 = Fixture.Create<DateTime>();
             var parameter2 = Fixture.Create<string>();
             var mockedDbContext = Create.MockedDbContextFor<TestDbContext>();
-
             mockedDbContext.Set<TestEntity>().AddFromSqlResult($"usp_StoredProcedureWithParameters {parameter1}, {parameter2.ToUpper()}", expectedResult);
 
             var actualResult = mockedDbContext.Set<TestEntity>().FromSql($"USP_StoredProcedureWithParameters {parameter1}, {parameter2.ToLower()}").ToList();

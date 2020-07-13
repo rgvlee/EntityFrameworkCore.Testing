@@ -2,7 +2,11 @@
 
 ## Overview
 
-The intent of this library is to provide the ability to create and manage EntityFrameworkCore `DbContext` system mocks. It extends the Microsoft in-memory provider by providing configurable support for the following relational operations:
+Mocking an EntityFrameworkCore `DbContext` is hard. Microsoft recommends that you [shouldn't do it](https://docs.microsoft.com/en-us/ef/core/miscellaneous/testing/#unit-testing).
+
+EntityFrameworkCore.Testing is a hybrid system mock; it creates a `DbContext` mock that acts as a wrapper over an EntityFrameworkCore provider instance. Supported operations are handled by the provider. Everything else is handled by the mock, resulting in a best of both worlds approach. The routing is modelled on the default EntityFrameworkCore provider used by EntityFrameworkCore.Testing, the Microsoft in-memory provider.
+
+Configurable support is provided for the following relational operations:
 
 - FromSql *(EntityFrameworkCore 2.1.0-2.2.6)*
 - FromSqlRaw *(EntityFrameworkCore 3.\*)*
@@ -13,7 +17,7 @@ The intent of this library is to provide the ability to create and manage Entity
 - Queries
 - Keyless Sets *(EntityFrameworkCore 3.\*)*
 
-It also provides support for the following LINQ queryable operations:
+Support is also provided for the following LINQ queryable operations:
 
 - ElementAt
 - ElementAtOrDefault
@@ -30,19 +34,15 @@ It's easy to use with implementations for both Moq and NSubstitute.
 
 ### EntityFrameworkCore 3.\*
 
--   [EntityFrameworkCore.Testing.Moq](https://www.nuget.org/packages/EntityFrameworkCore.Testing.Moq/2.2.2)
--   [EntityFrameworkCore.Testing.NSubstitute](https://www.nuget.org/packages/EntityFrameworkCore.Testing.NSubstitute/2.2.2)
+-   [EntityFrameworkCore.Testing.Moq - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.Moq/2.2.2)
+-   [EntityFrameworkCore.Testing.NSubstitute - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.NSubstitute/2.2.2)
 
 ### EntityFrameworkCore 2.1.0-2.2.6
 
--   [EntityFrameworkCore.Testing.Moq](https://www.nuget.org/packages/EntityFrameworkCore.Testing.Moq/1.1.2)
--   [EntityFrameworkCore.Testing.NSubstitute](https://www.nuget.org/packages/EntityFrameworkCore.Testing.NSubstitute/1.1.2)
+-   [EntityFrameworkCore.Testing.Moq - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.Moq/1.1.2)
+-   [EntityFrameworkCore.Testing.NSubstitute - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.NSubstitute/1.1.2)
 
 ## Prerequisites
-
-### Constructor parameters
-
-Your `DbContext` must contain a constructor that accepts a `DbContextOptions` or `DbContextOptions<TDbContext>` parameter.
 
 ### Virtual sets/queries
 
@@ -54,24 +54,13 @@ public virtual DbSet<TestEntity> TestEntities { get; set; }
 
 ## Creating a mocked DbContext
 
-### Creating by type
+If your `DbContext` has constructor with a single `DbContextOptions` or `DbContextOptions<TDbContext>` parameter, creating a mocked `DbContext` is as easy as:
 
 ```c#
 var mockedDbContext = Create.MockedDbContextFor<TestDbContext>();
 ```
 
-This requires you to have a `DbContext` with a constructor that has a single `DbContextOptions` or `DbContextOptions<TDbContext>` parameter - with the most specific constructor being used.
-
-```c#
-public class TestDbContext : DbContext
-{
-    public TestDbContext(DbContextOptions<TestDbContext> options) : base(options) { }
-}
-```
-
-### Using a specific constructor
-
-Provided it has a `DbContextOptions` or `DbContextOptions<TDbContext>` parameter, you can use any accessible `DbContext` constructor to create the mocked `DbContext`.
+Any accessible `DbContext` constructor can be used to create the mocked `DbContext` provided it has a `DbContextOptions` or `DbContextOptions<TDbContext>` parameter:
 
 ```c#
 var mockedLogger = Mock.Of<ILogger<TestDbContext>>();
@@ -79,14 +68,22 @@ var dbContextOptions = new DbContextOptionsBuilder<TestDbContext>().UseInMemoryD
 var mockedDbContext = Create.MockedDbContextFor<TestDbContext>(mockedLogger, dbContextOptions);
 ```
 
-### Advanced creation
+Both of the above examples automatically create and use a Microsoft in-memory provider instance for the EntityFrameworkCore provider. If you have more than one constructor use the most appropriate (e.g., if `SaveChanges` has a dependency on a current user instance, then use the constructor that satisfies that dependency).
 
-If you need access to the Microsoft in-memory provider instance used by the mocked `DbContext` (e.g., to customize the mock), use the builder:
+If you want more control, the builder allows you to provide an EntityFrameworkCore provider instance:
 
 ```c#
 var options = new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
 var dbContextToMock = new TestDbContext(options);
-var mockedDbContext = Build.MockedDbContextFor<TestDbContext>().UsingDbContext(dbContextToMock).And.UsingConstructorWithParameters(options).Build();
+var mockedDbContext = new MockedDbContextBuilder<TestDbContext>().UseDbContext(dbContextToMock).UseConstructorWithParameters(options).MockedDbContext;
+```
+
+There is no requirement to use the Microsoft in-memory provider. The following example uses SQLite and a `DbContext` with a parameterless constructor:
+
+```c#
+var options = new DbContextOptionsBuilder<TestDbContext>().UseSqlite(new SqliteConnection("DataSource=:memory:")).Options;
+var dbContextToMock = new TestDbContext(options);
+var mockedDbContext = new MockedDbContextBuilder<TestDbContext>().UseDbContext(dbContextToMock).UseConstructorWithParameters(options).MockedDbContext;
 ```
 
 ## Usage
@@ -96,7 +93,6 @@ Start by creating a mocked `DbContext` and, if the SUT requires, populate it as 
 ```c#
 var testEntity = Fixture.Create<TestEntity>();
 var mockedDbContext = Create.MockedDbContextFor<TestDbContext>();
-
 mockedDbContext.Set<TestEntity>().Add(testEntity);
 mockedDbContext.SaveChanges();
 
@@ -112,7 +108,6 @@ The Moq implementation of `Create.MockedDbContextFor<T>()` returns the mocked `D
 
 ```c#
 var mockedDbContext = Create.MockedDbContextFor<TestDbContext>();
-
 mockedDbContext.Set<TestEntity>().AddRange(Fixture.CreateMany<TestEntity>().ToList());
 mockedDbContext.SaveChanges();
 
@@ -169,7 +164,6 @@ var expectedResult = Fixture.CreateMany<TestEntity>().ToList();
 var parameter1 = Fixture.Create<DateTime>();
 var parameter2 = Fixture.Create<string>();
 var mockedDbContext = Create.MockedDbContextFor<TestDbContext>();
-
 mockedDbContext.Set<TestEntity>().AddFromSqlResult($"usp_StoredProcedureWithParameters {parameter1}, {parameter2.ToUpper()}", expectedResult);
 
 var actualResult = mockedDbContext.Set<TestEntity>().FromSql($"USP_StoredProcedureWithParameters {parameter1}, {parameter2.ToLower()}").ToList();
@@ -264,4 +258,4 @@ Use `AddExecuteSqlRawResult` and `AddExecuteSqlInterpolatedResult` to add result
 
 ### Async and LINQ queryable operations
 
-Whenever you add a from SQL or execute SQL command result, the library sets up both the sync and async methods. It also intercepts and automatically provides support for all sync and async LINQ queryable operations that are not supported by the Microsoft in-memory provider.
+Whenever you add a from SQL or execute SQL command result, the library sets up both the sync and async methods. It also automatically provides support for all sync and async LINQ queryable operations that are not supported by the Microsoft in-memory provider.
