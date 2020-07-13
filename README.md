@@ -6,26 +6,6 @@
 
 EntityFrameworkCore.Testing is a mocking library that creates EntityFrameworkCore system mocks. These system mocks act as a wrapper over an EntityFrameworkCore provider instance. Operations supported by the provider are handled by the provider and everything else is handled by the mock. Mock behaviour is determined by the default provider used by EntityFrameworkCore.Testing, the Microsoft in-memory provider.
 
-Configurable support is provided for the following relational operations:
-
-- FromSql *(EntityFrameworkCore 2.1.0-2.2.6)*
-- FromSqlRaw *(EntityFrameworkCore 3.\*)*
-- FromSqlInterpolated *(EntityFrameworkCore 3.\*)*
-- ExecuteSqlCommand
-- ExecuteSqlRaw *(EntityFrameworkCore 3.\*)*
-- ExecuteSqlInterpolated *(EntityFrameworkCore 3.\*)*
-- Queries
-- Keyless Sets *(EntityFrameworkCore 3.\*)*
-
-Support is also provided for the following LINQ queryable operations:
-
-- ElementAt
-- ElementAtOrDefault
-- Indexed Select
-- SkipWhile
-- TakeWhile
-- Indexed TakeWhile
-
 It's easy to use with implementations for both Moq and NSubstitute.
 
 ## Resources
@@ -46,7 +26,7 @@ It's easy to use with implementations for both Moq and NSubstitute.
 
 ### Virtual sets/queries
 
-Your `DbContext` set/query properties must be overridable:
+Your context set/query properties must be overridable:
 
 ```c#
 public virtual DbSet<TestEntity> TestEntities { get; set; }
@@ -54,7 +34,7 @@ public virtual DbSet<TestEntity> TestEntities { get; set; }
 
 ## Creating a mocked DbContext
 
-If your `DbContext` has constructor with a single `DbContextOptions` or `DbContextOptions<TDbContext>` parameter, creating a mocked `DbContext` is as easy as:
+If your context has constructor with a single `DbContextOptions` or `DbContextOptions<TDbContext>` parameter, creating a mocked context is as easy as:
 
 ```c#
 var mockedDbContext = Create.MockedDbContextFor<TestDbContext>();
@@ -68,9 +48,7 @@ var dbContextOptions = new DbContextOptionsBuilder<TestDbContext>().UseInMemoryD
 var mockedDbContext = Create.MockedDbContextFor<TestDbContext>(mockedLogger, dbContextOptions);
 ```
 
-Both of the above examples automatically create and use a Microsoft in-memory provider instance for the EntityFrameworkCore provider. If you have more than one constructor, use the most appropriate (e.g., if `SaveChanges` has a dependency on a current user instance use the constructor that satisfies that dependency).
-
-If you want more control e.g., to specify the EntityFrameworkCore provider instance, use the builder:
+Both of the above examples automatically create and use a Microsoft in-memory provider instance for the EntityFrameworkCore provider. If you want more control e.g., to specify the EntityFrameworkCore provider instance, use the builder:
 
 ```c#
 var options = new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
@@ -78,7 +56,7 @@ var dbContextToMock = new TestDbContext(options);
 var mockedDbContext = new MockedDbContextBuilder<TestDbContext>().UseDbContext(dbContextToMock).UseConstructorWithParameters(options).MockedDbContext;
 ```
 
-There is no requirement to use the Microsoft in-memory provider. The following example uses the SQLite in-memory provider and a `DbContext` with a parameterless constructor:
+There is no requirement to use the Microsoft in-memory provider. The following example uses the SQLite in-memory provider for a context with a parameterless constructor:
 
 ```c#
 using (var connection = new SqliteConnection("Filename=:memory:"))
@@ -103,7 +81,7 @@ using (var connection = new SqliteConnection("Filename=:memory:"))
 
 ## Usage
 
-Start by creating a mocked `DbContext` and, if the SUT requires, populate it as if you were using the real thing:
+Start by creating a mocked context and, if the SUT requires, populate it as if you were using the real thing:
 
 ```c#
 var testEntity = Fixture.Create<TestEntity>();
@@ -119,7 +97,7 @@ Assert.Multiple(() =>
 });
 ```
 
-The Moq implementation of `Create.MockedDbContextFor<T>()` returns the mocked `DbContext`. If you need the mock itself (e.g., to verify an invocation) use `Mock.Get(mockedDbSet)`:
+The Moq implementation of `Create.MockedDbContextFor<T>()` returns the mocked context. If you need the mock itself (e.g., to verify an invocation) use `Mock.Get(mockedDbSet)`:
 
 ```c#
 var mockedDbContext = Create.MockedDbContextFor<TestDbContext>();
@@ -277,7 +255,7 @@ Whenever you add a from SQL or execute SQL command result, EntityFrameworkCore.T
 
 ### Asserting mock invocations
 
-The `DbContext` and each `DbSet<TEntity>`, `DbQuery<TQuery>` and their respective query providers are separate mocks. The following Moq example asserts that the `DbContext.SaveChanges` and `DbSet<TestEntity>.AddRange` methods were both invoked once.
+The context and each set, query and their respective query providers are separate mocks. The following Moq example asserts that the `DbContext.SaveChanges` and `DbSet<TestEntity>.AddRange` methods were both invoked once.
 
 ```c#
 var mockedDbContext = Create.MockedDbContextFor<TestDbContext>();
