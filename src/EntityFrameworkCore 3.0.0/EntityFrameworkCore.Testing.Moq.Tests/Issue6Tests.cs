@@ -19,19 +19,6 @@ namespace EntityFrameworkCore.Testing.Moq.Tests
             }
         }
 
-        [Test]
-        public void FromSqlInterpolated_SpecifiedSqlWithDbNullParameters_ReturnsExpectedResult()
-        {
-            var expectedResult = new List<TestEntity> { Fixture.Create<TestEntity>() };
-
-            var mockedDbContext = Create.MockedDbContextFor<TestDbContext>();
-            mockedDbContext.Set<TestEntity>().AddFromSqlInterpolatedResult($"SELECT * FROM [SqlFunctionWithNullableParameters]({DBNull.Value}, {DBNull.Value})", expectedResult);
-
-            var actualResult = mockedDbContext.Set<TestEntity>().FromSqlInterpolated($"SELECT * FROM [SqlFunctionWithNullableParameters]({DBNull.Value}, {DBNull.Value})");
-
-            Assert.That(actualResult, Is.EqualTo(expectedResult));
-        }
-
         [TestCaseSource(nameof(FromSqlInterpolated_SpecifiedSqlWithNullParameters_TestCases))]
         public void FromSqlInterpolated_SpecifiedSqlWithNullParameters_ReturnsExpectedResult(DateTime? dateTimeValue, int? intValue)
         {
@@ -41,6 +28,19 @@ namespace EntityFrameworkCore.Testing.Moq.Tests
             mockedDbContext.Set<TestEntity>().AddFromSqlInterpolatedResult($"SELECT * FROM [SqlFunctionWithNullableParameters]({dateTimeValue}, {intValue})", expectedResult);
 
             var actualResult = mockedDbContext.Set<TestEntity>().FromSqlInterpolated($"SELECT * FROM [SqlFunctionWithNullableParameters]({dateTimeValue}, {intValue})");
+
+            Assert.That(actualResult, Is.EqualTo(expectedResult));
+        }
+
+        [Test]
+        public void FromSqlInterpolated_SpecifiedSqlWithDbNullParameters_ReturnsExpectedResult()
+        {
+            var expectedResult = new List<TestEntity> { Fixture.Create<TestEntity>() };
+
+            var mockedDbContext = Create.MockedDbContextFor<TestDbContext>();
+            mockedDbContext.Set<TestEntity>().AddFromSqlInterpolatedResult($"SELECT * FROM [SqlFunctionWithNullableParameters]({DBNull.Value}, {DBNull.Value})", expectedResult);
+
+            var actualResult = mockedDbContext.Set<TestEntity>().FromSqlInterpolated($"SELECT * FROM [SqlFunctionWithNullableParameters]({DBNull.Value}, {DBNull.Value})");
 
             Assert.That(actualResult, Is.EqualTo(expectedResult));
         }
