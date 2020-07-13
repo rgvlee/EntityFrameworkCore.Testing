@@ -218,7 +218,6 @@ namespace EntityFrameworkCore.Testing.Moq.PackageVerification.Tests
         public void VerifyExample1()
         {
             var mockedDbContext = Create.MockedDbContextFor<TestDbContext>();
-
             mockedDbContext.Set<TestEntity>().AddRange(Fixture.CreateMany<TestEntity>().ToList());
             mockedDbContext.SaveChanges();
 

@@ -58,7 +58,7 @@ If your `DbContext` has constructor with a single `DbContextOptions` or `DbConte
 var mockedDbContext = Create.MockedDbContextFor<TestDbContext>();
 ```
 
-Any accessible `DbContext` constructor can be used to create the mocked `DbContext` provided it has a `DbContextOptions` or `DbContextOptions<TDbContext>` parameter:
+Any accessible constructor can be used provided it has a `DbContextOptions` or `DbContextOptions<TDbContext>` parameter:
 
 ```c#
 var mockedLogger = Mock.Of<ILogger<TestDbContext>>();
@@ -66,7 +66,7 @@ var dbContextOptions = new DbContextOptionsBuilder<TestDbContext>().UseInMemoryD
 var mockedDbContext = Create.MockedDbContextFor<TestDbContext>(mockedLogger, dbContextOptions);
 ```
 
-Both of the above examples automatically create and use a Microsoft in-memory provider instance for the EntityFrameworkCore provider. If you have more than one constructor, use the most appropriate (e.g., if `SaveChanges` has a dependency on a current user instance, then use the constructor that satisfies that dependency).
+Both of the above examples automatically create and use a Microsoft in-memory provider instance for the EntityFrameworkCore provider. If you have more than one constructor, use the most appropriate (e.g., if `SaveChanges` has a dependency on a current user instance use the constructor that satisfies that dependency).
 
 If you want more control e.g., to specify the EntityFrameworkCore provider instance, use the builder:
 
@@ -271,7 +271,7 @@ Use `AddExecuteSqlRawResult` and `AddExecuteSqlInterpolatedResult` to add result
 
 ### Async and LINQ queryable operations
 
-Whenever you add a from SQL or execute SQL command result, the EntityFrameworkCore.Testing sets up both the sync and async methods. It also automatically provides support for all sync and async LINQ queryable operations that are not supported by the Microsoft in-memory provider.
+Whenever you add a from SQL or execute SQL command result, EntityFrameworkCore.Testing sets up both the sync and async methods. It also automatically provides support for all sync and async LINQ queryable operations that are not supported by the Microsoft in-memory provider.
 
 ### Asserting mock invocations
 
@@ -279,7 +279,6 @@ The `DbContext` and each `DbSet<TEntity>`, `DbQuery<TQuery>` and their respectiv
 
 ```c#
 var mockedDbContext = Create.MockedDbContextFor<TestDbContext>();
-
 mockedDbContext.Set<TestEntity>().AddRange(Fixture.CreateMany<TestEntity>().ToList());
 mockedDbContext.SaveChanges();
 
