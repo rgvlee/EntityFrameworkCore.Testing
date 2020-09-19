@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
 using EntityFrameworkCore.Testing.Common;
-using EntityFrameworkCore.Testing.Common.Extensions;
 using NSubstitute.Core;
+using rgvlee.Core.Common.Extensions;
 
 namespace EntityFrameworkCore.Testing.NSubstitute.Helpers
 {

@@ -4,16 +4,16 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
-using EntityFrameworkCore.Testing.Common.Helpers;
 using Microsoft.EntityFrameworkCore.Query.Internal;
 using Microsoft.Extensions.Logging;
+using rgvlee.Core.Common.Helpers;
 
 namespace EntityFrameworkCore.Testing.Common
 {
     /// <inheritdoc />
     public class AsyncQueryProvider<T> : IAsyncQueryProvider
     {
-        private static readonly ILogger Logger = LoggerHelper.CreateLogger(typeof(AsyncQueryProvider<T>));
+        private static readonly ILogger Logger = LoggingHelper.CreateLogger(typeof(AsyncQueryProvider<T>));
 
         public AsyncQueryProvider(IEnumerable<T> enumerable)
         {

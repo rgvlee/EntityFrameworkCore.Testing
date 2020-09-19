@@ -3,11 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using EntityFrameworkCore.Testing.Common;
-using EntityFrameworkCore.Testing.Common.Helpers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Query.Internal;
 using NSubstitute;
+using rgvlee.Core.Common.Helpers;
 
 namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
 {

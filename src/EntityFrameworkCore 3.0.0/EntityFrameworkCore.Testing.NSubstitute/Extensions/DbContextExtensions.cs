@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
 using NSubstitute.ExceptionExtensions;
+using rgvlee.Core.Common.Helpers;
 
 namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
 {
@@ -21,7 +22,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
     /// </summary>
     public static partial class DbContextExtensions
     {
-        private static readonly ILogger Logger = LoggerHelper.CreateLogger(typeof(DbContextExtensions));
+        private static readonly ILogger Logger = LoggingHelper.CreateLogger(typeof(DbContextExtensions));
 
         /// <summary>
         ///     Sets up ExecuteSqlInterpolated invocations to return a specified result.

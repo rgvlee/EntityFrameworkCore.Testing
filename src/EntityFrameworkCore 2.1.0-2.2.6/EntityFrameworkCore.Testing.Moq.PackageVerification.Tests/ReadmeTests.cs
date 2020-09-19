@@ -23,7 +23,7 @@ namespace EntityFrameworkCore.Testing.Moq.PackageVerification.Tests
         public virtual void SetUp()
         {
 #pragma warning disable 618
-            LoggerHelper.LoggerFactory.AddConsole(LogLevel.Debug);
+            LoggingHelper.LoggerFactory.AddConsole(LogLevel.Debug);
 #pragma warning restore 618
         }
 

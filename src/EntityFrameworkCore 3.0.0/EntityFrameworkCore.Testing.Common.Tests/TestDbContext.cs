@@ -1,12 +1,12 @@
-﻿using EntityFrameworkCore.Testing.Common.Helpers;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using rgvlee.Core.Common.Helpers;
 
 namespace EntityFrameworkCore.Testing.Common.Tests
 {
     public class TestDbContext : DbContext
     {
-        private static readonly ILogger Logger = LoggerHelper.CreateLogger(typeof(TestDbContext));
+        private static readonly ILogger Logger = LoggingHelper.CreateLogger(typeof(TestDbContext));
 
         public TestDbContext() { }
 

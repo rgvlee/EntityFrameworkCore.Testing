@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using EntityFrameworkCore.Testing.Common.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using rgvlee.Core.Common.Extensions;
+using rgvlee.Core.Common.Helpers;
 
 namespace EntityFrameworkCore.Testing.Common.Helpers
 {
@@ -16,7 +17,7 @@ namespace EntityFrameworkCore.Testing.Common.Helpers
         /// <summary>
         ///     The logger instance.
         /// </summary>
-        protected static readonly ILogger Logger = LoggerHelper.CreateLogger(typeof(BaseMockedDbContextFactory<TDbContext>));
+        protected static readonly ILogger Logger = LoggingHelper.CreateLogger(typeof(BaseMockedDbContextFactory<TDbContext>));
 
         /// <summary>
         ///     The parameters that will be used to create the mocked db context and, if one is not provided,
@@ -43,8 +44,8 @@ namespace EntityFrameworkCore.Testing.Common.Helpers
             {
                 var dbContextType = typeof(TDbContext);
 
-                if (!dbContextType.HasConstructorWithParameterOfType(typeof(DbContextOptions)) &&
-                    !dbContextType.HasConstructorWithParameterOfType(typeof(DbContextOptions<TDbContext>)) &&
+                if (!dbContextType.HasConstructor(typeof(DbContextOptions)) &&
+                    !dbContextType.HasConstructor(typeof(DbContextOptions<TDbContext>)) &&
                     !dbContextType.HasParameterlessConstructor())
                 {
                     throw new MissingMethodException(ExceptionMessages.UnableToFindSuitableDbContextConstructor);
@@ -54,11 +55,11 @@ namespace EntityFrameworkCore.Testing.Common.Helpers
                 {
                     ConstructorParameters = new List<object>();
                 }
-                else if (!dbContextType.HasConstructorWithParameterOfType(typeof(DbContextOptions<>)))
+                else if (!dbContextType.HasConstructor(typeof(DbContextOptions<>)))
                 {
                     ConstructorParameters = new List<object> { new DbContextOptionsBuilder<TDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options };
                 }
-                else if (!dbContextType.HasConstructorWithParameterOfType(typeof(DbContextOptions)))
+                else if (!dbContextType.HasConstructor(typeof(DbContextOptions)))
                 {
                     ConstructorParameters = new List<object> { new DbContextOptionsBuilder().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options };
                 }

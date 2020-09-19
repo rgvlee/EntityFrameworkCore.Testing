@@ -9,6 +9,7 @@ using EntityFrameworkCore.Testing.Common.Helpers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Moq;
+using rgvlee.Core.Common.Helpers;
 
 namespace EntityFrameworkCore.Testing.Moq.Extensions
 {

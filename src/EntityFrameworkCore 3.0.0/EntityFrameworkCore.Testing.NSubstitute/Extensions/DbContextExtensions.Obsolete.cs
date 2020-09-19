@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using EntityFrameworkCore.Testing.Common.Helpers;
 using Microsoft.EntityFrameworkCore;
+using rgvlee.Core.Common.Helpers;
 
 namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
 {

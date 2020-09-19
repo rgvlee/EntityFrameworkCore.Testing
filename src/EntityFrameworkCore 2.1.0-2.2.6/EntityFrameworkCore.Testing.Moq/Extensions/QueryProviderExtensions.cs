@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using EntityFrameworkCore.Testing.Common;
-using EntityFrameworkCore.Testing.Common.Extensions;
 using EntityFrameworkCore.Testing.Common.Helpers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Moq;
+using rgvlee.Core.Common.Extensions;
+using rgvlee.Core.Common.Helpers;
 
 namespace EntityFrameworkCore.Testing.Moq.Extensions
 {
@@ -16,7 +17,7 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
     /// </summary>
     public static partial class QueryProviderExtensions
     {
-        private static readonly ILogger Logger = LoggerHelper.CreateLogger(typeof(QueryProviderExtensions));
+        private static readonly ILogger Logger = LoggingHelper.CreateLogger(typeof(QueryProviderExtensions));
 
         /// <summary>
         ///     Sets up FromSql invocations to return a specified result.

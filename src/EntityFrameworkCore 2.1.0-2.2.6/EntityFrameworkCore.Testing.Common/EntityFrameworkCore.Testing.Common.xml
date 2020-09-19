@@ -71,32 +71,6 @@
               Looks up a localized string similar to Unable to find a suitable constructor. TDbContext must have a parameterless or DbContextOptions/DbContextOptions&lt;TDbContext&gt; constructor..
             </summary>
         </member>
-        <member name="T:EntityFrameworkCore.Testing.Common.Extensions.StringExtensions">
-            <summary>
-                Extensions for the <see cref="T:System.String" /> type.
-            </summary>
-        </member>
-        <member name="M:EntityFrameworkCore.Testing.Common.Extensions.StringExtensions.Contains(System.String,System.String,System.StringComparison)">
-            <summary>
-                Checks to see if the target string contains the search for string using the specified string comparer.
-            </summary>
-            <param name="target">The string to search.</param>
-            <param name="searchFor">The string to search for within the target.</param>
-            <param name="comparer">The string comparer.</param>
-            <returns>true if the target string contains the search for string using the specified string comparer.</returns>
-        </member>
-        <member name="T:EntityFrameworkCore.Testing.Common.Extensions.TypeExtensions">
-            <summary>
-                Extensions for the <see cref="T:System.Type" /> type.
-            </summary>
-        </member>
-        <member name="M:EntityFrameworkCore.Testing.Common.Extensions.TypeExtensions.GetDefaultValue(System.Type)">
-            <summary>
-                Gets the default value for the specified type.
-            </summary>
-            <param name="type">The type to get the default value for.</param>
-            <returns>The default value for the specified type.</returns>
-        </member>
         <member name="T:EntityFrameworkCore.Testing.Common.Helpers.BaseMockedDbContextBuilder`1">
             <summary>
                 The mocked db context builder.
@@ -162,41 +136,6 @@
             </summary>
             <returns>A mocked db context.</returns>
         </member>
-        <member name="T:EntityFrameworkCore.Testing.Common.Helpers.EnsureArgument">
-            <summary>
-                A helper to perform checks on arguments.
-            </summary>
-        </member>
-        <member name="M:EntityFrameworkCore.Testing.Common.Helpers.EnsureArgument.IsNotNullOrEmpty(System.String,System.String)">
-            <summary>
-                Ensures that a string argument is not null or empty.
-            </summary>
-            <param name="string">The string argument.</param>
-            <param name="argumentName">The argument name.</param>
-            <returns>The string argument.</returns>
-            <exception cref="T:System.ArgumentNullException">If the string argument is null.</exception>
-            <exception cref="T:System.ArgumentException">If the string argument is empty.</exception>
-        </member>
-        <member name="M:EntityFrameworkCore.Testing.Common.Helpers.EnsureArgument.IsNotNull``1(``0,System.String)">
-            <summary>
-                Ensures that an argument is not null.
-            </summary>
-            <typeparam name="T">The argument type.</typeparam>
-            <param name="argument">The argument.</param>
-            <param name="argumentName">The argument name.</param>
-            <returns>The argument.</returns>
-            <exception cref="T:System.ArgumentNullException">If the argument is null.</exception>
-        </member>
-        <member name="M:EntityFrameworkCore.Testing.Common.Helpers.EnsureArgument.IsNotEmpty``1(System.Collections.Generic.IEnumerable{``0},System.String)">
-            <summary>
-                Ensures that a collection is not empty.
-            </summary>
-            <typeparam name="T">The type of the items in the collection.</typeparam>
-            <param name="collection">The collection.</param>
-            <param name="argumentName">The collection argument name.</param>
-            <returns>The collection.</returns>
-            <exception cref="T:System.ArgumentException">If the collection is empty.</exception>
-        </member>
         <member name="T:EntityFrameworkCore.Testing.Common.Helpers.ExpressionHelper">
             <summary>
                 A helper for creating expressions.
@@ -236,27 +175,6 @@
             <summary>
                 The db context instance that the mocked db context will use for in-memory provider supported operations.
             </summary>
-        </member>
-        <member name="T:EntityFrameworkCore.Testing.Common.Helpers.LoggerHelper">
-            <summary>A helper for creating loggers.</summary>
-        </member>
-        <member name="P:EntityFrameworkCore.Testing.Common.Helpers.LoggerHelper.LoggerFactory">
-            <summary>Gets or sets the logger factory used to create loggers.</summary>
-        </member>
-        <member name="M:EntityFrameworkCore.Testing.Common.Helpers.LoggerHelper.CreateLogger``1">
-            <summary>Creates a new logger instance using the full name of the specified type.</summary>
-            <typeparam name="T">The type.</typeparam>
-            <returns>A new logger instance.</returns>
-        </member>
-        <member name="M:EntityFrameworkCore.Testing.Common.Helpers.LoggerHelper.CreateLogger(System.String)">
-            <summary>Creates a new logger instance.</summary>
-            <param name="categoryName">The category name for messages produced by the logger.</param>
-            <returns>A new logger instance.</returns>
-        </member>
-        <member name="M:EntityFrameworkCore.Testing.Common.Helpers.LoggerHelper.CreateLogger(System.Type)">
-            <summary>Creates a new logger instance using the full name of the specified type.</summary>
-            <param name="type">The type.</param>
-            <returns>A new logger instance.</returns>
         </member>
         <member name="T:EntityFrameworkCore.Testing.Common.Helpers.MockedDbContextFactoryOptions`1">
             <summary>

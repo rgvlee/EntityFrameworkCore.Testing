@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Linq;
 using Castle.DynamicProxy;
-using EntityFrameworkCore.Testing.Common.Helpers;
 using EntityFrameworkCore.Testing.Common.Tests;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using NUnit.Framework;
+using rgvlee.Core.Common.Helpers;
 
 namespace EntityFrameworkCore.Testing.Moq.Tests
 {
@@ -14,7 +14,7 @@ namespace EntityFrameworkCore.Testing.Moq.Tests
         [SetUp]
         public virtual void SetUp()
         {
-            LoggerHelper.LoggerFactory = LoggerFactory.Create(builder => builder.AddConsole().SetMinimumLevel(LogLevel.Debug));
+            LoggingHelper.LoggerFactory = LoggerFactory.Create(builder => builder.AddConsole().SetMinimumLevel(LogLevel.Debug));
         }
 
         [Test]

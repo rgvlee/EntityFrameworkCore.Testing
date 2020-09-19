@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Logging;
 using Moq;
+using rgvlee.Core.Common.Helpers;
 
 namespace EntityFrameworkCore.Testing.Moq.Extensions
 {
@@ -20,7 +21,7 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
     /// </summary>
     public static partial class DbContextExtensions
     {
-        private static readonly ILogger Logger = LoggerHelper.CreateLogger(typeof(DbContextExtensions));
+        private static readonly ILogger Logger = LoggingHelper.CreateLogger(typeof(DbContextExtensions));
 
         /// <summary>
         ///     Sets up ExecuteSqlInterpolated invocations to return a specified result.
