@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using EntityFrameworkCore.Testing.Common;
-using EntityFrameworkCore.Testing.Common.Helpers;
 using Microsoft.Extensions.Logging;
 using Moq;
 using rgvlee.Core.Common.Helpers;
