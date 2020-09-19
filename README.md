@@ -10,17 +10,17 @@ It's easy to use with implementations for both Moq and NSubstitute.
 
 ## Resources
 
--   [Source repository](https://github.com/rgvlee/EntityFrameworkCore.Testing/)
+-   [Source repository](https://github.com/rgvlee/EntityFrameworkCore.Testing)
 
 ### EntityFrameworkCore 3.\*
 
--   [EntityFrameworkCore.Testing.Moq - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.Moq/2.2.2)
--   [EntityFrameworkCore.Testing.NSubstitute - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.NSubstitute/2.2.2)
+-   [EntityFrameworkCore.Testing.Moq - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.Moq/2.3.0)
+-   [EntityFrameworkCore.Testing.NSubstitute - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.NSubstitute/2.3.0)
 
 ### EntityFrameworkCore 2.1.0-2.2.6
 
--   [EntityFrameworkCore.Testing.Moq - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.Moq/1.1.2)
--   [EntityFrameworkCore.Testing.NSubstitute - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.NSubstitute/1.1.2)
+-   [EntityFrameworkCore.Testing.Moq - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.Moq/1.2.0)
+-   [EntityFrameworkCore.Testing.NSubstitute - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.NSubstitute/1.2.0)
 
 ## Prerequisites
 

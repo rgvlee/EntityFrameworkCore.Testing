@@ -3,17 +3,16 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-    <version>2.1.0</version>
+    <version>1.0.0</version>
     <Authors>rgvlee</Authors>
     <Company>rgvlee</Company>
-    <Description>A mocking library that creates EntityFrameworkCore (EFCore) system mocks using an EntityFrameworkCore provider and NSubstitute.
-
-Includes support for queries/keyless db sets, FromSqlRaw/FromSqlInterpolated, ExecuteSqlCommand/ExecuteSqlRaw/ExecuteSqlInterpolated, and async LINQ operations.</Description>
-    <Copyright>Copyright (c) 2020 Lee Anderson</Copyright>
+    <Description></Description>
+    <Copyright></Copyright>
     <PackageLicenseUrl></PackageLicenseUrl>
-    <PackageProjectUrl>https://github.com/rgvlee/EntityFrameworkCore.Testing</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/rgvlee/EntityFrameworkCore.Testing</RepositoryUrl>
+    <PackageProjectUrl></PackageProjectUrl>
+    <RepositoryUrl></RepositoryUrl>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageVersion>1.0.0</PackageVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
