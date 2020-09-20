@@ -1,24 +1,16 @@
 # EntityFrameworkCore.Testing
 
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/6d641ce391264f45b99acee8694a88d6)](https://www.codacy.com/manual/rgvlee/EntityFrameworkCore.Testing?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=rgvlee/EntityFrameworkCore.Testing&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/6d641ce391264f45b99acee8694a88d6?branch=1.x)](https://www.codacy.com/manual/rgvlee/EntityFrameworkCore.Testing?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=rgvlee/EntityFrameworkCore.Testing&amp;utm_campaign=Badge_Grade)
 
 ## Overview
 
 EntityFrameworkCore.Testing is a mocking library that creates EntityFrameworkCore DbContext system mocks. It's easy to use (usually just a single line of code) with implementations for both Moq and NSubstitute.
 
-It includes support for queries/keyless db sets, FromSql/FromSqlRaw/FromSqlInterpolated, ExecuteSqlCommand/ExecuteSqlRaw/ExecuteSqlInterpolated, and async LINQ operations.
+It includes support for queries, FromSql, ExecuteSqlCommand, and async LINQ operations.
 
 ## Resources
 
 -   [Source repository](https://github.com/rgvlee/EntityFrameworkCore.Testing)
-
-### EntityFrameworkCore 3.\*
-
--   [EntityFrameworkCore.Testing.Moq - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.Moq/2.3.0)
--   [EntityFrameworkCore.Testing.NSubstitute - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.NSubstitute/2.3.0)
-
-### EntityFrameworkCore 2.1.0-2.2.6
-
 -   [EntityFrameworkCore.Testing.Moq - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.Moq/1.2.0)
 -   [EntityFrameworkCore.Testing.NSubstitute - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.NSubstitute/1.2.0)
 
@@ -169,10 +161,6 @@ Assert.Multiple(() =>
 });
 ```
 
-### FromSqlRaw/FromSqlInterpolated (EntityFrameworkCore 3.\*)
-
-Use `AddFromSqlRawResult` and `AddFromSqlInterpolatedResult` to add results for `FromSqlRaw` and `FromSqlInterpolated` invocations. Refer to the FromSql section above for usage.
-
 ### Queries
 
 Use `AddToReadOnlySource`, `AddRangeToReadOnlySource` and `ClearReadOnlySource` to manage a query source.
@@ -191,10 +179,6 @@ Assert.Multiple(() =>
 ```
 
 Specifying a from SQL result for a query is exactly the same as for a set.
-
-### Keyless Sets (EntityFrameworkCore 3.\*)
-
-Refer to the Queries section above for usage.
 
 ### ExecuteSqlCommand
 
@@ -244,10 +228,6 @@ Assert.Multiple(() =>
     Assert.That(mockedDbContext.Set<TestEntity>().ToList(), Is.EquivalentTo(remainingRows));
 });
 ```
-
-### ExecuteSqlRaw/ExecuteSqlInterpolated (EntityFrameworkCore 3.\*)
-
-Use `AddExecuteSqlRawResult` and `AddExecuteSqlInterpolatedResult` to add results for `ExecuteSqlRaw` and `ExecuteSqlInterpolated` invocations. Refer to the ExecuteSqlCommand section above for usage.
 
 ### Async and LINQ queryable operations
 
