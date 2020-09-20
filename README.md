@@ -4,9 +4,9 @@
 
 ## Overview
 
-EntityFrameworkCore.Testing is a mocking library that creates EntityFrameworkCore system mocks. These system mocks act as a wrapper over an EntityFrameworkCore provider instance. Operations supported by the provider are handled by the provider and everything else is handled by the mock. Mock behaviour is determined by the default provider used by EntityFrameworkCore.Testing, the Microsoft in-memory provider.
+EntityFrameworkCore.Testing is a mocking library that creates EntityFrameworkCore DbContext system mocks. It's easy to use (usually just a single line of code) with implementations for both Moq and NSubstitute.
 
-It's easy to use with implementations for both Moq and NSubstitute.
+It includes support for queries/keyless db sets, FromSql/FromSqlRaw/FromSqlInterpolated, ExecuteSqlCommand/ExecuteSqlRaw/ExecuteSqlInterpolated, and async LINQ operations.
 
 ## Resources
 

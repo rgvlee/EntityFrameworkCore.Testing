@@ -8,7 +8,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <license type="file">LICENSE</license>
     <projectUrl>https://github.com/rgvlee/EntityFrameworkCore.Testing</projectUrl>
-    <description>A mocking library that creates EntityFrameworkCore (EFCore) system mocks using an EntityFrameworkCore provider and NSubstitute.
+    <description>A mocking library that creates EntityFrameworkCore DbContext system mocks using an EntityFrameworkCore provider and NSubstitute.
 
 Includes support for queries, FromSql, ExecuteSqlCommand, and async LINQ operations.</description>
     <copyright>Copyright (c) 2020 Lee Anderson</copyright>
@@ -19,8 +19,8 @@ Includes support for queries, FromSql, ExecuteSqlCommand, and async LINQ operati
         <dependency id="Microsoft.EntityFrameworkCore.InMemory" version="[2.1.0,2.2.6]" exclude="Build,Analyzers" />
         <dependency id="Microsoft.EntityFrameworkCore.SqlServer" version="[2.1.0,2.2.6]" exclude="Build,Analyzers" />
         <dependency id="Microsoft.Extensions.Logging" version="2.1.0" exclude="Build,Analyzers" />
-
         <dependency id="NSubstitute" version="4.1.0" exclude="Build,Analyzers" />
+        <dependency id="rgvlee.Core" version="1.0.0" exclude="Build,Analyzers" />
       </group>
     </dependencies>
   </metadata>
