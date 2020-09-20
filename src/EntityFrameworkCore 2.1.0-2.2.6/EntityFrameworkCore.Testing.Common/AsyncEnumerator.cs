@@ -13,7 +13,10 @@ namespace EntityFrameworkCore.Testing.Common
             _enumerator = enumerable.GetEnumerator();
         }
 
-        public void Dispose() { }
+        public void Dispose()
+        {
+            //Required by the interface, however no implementation is required
+        }
 
         public Task<bool> MoveNext(CancellationToken cancellationToken)
         {
