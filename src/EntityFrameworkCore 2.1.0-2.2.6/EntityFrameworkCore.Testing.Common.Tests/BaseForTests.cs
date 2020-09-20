@@ -1,7 +1,7 @@
 ﻿using AutoFixture;
-using EntityFrameworkCore.Testing.Common.Helpers;
 using Microsoft.Extensions.Logging;
 using NUnit.Framework;
+using rgvlee.Core.Common.Helpers;
 
 namespace EntityFrameworkCore.Testing.Common.Tests
 {
@@ -12,13 +12,13 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         public virtual void SetUp()
         {
 #pragma warning disable 618
-            LoggerHelper.LoggerFactory.AddConsole(LogLevel.Debug);
+            LoggingHelper.LoggerFactory.AddConsole(LogLevel.Debug);
 #pragma warning restore 618
             Fixture = new Fixture();
         }
 
         protected Fixture Fixture;
 
-        protected static readonly ILogger Logger = LoggerHelper.CreateLogger(typeof(BaseForTests));
+        protected static readonly ILogger Logger = LoggingHelper.CreateLogger(typeof(BaseForTests));
     }
 }

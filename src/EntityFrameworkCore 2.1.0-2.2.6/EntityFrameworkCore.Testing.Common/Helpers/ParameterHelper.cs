@@ -5,6 +5,7 @@ using System.Data.Common;
 using System.Linq;
 using System.Text;
 using Microsoft.Extensions.Logging;
+using rgvlee.Core.Common.Helpers;
 
 namespace EntityFrameworkCore.Testing.Common.Helpers
 {
@@ -13,7 +14,7 @@ namespace EntityFrameworkCore.Testing.Common.Helpers
     /// </summary>
     public class ParameterMatchingHelper
     {
-        private static readonly ILogger Logger = LoggerHelper.CreateLogger(typeof(ParameterMatchingHelper));
+        private static readonly ILogger Logger = LoggingHelper.CreateLogger(typeof(ParameterMatchingHelper));
 
         /// <summary>
         ///     Determines whether the invocation parameters match the set up parameters.

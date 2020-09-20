@@ -22,7 +22,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.PackageVerification.Tests
         [SetUp]
         public virtual void SetUp()
         {
-            LoggerHelper.LoggerFactory = LoggerFactory.Create(builder => builder.AddConsole().SetMinimumLevel(LogLevel.Debug));
+            LoggingHelper.LoggerFactory = LoggerFactory.Create(builder => builder.AddConsole().SetMinimumLevel(LogLevel.Debug));
         }
 
         [Test]

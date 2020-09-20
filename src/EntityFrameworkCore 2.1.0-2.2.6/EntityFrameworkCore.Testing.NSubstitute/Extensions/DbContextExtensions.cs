@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using EntityFrameworkCore.Testing.Common.Extensions;
 using EntityFrameworkCore.Testing.Common.Helpers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
@@ -11,6 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
 using NSubstitute.ExceptionExtensions;
+using rgvlee.Core.Common.Extensions;
+using rgvlee.Core.Common.Helpers;
 
 namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
 {
@@ -19,7 +20,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
     /// </summary>
     public static class DbContextExtensions
     {
-        private static readonly ILogger Logger = LoggerHelper.CreateLogger(typeof(DbContextExtensions));
+        private static readonly ILogger Logger = LoggingHelper.CreateLogger(typeof(DbContextExtensions));
 
         /// <summary>
         ///     Sets up ExecuteSqlCommand invocations to return a specified result.

@@ -4,23 +4,23 @@
 
 ## Overview
 
-EntityFrameworkCore.Testing is a mocking library that creates EntityFrameworkCore system mocks. These system mocks act as a wrapper over an EntityFrameworkCore provider instance. Operations supported by the provider are handled by the provider and everything else is handled by the mock. Mock behaviour is determined by the default provider used by EntityFrameworkCore.Testing, the Microsoft in-memory provider.
+EntityFrameworkCore.Testing is a mocking library that creates EntityFrameworkCore DbContext system mocks. It's easy to use (usually just a single line of code) with implementations for both Moq and NSubstitute.
 
-It's easy to use with implementations for both Moq and NSubstitute.
+It includes support for queries/keyless db sets, FromSql/FromSqlRaw/FromSqlInterpolated, ExecuteSqlCommand/ExecuteSqlRaw/ExecuteSqlInterpolated, and async LINQ operations.
 
 ## Resources
 
--   [Source repository](https://github.com/rgvlee/EntityFrameworkCore.Testing/)
+-   [Source repository](https://github.com/rgvlee/EntityFrameworkCore.Testing)
 
 ### EntityFrameworkCore 3.\*
 
--   [EntityFrameworkCore.Testing.Moq - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.Moq/2.2.2)
--   [EntityFrameworkCore.Testing.NSubstitute - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.NSubstitute/2.2.2)
+-   [EntityFrameworkCore.Testing.Moq - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.Moq/2.3.0)
+-   [EntityFrameworkCore.Testing.NSubstitute - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.NSubstitute/2.3.0)
 
 ### EntityFrameworkCore 2.1.0-2.2.6
 
--   [EntityFrameworkCore.Testing.Moq - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.Moq/1.1.2)
--   [EntityFrameworkCore.Testing.NSubstitute - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.NSubstitute/1.1.2)
+-   [EntityFrameworkCore.Testing.Moq - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.Moq/1.2.0)
+-   [EntityFrameworkCore.Testing.NSubstitute - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.NSubstitute/1.2.0)
 
 ## Prerequisites
 

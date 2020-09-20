@@ -6,25 +6,27 @@ using System.Linq.Expressions;
 
 namespace EntityFrameworkCore.Testing.Common
 {
-    public class AsyncEnumerable<T> : IAsyncEnumerable<T>, IOrderedQueryable<T>, IEnumerable<T>, IEnumerable, IOrderedQueryable, IQueryable, IQueryable<T>
+    public class AsyncEnumerable<T> : IAsyncEnumerable<T>, IOrderedQueryable<T>
     {
         private readonly IEnumerable<T> _enumerable;
-        private readonly IQueryable<T> _queryable;
 
         public AsyncEnumerable(IEnumerable<T> enumerable)
         {
             _enumerable = enumerable;
+            Expression = enumerable.AsQueryable().Expression;
+            Provider = new AsyncQueryProvider<T>(_enumerable);
+        }
 
-            _queryable = _enumerable.AsQueryable();
-
-            ElementType = _queryable.ElementType;
-            Expression = _queryable.Expression;
-            Provider = new AsyncQueryProvider<T>(_queryable);
+        public AsyncEnumerable(Expression expression)
+        {
+            _enumerable = Expression.Lambda<Func<IEnumerable<T>>>(expression, null).Compile()();
+            Expression = expression;
+            Provider = new AsyncQueryProvider<T>(_enumerable);
         }
 
         IAsyncEnumerator<T> IAsyncEnumerable<T>.GetEnumerator()
         {
-            return _enumerable.ToAsyncEnumerable().GetEnumerator();
+            return new AsyncEnumerator<T>(_enumerable);
         }
 
         IEnumerator<T> IEnumerable<T>.GetEnumerator()
@@ -37,7 +39,7 @@ namespace EntityFrameworkCore.Testing.Common
             return _enumerable.GetEnumerator();
         }
 
-        public Type ElementType { get; }
+        public Type ElementType => typeof(T);
         public Expression Expression { get; }
         public IQueryProvider Provider { get; }
     }

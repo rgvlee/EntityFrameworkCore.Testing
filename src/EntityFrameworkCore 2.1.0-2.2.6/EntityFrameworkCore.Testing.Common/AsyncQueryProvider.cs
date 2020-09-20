@@ -4,20 +4,20 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
-using EntityFrameworkCore.Testing.Common.Helpers;
 using Microsoft.EntityFrameworkCore.Query.Internal;
 using Microsoft.Extensions.Logging;
+using rgvlee.Core.Common.Helpers;
 
 namespace EntityFrameworkCore.Testing.Common
 {
     /// <inheritdoc />
     public class AsyncQueryProvider<T> : IAsyncQueryProvider
     {
-        private static readonly ILogger Logger = LoggerHelper.CreateLogger(typeof(AsyncQueryProvider<T>));
+        private static readonly ILogger Logger = LoggingHelper.CreateLogger(typeof(AsyncQueryProvider<T>));
 
-        public AsyncQueryProvider(IQueryable<T> source)
+        public AsyncQueryProvider(IEnumerable<T> enumerable)
         {
-            Source = source;
+            Source = enumerable.AsQueryable();
         }
 
         /// <summary>
@@ -28,7 +28,20 @@ namespace EntityFrameworkCore.Testing.Common
         /// <inheritdoc />
         public virtual IQueryable CreateQuery(Expression expression)
         {
-            return Source.Provider.CreateQuery(expression);
+            //Handles cases where we are projecting to another type
+            if (expression is MethodCallExpression methodCallExpression)
+            {
+                var returnType = methodCallExpression.Method.ReturnType;
+                if (returnType.GetGenericTypeDefinition() != typeof(IQueryable<>))
+                {
+                    throw new InvalidOperationException($"Expected IQueryable<>; actual {returnType.FullName}");
+                }
+
+                return (IQueryable) Activator.CreateInstance(typeof(AsyncEnumerable<>).GetGenericTypeDefinition().MakeGenericType(returnType.GetGenericArguments().Single()),
+                    expression);
+            }
+
+            return CreateQuery<T>(expression);
         }
 
         /// <inheritdoc />
@@ -48,12 +61,12 @@ namespace EntityFrameworkCore.Testing.Common
                     if (predicateExpression.Type.GetGenericArguments().ToList().Count.Equals(3))
                     {
                         var predicate = ((Expression<Func<T, int, TElement>>) predicateExpression).Compile();
-                        return new AsyncEnumerable<TElement>(Source.Cast<T>().ToList().Select((x, i) => predicate(x, i)));
+                        return new AsyncEnumerable<TElement>(Source.ToList().Select((x, i) => predicate(x, i)));
                     }
                     else
                     {
                         var predicate = ((Expression<Func<T, TElement>>) predicateExpression).Compile();
-                        return new AsyncEnumerable<TElement>(Source.Cast<T>().ToList().Select(x => predicate(x)));
+                        return new AsyncEnumerable<TElement>(Source.ToList().Select(x => predicate(x)));
                     }
                 }
 
@@ -78,7 +91,7 @@ namespace EntityFrameworkCore.Testing.Common
                 }
             }
 
-            return Source.Provider.CreateQuery<TElement>(expression);
+            return new AsyncEnumerable<TElement>(expression);
         }
 
         /// <inheritdoc />

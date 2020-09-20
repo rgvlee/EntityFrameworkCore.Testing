@@ -6,6 +6,7 @@ using EntityFrameworkCore.Testing.Common;
 using EntityFrameworkCore.Testing.Common.Helpers;
 using Microsoft.Extensions.Logging;
 using Moq;
+using rgvlee.Core.Common.Helpers;
 
 namespace EntityFrameworkCore.Testing.Moq.Extensions
 {
@@ -14,7 +15,7 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
     /// </summary>
     public static partial class QueryProviderExtensions
     {
-        private static readonly ILogger Logger = LoggerHelper.CreateLogger(typeof(QueryProviderExtensions));
+        private static readonly ILogger Logger = LoggingHelper.CreateLogger(typeof(QueryProviderExtensions));
 
         /// <summary>
         ///     Sets up FromSqlInterpolated invocations to return a specified result.
