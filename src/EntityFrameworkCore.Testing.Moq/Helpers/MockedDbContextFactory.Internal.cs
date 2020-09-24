@@ -8,8 +8,10 @@ using System.Threading;
 using EntityFrameworkCore.Testing.Common.Helpers;
 using EntityFrameworkCore.Testing.Moq.Extensions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Internal;
+using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Logging;
 using Moq;
 
@@ -114,7 +116,38 @@ namespace EntityFrameworkCore.Testing.Moq.Helpers
                     .Invoke(this, new object[] { dbContextMock });
             }
 
-            return dbContextMock.Object;
+            //Imported from AddExecuteSqlRawResult start
+            var rawSqlCommandBuilderMock = new Mock<IRawSqlCommandBuilder>();
+            rawSqlCommandBuilderMock.Setup(m => m.Build(It.IsAny<string>(), It.IsAny<IEnumerable<object>>()))
+                .Callback((string providedSql, IEnumerable<object> providedParameters) => Logger.LogDebug("Catch all exception invoked"))
+                .Throws<InvalidOperationException>();
+
+            var rawSqlCommandBuilder = rawSqlCommandBuilderMock.Object;
+
+            var dependenciesMock = new Mock<IRelationalDatabaseFacadeDependencies>();
+            dependenciesMock.Setup(m => m.ConcurrencyDetector).Returns(Mock.Of<IConcurrencyDetector>());
+            dependenciesMock.Setup(m => m.CommandLogger).Returns(Mock.Of<IDiagnosticsLogger<DbLoggerCategory.Database.Command>>());
+            dependenciesMock.Setup(m => m.RawSqlCommandBuilder).Returns(rawSqlCommandBuilder);
+            dependenciesMock.Setup(m => m.RelationalConnection).Returns(Mock.Of<IRelationalConnection>());
+            var dependencies = dependenciesMock.Object;
+
+            var serviceProviderMock = new Mock<IServiceProvider>();
+            serviceProviderMock.Setup(m => m.GetService(It.Is<Type>(t => t == typeof(IDatabaseFacadeDependencies)))).Returns((Type providedType) => dependencies);
+            var serviceProvider = serviceProviderMock.Object;
+
+            dbContextMock.As<IInfrastructure<IServiceProvider>>().Setup(m => m.Instance).Returns(serviceProvider);
+            //Imported from AddExecuteSqlRawResult end
+
+            dbContextMock.Setup(m => m.Database).Returns(() => null);
+
+            var mockedDbContext = dbContextMock.Object;
+
+            var databaseFacadeMock = new Mock<DatabaseFacade>(mockedDbContext);
+            var databaseFacade = databaseFacadeMock.Object;
+
+            dbContextMock.Setup(m => m.Database).Returns(databaseFacade);
+
+            return mockedDbContext;
         }
 
         private void SetUpDbSetFor<TEntity>(Mock<TDbContext> dbContextMock) where TEntity : class

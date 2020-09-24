@@ -871,5 +871,14 @@ namespace EntityFrameworkCore.Testing.Common.Tests
                 Assert.That(ex.Message, Is.EqualTo(string.Format(ExceptionMessages.CannotCreateDbSetTypeNotIncludedInModel, nameof(NotRegisteredEntity))));
             });
         }
+
+        [Test]
+        public virtual void SetCommandTimeout_ValidTimeout_DoesNotThrowException()
+        {
+            Assert.DoesNotThrow(() =>
+            {
+                MockedDbContext.Database.SetCommandTimeout(60);
+            });
+        }
     }
 }

@@ -8,11 +8,14 @@ using System.Threading;
 using EntityFrameworkCore.Testing.Common.Helpers;
 using EntityFrameworkCore.Testing.NSubstitute.Extensions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Internal;
+using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
 using NSubstitute.Core;
+using NSubstitute.ExceptionExtensions;
 using NSubstitute.Extensions;
 
 namespace EntityFrameworkCore.Testing.NSubstitute.Helpers
@@ -109,6 +112,32 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Helpers
                     .MakeGenericMethod(entity.ClrType)
                     .Invoke(this, new object[] { mockedDbContext });
             }
+
+            //Imported from AddExecuteSqlRawResult start
+            var rawSqlCommandBuilder = Substitute.For<IRawSqlCommandBuilder>();
+            rawSqlCommandBuilder.Build(Arg.Any<string>(), Arg.Any<IEnumerable<object>>())
+                .Throws(callInfo =>
+                {
+                    Logger.LogDebug("Catch all exception invoked");
+                    return new InvalidOperationException();
+                });
+
+            var dependencies = Substitute.For<IRelationalDatabaseFacadeDependencies>();
+            dependencies.ConcurrencyDetector.Returns(callInfo => Substitute.For<IConcurrencyDetector>());
+            dependencies.CommandLogger.Returns(callInfo => Substitute.For<IDiagnosticsLogger<DbLoggerCategory.Database.Command>>());
+            dependencies.RawSqlCommandBuilder.Returns(callInfo => rawSqlCommandBuilder);
+            dependencies.RelationalConnection.Returns(callInfo => Substitute.For<IRelationalConnection>());
+
+            var serviceProvider = Substitute.For<IServiceProvider>();
+            serviceProvider.GetService(Arg.Is<Type>(t => t == typeof(IDatabaseFacadeDependencies))).Returns(callInfo => dependencies);
+
+            ((IInfrastructure<IServiceProvider>) mockedDbContext).Instance.Returns(callInfo => serviceProvider);
+            //Imported from AddExecuteSqlRawResult end
+
+            mockedDbContext.Database.Returns(callInfo => null);
+
+            var databaseFacade = Substitute.For<DatabaseFacade>(mockedDbContext);
+            mockedDbContext.Database.Returns(callInfo => databaseFacade);
 
             return mockedDbContext;
         }
