@@ -185,18 +185,16 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Helpers
             var mockedReadOnlyDbSet = DbContext.Set<TEntity>().CreateMockedReadOnlyDbSet();
 
             var property = typeof(TDbContext).GetProperties().SingleOrDefault(p => p.PropertyType == typeof(DbSet<TEntity>) || p.PropertyType == typeof(DbQuery<TEntity>));
-
             if (property != null)
             {
                 property.GetValue(mockedDbContext.Configure()).Returns(mockedReadOnlyDbSet);
-            }
-            else
-            {
-                Logger.LogDebug($"Could not find a DbContext property for type '{typeof(TEntity)}'");
+                
+                mockedDbContext.Configure().Set<TEntity>().Returns(callInfo => (DbSet<TEntity>)mockedReadOnlyDbSet);
+                mockedDbContext.Configure().Query<TEntity>().Returns(callInfo => mockedReadOnlyDbSet);
+                return;
             }
 
-            mockedDbContext.Configure().Set<TEntity>().Returns(callInfo => mockedReadOnlyDbSet);
-            mockedDbContext.Configure().Query<TEntity>().Returns(callInfo => mockedReadOnlyDbSet);
+            Logger.LogDebug($"Could not find a DbContext property for type '{typeof(TEntity)}'");
         }
     }
 }
