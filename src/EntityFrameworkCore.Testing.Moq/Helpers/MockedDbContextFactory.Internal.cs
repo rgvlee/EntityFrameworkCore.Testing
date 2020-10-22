@@ -210,10 +210,11 @@ namespace EntityFrameworkCore.Testing.Moq.Helpers
 
                 dbContextMock.Setup(m => m.Set<TEntity>()).Returns(mockedReadOnlyDbSet);
                 dbContextMock.Setup(m => m.Query<TEntity>()).Returns(mockedReadOnlyDbSet);
-                return;
             }
-
-            Logger.LogDebug($"Could not find a DbContext property for type '{typeof(TEntity)}'");
+            else
+            {
+                Logger.LogDebug($"Could not find a DbContext property for type '{typeof(TEntity)}'");
+            }
         }
     }
 }
