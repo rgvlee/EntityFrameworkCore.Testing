@@ -4,7 +4,9 @@
 
 ## Overview
 
-EntityFrameworkCore.Testing is a mocking library that creates EntityFrameworkCore DbContext system mocks. It's easy to use (usually just a single line of code) with implementations for both Moq and NSubstitute.
+EntityFrameworkCore.Testing allows you to create an EntityFrameworkCore DbContext that you can use in your unit tests. It's easy to use (usually just a single line of code) with implementations for both Moq and NSubstitute.
+
+It uses the decorator pattern to extend the functionality of an existing database provider and was designed with the [Microsoft in-memory provider](https://docs.microsoft.com/en-us/ef/core/providers/in-memory/?tabs=dotnet-core-cli) in mind. Supported operations are sent to the database provider and unsupported operations, such as relational operations, are handled by EntityFrameworkCore.Testing. While it does not attempt to mock supported operations, it does decorate the implementations using a mocking framework so you get all of the benefits of using a one such as being able to assert an invocation.
 
 It includes support for queries/keyless db sets, FromSql/FromSqlRaw/FromSqlInterpolated, ExecuteSqlCommand/ExecuteSqlRaw/ExecuteSqlInterpolated, and async LINQ operations.
 
@@ -14,8 +16,8 @@ It includes support for queries/keyless db sets, FromSql/FromSqlRaw/FromSqlInter
 
 ### EntityFrameworkCore 3.\*
 
--   [EntityFrameworkCore.Testing.Moq - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.Moq/2.3.1)
--   [EntityFrameworkCore.Testing.NSubstitute - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.NSubstitute/2.3.1)
+-   [EntityFrameworkCore.Testing.Moq - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.Moq/2.3.2)
+-   [EntityFrameworkCore.Testing.NSubstitute - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.NSubstitute/2.3.2)
 
 ### EntityFrameworkCore 2.1.0-2.2.6
 
