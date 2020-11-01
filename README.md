@@ -21,8 +21,8 @@ It includes support for queries/keyless db sets, FromSql/FromSqlRaw/FromSqlInter
 
 ### EntityFrameworkCore 2.1.0-2.2.6
 
--   [EntityFrameworkCore.Testing.Moq - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.Moq/1.2.0)
--   [EntityFrameworkCore.Testing.NSubstitute - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.NSubstitute/1.2.0)
+-   [EntityFrameworkCore.Testing.Moq - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.Moq/1.2.1)
+-   [EntityFrameworkCore.Testing.NSubstitute - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.NSubstitute/1.2.1)
 
 ## Prerequisites
 
