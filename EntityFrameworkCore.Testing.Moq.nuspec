@@ -18,8 +18,8 @@ It includes support for queries/keyless db sets, FromSql/FromSqlRaw/FromSqlInter
     <repository url="https://github.com/rgvlee/EntityFrameworkCore.Testing" />
     <dependencies>
       <group targetFramework=".NETStandard2.0">
-        <dependency id="Microsoft.EntityFrameworkCore.InMemory" version="[3.0.0,5)" exclude="Build,Analyzers" />
-        <dependency id="Microsoft.EntityFrameworkCore.SqlServer" version="[3.0.0,5)" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.EntityFrameworkCore.InMemory" version="[3,5)" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.EntityFrameworkCore.SqlServer" version="[3,5)" exclude="Build,Analyzers" />
         <dependency id="Microsoft.Extensions.Logging" version="3.0.0" exclude="Build,Analyzers" />
         <dependency id="Moq" version="4.9.0" exclude="Build,Analyzers" />
         <dependency id="rgvlee.Core" version="1.0.0" exclude="Build,Analyzers" />
