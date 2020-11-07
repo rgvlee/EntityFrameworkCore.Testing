@@ -8,9 +8,9 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <license type="file">LICENSE</license>
     <projectUrl>https://github.com/rgvlee/EntityFrameworkCore.Testing</projectUrl>
-    <description>EntityFrameworkCore.Testing allows you to create an EntityFrameworkCore DbContext that you can use in your unit tests.
+    <description>EntityFrameworkCore.Testing allows you to create an EntityFrameworkCore DbContext that you can use in your unit tests. It's easy to use (usually just a single line of code) with implementations for both Moq and NSubstitute.
 
-It uses the decorator pattern to extend the functionality of an existing database provider and was designed with the Microsoft in-memory provider in mind. Supported operations are sent to the database provider and unsupported operations, such as relational operations, are handled by EntityFrameworkCore.Testing. While it does not attempt to mock supported operations, it does decorate the implementations using NSubstitute so you get all of the benefits of using a mocking framework such as being able to assert an invocation.
+It extends the functionality of an existing database provider by proxying over it. It was designed with the Microsoft in-memory provider in mind with supported operations sent to the database provider and unsupported operations, such as relational operations, handled by EntityFrameworkCore.Testing. While it does not attempt to mock supported operations, it does proxy over the implementations using a mocking framework so you get all of the benefits of using one such as being able to assert an invocation.
 
 It includes support for queries/keyless db sets, FromSql/FromSqlRaw/FromSqlInterpolated, ExecuteSqlCommand/ExecuteSqlRaw/ExecuteSqlInterpolated, and async LINQ operations.</description>
     <copyright>Copyright (c) 2020 Lee Anderson</copyright>
