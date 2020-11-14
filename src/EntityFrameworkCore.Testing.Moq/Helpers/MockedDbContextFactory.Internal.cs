@@ -194,25 +194,27 @@ namespace EntityFrameworkCore.Testing.Moq.Helpers
         {
             var mockedReadOnlyDbSet = DbContext.Set<TEntity>().CreateMockedReadOnlyDbSet();
 
-            var dbSetProperty = typeof(TDbContext).GetProperties().SingleOrDefault(p => p.PropertyType == typeof(DbSet<TEntity>));
-            if (dbSetProperty != null)
+            var property = typeof(TDbContext).GetProperties().SingleOrDefault(p => p.PropertyType == typeof(DbSet<TEntity>) || p.PropertyType == typeof(DbQuery<TEntity>));
+            if (property != null)
             {
-                var setExpression = ExpressionHelper.CreatePropertyExpression<TDbContext, DbSet<TEntity>>(dbSetProperty);
-                dbContextMock.Setup(setExpression).Returns(mockedReadOnlyDbSet);
+                if (property.PropertyType == typeof(DbSet<TEntity>))
+                {
+                    var setExpression = ExpressionHelper.CreatePropertyExpression<TDbContext, DbSet<TEntity>>(property);
+                    dbContextMock.Setup(setExpression).Returns(mockedReadOnlyDbSet);
+                }
+                else
+                {
+                    var setExpression = ExpressionHelper.CreatePropertyExpression<TDbContext, DbQuery<TEntity>>(property);
+                    dbContextMock.Setup(setExpression).Returns(mockedReadOnlyDbSet);
+                }
+
                 dbContextMock.Setup(m => m.Set<TEntity>()).Returns(mockedReadOnlyDbSet);
-                return;
-            }
-
-            var dbQueryProperty = typeof(TDbContext).GetProperties().SingleOrDefault(p => p.PropertyType == typeof(DbQuery<TEntity>));
-            if (dbQueryProperty != null)
-            {
-                var setExpression = ExpressionHelper.CreatePropertyExpression<TDbContext, DbQuery<TEntity>>(dbQueryProperty);
-                dbContextMock.Setup(setExpression).Returns(mockedReadOnlyDbSet);
                 dbContextMock.Setup(m => m.Query<TEntity>()).Returns(mockedReadOnlyDbSet);
-                return;
             }
-
-            Logger.LogDebug($"Could not find a DbContext property for type '{typeof(TEntity)}'");
+            else
+            {
+                Logger.LogDebug($"Could not find a DbContext property for type '{typeof(TEntity)}'");
+            }
         }
     }
 }
