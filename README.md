@@ -6,13 +6,17 @@
 
 EntityFrameworkCore.Testing allows you to create an EntityFrameworkCore DbContext that you can use in your unit tests. It's easy to use (usually just a single line of code) with implementations for both Moq and NSubstitute.
 
-It extends the functionality of an existing database provider by proxying over it. It was designed with the [Microsoft in-memory provider](https://docs.microsoft.com/en-us/ef/core/providers/in-memory/?tabs=dotnet-core-cli) in mind with supported operations sent to the database provider and unsupported operations, such as relational operations, handled by EntityFrameworkCore.Testing. While it does not attempt to mock supported operations, it does proxy over the implementations using a mocking framework so you get all of the benefits of using one such as being able to assert an invocation.
+It extends the functionality of an existing database provider by proxying over it. It was designed with the [Microsoft in-memory provider](https://docs.microsoft.com/en-us/ef/core/providers/in-memory/?tabs=dotnet-core-cli) in mind with supported operations sent to the database provider and unsupported operations, such as relational operations, handled by EntityFrameworkCore.Testing. While it does not attempt to mock supported operations, it does proxy over them using a mocking framework so you get all of the benefits of the latter such as being able to assert an invocation.
 
 It includes support for queries/keyless db sets, FromSql/FromSqlRaw/FromSqlInterpolated, ExecuteSqlCommand/ExecuteSqlRaw/ExecuteSqlInterpolated, and async LINQ operations.
 
 ## Resources
 
 - [Source repository](https://github.com/rgvlee/EntityFrameworkCore.Testing)
+
+### EntityFrameworkCore >= 5.0.0
+
+I'm working on a .NET 5.0 version and will release it as soon as possible.
 
 ### EntityFrameworkCore >= 3.0.0 && < 5.0.0
 
@@ -28,11 +32,7 @@ It includes support for queries/keyless db sets, FromSql/FromSqlRaw/FromSqlInter
 
 ### An accessible constructor
 
-Your db context must have an accessible constructor:
-
-```c#
-public TestDbContext(DbContextOptions<TestDbContext> options) : base(options) { }
-```
+Your db context must have an accessible constructor.
 
 ### Virtual sets/queries
 
@@ -44,7 +44,7 @@ public virtual DbSet<TestEntity> TestEntities { get; set; }
 
 ## Creating a mocked DbContext
 
-If your db context has constructor with a single `DbContextOptions` or `DbContextOptions<TDbContext>` parameter, creating a mocked db context is as easy as:
+If your db context has an accessible constructor with a single `DbContextOptions` or `DbContextOptions<TDbContext>` parameter, creating a mocked db context is as easy as:
 
 ```c#
 var mockedDbContext = Create.MockedDbContextFor<TestDbContext>();
