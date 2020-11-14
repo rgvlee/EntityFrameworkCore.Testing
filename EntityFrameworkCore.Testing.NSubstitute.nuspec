@@ -2,22 +2,24 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata>
     <id>EntityFrameworkCore.Testing.NSubstitute</id>
-    <version>1.2.0</version>
+    <version>1.2.1</version>
     <authors>rgvlee</authors>
     <owners>rgvlee</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <license type="file">LICENSE</license>
     <projectUrl>https://github.com/rgvlee/EntityFrameworkCore.Testing</projectUrl>
-    <description>A mocking library that creates EntityFrameworkCore DbContext system mocks using an EntityFrameworkCore provider and NSubstitute.
+    <description>EntityFrameworkCore.Testing allows you to create an EntityFrameworkCore DbContext that you can use in your unit tests. It's easy to use (usually just a single line of code) with implementations for both Moq and NSubstitute.
 
-Includes support for queries, FromSql, ExecuteSqlCommand, and async LINQ operations.</description>
+It extends the functionality of an existing database provider by proxying over it. It was designed with the Microsoft in-memory provider in mind with supported operations sent to the database provider and unsupported operations, such as relational operations, handled by EntityFrameworkCore.Testing. While it does not attempt to mock supported operations, it does proxy over them using a mocking framework so you get all of the benefits of the latter such as being able to assert an invocation.
+
+It includes support for queries, FromSql, ExecuteSqlCommand, and async LINQ operations.</description>
     <copyright>Copyright (c) 2020 Lee Anderson</copyright>
     <tags>EntityFrameworkCore EFCore NSubstitute nsub mock testing</tags>
     <repository url="https://github.com/rgvlee/EntityFrameworkCore.Testing" />
     <dependencies>
       <group targetFramework=".NETStandard2.0">
-        <dependency id="Microsoft.EntityFrameworkCore.InMemory" version="[2.1.0,2.2.6]" exclude="Build,Analyzers" />
-        <dependency id="Microsoft.EntityFrameworkCore.SqlServer" version="[2.1.0,2.2.6]" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.EntityFrameworkCore.InMemory" version="[2.1.0,3)" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.EntityFrameworkCore.SqlServer" version="[2.1.0,3)" exclude="Build,Analyzers" />
         <dependency id="Microsoft.Extensions.Logging" version="2.1.0" exclude="Build,Analyzers" />
         <dependency id="NSubstitute" version="4.1.0" exclude="Build,Analyzers" />
         <dependency id="rgvlee.Core" version="1.0.0" exclude="Build,Analyzers" />
