@@ -7,7 +7,6 @@ using NUnit.Framework;
 
 namespace EntityFrameworkCore.Testing.Moq.Tests
 {
-    [TestFixture]
     public abstract class BaseForDbQueryTests<T> : BaseForReadOnlyDbSetTests<T> where T : BaseTestEntity
     {
         [SetUp]

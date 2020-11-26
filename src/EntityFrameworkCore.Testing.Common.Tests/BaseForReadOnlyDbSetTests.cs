@@ -10,7 +10,6 @@ using NUnit.Framework;
 
 namespace EntityFrameworkCore.Testing.Common.Tests
 {
-    [TestFixture]
     public abstract class BaseForReadOnlyDbSetTests<TEntity> : BaseForMockedDbSetQueryProviderTests<TEntity> where TEntity : BaseTestEntity
     {
         protected override void SeedQueryableSource()

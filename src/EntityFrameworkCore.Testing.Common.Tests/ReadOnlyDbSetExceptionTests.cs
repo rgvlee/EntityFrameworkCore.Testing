@@ -119,7 +119,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
             {
                 var localView = DbSet.Local;
             });
-            Assert.That(ex.Message, Is.EqualTo($"The invoked method is cannot be used for the entity type '{typeof(TEntity).Name}' because it does not have a primary key."));
+            Assert.That(ex.Message, Is.EqualTo($"The invoked method cannot be used for the entity type '{typeof(TEntity).Name}' because it does not have a primary key."));
         }
 
         [Test]

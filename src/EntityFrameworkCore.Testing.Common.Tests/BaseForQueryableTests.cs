@@ -10,7 +10,6 @@ using NUnit.Framework;
 
 namespace EntityFrameworkCore.Testing.Common.Tests
 {
-    [TestFixture]
     public abstract class BaseForQueryableTests<T> : BaseForTests where T : BaseTestEntity
     {
         protected abstract IQueryable<T> Queryable { get; }

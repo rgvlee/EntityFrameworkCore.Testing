@@ -5,7 +5,6 @@ using rgvlee.Core.Common.Helpers;
 
 namespace EntityFrameworkCore.Testing.Common.Tests
 {
-    [TestFixture]
     public abstract class BaseForTests
     {
         [SetUp]

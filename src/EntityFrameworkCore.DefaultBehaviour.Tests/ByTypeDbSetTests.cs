@@ -69,54 +69,52 @@ namespace EntityFrameworkCore.DefaultBehaviour.Tests
             });
         }
 
-        [Test]
-        [Ignore("This is not supported by the in memory database provider.")]
-        public override void ElementAt_ReturnsElementAtSpecifiedIndex() { }
+        // [Test]
+        // [Ignore("This is not supported by the in memory database provider.")]
+        // public override void ElementAt_ReturnsElementAtSpecifiedIndex() { }
+        //
+        // [Test]
+        // [Ignore("This is not supported by the in memory database provider.")]
+        // public override void ElementAtOrDefault_ReturnsElementAtSpecifiedIndex() { }
+        //
+        // [Test]
+        // [Ignore("This is not supported by the in memory database provider.")]
+        // public override void ElementAtOrDefault_WithNoItemsAdded_ReturnsDefault() { }
 
         [Test]
-        [Ignore("This is not supported by the in memory database provider.")]
-        public override void ElementAtOrDefault_ReturnsElementAtSpecifiedIndex() { }
-
-        [Test]
-        [Ignore("This is not supported by the in memory database provider.")]
-        public override void ElementAtOrDefault_WithNoItemsAdded_ReturnsDefault() { }
-
-        [Test]
-        public virtual void FromSqlInterpolated_ThrowsException()
+        public virtual void FromSqlInterpolated_ReturnsNull()
         {
-            Assert.Throws<NotImplementedException>(() =>
-            {
-                var actualResult = DbSet.FromSqlInterpolated($"sp_NoParams").ToList();
-            });
+            var actualResult = DbSet.FromSqlInterpolated($"sp_NoParams").ToList();
+
+            Assert.That(actualResult, Is.Empty);
         }
 
         [Test]
-        public virtual void FromSqlRaw_ThrowsException()
+        public virtual void FromSqlRaw_ReturnsNull()
         {
-            Assert.Throws<NotImplementedException>(() =>
-            {
-                var actualResult = DbSet.FromSqlRaw("sp_NoParams").ToList();
-            });
+            var actualResult = DbSet.FromSqlRaw("sp_NoParams").ToList();
+
+            Assert.That(actualResult, Is.Empty);
         }
 
-        [Test]
-        [Ignore("This is not supported by the in memory database provider.")]
-        public override void IndexedSelectThenWhereThenAny_TrueCondition_ReturnsTrue() { }
-
-        [Test]
-        [Ignore("This is not supported by the in memory database provider.")]
-        public override void Select_WithIndex_ReturnsIndexedSequence() { }
-
-        [Test]
-        [Ignore("This is not supported by the in memory database provider.")]
-        public override void SkipWhile_SkipFirstItem_ReturnsSequenceThatDoesNotIncludeFirstItem() { }
-
-        [Test]
-        [Ignore("This is not supported by the in memory database provider.")]
-        public override void TakeWhile_TakeFirstItem_ReturnsFirstItem() { }
-
-        [Test]
-        [Ignore("This is not supported by the in memory database provider.")]
-        public override void TakeWhile_TakeFirstItemUsingIndex_ReturnsFirstItem() { }
+        // [Test]
+        // [Ignore("This is not supported by the in memory database provider.")]
+        // public override void IndexedSelectThenWhereThenAny_TrueCondition_ReturnsTrue() { }
+        //
+        // [Test]
+        // [Ignore("This is not supported by the in memory database provider.")]
+        // public override void Select_WithIndex_ReturnsIndexedSequence() { }
+        //
+        // [Test]
+        // [Ignore("This is not supported by the in memory database provider.")]
+        // public override void SkipWhile_SkipFirstItem_ReturnsSequenceThatDoesNotIncludeFirstItem() { }
+        //
+        // [Test]
+        // [Ignore("This is not supported by the in memory database provider.")]
+        // public override void TakeWhile_TakeFirstItem_ReturnsFirstItem() { }
+        //
+        // [Test]
+        // [Ignore("This is not supported by the in memory database provider.")]
+        // public override void TakeWhile_TakeFirstItemUsingIndex_ReturnsFirstItem() { }
     }
 }

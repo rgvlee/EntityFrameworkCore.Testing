@@ -16,7 +16,7 @@ namespace EntityFrameworkCore.DefaultBehaviour.Tests
         }
 
         protected TestDbContext DbContext;
-        protected DbSet<ViewEntity> DbSet => DbContext.Set<ViewEntity>();
+        protected DbSet<TestReadOnlyEntity> DbSet => DbContext.Set<TestReadOnlyEntity>();
 
         [Test]
         public virtual void AsAsyncEnumerable_ReturnsAsyncEnumerable()

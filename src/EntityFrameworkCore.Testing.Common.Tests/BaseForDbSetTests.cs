@@ -8,7 +8,6 @@ using NUnit.Framework;
 
 namespace EntityFrameworkCore.Testing.Common.Tests
 {
-    [TestFixture]
     public abstract class BaseForDbSetTests<TDbContext, TEntity> : BaseForMockedDbSetQueryProviderTests<TEntity> where TDbContext : DbContext
         where TEntity : BaseTestEntity
     {

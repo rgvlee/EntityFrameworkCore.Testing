@@ -20,15 +20,6 @@ namespace EntityFrameworkCore.DefaultBehaviour.Tests
         protected TestDbContext DbContext;
 
         [Test]
-        public virtual void ExecuteSqlCommand_ThrowsException()
-        {
-            Assert.Throws<InvalidOperationException>(() =>
-            {
-                var actualResult = DbContext.Database.ExecuteSqlCommand("sp_NoParams");
-            });
-        }
-
-        [Test]
         public virtual void ExecuteSqlInterpolated_ThrowsException()
         {
             Assert.Throws<InvalidOperationException>(() =>
@@ -43,16 +34,6 @@ namespace EntityFrameworkCore.DefaultBehaviour.Tests
             Assert.Throws<InvalidOperationException>(() =>
             {
                 var actualResult = DbContext.Database.ExecuteSqlRaw("sp_NoParams");
-            });
-        }
-
-        [Test]
-        public virtual void Query_TypeNotIncludedInModel_ThrowsException()
-        {
-            Assert.Multiple(() =>
-            {
-                var ex = Assert.Throws<InvalidOperationException>(() => DbContext.Query<NotRegisteredEntity>().ToList());
-                Assert.That(ex.Message, Is.EqualTo(string.Format(ExceptionMessages.CannotCreateDbSetTypeNotIncludedInModel, nameof(NotRegisteredEntity))));
             });
         }
 
