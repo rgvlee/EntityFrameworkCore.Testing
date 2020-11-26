@@ -157,7 +157,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
             var expectedResult1 = Fixture.CreateMany<TEntity>().ToList();
 
             var sql2 = "sp_WithParams";
-            var parameters2 = new List<SqlParameter> { new SqlParameter("@SomeParameter1", "Value1"), new SqlParameter("@SomeParameter2", "Value2") };
+            var parameters2 = new List<SqlParameter> { new("@SomeParameter1", "Value1"), new("@SomeParameter2", "Value2") };
             var expectedResult2 = Fixture.CreateMany<TEntity>().ToList();
 
             AddFromSqlRawResult(DbSet, sql1, expectedResult1);

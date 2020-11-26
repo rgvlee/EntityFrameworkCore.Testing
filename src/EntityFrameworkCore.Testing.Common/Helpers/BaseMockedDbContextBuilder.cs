@@ -12,7 +12,7 @@ namespace EntityFrameworkCore.Testing.Common.Helpers
         /// <summary>
         ///     The create factory options.
         /// </summary>
-        protected readonly MockedDbContextFactoryOptions<TDbContext> Options = new MockedDbContextFactoryOptions<TDbContext>();
+        protected readonly MockedDbContextFactoryOptions<TDbContext> Options = new();
 
         /// <summary>
         ///     The mocked db context.

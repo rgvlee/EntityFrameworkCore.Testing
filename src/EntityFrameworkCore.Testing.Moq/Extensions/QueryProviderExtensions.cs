@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using EntityFrameworkCore.Testing.Common;
 using EntityFrameworkCore.Testing.Common.Helpers;
+using Microsoft.EntityFrameworkCore.Query.Internal;
 using Microsoft.Extensions.Logging;
 using Moq;
 using rgvlee.Core.Common.Helpers;
@@ -116,61 +117,62 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
 
             var createQueryResult = new AsyncEnumerable<T>(fromSqlResult);
 
-            queryProviderMock.Setup(m => m.CreateQuery<T>(It.Is<MethodCallExpression>(mce => SpecifiedParametersMatchMethodCallExpression(mce, sql, parameters))))
+            queryProviderMock.Setup(m => m.CreateQuery<T>(It.Is<FromSqlQueryRootExpression>(fsqre => SpecifiedParametersMatchFromSqlQueryRootExpression(fsqre, sql, parameters))))
                 .Returns((Expression providedExpression) => createQueryResult)
                 .Callback((Expression providedExpression) =>
                 {
-                    var mce = (MethodCallExpression) providedExpression;
+                    var fsqre = (FromSqlQueryRootExpression) providedExpression;
                     var parts = new List<string>();
                     parts.Add("FromSql inputs:");
-                    parts.Add(StringifyFromSqlMethodCallExpression(mce));
+                    parts.Add(StringifyFromSqlQueryRootExpression(fsqre));
                     Logger.LogDebug(string.Join(Environment.NewLine, parts));
                 });
 
             return mockedQueryProvider;
         }
 
-        private static bool SqlMatchesMethodCallExpression(MethodCallExpression mce, string sql)
+        private static bool SqlMatchesMethodCallExpression(FromSqlQueryRootExpression fsqre, string sql)
         {
-            EnsureArgument.IsNotNull(mce, nameof(mce));
+            EnsureArgument.IsNotNull(fsqre, nameof(fsqre));
 
-            var mceSql = (string) ((ConstantExpression) mce.Arguments[1]).Value;
+            var fsqreSql = fsqre.Sql;
             var parts = new List<string>();
-            parts.Add($"Invocation sql: '{mceSql}'");
+            parts.Add($"Invocation sql: '{fsqreSql}'");
             parts.Add($"Set up sql: '{sql}'");
             Logger.LogDebug(string.Join(Environment.NewLine, parts));
 
-            var result = mceSql.Contains(sql, StringComparison.CurrentCultureIgnoreCase);
+            var result = fsqreSql.Contains(sql, StringComparison.CurrentCultureIgnoreCase);
 
             Logger.LogDebug($"Match? {result}");
 
             return result;
         }
 
-        private static bool SpecifiedParametersMatchMethodCallExpression(MethodCallExpression mce, string sql, IEnumerable<object> parameters)
+        private static bool SpecifiedParametersMatchFromSqlQueryRootExpression(FromSqlQueryRootExpression fsqre, string sql, IEnumerable<object> parameters)
         {
-            EnsureArgument.IsNotNull(mce, nameof(mce));
+            EnsureArgument.IsNotNull(fsqre, nameof(fsqre));
             EnsureArgument.IsNotNull(parameters, nameof(parameters));
+            
+            var fsqreParameters = (object[])((ConstantExpression) fsqre.Argument).Value;
 
-            var result = mce.Method.Name.Equals("FromSqlOnQueryable") &&
-                         SqlMatchesMethodCallExpression(mce, sql) &&
-                         ParameterMatchingHelper.DoInvocationParametersMatchSetUpParameters(parameters, (object[]) ((ConstantExpression) mce.Arguments[2]).Value);
+            var result = SqlMatchesMethodCallExpression(fsqre, sql) &&
+                         ParameterMatchingHelper.DoInvocationParametersMatchSetUpParameters(parameters, fsqreParameters);
 
             Logger.LogDebug($"Match? {result}");
 
             return result;
         }
 
-        private static string StringifyFromSqlMethodCallExpression(MethodCallExpression mce)
+        private static string StringifyFromSqlQueryRootExpression(FromSqlQueryRootExpression fsqre)
         {
-            EnsureArgument.IsNotNull(mce, nameof(mce));
+            EnsureArgument.IsNotNull(fsqre, nameof(fsqre));
 
-            var mceSql = (string) ((ConstantExpression) mce.Arguments[1]).Value;
-            var mceParameters = (object[]) ((ConstantExpression) mce.Arguments[2]).Value;
+            var fsqreSql = fsqre.Sql;
+            var fsqreParameters = (object[])((ConstantExpression) fsqre.Argument).Value;
             var parts = new List<string>();
-            parts.Add($"Invocation sql: '{mceSql}'");
+            parts.Add($"Invocation sql: '{fsqreSql}'");
             parts.Add("Invocation Parameters:");
-            parts.Add(ParameterMatchingHelper.StringifyParameters(mceParameters));
+            parts.Add(ParameterMatchingHelper.StringifyParameters(fsqreParameters));
             return string.Join(Environment.NewLine, parts);
         }
     }

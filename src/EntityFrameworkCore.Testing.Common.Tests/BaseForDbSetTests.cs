@@ -11,6 +11,8 @@ namespace EntityFrameworkCore.Testing.Common.Tests
     public abstract class BaseForDbSetTests<TDbContext, TEntity> : BaseForMockedDbSetQueryProviderTests<TEntity> where TDbContext : DbContext
         where TEntity : BaseTestEntity
     {
+        protected TDbContext MockedDbContext;
+
         [SetUp]
         public override void SetUp()
         {
@@ -25,8 +27,6 @@ namespace EntityFrameworkCore.Testing.Common.Tests
             MockedDbContext.SaveChanges();
             ItemsAddedToQueryableSource = itemsToAdd;
         }
-
-        protected TDbContext MockedDbContext;
 
         protected abstract TDbContext CreateMockedDbContext();
 

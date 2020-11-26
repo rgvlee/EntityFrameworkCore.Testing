@@ -12,6 +12,21 @@ namespace EntityFrameworkCore.Testing.Common.Tests
 {
     public class AutoMapperTests : BaseForTests
     {
+        [Test]
+        public async Task ProjectToThenToListAsync_DataEntities_ReturnsExpectedResult()
+        {
+            var dataEntites = new AsyncEnumerable<DataEntity>(Fixture.CreateMany<DataEntity>());
+            var expectedResult = new AsyncEnumerable<BusinessEntity>(((IEnumerable<DataEntity>) dataEntites).Select(x => new BusinessEntity { id = x.Id, code = x.Code }));
+
+            var mapper = new Mapper(new MapperConfiguration(x => x.AddProfile(new MappingProfile())));
+
+            var actualResult = await mapper.ProjectTo<BusinessEntity>(dataEntites, null).ToListAsync();
+
+            var compareLogic = new CompareLogic { Config = { IgnoreObjectTypes = true, IgnoreCollectionOrder = true } };
+            var comparisonResult = compareLogic.Compare(expectedResult, actualResult);
+            Console.WriteLine(comparisonResult.Differences.ToList());
+        }
+
         private class DataEntity
         {
             public Guid Id { get; set; }
@@ -32,21 +47,6 @@ namespace EntityFrameworkCore.Testing.Common.Tests
             {
                 CreateMap<DataEntity, BusinessEntity>().ForMember(d => d.id, o => o.MapFrom(s => s.Id)).ForMember(d => d.code, o => o.MapFrom(s => s.Code)).ReverseMap();
             }
-        }
-
-        [Test]
-        public async Task ProjectToThenToListAsync_DataEntities_ReturnsExpectedResult()
-        {
-            var dataEntites = new AsyncEnumerable<DataEntity>(Fixture.CreateMany<DataEntity>());
-            var expectedResult = new AsyncEnumerable<BusinessEntity>(((IEnumerable<DataEntity>) dataEntites).Select(x => new BusinessEntity { id = x.Id, code = x.Code }));
-
-            var mapper = new Mapper(new MapperConfiguration(x => x.AddProfile(new MappingProfile())));
-
-            var actualResult = await mapper.ProjectTo<BusinessEntity>(dataEntites, null).ToListAsync();
-
-            var compareLogic = new CompareLogic { Config = { IgnoreObjectTypes = true, IgnoreCollectionOrder = true } };
-            var comparisonResult = compareLogic.Compare(expectedResult, actualResult);
-            Console.WriteLine(comparisonResult.Differences.ToList());
         }
     }
 }

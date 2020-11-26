@@ -76,9 +76,9 @@ namespace EntityFrameworkCore.Testing.Moq.Helpers
             dbContextMock.As<IDbContextPoolable>()
                 .Setup(m => m.ResetStateAsync(It.IsAny<CancellationToken>()))
                 .Callback((CancellationToken providedCancellationToken) => ((IDbContextPoolable) DbContext).ResetStateAsync(providedCancellationToken));
-            dbContextMock.As<IDbContextPoolable>()
-                .Setup(m => m.Resurrect(It.IsAny<DbContextPoolConfigurationSnapshot>()))
-                .Callback((DbContextPoolConfigurationSnapshot providedConfigurationSnapshot) => ((IDbContextPoolable) DbContext).Resurrect(providedConfigurationSnapshot));
+            // dbContextMock.As<IDbContextPoolable>()
+            //     .Setup(m => m.Resurrect(It.IsAny<DbContextPoolConfigurationSnapshot>()))
+            //     .Callback((DbContextPoolConfigurationSnapshot providedConfigurationSnapshot) => ((IDbContextPoolable) DbContext).Resurrect(providedConfigurationSnapshot));
 
             dbContextMock.Setup(m => m.SaveChanges()).Returns(DbContext.SaveChanges);
             dbContextMock.Setup(m => m.SaveChanges(It.IsAny<bool>())).Returns((bool providedAcceptAllChangesOnSuccess) => DbContext.SaveChanges(providedAcceptAllChangesOnSuccess));
@@ -88,11 +88,11 @@ namespace EntityFrameworkCore.Testing.Moq.Helpers
                 .Returns((bool providedAcceptAllChangesOnSuccess, CancellationToken providedCancellationToken) =>
                     DbContext.SaveChangesAsync(providedAcceptAllChangesOnSuccess, providedCancellationToken));
 
-            dbContextMock.As<IDbContextPoolable>()
-                .Setup(m => m.SetPool(It.IsAny<IDbContextPool>()))
-                .Callback((IDbContextPool providedContextPool) => ((IDbContextPoolable) DbContext).SetPool(providedContextPool));
+            // dbContextMock.As<IDbContextPoolable>()
+            //     .Setup(m => m.SetPool(It.IsAny<IDbContextPool>()))
+            //     .Callback((IDbContextPool providedContextPool) => ((IDbContextPoolable) DbContext).SetPool(providedContextPool));
             dbContextMock.As<IDbContextDependencies>().Setup(m => m.SetSource).Returns(((IDbContextDependencies) DbContext).SetSource);
-            dbContextMock.As<IDbContextPoolable>().Setup(m => m.SnapshotConfiguration()).Returns(((IDbContextPoolable) DbContext).SnapshotConfiguration());
+            // dbContextMock.As<IDbContextPoolable>().Setup(m => m.SnapshotConfiguration()).Returns(((IDbContextPoolable) DbContext).SnapshotConfiguration());
             dbContextMock.As<IDbContextDependencies>().Setup(m => m.StateManager).Returns(((IDbContextDependencies) DbContext).StateManager);
 
             dbContextMock.Setup(m => m.Update(It.IsAny<object>())).Returns((object providedEntity) => DbContext.Update(providedEntity));
@@ -124,8 +124,12 @@ namespace EntityFrameworkCore.Testing.Moq.Helpers
 
             var rawSqlCommandBuilder = rawSqlCommandBuilderMock.Object;
 
+            var concurrencyDetectorMock = new Mock<IConcurrencyDetector>();
+            var concurrencyDetector = concurrencyDetectorMock.Object;
+            concurrencyDetectorMock.Setup(x => x.EnterCriticalSection()).Returns(new ConcurrencyDetectorCriticalSectionDisposer(concurrencyDetector));
+
             var dependenciesMock = new Mock<IRelationalDatabaseFacadeDependencies>();
-            dependenciesMock.Setup(m => m.ConcurrencyDetector).Returns(Mock.Of<IConcurrencyDetector>());
+            dependenciesMock.Setup(m => m.ConcurrencyDetector).Returns(concurrencyDetector);
             dependenciesMock.Setup(m => m.CommandLogger).Returns(Mock.Of<IDiagnosticsLogger<DbLoggerCategory.Database.Command>>());
             dependenciesMock.Setup(m => m.RawSqlCommandBuilder).Returns(rawSqlCommandBuilder);
             dependenciesMock.Setup(m => m.RelationalConnection).Returns(Mock.Of<IRelationalConnection>());
@@ -138,11 +142,10 @@ namespace EntityFrameworkCore.Testing.Moq.Helpers
             dbContextMock.As<IInfrastructure<IServiceProvider>>().Setup(m => m.Instance).Returns(serviceProvider);
             //Imported from AddExecuteSqlRawResult end
 
-            dbContextMock.Setup(m => m.Database).Returns(() => null);
-
             var mockedDbContext = dbContextMock.Object;
 
             var databaseFacadeMock = new Mock<DatabaseFacade>(mockedDbContext);
+            databaseFacadeMock.As<IDatabaseFacadeDependenciesAccessor>().Setup(x => x.Dependencies).Returns(dependencies);
             var databaseFacade = databaseFacadeMock.Object;
 
             dbContextMock.Setup(m => m.Database).Returns(databaseFacade);
@@ -194,22 +197,13 @@ namespace EntityFrameworkCore.Testing.Moq.Helpers
         {
             var mockedReadOnlyDbSet = DbContext.Set<TEntity>().CreateMockedReadOnlyDbSet();
 
-            var property = typeof(TDbContext).GetProperties().SingleOrDefault(p => p.PropertyType == typeof(DbSet<TEntity>) || p.PropertyType == typeof(DbQuery<TEntity>));
+            var property = typeof(TDbContext).GetProperties().SingleOrDefault(p => p.PropertyType == typeof(DbSet<TEntity>));
             if (property != null)
             {
-                if (property.PropertyType == typeof(DbSet<TEntity>))
-                {
-                    var setExpression = ExpressionHelper.CreatePropertyExpression<TDbContext, DbSet<TEntity>>(property);
-                    dbContextMock.Setup(setExpression).Returns(mockedReadOnlyDbSet);
-                }
-                else
-                {
-                    var setExpression = ExpressionHelper.CreatePropertyExpression<TDbContext, DbQuery<TEntity>>(property);
-                    dbContextMock.Setup(setExpression).Returns(mockedReadOnlyDbSet);
-                }
+                var setExpression = ExpressionHelper.CreatePropertyExpression<TDbContext, DbSet<TEntity>>(property);
+                dbContextMock.Setup(setExpression).Returns(mockedReadOnlyDbSet);
 
                 dbContextMock.Setup(m => m.Set<TEntity>()).Returns(mockedReadOnlyDbSet);
-                dbContextMock.Setup(m => m.Query<TEntity>()).Returns(mockedReadOnlyDbSet);
             }
             else
             {

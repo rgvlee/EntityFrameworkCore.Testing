@@ -276,14 +276,6 @@
                 Extensions for read-only db sets.
             </summary>
         </member>
-        <member name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.ReadOnlyDbSetExtensions.AddToReadOnlySource``1(Microsoft.EntityFrameworkCore.DbQuery{``0},``0)">
-            <summary>
-                Adds an item to the end of the mocked readonly db set source.
-            </summary>
-            <typeparam name="TEntity">The entity type.</typeparam>
-            <param name="mockedReadOnlyDbSet">The mocked readonly db set.</param>
-            <param name="item">The item to be added to the end of the mocked readonly db set source.</param>
-        </member>
         <member name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.ReadOnlyDbSetExtensions.AddToReadOnlySource``1(Microsoft.EntityFrameworkCore.DbSet{``0},``0)">
             <summary>
                 Adds an item to the end of the mocked readonly db set source.
@@ -292,14 +284,6 @@
             <param name="mockedReadOnlyDbSet">The mocked readonly db set.</param>
             <param name="item">The item to be added to the end of the mocked readonly db set source.</param>
         </member>
-        <member name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.ReadOnlyDbSetExtensions.AddRangeToReadOnlySource``1(Microsoft.EntityFrameworkCore.DbQuery{``0},System.Collections.Generic.IEnumerable{``0})">
-            <summary>
-                Adds the items of the specified sequence to the end of the mocked readonly db set source.
-            </summary>
-            <typeparam name="TEntity">The entity type.</typeparam>
-            <param name="mockedReadOnlyDbSet">The mocked readonly db set.</param>
-            <param name="items">The sequence whose items should be added to the end of the mocked readonly db set source.</param>
-        </member>
         <member name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.ReadOnlyDbSetExtensions.AddRangeToReadOnlySource``1(Microsoft.EntityFrameworkCore.DbSet{``0},System.Collections.Generic.IEnumerable{``0})">
             <summary>
                 Adds the items of the specified sequence to the end of the mocked readonly db set source.
@@ -307,13 +291,6 @@
             <typeparam name="TEntity">The entity type.</typeparam>
             <param name="mockedReadOnlyDbSet">The mocked readonly db set.</param>
             <param name="items">The sequence whose items should be added to the end of the mocked readonly db set source.</param>
-        </member>
-        <member name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.ReadOnlyDbSetExtensions.ClearReadOnlySource``1(Microsoft.EntityFrameworkCore.DbQuery{``0})">
-            <summary>
-                Removes all items from the mocked readonly db set source.
-            </summary>
-            <typeparam name="TEntity">The entity type.</typeparam>
-            <param name="mockedReadOnlyDbSet">The mocked readonly db set.</param>
         </member>
         <member name="M:EntityFrameworkCore.Testing.NSubstitute.Extensions.ReadOnlyDbSetExtensions.ClearReadOnlySource``1(Microsoft.EntityFrameworkCore.DbSet{``0})">
             <summary>

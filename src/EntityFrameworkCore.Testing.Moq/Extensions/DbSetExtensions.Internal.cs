@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading;
-using EntityFrameworkCore.Testing.Common.Helpers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Moq;
@@ -22,6 +21,8 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
             EnsureArgument.IsNotNull(dbSet, nameof(dbSet));
 
             var dbSetMock = new Mock<DbSet<TEntity>>();
+
+            var mockedQueryProvider = ((IQueryable<TEntity>) dbSet).Provider.CreateMockedQueryProvider(dbSet);
 
             dbSetMock.Setup(m => m.Add(It.IsAny<TEntity>())).Returns((TEntity providedEntity) => dbSet.Add(providedEntity));
             dbSetMock.Setup(m => m.AddAsync(It.IsAny<TEntity>(), It.IsAny<CancellationToken>()))
@@ -73,23 +74,10 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
             dbSetMock.Setup(m => m.UpdateRange(It.IsAny<IEnumerable<TEntity>>())).Callback((IEnumerable<TEntity> providedEntities) => dbSet.UpdateRange(providedEntities));
             dbSetMock.Setup(m => m.UpdateRange(It.IsAny<TEntity[]>())).Callback((TEntity[] providedEntities) => dbSet.UpdateRange(providedEntities));
 
-            var mockedQueryProvider = ((IQueryable<TEntity>) dbSet).Provider.CreateMockedQueryProvider(dbSet);
             dbSetMock.As<IQueryable<TEntity>>().Setup(m => m.Provider).Returns(mockedQueryProvider);
 
-            //Backwards compatibility implementation for EFCore 3.0.0
-            var asyncEnumerableMethod = typeof(DbSet<TEntity>).GetMethod("AsAsyncEnumerable");
-            if (asyncEnumerableMethod != null)
-            {
-                var asyncEnumerableExpression = ExpressionHelper.CreateMethodExpression<DbSet<TEntity>, IAsyncEnumerable<TEntity>>(asyncEnumerableMethod);
-                dbSetMock.Setup(asyncEnumerableExpression).Returns(dbSet.AsAsyncEnumerable());
-            }
-
-            var queryableMethod = typeof(DbSet<TEntity>).GetMethod("AsQueryable");
-            if (queryableMethod != null)
-            {
-                var queryableExpression = ExpressionHelper.CreateMethodExpression<DbSet<TEntity>, IQueryable<TEntity>>(queryableMethod);
-                dbSetMock.Setup(queryableExpression).Returns(dbSet.AsQueryable());
-            }
+            dbSetMock.Setup(m => m.AsAsyncEnumerable()).Returns(dbSet.AsAsyncEnumerable());
+            dbSetMock.Setup(m => m.AsQueryable()).Returns(dbSet.AsQueryable());
 
             return dbSetMock.Object;
         }

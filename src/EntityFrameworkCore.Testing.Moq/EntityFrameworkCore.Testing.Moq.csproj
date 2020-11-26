@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <Authors>rgvlee</Authors>
   </PropertyGroup>
 
@@ -14,7 +14,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Moq" Version="4.9.0" />
+    <PackageReference Include="Moq" Version="4.15.1" />
   </ItemGroup>
 
   <ItemGroup>

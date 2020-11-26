@@ -12,11 +12,10 @@ namespace EntityFrameworkCore.Testing.Common.Tests
 {
     public abstract class BaseForQueryableTests<T> : BaseForTests where T : BaseTestEntity
     {
+        protected List<T> ItemsAddedToQueryableSource;
         protected abstract IQueryable<T> Queryable { get; }
 
         protected abstract void SeedQueryableSource();
-
-        protected List<T> ItemsAddedToQueryableSource;
 
         [Test]
         public virtual void All_FalseCondition_ReturnsFalse()

@@ -6,9 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using EntityFrameworkCore.Testing.Common.Helpers;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Logging;
 using Moq;
@@ -19,7 +17,7 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
     /// <summary>
     ///     Extensions for db contexts.
     /// </summary>
-    public static partial class DbContextExtensions
+    public static class DbContextExtensions
     {
         private static readonly ILogger Logger = LoggingHelper.CreateLogger(typeof(DbContextExtensions));
 
@@ -137,9 +135,8 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
             var rawSqlCommand = rawSqlCommandMock.Object;
 
             var existingRawSqlCommandBuilder =
-                ((IRelationalDatabaseFacadeDependencies)
-                    ((IInfrastructure<IServiceProvider>) mockedDbContext).Instance.GetService(typeof(IDatabaseFacadeDependencies))
-                    ).RawSqlCommandBuilder;
+                ((IRelationalDatabaseFacadeDependencies) ((IInfrastructure<IServiceProvider>) mockedDbContext).Instance.GetService(typeof(IDatabaseFacadeDependencies)))
+                .RawSqlCommandBuilder;
 
             Mock.Get(existingRawSqlCommandBuilder)
                 .Setup(m => m.Build(It.Is<string>(s => s.Contains(sql, StringComparison.CurrentCultureIgnoreCase)),

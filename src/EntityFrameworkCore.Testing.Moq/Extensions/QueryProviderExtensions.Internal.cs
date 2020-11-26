@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using EntityFrameworkCore.Testing.Common;
+using Microsoft.EntityFrameworkCore.Query.Internal;
 using Microsoft.Extensions.Logging;
 using Moq;
 using rgvlee.Core.Common.Helpers;
@@ -20,7 +21,7 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
             queryProviderMock.CallBase = true;
 
             queryProviderMock.As<IQueryProvider>()
-                .Setup(m => m.CreateQuery<T>(It.Is<MethodCallExpression>(mce => mce.Method.Name.Equals("FromSqlOnQueryable"))))
+                .Setup(m => m.CreateQuery<T>(It.IsAny<FromSqlQueryRootExpression>()))
                 .Callback((Expression providedExpression) =>
                 {
                     Logger.LogDebug("Catch all exception invoked");

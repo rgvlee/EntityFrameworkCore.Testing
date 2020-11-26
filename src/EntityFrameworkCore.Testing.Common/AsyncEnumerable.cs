@@ -25,7 +25,7 @@ namespace EntityFrameworkCore.Testing.Common
             Provider = new AsyncQueryProvider<T>(_enumerable);
         }
 
-        public IAsyncEnumerator<T> GetAsyncEnumerator(CancellationToken cancellationToken = new CancellationToken())
+        public IAsyncEnumerator<T> GetAsyncEnumerator(CancellationToken cancellationToken = new())
         {
             return new AsyncEnumerator<T>(_enumerable);
         }

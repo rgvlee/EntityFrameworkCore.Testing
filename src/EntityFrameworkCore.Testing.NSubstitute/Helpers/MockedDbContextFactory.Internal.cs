@@ -77,8 +77,8 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Helpers
             ((IDbContextPoolable) mockedDbContext).When(x => x.ResetState()).Do(callInfo => ((IDbContextPoolable) DbContext).ResetState());
             ((IDbContextPoolable) mockedDbContext).When(x => x.ResetStateAsync(Arg.Any<CancellationToken>()))
                 .Do(callInfo => ((IDbContextPoolable) DbContext).ResetStateAsync(callInfo.Arg<CancellationToken>()));
-            ((IDbContextPoolable) mockedDbContext).When(x => x.Resurrect(Arg.Any<DbContextPoolConfigurationSnapshot>()))
-                .Do(callInfo => ((IDbContextPoolable) DbContext).Resurrect(callInfo.Arg<DbContextPoolConfigurationSnapshot>()));
+            // ((IDbContextPoolable) mockedDbContext).When(x => x.Resurrect(Arg.Any<DbContextPoolConfigurationSnapshot>()))
+            //     .Do(callInfo => ((IDbContextPoolable) DbContext).Resurrect(callInfo.Arg<DbContextPoolConfigurationSnapshot>()));
 
             mockedDbContext.SaveChanges().Returns(callInfo => DbContext.SaveChanges());
             mockedDbContext.SaveChanges(Arg.Any<bool>()).Returns(callInfo => DbContext.SaveChanges(callInfo.Arg<bool>()));
@@ -86,10 +86,10 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Helpers
             mockedDbContext.SaveChangesAsync(Arg.Any<bool>(), Arg.Any<CancellationToken>())
                 .Returns(callInfo => DbContext.SaveChangesAsync(callInfo.Arg<bool>(), callInfo.Arg<CancellationToken>()));
 
-            ((IDbContextPoolable) mockedDbContext).When(x => x.SetPool(Arg.Any<IDbContextPool>()))
-                .Do(callInfo => ((IDbContextPoolable) DbContext).SetPool(callInfo.Arg<IDbContextPool>()));
+            // ((IDbContextPoolable) mockedDbContext).When(x => x.SetPool(Arg.Any<IDbContextPool>()))
+            //     .Do(callInfo => ((IDbContextPoolable) DbContext).SetPool(callInfo.Arg<IDbContextPool>()));
             ((IDbContextDependencies) mockedDbContext).SetSource.Returns(callInfo => ((IDbContextDependencies) DbContext).SetSource);
-            ((IDbContextPoolable) mockedDbContext).SnapshotConfiguration().Returns(callInfo => ((IDbContextPoolable) DbContext).SnapshotConfiguration());
+            // ((IDbContextPoolable) mockedDbContext).SnapshotConfiguration().Returns(callInfo => ((IDbContextPoolable) DbContext).SnapshotConfiguration());
             ((IDbContextDependencies) mockedDbContext).StateManager.Returns(callInfo => ((IDbContextDependencies) DbContext).StateManager);
 
             mockedDbContext.Update(Arg.Any<object>()).Returns(callInfo => DbContext.Update(callInfo.Arg<object>()));
@@ -184,13 +184,12 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Helpers
         {
             var mockedReadOnlyDbSet = DbContext.Set<TEntity>().CreateMockedReadOnlyDbSet();
 
-            var property = typeof(TDbContext).GetProperties().SingleOrDefault(p => p.PropertyType == typeof(DbSet<TEntity>) || p.PropertyType == typeof(DbQuery<TEntity>));
+            var property = typeof(TDbContext).GetProperties().SingleOrDefault(p => p.PropertyType == typeof(DbSet<TEntity>));
             if (property != null)
             {
                 property.GetValue(mockedDbContext.Configure()).Returns(mockedReadOnlyDbSet);
 
-                mockedDbContext.Configure().Set<TEntity>().Returns(callInfo => (DbSet<TEntity>) mockedReadOnlyDbSet);
-                mockedDbContext.Configure().Query<TEntity>().Returns(callInfo => mockedReadOnlyDbSet);
+                mockedDbContext.Configure().Set<TEntity>().Returns(callInfo => mockedReadOnlyDbSet);
             }
             else
             {
