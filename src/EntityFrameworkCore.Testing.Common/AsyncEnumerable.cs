@@ -18,13 +18,6 @@ namespace EntityFrameworkCore.Testing.Common
             Provider = new AsyncQueryProvider<T>(_enumerable);
         }
 
-        public AsyncEnumerable(Expression expression)
-        {
-            _enumerable = Expression.Lambda<Func<IEnumerable<T>>>(expression, null).Compile()();
-            Expression = expression;
-            Provider = new AsyncQueryProvider<T>(_enumerable);
-        }
-
         public IAsyncEnumerator<T> GetAsyncEnumerator(CancellationToken cancellationToken = new())
         {
             return new AsyncEnumerator<T>(_enumerable);

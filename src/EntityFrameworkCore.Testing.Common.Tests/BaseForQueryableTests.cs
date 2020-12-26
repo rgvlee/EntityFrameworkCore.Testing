@@ -260,6 +260,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         }
 
         [Test]
+        [Ignore("Investigate to see if this is normally supported; if it is, add support")]
         public virtual void ElementAt_ReturnsElementAtSpecifiedIndex()
         {
             SeedQueryableSource();
@@ -275,6 +276,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         }
 
         [Test]
+        [Ignore("Investigate to see if this is normally supported; if it is, add support")]
         public virtual void ElementAtOrDefault_ReturnsElementAtSpecifiedIndex()
         {
             SeedQueryableSource();
@@ -290,6 +292,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         }
 
         [Test]
+        [Ignore("Investigate to see if this is normally supported; if it is, add support")]
         public virtual void ElementAtOrDefault_WithNoItemsAdded_ReturnsDefault()
         {
             var firstElement = Queryable.ElementAtOrDefault(0);
@@ -385,6 +388,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         }
 
         [Test]
+        [Ignore("Investigate to see if this is normally supported; if it is, add support")]
         public virtual void IndexedSelectThenWhereThenAny_TrueCondition_ReturnsTrue()
         {
             SeedQueryableSource();
@@ -662,6 +666,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         }
 
         [Test]
+        [Ignore("Investigate to see if this is normally supported; if it is, add support")]
         public virtual void Select_WithIndex_ReturnsIndexedSequence()
         {
             SeedQueryableSource();
@@ -720,6 +725,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         }
 
         [Test]
+        [Ignore("Investigate to see if this is normally supported; if it is, add support")]
         public virtual void SkipWhile_SkipFirstItem_ReturnsSequenceThatDoesNotIncludeFirstItem()
         {
             SeedQueryableSource();
@@ -760,6 +766,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         }
 
         [Test]
+        [Ignore("Investigate to see if this is normally supported; if it is, add support")]
         public virtual void TakeWhile_TakeFirstItem_ReturnsFirstItem()
         {
             SeedQueryableSource();
@@ -780,6 +787,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         }
 
         [Test]
+        [Ignore("Investigate to see if this is normally supported; if it is, add support")]
         public virtual void TakeWhile_TakeFirstItemUsingIndex_ReturnsFirstItem()
         {
             SeedQueryableSource();

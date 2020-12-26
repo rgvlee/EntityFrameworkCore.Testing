@@ -38,8 +38,11 @@ namespace EntityFrameworkCore.Testing.Common
                     throw new InvalidOperationException($"Expected IQueryable<>; actual {returnType.FullName}");
                 }
 
+                var method = typeof(IQueryProvider).GetMethods().Single(x => x.Name.Equals(nameof(IQueryProvider.CreateQuery)) && x.IsGenericMethod);
+                var enumerable = method.MakeGenericMethod(returnType.GetGenericArguments().Single()).Invoke(Source.Provider, new[] { expression });
+
                 return (IQueryable) Activator.CreateInstance(typeof(AsyncEnumerable<>).GetGenericTypeDefinition().MakeGenericType(returnType.GetGenericArguments().Single()),
-                    expression);
+                    enumerable);
             }
 
             return CreateQuery<T>(expression);
@@ -48,7 +51,7 @@ namespace EntityFrameworkCore.Testing.Common
         /// <inheritdoc />
         public virtual IQueryable<TElement> CreateQuery<TElement>(Expression expression)
         {
-            return new AsyncEnumerable<TElement>(expression);
+            return new AsyncEnumerable<TElement>(Source.Provider.CreateQuery<TElement>(expression));
         }
 
         /// <inheritdoc />
