@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using AutoFixture;
 using EntityFrameworkCore.Testing.Common.Tests;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query.Internal;
+using Microsoft.EntityFrameworkCore.Query;
 using NUnit.Framework;
 
 namespace EntityFrameworkCore.Testing.NSubstitute.Tests
