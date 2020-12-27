@@ -17,7 +17,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
     /// <summary>
     ///     Extensions for db contexts.
     /// </summary>
-    public static partial class DbContextExtensions
+    public static class DbContextExtensions
     {
         private static readonly ILogger Logger = LoggingHelper.CreateLogger(typeof(DbContextExtensions));
 

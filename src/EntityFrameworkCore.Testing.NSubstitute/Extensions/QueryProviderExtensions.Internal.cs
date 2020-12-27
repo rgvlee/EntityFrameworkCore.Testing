@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using EntityFrameworkCore.Testing.Common;
+using Microsoft.EntityFrameworkCore.Query.Internal;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
 using NSubstitute.ExceptionExtensions;
@@ -21,7 +21,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
             var mockedQueryProvider = Substitute.ForPartsOf<AsyncQueryProvider<T>>(collection.AsQueryable());
 
             mockedQueryProvider.Configure()
-                .CreateQuery<T>(Arg.Is<MethodCallExpression>(mce => mce.Method.Name.Equals("FromSqlOnQueryable")))
+                .CreateQuery<T>(Arg.Any<FromSqlQueryRootExpression>())
                 .Throws(callInfo =>
                 {
                     Logger.LogDebug("Catch all exception invoked");

@@ -125,8 +125,8 @@ namespace EntityFrameworkCore.Testing.Moq.Helpers
             var rawSqlCommandBuilder = rawSqlCommandBuilderMock.Object;
 
             var concurrencyDetectorMock = new Mock<IConcurrencyDetector>();
+            concurrencyDetectorMock.Setup(x => x.EnterCriticalSection()).Returns(new ConcurrencyDetectorCriticalSectionDisposer(Mock.Of<IConcurrencyDetector>()));
             var concurrencyDetector = concurrencyDetectorMock.Object;
-            concurrencyDetectorMock.Setup(x => x.EnterCriticalSection()).Returns(new ConcurrencyDetectorCriticalSectionDisposer(concurrencyDetector));
 
             var dependenciesMock = new Mock<IRelationalDatabaseFacadeDependencies>();
             dependenciesMock.Setup(m => m.ConcurrencyDetector).Returns(concurrencyDetector);

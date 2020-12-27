@@ -152,11 +152,10 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
         {
             EnsureArgument.IsNotNull(fsqre, nameof(fsqre));
             EnsureArgument.IsNotNull(parameters, nameof(parameters));
-            
-            var fsqreParameters = (object[])((ConstantExpression) fsqre.Argument).Value;
 
-            var result = SqlMatchesMethodCallExpression(fsqre, sql) &&
-                         ParameterMatchingHelper.DoInvocationParametersMatchSetUpParameters(parameters, fsqreParameters);
+            var fsqreParameters = (object[]) ((ConstantExpression) fsqre.Argument).Value;
+
+            var result = SqlMatchesMethodCallExpression(fsqre, sql) && ParameterMatchingHelper.DoInvocationParametersMatchSetUpParameters(parameters, fsqreParameters);
 
             Logger.LogDebug($"Match? {result}");
 
@@ -168,7 +167,7 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
             EnsureArgument.IsNotNull(fsqre, nameof(fsqre));
 
             var fsqreSql = fsqre.Sql;
-            var fsqreParameters = (object[])((ConstantExpression) fsqre.Argument).Value;
+            var fsqreParameters = (object[]) ((ConstantExpression) fsqre.Argument).Value;
             var parts = new List<string>();
             parts.Add($"Invocation sql: '{fsqreSql}'");
             parts.Add("Invocation Parameters:");

@@ -122,8 +122,11 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Helpers
                     return new InvalidOperationException();
                 });
 
+            var concurrencyDetector = Substitute.For<IConcurrencyDetector>();
+            concurrencyDetector.EnterCriticalSection().Returns(new ConcurrencyDetectorCriticalSectionDisposer(Substitute.For<IConcurrencyDetector>()));
+
             var dependencies = Substitute.For<IRelationalDatabaseFacadeDependencies>();
-            dependencies.ConcurrencyDetector.Returns(callInfo => Substitute.For<IConcurrencyDetector>());
+            dependencies.ConcurrencyDetector.Returns(callInfo => concurrencyDetector);
             dependencies.CommandLogger.Returns(callInfo => Substitute.For<IDiagnosticsLogger<DbLoggerCategory.Database.Command>>());
             dependencies.RawSqlCommandBuilder.Returns(callInfo => rawSqlCommandBuilder);
             dependencies.RelationalConnection.Returns(callInfo => Substitute.For<IRelationalConnection>());
@@ -134,9 +137,8 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Helpers
             ((IInfrastructure<IServiceProvider>) mockedDbContext).Instance.Returns(callInfo => serviceProvider);
             //Imported from AddExecuteSqlRawResult end
 
-            mockedDbContext.Database.Returns(callInfo => null);
-
             var databaseFacade = Substitute.For<DatabaseFacade>(mockedDbContext);
+            ((IDatabaseFacadeDependenciesAccessor) databaseFacade).Dependencies.Returns(dependencies);
             mockedDbContext.Database.Returns(callInfo => databaseFacade);
 
             return mockedDbContext;
