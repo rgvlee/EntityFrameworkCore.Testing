@@ -186,10 +186,10 @@ namespace EntityFrameworkCore.Testing.Common.Tests
             AddFromSqlRawResult(DbSet, sql1, expectedResult1);
             AddFromSqlRawResult(DbSet, sql2, parameters2, expectedResult2);
 
-            Logger.LogDebug("actualResult1");
+            Console.WriteLine("actualResult1");
             var actualResult1 = DbSet.FromSqlRaw("[dbo].[sp_NoParams]").ToList();
 
-            Logger.LogDebug("actualResult2");
+            Console.WriteLine("actualResult2");
             var actualResult2 = DbSet.FromSqlRaw("[dbo].[sp_WithParams]", parameters2.ToArray()).ToList();
 
             Assert.Multiple(() =>

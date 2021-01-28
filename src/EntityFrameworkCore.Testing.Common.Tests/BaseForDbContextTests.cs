@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
@@ -58,9 +58,9 @@ namespace EntityFrameworkCore.Testing.Common.Tests
 
             void Callback(string providedSql, IEnumerable<object> providedParameters)
             {
-                Logger.LogDebug($"Before callback invoked: {source.Count}");
+                Console.WriteLine($"Before callback invoked: {source.Count}");
                 source = source.Take(1).ToList();
-                Logger.LogDebug($"After callback invoked: {source.Count}");
+                Console.WriteLine($"After callback invoked: {source.Count}");
             }
 
             var parameters = new List<object>();
@@ -69,7 +69,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
                 parameters.Add(new SqlParameter(parameterName, parameterValue));
             }
 
-            Logger.LogDebug("Setting up ExecuteSqlCommand");
+            Console.WriteLine("Setting up ExecuteSqlCommand");
             if (!string.IsNullOrWhiteSpace(sql) && parameters.Any())
             {
                 AddExecuteSqlCommandResult(MockedDbContext, sql, parameters, expectedResult, Callback);
@@ -85,7 +85,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
 
             var postSetUpCount = source.Count;
 
-            Logger.LogDebug("Invoking ExecuteSqlCommand");
+            Console.WriteLine("Invoking ExecuteSqlCommand");
             var actualResult1 = default(int);
             var actualResult2 = default(int);
 
@@ -107,7 +107,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
             }
 #pragma warning restore 618
 
-            Logger.LogDebug("ExecuteSqlCommand invoked");
+            Console.WriteLine("ExecuteSqlCommand invoked");
 
             Assert.Multiple(() =>
             {
@@ -131,9 +131,9 @@ namespace EntityFrameworkCore.Testing.Common.Tests
 
             void Callback(string providedSql, IEnumerable<object> providedParameters)
             {
-                Logger.LogDebug($"Before callback invoked: {source.Count}");
+                Console.WriteLine($"Before callback invoked: {source.Count}");
                 source = source.Take(1).ToList();
-                Logger.LogDebug($"After callback invoked: {source.Count}");
+                Console.WriteLine($"After callback invoked: {source.Count}");
             }
 
             var parameters = new List<object>();
@@ -142,7 +142,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
                 parameters.Add(new SqlParameter(parameterName, parameterValue));
             }
 
-            Logger.LogDebug("Setting up ExecuteSqlCommand");
+            Console.WriteLine("Setting up ExecuteSqlCommand");
             if (!string.IsNullOrWhiteSpace(sql) && parameters.Any())
             {
                 AddExecuteSqlCommandResult(MockedDbContext, sql, parameters, expectedResult, Callback);
@@ -158,7 +158,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
 
             var postSetUpCount = source.Count;
 
-            Logger.LogDebug("Invoking ExecuteSqlCommand");
+            Console.WriteLine("Invoking ExecuteSqlCommand");
             var actualResult1 = default(int);
             var actualResult2 = default(int);
 
@@ -180,7 +180,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
             }
 #pragma warning restore 618
 
-            Logger.LogDebug("ExecuteSqlCommand invoked");
+            Console.WriteLine("ExecuteSqlCommand invoked");
 
             Assert.Multiple(() =>
             {
