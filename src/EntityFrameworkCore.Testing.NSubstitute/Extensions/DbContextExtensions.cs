@@ -1,4 +1,4 @@
-﻿#pragma warning disable EF1001 // Internal EF Core API usage.
+#pragma warning disable EF1001 // Internal EF Core API usage.
 
 using System;
 using System.Collections.Generic;
@@ -6,13 +6,11 @@ using System.Threading;
 using System.Threading.Tasks;
 using EntityFrameworkCore.Testing.Common.Helpers;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
-using NSubstitute.ExceptionExtensions;
 using rgvlee.Core.Common.Helpers;
 
 namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
