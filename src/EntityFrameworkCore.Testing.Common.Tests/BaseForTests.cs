@@ -1,11 +1,10 @@
-using AutoFixture;
+﻿using AutoFixture;
 using Microsoft.Extensions.Logging;
 using NUnit.Framework;
 using rgvlee.Core.Common.Helpers;
 
 namespace EntityFrameworkCore.Testing.Common.Tests
 {
-    [TestFixture]
     public abstract class BaseForTests
     {
         [SetUp]
@@ -14,6 +13,12 @@ namespace EntityFrameworkCore.Testing.Common.Tests
             LoggingHelper.LoggerFactory = LoggerFactory.Create(builder => builder.AddConsole().SetMinimumLevel(LogLevel.Trace));
 
             Fixture = new Fixture();
+        }
+
+        [TearDown]
+        public virtual void TearDown()
+        {
+            LoggingHelper.LoggerFactory.Dispose();
         }
 
         protected Fixture Fixture;

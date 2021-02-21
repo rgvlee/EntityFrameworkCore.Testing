@@ -6,7 +6,6 @@ using NUnit.Framework;
 
 namespace EntityFrameworkCore.Testing.Common.Tests
 {
-    [TestFixture]
     public abstract class ReadOnlyDbSetExceptionTests<TEntity> : BaseForTests where TEntity : BaseTestEntity
     {
         protected abstract DbSet<TEntity> DbSet { get; }

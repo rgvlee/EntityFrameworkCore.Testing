@@ -6,16 +6,16 @@ using NUnit.Framework;
 
 namespace EntityFrameworkCore.DefaultBehaviour.Tests
 {
-    [TestFixture]
-    public class ByTypeDbQueryTests
+    public class ByTypeDbQueryTests : BaseForTests
     {
         [SetUp]
-        public virtual void SetUp()
+        public override void SetUp()
         {
             DbContext = new TestDbContext(new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
         }
 
         protected TestDbContext DbContext;
+
         protected DbQuery<ViewEntity> DbQuery => DbContext.Query<ViewEntity>();
 
         [Test]

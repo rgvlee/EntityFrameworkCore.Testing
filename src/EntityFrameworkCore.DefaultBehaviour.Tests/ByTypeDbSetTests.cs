@@ -9,18 +9,20 @@ using NUnit.Framework;
 
 namespace EntityFrameworkCore.DefaultBehaviour.Tests
 {
-    [TestFixture]
     public class ByTypeDbSetTests : BaseForQueryableTests<TestEntity>
     {
         [SetUp]
         public override void SetUp()
         {
-            DbContext = new TestDbContext(new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
             base.SetUp();
+
+            DbContext = new TestDbContext(new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
         }
 
         protected TestDbContext DbContext;
+
         protected DbSet<TestEntity> DbSet => DbContext.Set<TestEntity>();
+
         protected override IQueryable<TestEntity> Queryable => DbSet;
 
         protected override void SeedQueryableSource()

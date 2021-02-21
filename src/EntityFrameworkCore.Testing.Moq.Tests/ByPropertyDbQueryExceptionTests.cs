@@ -4,14 +4,14 @@ using NUnit.Framework;
 
 namespace EntityFrameworkCore.Testing.Moq.Tests
 {
-    [TestFixture]
     public class ByPropertyDbQueryExceptionTests : ReadOnlyDbSetExceptionTests<ViewEntity>
     {
         [SetUp]
         public override void SetUp()
         {
-            MockedDbContext = Create.MockedDbContextFor<TestDbContext>();
             base.SetUp();
+
+            MockedDbContext = Create.MockedDbContextFor<TestDbContext>();
         }
 
         protected TestDbContext MockedDbContext;

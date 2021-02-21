@@ -9,7 +9,6 @@ using NUnit.Framework;
 
 namespace EntityFrameworkCore.Testing.Common.Tests
 {
-    [TestFixture]
     public abstract class BaseForMockedDbSetQueryProviderTests<TEntity> : BaseForQueryableTests<TEntity> where TEntity : BaseTestEntity
     {
         protected abstract void AddFromSqlRawResult(DbSet<TEntity> mockedDbSet, IEnumerable<TEntity> expectedResult);

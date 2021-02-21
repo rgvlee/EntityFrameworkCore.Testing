@@ -13,7 +13,7 @@ using Moq;
 using rgvlee.Core.Common.Extensions;
 using rgvlee.Core.Common.Helpers;
 
-namespace EntityFrameworkCore.Testing.Moq
+namespace EntityFrameworkCore.Testing.Moq.Helpers
 {
     internal class NoSetUpDefaultValueProvider<TDbContext> : DefaultValueProvider where TDbContext : DbContext
     {
@@ -21,15 +21,16 @@ namespace EntityFrameworkCore.Testing.Moq
 
         private readonly TDbContext _dbContext;
 
-        private readonly List<IEntityType> allModelEntityTypes = new List<IEntityType>();
+        private readonly List<IEntityType> _allModelEntityTypes;
 
-        private readonly List<PropertyInfo> dbContextModelProperties = new List<PropertyInfo>();
+        private readonly List<PropertyInfo> _dbContextModelProperties;
 
         public NoSetUpDefaultValueProvider(TDbContext dbContext)
         {
             _dbContext = dbContext;
-            allModelEntityTypes = _dbContext.Model.GetEntityTypes().ToList();
-            dbContextModelProperties = _dbContext.GetType()
+            _allModelEntityTypes = _dbContext.Model.GetEntityTypes().ToList();
+            _dbContextModelProperties = _dbContext
+                .GetType()
                 .GetProperties()
                 .Where(x => x.PropertyType.IsGenericType &&
                             (x.PropertyType.GetGenericTypeDefinition() == typeof(DbSet<>) || x.PropertyType.GetGenericTypeDefinition() == typeof(DbQuery<>)))
@@ -40,24 +41,27 @@ namespace EntityFrameworkCore.Testing.Moq
         {
             var lastInvocation = mock.Invocations.Last();
             var lastInvocationIsByType = lastInvocation.Method.Name.Equals("Query") || lastInvocation.Method.Name.Equals("Set");
-            var property = dbContextModelProperties.SingleOrDefault(x => x.GetMethod.Name.Equals(lastInvocation.Method.Name));
-            var lastInvocationIsByProperty = property != null;
+            var dbContextModelProperty = _dbContextModelProperties.SingleOrDefault(x => x.GetMethod.Name.Equals(lastInvocation.Method.Name));
+            var lastInvocationIsByProperty = dbContextModelProperty != null;
 
             if (lastInvocationIsByType || lastInvocationIsByProperty)
             {
-                var setType = lastInvocationIsByType ? lastInvocation.Method.GetGenericArguments().Single() : property.PropertyType.GetGenericArguments().Single();
+                var setType = lastInvocationIsByType ? lastInvocation.Method.GetGenericArguments().Single() : dbContextModelProperty.PropertyType.GetGenericArguments().Single();
 
                 Logger.LogDebug("Setting up setType: '{setType}'", setType);
 
-                var entityType = allModelEntityTypes.SingleOrDefault(x => x.ClrType.Equals(setType));
+                var entityType = _allModelEntityTypes.SingleOrDefault(x => x.ClrType.Equals(setType));
                 if (entityType == null)
                 {
-                    throw new InvalidOperationException(string.Format(ExceptionMessages.CannotCreateDbSetTypeNotIncludedInModel,
+                    throw new InvalidOperationException(
+                        string.Format(ExceptionMessages.CannotCreateDbSetTypeNotIncludedInModel,
                         lastInvocation.Method.GetGenericArguments().Single().Name));
                 }
 
-                var setUpDbSetForMethod = typeof(NoSetUpDefaultValueProvider<TDbContext>).GetMethods(BindingFlags.Instance | BindingFlags.NonPublic)
+                var setUpDbSetForMethod = typeof(NoSetUpDefaultValueProvider<TDbContext>)
+                    .GetMethods(BindingFlags.Instance | BindingFlags.NonPublic)
                     .Single(x => x.Name.Equals(entityType.FindPrimaryKey() != null ? "SetUpDbSetFor" : "SetUpReadOnlyDbSetFor"));
+
                 setUpDbSetForMethod.MakeGenericMethod(setType).Invoke(this, new[] { mock });
 
                 return lastInvocation.Method.Invoke(mock.Object, null);
