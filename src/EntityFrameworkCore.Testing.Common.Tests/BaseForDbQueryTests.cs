@@ -9,7 +9,6 @@ using NUnit.Framework;
 
 namespace EntityFrameworkCore.Testing.Common.Tests
 {
-    [TestFixture]
     public abstract class BaseForDbQueryTests<TQuery> : BaseForMockedQueryableTests<TQuery> where TQuery : BaseTestEntity
     {
         protected override void SeedQueryableSource()
@@ -133,10 +132,10 @@ namespace EntityFrameworkCore.Testing.Common.Tests
 
             AddFromSqlResult(DbQuery, sql2, parameters2, expectedResult2);
 
-            Logger.LogDebug("actualResult1");
+            Console.WriteLine("actualResult1");
             var actualResult1 = DbQuery.FromSql("[dbo].[sp_NoParams]").ToList();
 
-            Logger.LogDebug("actualResult2");
+            Console.WriteLine("actualResult2");
             var actualResult2 = DbQuery.FromSql("[dbo].[sp_WithParams]", parameters2.ToArray()).ToList();
 
             Assert.Multiple(() =>

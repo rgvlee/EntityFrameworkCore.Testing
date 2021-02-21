@@ -7,14 +7,14 @@ using NUnit.Framework;
 
 namespace EntityFrameworkCore.DefaultBehaviour.Tests
 {
-    [TestFixture]
     public class DbContextTests : BaseForTests
     {
         [SetUp]
         public override void SetUp()
         {
-            DbContext = new TestDbContext(new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
             base.SetUp();
+
+            DbContext = new TestDbContext(new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
         }
 
         protected TestDbContext DbContext;

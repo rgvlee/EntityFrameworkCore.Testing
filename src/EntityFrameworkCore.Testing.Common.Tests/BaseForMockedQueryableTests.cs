@@ -10,7 +10,6 @@ using NUnit.Framework;
 
 namespace EntityFrameworkCore.Testing.Common.Tests
 {
-    [TestFixture]
     public abstract class BaseForMockedQueryableTests<T> : BaseForQueryableTests<T> where T : BaseTestEntity
     {
         protected abstract void AddFromSqlResult(IQueryable<T> mockedQueryable, IEnumerable<T> expectedResult);
@@ -48,10 +47,10 @@ namespace EntityFrameworkCore.Testing.Common.Tests
             AddFromSqlResult(Queryable, sql1, expectedResult1);
             AddFromSqlResult(Queryable, sql2, parameters2, expectedResult2);
 
-            Logger.LogDebug("actualResult1");
+            Console.WriteLine("actualResult1");
             var actualResult1 = Queryable.FromSql("[dbo].[sp_NoParams]").ToList();
 
-            Logger.LogDebug("actualResult2");
+            Console.WriteLine("actualResult2");
             var actualResult2 = Queryable.FromSql("[dbo].[sp_WithParams]", parameters2.ToArray()).ToList();
 
             Assert.Multiple(() =>
