@@ -13,7 +13,7 @@
 It extends the functionality of an existing database provider by proxying over it. It was designed with the Microsoft in-memory provider in mind with supported operations sent to the database provider and unsupported operations, such as relational operations, handled by EntityFrameworkCore.Testing. While it does not attempt to mock supported operations, it does proxy over them using a mocking framework so you get all of the benefits of the latter such as being able to assert an invocation.
 
 It includes support for queries, FromSql, ExecuteSqlCommand, and async LINQ operations.</description>
-    <copyright>Copyright (c) 2020 Lee Anderson</copyright>
+    <copyright>Copyright (c) 2021 Lee Anderson</copyright>
     <tags>EntityFrameworkCore EFCore Moq mock testing</tags>
     <repository url="https://github.com/rgvlee/EntityFrameworkCore.Testing" />
     <dependencies>
