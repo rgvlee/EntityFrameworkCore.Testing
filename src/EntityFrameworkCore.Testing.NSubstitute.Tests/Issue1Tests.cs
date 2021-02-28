@@ -45,7 +45,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Tests
 
             Assert.Multiple(() =>
             {
-                Assert.AreEqual(-1, result);
+                Assert.That(result, Is.EqualTo(-1));
                 Assert.That(outputParameter.Value.ToString(), Is.EqualTo(expectedResult));
             });
         }
