@@ -22,7 +22,7 @@ It includes support for queries, FromSql, ExecuteSqlCommand, and async LINQ oper
         <dependency id="Microsoft.EntityFrameworkCore.SqlServer" version="[2.1.0,3)" exclude="Build,Analyzers" />
         <dependency id="Microsoft.Extensions.Logging" version="2.1.0" exclude="Build,Analyzers" />
         <dependency id="Moq" version="4.9.0" exclude="Build,Analyzers" />
-        <dependency id="rgvlee.Core" version="1.0.0" exclude="Build,Analyzers" />
+        <dependency id="rgvlee.Core" version="1.2.0" exclude="Build,Analyzers" />
       </group>
     </dependencies>
   </metadata>
