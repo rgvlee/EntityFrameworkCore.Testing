@@ -3,20 +3,12 @@ using System.Linq;
 using Castle.DynamicProxy;
 using EntityFrameworkCore.Testing.Common.Tests;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using NUnit.Framework;
-using rgvlee.Core.Common.Helpers;
 
 namespace EntityFrameworkCore.Testing.NSubstitute.Tests
 {
-    public class CreateFactoryTests
+    public class CreateFactoryTests : BaseForTests
     {
-        [SetUp]
-        public virtual void SetUp()
-        {
-            LoggingHelper.LoggerFactory = LoggerFactory.Create(builder => builder.AddConsole().SetMinimumLevel(LogLevel.Debug));
-        }
-
         [Test]
         public void CreateMockedDbContextFor_Type_CreatesMockedDbContext()
         {
@@ -34,7 +26,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Tests
         {
             var dbContextToMock = new TestDbContext(new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
 
-            var mocked = Create.MockedQueryProviderFor(dbContextToMock.TestEntities.AsQueryable());
+            var mocked = Create.MockedQueryProviderFor(dbContextToMock.TestEntities);
 
             Assert.Multiple(() =>
             {
