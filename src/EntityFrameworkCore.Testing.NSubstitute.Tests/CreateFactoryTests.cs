@@ -5,7 +5,7 @@ using EntityFrameworkCore.Testing.Common.Tests;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 
-namespace EntityFrameworkCore.Testing.Moq.Tests
+namespace EntityFrameworkCore.Testing.NSubstitute.Tests
 {
     public class CreateFactoryTests : BaseForTests
     {
