@@ -147,15 +147,6 @@
             <param name="propertyInfo">The property info of the property to create the expression for.</param>
             <returns>A property expression for the specified property.</returns>
         </member>
-        <member name="M:EntityFrameworkCore.Testing.Common.Helpers.ExpressionHelper.CreateMethodExpression``2(System.Reflection.MethodInfo)">
-            <summary>
-                Creates a method expression for the specified method.
-            </summary>
-            <typeparam name="TParameter">The expression parameter.</typeparam>
-            <typeparam name="TMethod">The expression method.</typeparam>
-            <param name="methodInfo">The method info of the method to create the expression for.</param>
-            <returns>A method expression for the specified method.</returns>
-        </member>
         <member name="T:EntityFrameworkCore.Testing.Common.Helpers.IMockedDbContextBuilder`1">
             <summary>
                 The mocked db context builder.

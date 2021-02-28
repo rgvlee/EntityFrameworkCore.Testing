@@ -5,7 +5,6 @@ using System.ComponentModel;
 using System.Linq;
 using System.Threading;
 using EntityFrameworkCore.Testing.Common;
-using EntityFrameworkCore.Testing.Common.Helpers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Moq;
@@ -81,14 +80,14 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
             var asyncEnumerableMethod = typeof(DbSet<TEntity>).GetMethod("AsAsyncEnumerable");
             if (asyncEnumerableMethod != null)
             {
-                var asyncEnumerableExpression = ExpressionHelper.CreateMethodExpression<DbQuery<TEntity>, IAsyncEnumerable<TEntity>>(asyncEnumerableMethod);
+                var asyncEnumerableExpression = ExpressionHelper.CreateMethodCallExpression<DbQuery<TEntity>, IAsyncEnumerable<TEntity>>(asyncEnumerableMethod);
                 readOnlyDbSetMock.Setup(asyncEnumerableExpression).Returns(new AsyncEnumerable<TEntity>(queryable));
             }
 
             var queryableMethod = typeof(DbSet<TEntity>).GetMethod("AsQueryable");
             if (queryableMethod != null)
             {
-                var queryableExpression = ExpressionHelper.CreateMethodExpression<DbQuery<TEntity>, IQueryable<TEntity>>(queryableMethod);
+                var queryableExpression = ExpressionHelper.CreateMethodCallExpression<DbQuery<TEntity>, IQueryable<TEntity>>(queryableMethod);
                 readOnlyDbSetMock.Setup(queryableExpression).Returns(queryable);
             }
 
@@ -125,14 +124,14 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
             var asyncEnumerableMethod = typeof(DbSet<TEntity>).GetMethod("AsAsyncEnumerable");
             if (asyncEnumerableMethod != null)
             {
-                var asyncEnumerableExpression = ExpressionHelper.CreateMethodExpression<DbQuery<TEntity>, IAsyncEnumerable<TEntity>>(asyncEnumerableMethod);
+                var asyncEnumerableExpression = ExpressionHelper.CreateMethodCallExpression<DbQuery<TEntity>, IAsyncEnumerable<TEntity>>(asyncEnumerableMethod);
                 readOnlyDbSetMock.Setup(asyncEnumerableExpression).Returns(new AsyncEnumerable<TEntity>(queryable));
             }
 
             var queryableMethod = typeof(DbSet<TEntity>).GetMethod("AsQueryable");
             if (queryableMethod != null)
             {
-                var queryableExpression = ExpressionHelper.CreateMethodExpression<DbQuery<TEntity>, IQueryable<TEntity>>(queryableMethod);
+                var queryableExpression = ExpressionHelper.CreateMethodCallExpression<DbQuery<TEntity>, IQueryable<TEntity>>(queryableMethod);
                 readOnlyDbSetMock.Setup(queryableExpression).Returns(queryable);
             }
         }

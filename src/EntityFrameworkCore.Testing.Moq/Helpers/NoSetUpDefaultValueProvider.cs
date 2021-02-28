@@ -4,7 +4,6 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using EntityFrameworkCore.Testing.Common;
-using EntityFrameworkCore.Testing.Common.Helpers;
 using EntityFrameworkCore.Testing.Moq.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
@@ -12,6 +11,7 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using rgvlee.Core.Common.Extensions;
 using rgvlee.Core.Common.Helpers;
+using ExpressionHelper = EntityFrameworkCore.Testing.Common.Helpers.ExpressionHelper;
 
 namespace EntityFrameworkCore.Testing.Moq.Helpers
 {
