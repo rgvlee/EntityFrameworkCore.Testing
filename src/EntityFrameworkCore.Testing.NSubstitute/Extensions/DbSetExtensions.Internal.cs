@@ -62,6 +62,12 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
             ((IEnumerable) mockedDbSet).GetEnumerator().Returns(callInfo => ((IEnumerable) dbSet).GetEnumerator());
             ((IEnumerable<TEntity>) mockedDbSet).GetEnumerator().Returns(callInfo => ((IEnumerable<TEntity>) dbSet).GetEnumerator());
 
+            /*
+             * System.NotSupportedException : Data binding directly to a store query is not supported. Instead populate a DbSet with data,
+             * for example by calling Load on the DbSet, and then bind to local data to avoid sending a query to the database each time the
+             * databound control iterates the data. For WPF bind to 'DbSet.Local.ToObservableCollection()'. For WinForms bind to
+             * 'DbSet.Local.ToBindingList()'. For ASP.NET WebForms bind to 'DbSet.ToList()' or use Model Binding.
+             */
             ((IListSource) mockedDbSet).GetList().Returns(callInfo => dbSet.ToList());
 
             ((IInfrastructure<IServiceProvider>) mockedDbSet).Instance.Returns(callInfo => ((IInfrastructure<IServiceProvider>) dbSet).Instance);
