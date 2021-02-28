@@ -28,7 +28,11 @@ It includes support for queries, FromSql, ExecuteSqlCommand, and async LINQ oper
   </metadata>
   <files>
     <file src="src\EntityFrameworkCore.Testing.Common\bin\Release\netstandard2.0\EntityFrameworkCore.Testing.Common.dll" target="lib\netstandard2.0" />
+    <file src="src\EntityFrameworkCore.Testing.Common\bin\Release\netstandard2.0\EntityFrameworkCore.Testing.Common.xml" target="lib\netstandard2.0" />
+    <file src="src\EntityFrameworkCore.Testing.Common\bin\Release\netstandard2.0\EntityFrameworkCore.Testing.Common.pdb" target="lib\netstandard2.0" />
     <file src="src\EntityFrameworkCore.Testing.Moq\bin\Release\netstandard2.0\EntityFrameworkCore.Testing.Moq.dll" target="lib\netstandard2.0" />
+    <file src="src\EntityFrameworkCore.Testing.Moq\bin\Release\netstandard2.0\EntityFrameworkCore.Testing.Moq.xml" target="lib\netstandard2.0" />
+    <file src="src\EntityFrameworkCore.Testing.Moq\bin\Release\netstandard2.0\EntityFrameworkCore.Testing.Moq.pdb" target="lib\netstandard2.0" />
     <file src="LICENSE" />
   </files>
 </package>
