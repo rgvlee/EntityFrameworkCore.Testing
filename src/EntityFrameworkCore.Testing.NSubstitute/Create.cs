@@ -40,6 +40,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute
         public static IQueryProvider MockedQueryProviderFor<T>(IQueryable<T> queryable) where T : class
         {
             EnsureArgument.IsNotNull(queryable, nameof(queryable));
+
             return queryable.Provider.CreateMockedQueryProvider(queryable);
         }
     }
