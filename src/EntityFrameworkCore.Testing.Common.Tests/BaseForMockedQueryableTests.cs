@@ -1,18 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoFixture;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using NUnit.Framework;
 
 namespace EntityFrameworkCore.Testing.Common.Tests
 {
-    [TestFixture]
-    public abstract class BaseForMockedDbSetQueryProviderTests<TEntity> : BaseForQueryableTests<TEntity> where TEntity : BaseTestEntity
+    public abstract class BaseForMockedQueryableTests<TEntity> : BaseForQueryableTests<TEntity> where TEntity : BaseTestEntity
     {
+        protected DbSet<TEntity> DbSet => (DbSet<TEntity>) Queryable;
+
         protected abstract void AddFromSqlRawResult(DbSet<TEntity> mockedDbSet, IEnumerable<TEntity> expectedResult);
 
         protected abstract void AddFromSqlRawResult(DbSet<TEntity> mockedDbSet, string sql, IEnumerable<TEntity> expectedResult);
@@ -24,8 +25,6 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         protected abstract void AddFromSqlInterpolatedResult(DbSet<TEntity> mockedDbSet, FormattableString sql, IEnumerable<TEntity> expectedResult);
 
         protected abstract void AddFromSqlInterpolatedResult(DbSet<TEntity> mockedDbSet, string sql, IEnumerable<object> parameters, IEnumerable<TEntity> expectedResult);
-
-        protected DbSet<TEntity> DbSet => (DbSet<TEntity>) Queryable;
 
         [Test]
         public virtual void FormattableStringSetUpFromSqlInterpolated_SpecifiedSqlWithStringParameters_ReturnsExpectedResult()
@@ -96,7 +95,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         public virtual void FromSqlInterpolated_SpecifiedSqlWithSqlParameterParameters_ReturnsExpectedResult()
         {
             var sql = "sp_WithParams";
-            var parameters = new List<SqlParameter> { new SqlParameter("@SomeParameter2", "Value2") };
+            var parameters = new List<SqlParameter> { new("@SomeParameter2", "Value2") };
             var expectedResult = Fixture.CreateMany<TEntity>().ToList();
             AddFromSqlInterpolatedResult(DbSet, sql, parameters, expectedResult);
 
@@ -114,8 +113,8 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         public virtual void FromSqlInterpolated_SpecifiedSqlWithSqlParameterParametersThatDoNotMatchSetUp_ThrowsException()
         {
             var sql = "sp_WithParams";
-            var setUpParameters = new List<SqlParameter> { new SqlParameter("@SomeParameter3", "Value3") };
-            var invocationParameters = new List<SqlParameter> { new SqlParameter("@SomeParameter1", "Value1"), new SqlParameter("@SomeParameter2", "Value2") };
+            var setUpParameters = new List<SqlParameter> { new("@SomeParameter3", "Value3") };
+            var invocationParameters = new List<SqlParameter> { new("@SomeParameter1", "Value1"), new("@SomeParameter2", "Value2") };
             var expectedResult = Fixture.CreateMany<TEntity>().ToList();
             AddFromSqlInterpolatedResult(DbSet, sql, setUpParameters, expectedResult);
 
@@ -180,16 +179,16 @@ namespace EntityFrameworkCore.Testing.Common.Tests
             var expectedResult1 = Fixture.CreateMany<TEntity>().ToList();
 
             var sql2 = "sp_WithParams";
-            var parameters2 = new List<SqlParameter> { new SqlParameter("@SomeParameter1", "Value1"), new SqlParameter("@SomeParameter2", "Value2") };
+            var parameters2 = new List<SqlParameter> { new("@SomeParameter1", "Value1"), new("@SomeParameter2", "Value2") };
             var expectedResult2 = Fixture.CreateMany<TEntity>().ToList();
 
             AddFromSqlRawResult(DbSet, sql1, expectedResult1);
             AddFromSqlRawResult(DbSet, sql2, parameters2, expectedResult2);
 
-            Logger.LogDebug("actualResult1");
+            Console.WriteLine("actualResult1");
             var actualResult1 = DbSet.FromSqlRaw("[dbo].[sp_NoParams]").ToList();
 
-            Logger.LogDebug("actualResult2");
+            Console.WriteLine("actualResult2");
             var actualResult2 = DbSet.FromSqlRaw("[dbo].[sp_WithParams]", parameters2.ToArray()).ToList();
 
             Assert.Multiple(() =>
@@ -233,7 +232,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         public virtual void FromSqlRaw_SpecifiedSqlWithSqlParameterParameters_ReturnsExpectedResult()
         {
             var sql = "sp_WithParams";
-            var parameters = new List<SqlParameter> { new SqlParameter("@SomeParameter2", "Value2") };
+            var parameters = new List<SqlParameter> { new("@SomeParameter2", "Value2") };
             var expectedResult = Fixture.CreateMany<TEntity>().ToList();
             AddFromSqlRawResult(DbSet, sql, parameters, expectedResult);
 
@@ -251,8 +250,8 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         public virtual void FromSqlRaw_SpecifiedSqlWithSqlParameterParametersThatDoNotMatchSetUp_ThrowsException()
         {
             var sql = "sp_WithParams";
-            var setUpParameters = new List<SqlParameter> { new SqlParameter("@SomeParameter3", "Value3") };
-            var invocationParameters = new List<SqlParameter> { new SqlParameter("@SomeParameter1", "Value1"), new SqlParameter("@SomeParameter2", "Value2") };
+            var setUpParameters = new List<SqlParameter> { new("@SomeParameter3", "Value3") };
+            var invocationParameters = new List<SqlParameter> { new("@SomeParameter1", "Value1"), new("@SomeParameter2", "Value2") };
             var expectedResult = Fixture.CreateMany<TEntity>().ToList();
             AddFromSqlRawResult(DbSet, sql, setUpParameters, expectedResult);
 
@@ -309,6 +308,13 @@ namespace EntityFrameworkCore.Testing.Common.Tests
                 Assert.That(actualResult1, Is.EqualTo(expectedResult.First()));
                 Assert.That(actualResult2, Is.EqualTo(expectedResult.First()));
             });
+        }
+
+        [Test]
+        public void ContainsListCollection_ReturnsFalse()
+        {
+            var containsListCollection = ((IListSource) Queryable).ContainsListCollection;
+            Assert.That(containsListCollection, Is.False);
         }
     }
 }

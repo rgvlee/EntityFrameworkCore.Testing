@@ -14,6 +14,7 @@
         </member>
         <member name="M:EntityFrameworkCore.Testing.Common.AsyncQueryProvider`1.CreateQuery(System.Linq.Expressions.Expression)">
             <inheritdoc />
+            <remarks>In this implementation it is just a wrapper for <see cref="M:EntityFrameworkCore.Testing.Common.AsyncQueryProvider`1.CreateQuery``1(System.Linq.Expressions.Expression)" /></remarks>
         </member>
         <member name="M:EntityFrameworkCore.Testing.Common.AsyncQueryProvider`1.CreateQuery``1(System.Linq.Expressions.Expression)">
             <inheritdoc />
@@ -43,24 +44,9 @@
               resource lookups using this strongly typed resource class.
             </summary>
         </member>
-        <member name="P:EntityFrameworkCore.Testing.Common.ExceptionMessages.ArgumentNull">
-            <summary>
-              Looks up a localized string similar to Value required for &apos;{0}&apos; (type: &apos;{1}&apos;)..
-            </summary>
-        </member>
         <member name="P:EntityFrameworkCore.Testing.Common.ExceptionMessages.CannotCreateDbSetTypeNotIncludedInModel">
             <summary>
               Looks up a localized string similar to Cannot create a DbSet for &apos;{0}&apos; because this type is not included in the model for the context..
-            </summary>
-        </member>
-        <member name="P:EntityFrameworkCore.Testing.Common.ExceptionMessages.EnumerationEmpty">
-            <summary>
-              Looks up a localized string similar to Enumeration &apos;{0}&apos; (type: &apos;{1}&apos;) must contain 1 or more elements..
-            </summary>
-        </member>
-        <member name="P:EntityFrameworkCore.Testing.Common.ExceptionMessages.StringNullOrEmpty">
-            <summary>
-              Looks up a localized string similar to Value required for &apos;{0}&apos;..
             </summary>
         </member>
         <member name="P:EntityFrameworkCore.Testing.Common.ExceptionMessages.UnableToFindSuitableDbContextConstructor">
@@ -135,7 +121,7 @@
         </member>
         <member name="T:EntityFrameworkCore.Testing.Common.Helpers.ExpressionHelper">
             <summary>
-                A helper for creating expressions.
+                A helper for expressions.
             </summary>
         </member>
         <member name="M:EntityFrameworkCore.Testing.Common.Helpers.ExpressionHelper.CreatePropertyExpression``2(System.Reflection.PropertyInfo)">
@@ -146,15 +132,6 @@
             <typeparam name="TProperty">The expression property.</typeparam>
             <param name="propertyInfo">The property info of the property to create the expression for.</param>
             <returns>A property expression for the specified property.</returns>
-        </member>
-        <member name="M:EntityFrameworkCore.Testing.Common.Helpers.ExpressionHelper.CreateMethodExpression``2(System.Reflection.MethodInfo)">
-            <summary>
-                Creates a method expression for the specified method.
-            </summary>
-            <typeparam name="TParameter">The expression parameter.</typeparam>
-            <typeparam name="TMethod">The expression method.</typeparam>
-            <param name="methodInfo">The method info of the method to create the expression for.</param>
-            <returns>A method expression for the specified method.</returns>
         </member>
         <member name="T:EntityFrameworkCore.Testing.Common.Helpers.IMockedDbContextBuilder`1">
             <summary>

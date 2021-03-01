@@ -1,16 +1,19 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <Authors>rgvlee</Authors>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DocumentationFile>EntityFrameworkCore.Testing.Moq.xml</DocumentationFile>
+    <WarningsAsErrors>NU1605</WarningsAsErrors>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DocumentationFile>EntityFrameworkCore.Testing.Moq.xml</DocumentationFile>
+    <DebugSymbols>true</DebugSymbols>
+    <WarningsAsErrors>NU1605</WarningsAsErrors>
   </PropertyGroup>
 
   <ItemGroup>

@@ -3,11 +3,9 @@ using System.Collections.Generic;
 using EntityFrameworkCore.Testing.Common.Tests;
 using EntityFrameworkCore.Testing.Moq.Extensions;
 using Microsoft.EntityFrameworkCore;
-using NUnit.Framework;
 
 namespace EntityFrameworkCore.Testing.Moq.Tests
 {
-    [TestFixture]
     public abstract class BaseForDbSetTests<T> : BaseForDbSetTests<TestDbContext, T> where T : BaseTestEntity
     {
         protected override TestDbContext CreateMockedDbContext()

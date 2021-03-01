@@ -1,32 +1,40 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <WarningsAsErrors>NU1605</WarningsAsErrors>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugSymbols>true</DebugSymbols>
+    <WarningsAsErrors>NU1605</WarningsAsErrors>
   </PropertyGroup>
 
   <ItemGroup>
     <Compile Include="..\EntityFrameworkCore.Testing.Common.Tests\BaseTestEntity.cs" Link="BaseTestEntity.cs" />
     <Compile Include="..\EntityFrameworkCore.Testing.Common.Tests\TestDbContext.cs" Link="TestDbContext.cs" />
     <Compile Include="..\EntityFrameworkCore.Testing.Common.Tests\TestEntity.cs" Link="TestEntity.cs" />
-    <Compile Include="..\EntityFrameworkCore.Testing.Common.Tests\ViewEntity.cs" Link="ViewEntity.cs" />
     <Compile Include="..\EntityFrameworkCore.Testing.Common.Tests\TestReadOnlyEntity.cs" Link="TestReadOnlyEntity.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoFixture" Version="4.14.0" />
-    <PackageReference Include="EntityFrameworkCore.Testing.NSubstitute" Version="2.3.2" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="3.1.10" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.10" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.10" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="3.1.10" />
+    <PackageReference Include="AutoFixture" Version="4.15.0" />
+    <PackageReference Include="EntityFrameworkCore.Testing.NSubstitute" Version="3.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="5.0.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="5.0.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.3" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="5.0.0" />
     <PackageReference Include="NSubstitute" Version="4.2.2" />
-    <PackageReference Include="nunit" Version="3.12.0" />
+    <PackageReference Include="nunit" Version="3.13.1" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.17.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.8.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.1" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
   </ItemGroup>
 

@@ -1,22 +1,24 @@
 ﻿using System;
-using System.Linq;
+using System.ComponentModel;
 using EntityFrameworkCore.Testing.Common.Tests;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 
 namespace EntityFrameworkCore.DefaultBehaviour.Tests
 {
-    [TestFixture]
-    public class ByTypeReadOnlyDbSetTests
+    public class ByTypeReadOnlyDbSetTests : BaseForTests
     {
+        protected TestDbContext DbContext;
+
+        protected DbSet<TestReadOnlyEntity> DbSet => DbContext.Set<TestReadOnlyEntity>();
+
         [SetUp]
-        public virtual void SetUp()
+        public override void SetUp()
         {
+            base.SetUp();
+
             DbContext = new TestDbContext(new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
         }
-
-        protected TestDbContext DbContext;
-        protected DbSet<ViewEntity> DbSet => DbContext.Set<ViewEntity>();
 
         [Test]
         public virtual void AsAsyncEnumerable_ReturnsAsyncEnumerable()
@@ -32,6 +34,13 @@ namespace EntityFrameworkCore.DefaultBehaviour.Tests
             var queryable = DbSet.AsQueryable();
 
             Assert.That(queryable, Is.Not.Null);
+        }
+
+        [Test]
+        public void ContainsListCollection_ReturnsFalse()
+        {
+            var containsListCollection = ((IListSource) DbSet).ContainsListCollection;
+            Assert.That(containsListCollection, Is.False);
         }
     }
 }

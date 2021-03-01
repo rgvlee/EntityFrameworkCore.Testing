@@ -5,18 +5,22 @@ using rgvlee.Core.Common.Helpers;
 
 namespace EntityFrameworkCore.Testing.Common.Tests
 {
-    [TestFixture]
     public abstract class BaseForTests
     {
+        protected Fixture Fixture;
+
         [SetUp]
         public virtual void SetUp()
         {
-            LoggingHelper.LoggerFactory = LoggerFactory.Create(builder => builder.AddConsole().SetMinimumLevel(LogLevel.Debug));
+            LoggingHelper.LoggerFactory = LoggerFactory.Create(builder => builder.AddConsole().SetMinimumLevel(LogLevel.Trace));
+
             Fixture = new Fixture();
         }
 
-        protected Fixture Fixture;
-
-        protected static readonly ILogger Logger = LoggingHelper.CreateLogger(typeof(BaseForTests));
+        [TearDown]
+        public virtual void TearDown()
+        {
+            LoggingHelper.LoggerFactory.Dispose();
+        }
     }
 }

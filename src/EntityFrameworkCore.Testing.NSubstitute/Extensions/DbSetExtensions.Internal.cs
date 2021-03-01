@@ -7,7 +7,6 @@ using System.Threading;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using NSubstitute;
-using NSubstitute.Extensions;
 using rgvlee.Core.Common.Helpers;
 
 namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
@@ -32,6 +31,8 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
                 },
                 new object[] { });
 
+            var mockedQueryProvider = ((IQueryable<TEntity>) dbSet).Provider.CreateMockedQueryProvider(dbSet);
+
             mockedDbSet.Add(Arg.Any<TEntity>()).Returns(callInfo => dbSet.Add(callInfo.Arg<TEntity>()));
             mockedDbSet.AddAsync(Arg.Any<TEntity>(), Arg.Any<CancellationToken>()).Returns(callInfo => dbSet.AddAsync(callInfo.Arg<TEntity>(), callInfo.Arg<CancellationToken>()));
             mockedDbSet.When(x => x.AddRange(Arg.Any<IEnumerable<TEntity>>())).Do(callInfo => dbSet.AddRange(callInfo.Arg<IEnumerable<TEntity>>()));
@@ -47,6 +48,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
             ((IListSource) mockedDbSet).ContainsListCollection.Returns(callInfo => ((IListSource) dbSet).ContainsListCollection);
 
             ((IQueryable<TEntity>) mockedDbSet).ElementType.Returns(callInfo => ((IQueryable<TEntity>) dbSet).ElementType);
+            mockedDbSet.EntityType.Returns(callInfo => dbSet.EntityType);
             ((IQueryable<TEntity>) mockedDbSet).Expression.Returns(callInfo => ((IQueryable<TEntity>) dbSet).Expression);
 
             mockedDbSet.Find(Arg.Any<object[]>()).Returns(callInfo => dbSet.Find(callInfo.Arg<object[]>()));
@@ -60,6 +62,12 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
             ((IEnumerable) mockedDbSet).GetEnumerator().Returns(callInfo => ((IEnumerable) dbSet).GetEnumerator());
             ((IEnumerable<TEntity>) mockedDbSet).GetEnumerator().Returns(callInfo => ((IEnumerable<TEntity>) dbSet).GetEnumerator());
 
+            /*
+             * System.NotSupportedException : Data binding directly to a store query is not supported. Instead populate a DbSet with data,
+             * for example by calling Load on the DbSet, and then bind to local data to avoid sending a query to the database each time the
+             * databound control iterates the data. For WPF bind to 'DbSet.Local.ToObservableCollection()'. For WinForms bind to
+             * 'DbSet.Local.ToBindingList()'. For ASP.NET WebForms bind to 'DbSet.ToList()' or use Model Binding.
+             */
             ((IListSource) mockedDbSet).GetList().Returns(callInfo => dbSet.ToList());
 
             ((IInfrastructure<IServiceProvider>) mockedDbSet).Instance.Returns(callInfo => ((IInfrastructure<IServiceProvider>) dbSet).Instance);
@@ -74,21 +82,10 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
             mockedDbSet.When(x => x.UpdateRange(Arg.Any<IEnumerable<TEntity>>())).Do(callInfo => dbSet.UpdateRange(callInfo.Arg<IEnumerable<TEntity>>()));
             mockedDbSet.When(x => x.UpdateRange(Arg.Any<TEntity[]>())).Do(callInfo => dbSet.UpdateRange(callInfo.Arg<TEntity[]>()));
 
-            var mockedQueryProvider = ((IQueryable<TEntity>) dbSet).Provider.CreateMockedQueryProvider(dbSet);
             ((IQueryable<TEntity>) mockedDbSet).Provider.Returns(callInfo => mockedQueryProvider);
 
-            //Backwards compatibility implementation for EFCore 3.0.0
-            var asyncEnumerableMethod = typeof(DbSet<TEntity>).GetMethod("AsAsyncEnumerable");
-            if (asyncEnumerableMethod != null)
-            {
-                asyncEnumerableMethod.Invoke(mockedDbSet.Configure(), null).Returns(dbSet.AsAsyncEnumerable());
-            }
-
-            var queryableMethod = typeof(DbSet<TEntity>).GetMethod("AsQueryable");
-            if (queryableMethod != null)
-            {
-                queryableMethod.Invoke(mockedDbSet.Configure(), null).Returns(dbSet.AsQueryable());
-            }
+            mockedDbSet.AsAsyncEnumerable().Returns(callInfo => dbSet);
+            mockedDbSet.AsQueryable().Returns(callInfo => dbSet);
 
             return mockedDbSet;
         }

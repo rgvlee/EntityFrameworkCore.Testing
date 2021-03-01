@@ -19,7 +19,7 @@ namespace EntityFrameworkCore.Testing.Common {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class ExceptionMessages {
@@ -61,38 +61,11 @@ namespace EntityFrameworkCore.Testing.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Value required for &apos;{0}&apos; (type: &apos;{1}&apos;)..
-        /// </summary>
-        public static string ArgumentNull {
-            get {
-                return ResourceManager.GetString("ArgumentNull", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Cannot create a DbSet for &apos;{0}&apos; because this type is not included in the model for the context..
         /// </summary>
         public static string CannotCreateDbSetTypeNotIncludedInModel {
             get {
                 return ResourceManager.GetString("CannotCreateDbSetTypeNotIncludedInModel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Enumeration &apos;{0}&apos; (type: &apos;{1}&apos;) must contain 1 or more elements..
-        /// </summary>
-        public static string EnumerationEmpty {
-            get {
-                return ResourceManager.GetString("EnumerationEmpty", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Value required for &apos;{0}&apos;..
-        /// </summary>
-        public static string StringNullOrEmpty {
-            get {
-                return ResourceManager.GetString("StringNullOrEmpty", resourceCulture);
             }
         }
         

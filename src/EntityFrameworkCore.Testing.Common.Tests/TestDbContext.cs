@@ -6,7 +6,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
 {
     public class TestDbContext : DbContext
     {
-        private static readonly ILogger Logger = LoggingHelper.CreateLogger(typeof(TestDbContext));
+        private static readonly ILogger Logger = LoggingHelper.CreateLogger<TestDbContext>();
 
         public TestDbContext() { }
 
@@ -16,13 +16,12 @@ namespace EntityFrameworkCore.Testing.Common.Tests
 
         public virtual DbSet<TestEntity> TestEntities { get; set; }
         public virtual DbSet<TestReadOnlyEntity> TestReadOnlyEntities { get; set; }
-        public virtual DbQuery<ViewEntity> ViewEntities { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<TestEntity>().HasKey(c => c.Guid);
-            modelBuilder.Entity<TestReadOnlyEntity>().HasNoKey().ToView("TestReadOnlyEntity");
-            modelBuilder.Entity<ViewEntity>().HasNoKey().ToView("TestQuery");
+            modelBuilder.Entity<TestEntity>().HasKey(c => c.Id);
+
+            modelBuilder.Entity<TestReadOnlyEntity>().HasNoKey().ToView("TestReadOnlyEntities");
         }
 
         public override int SaveChanges()

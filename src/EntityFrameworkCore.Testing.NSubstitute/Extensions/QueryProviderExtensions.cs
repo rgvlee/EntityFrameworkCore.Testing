@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using EntityFrameworkCore.Testing.Common;
-using EntityFrameworkCore.Testing.Common.Helpers;
+using Microsoft.EntityFrameworkCore.Query.Internal;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
 using NSubstitute.Extensions;
 using rgvlee.Core.Common.Helpers;
+using ProjectExpressionHelper = EntityFrameworkCore.Testing.Common.Helpers.ExpressionHelper;
 
 namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
 {
@@ -111,76 +112,26 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
             EnsureArgument.IsNotNull(parameters, nameof(parameters));
             EnsureArgument.IsNotNull(fromSqlResult, nameof(fromSqlResult));
 
-            Logger.LogDebug($"Setting up '{sql}'");
+            Logger.LogDebug("Setting up '{sql}'", sql);
 
             var createQueryResult = new AsyncEnumerable<T>(fromSqlResult);
 
-            //TODO: SpecifiedParametersMatchMethodCallExpression is being invoked during set up; is there an alternative way to do this?
             mockedQueryProvider.Configure()
-                .CreateQuery<T>(Arg.Is<MethodCallExpression>(mce => SpecifiedParametersMatchMethodCallExpression(mce, sql, parameters)))
+                .CreateQuery<T>(Arg.Is<FromSqlQueryRootExpression>(fsqre => ProjectExpressionHelper.SqlAndParametersMatchFromSqlExpression(sql, parameters, fsqre)))
                 .Returns(callInfo =>
                 {
-                    var mce = (MethodCallExpression) callInfo.Arg<Expression>();
+                    ProjectExpressionHelper.ThrowIfExpressionIsNotSupported(callInfo.Arg<Expression>());
+
+                    var fsqre = (FromSqlQueryRootExpression) callInfo.Arg<Expression>();
                     var parts = new List<string>();
                     parts.Add("FromSql inputs:");
-                    parts.Add(StringifyFromSqlMethodCallExpression(mce));
+                    parts.Add(ProjectExpressionHelper.StringifyFromSqlExpression(fsqre));
                     Logger.LogDebug(string.Join(Environment.NewLine, parts));
 
                     return createQueryResult;
                 });
 
             return mockedQueryProvider;
-        }
-
-        private static bool SqlMatchesMethodCallExpression(MethodCallExpression mce, string sql)
-        {
-            EnsureArgument.IsNotNull(mce, nameof(mce));
-
-            var mceSql = (string) ((ConstantExpression) mce.Arguments[1]).Value;
-            var parts = new List<string>();
-            parts.Add($"Invocation sql: '{mceSql}'");
-            parts.Add($"Set up sql: '{sql}'");
-            Logger.LogDebug(string.Join(Environment.NewLine, parts));
-
-            var result = mceSql.Contains(sql, StringComparison.CurrentCultureIgnoreCase);
-
-            Logger.LogDebug($"Match? {result}");
-
-            return result;
-        }
-
-        private static bool SpecifiedParametersMatchMethodCallExpression(MethodCallExpression mce, string sql, IEnumerable<object> parameters)
-        {
-            //NSubstitute invokes this method during set up; this is not desired
-            //If this method is invoked with a null mce it was invoked during set up
-            if (mce == null)
-            {
-                return false;
-            }
-
-            //EnsureArgument.IsNotNull(mce, nameof(mce));
-            EnsureArgument.IsNotNull(parameters, nameof(parameters));
-
-            var result = mce.Method.Name.Equals("FromSqlOnQueryable") &&
-                         SqlMatchesMethodCallExpression(mce, sql) &&
-                         ParameterMatchingHelper.DoInvocationParametersMatchSetUpParameters(parameters, (object[]) ((ConstantExpression) mce.Arguments[2]).Value);
-
-            Logger.LogDebug($"Match? {result}");
-
-            return result;
-        }
-
-        private static string StringifyFromSqlMethodCallExpression(MethodCallExpression mce)
-        {
-            EnsureArgument.IsNotNull(mce, nameof(mce));
-
-            var mceSql = (string) ((ConstantExpression) mce.Arguments[1]).Value;
-            var mceParameters = (object[]) ((ConstantExpression) mce.Arguments[2]).Value;
-            var parts = new List<string>();
-            parts.Add($"Invocation sql: '{mceSql}'");
-            parts.Add("Invocation Parameters:");
-            parts.Add(ParameterMatchingHelper.StringifyParameters(mceParameters));
-            return string.Join(Environment.NewLine, parts);
         }
     }
 }

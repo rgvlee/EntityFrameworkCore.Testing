@@ -1,15 +1,22 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Query.Internal;
+using Microsoft.Extensions.Logging;
 using rgvlee.Core.Common.Helpers;
 
 namespace EntityFrameworkCore.Testing.Common.Helpers
 {
     /// <summary>
-    ///     A helper for creating expressions.
+    ///     A helper for expressions.
     /// </summary>
     public static class ExpressionHelper
     {
+        private static readonly ILogger Logger = LoggingHelper.CreateLogger(typeof(ExpressionHelper));
+
         /// <summary>
         ///     Creates a property expression for the specified property.
         /// </summary>
@@ -25,19 +32,85 @@ namespace EntityFrameworkCore.Testing.Common.Helpers
             return Expression.Lambda<Func<TParameter, TProperty>>(Expression.Property(parameter, propertyInfo), parameter);
         }
 
-        /// <summary>
-        ///     Creates a method expression for the specified method.
-        /// </summary>
-        /// <typeparam name="TParameter">The expression parameter.</typeparam>
-        /// <typeparam name="TMethod">The expression method.</typeparam>
-        /// <param name="methodInfo">The method info of the method to create the expression for.</param>
-        /// <returns>A method expression for the specified method.</returns>
-        public static Expression<Func<TParameter, TMethod>> CreateMethodExpression<TParameter, TMethod>(MethodInfo methodInfo)
+        public static bool SqlAndParametersMatchFromSqlExpression(string sql, IEnumerable<object> parameters, FromSqlQueryRootExpression expression)
         {
-            EnsureArgument.IsNotNull(methodInfo, nameof(methodInfo));
+            EnsureArgument.IsNotNull(expression, nameof(expression));
+            EnsureArgument.IsNotNull(parameters, nameof(parameters));
 
-            var parameter = Expression.Parameter(typeof(TParameter));
-            return Expression.Lambda<Func<TParameter, TMethod>>(Expression.Call(parameter, methodInfo), parameter);
+            var result = SqlMatchesFromSqlExpression(sql, expression) && 
+                         ParameterMatchingHelper.DoInvocationParametersMatchSetUpParameters(parameters, (object[]) ((ConstantExpression) expression.Argument).Value);
+
+            Logger.LogDebug("Match? {result}", result);
+
+            return result;
+        }
+
+        private static bool SqlMatchesFromSqlExpression(string sql, FromSqlQueryRootExpression expression)
+        {
+            EnsureArgument.IsNotNull(expression, nameof(expression));
+
+            var expressionSql = expression.Sql;
+            var parts = new List<string>();
+            parts.Add($"Invocation sql: '{expressionSql}'");
+            parts.Add($"Set up sql: '{sql}'");
+            Logger.LogDebug(string.Join(Environment.NewLine, parts));
+
+            var result = expressionSql.Contains(sql, StringComparison.CurrentCultureIgnoreCase);
+
+            Logger.LogDebug("Match? {result}", result);
+
+            return result;
+        }
+
+        public static string StringifyFromSqlExpression(FromSqlQueryRootExpression expression)
+        {
+            EnsureArgument.IsNotNull(expression, nameof(expression));
+
+            var expressionSql = expression.Sql;
+            var expressionParameters = (object[]) ((ConstantExpression) expression.Argument).Value;
+            var parts = new List<string>();
+            parts.Add($"Invocation sql: '{expressionSql}'");
+            parts.Add("Invocation Parameters:");
+            parts.Add(ParameterMatchingHelper.StringifyParameters(expressionParameters));
+            return string.Join(Environment.NewLine, parts);
+        }
+
+        public static void ThrowIfExpressionIsNotSupported(Expression expression)
+        {
+            if (expression is MethodCallExpression mce)
+            {
+                Logger.LogDebug("{methodName} invoked; expression: '{expression}'", mce.Method.Name, mce);
+
+                if (mce.Method.Name.Equals(nameof(Queryable.ElementAt)))
+                {
+                    throw new InvalidOperationException();
+                }
+
+                if (mce.Method.Name.Equals(nameof(Queryable.ElementAtOrDefault)))
+                {
+                    throw new InvalidOperationException();
+                }
+
+                if (mce.Method.Name.Equals(nameof(Queryable.Select)))
+                {
+                    var unaryExpression = (UnaryExpression) mce.Arguments[1];
+                    var predicateExpression = unaryExpression.Operand;
+                    if (predicateExpression.Type.GetGenericArguments().ToList().Count.Equals(3))
+                    {
+                        throw new InvalidOperationException();
+                    }
+                }
+
+                if (mce.Method.Name.Equals(nameof(Queryable.SkipWhile)))
+                {
+                    throw new InvalidOperationException();
+                }
+
+                if (mce.Method.Name.Equals(nameof(Queryable.TakeWhile)))
+                {
+                    throw new InvalidOperationException();
+                }
+            }
         }
     }
 }
