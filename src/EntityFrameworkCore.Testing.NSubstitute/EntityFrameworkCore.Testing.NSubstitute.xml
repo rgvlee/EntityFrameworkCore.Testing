@@ -90,7 +90,7 @@
             <summary>
                 Adds an item to the end of the mocked db query source.
             </summary>
-            <typeparam name="TQuery">The query type.</typeparam>
+            <typeparam name="TEntity">The entity type.</typeparam>
             <param name="mockedDbQuery">The mocked db query.</param>
             <param name="item">The item to be added to the end of the mocked db query source.</param>
         </member>
@@ -98,7 +98,7 @@
             <summary>
                 Adds the items of the specified sequence to the end of the mocked db query source.
             </summary>
-            <typeparam name="TQuery">The query type.</typeparam>
+            <typeparam name="TEntity">The entity type.</typeparam>
             <param name="mockedDbQuery">The mocked db query.</param>
             <param name="items">The sequence whose items should be added to the end of the mocked db query source.</param>
         </member>
@@ -106,7 +106,7 @@
             <summary>
                 Removes all items from the mocked db query source.
             </summary>
-            <typeparam name="TQuery">The query type.</typeparam>
+            <typeparam name="TEntity">The entity type.</typeparam>
             <param name="mockedDbQuery">The mocked db query.</param>
         </member>
         <member name="T:EntityFrameworkCore.Testing.NSubstitute.Extensions.DbSetExtensions">
