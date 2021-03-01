@@ -2,7 +2,6 @@
 using System.Linq;
 using EntityFrameworkCore.Testing.Common.Tests;
 using EntityFrameworkCore.Testing.NSubstitute.Extensions;
-using NUnit.Framework;
 
 namespace EntityFrameworkCore.Testing.NSubstitute.Tests
 {

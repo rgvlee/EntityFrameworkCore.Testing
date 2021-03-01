@@ -9,6 +9,8 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Tests
 {
     public abstract class BaseForDbQueryTests<T> : Common.Tests.BaseForDbQueryTests<T> where T : BaseTestEntity
     {
+        protected TestDbContext MockedDbContext;
+
         [SetUp]
         public override void SetUp()
         {
@@ -16,8 +18,6 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Tests
 
             MockedDbContext = Create.MockedDbContextFor<TestDbContext>();
         }
-
-        protected TestDbContext MockedDbContext;
 
         protected override void AddFromSqlResult(IQueryable<T> mockedQueryable, IEnumerable<T> expectedResult)
         {
