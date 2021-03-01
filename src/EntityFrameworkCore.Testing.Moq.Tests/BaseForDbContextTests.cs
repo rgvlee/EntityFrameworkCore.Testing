@@ -2,12 +2,10 @@
 using System.Collections.Generic;
 using EntityFrameworkCore.Testing.Moq.Extensions;
 using Microsoft.EntityFrameworkCore;
-using NUnit.Framework;
 
 namespace EntityFrameworkCore.Testing.Moq.Tests
 {
-    [TestFixture]
-    public class BaseForDbContextTests<T> : Common.Tests.BaseForDbContextTests<T> where T : DbContext
+    public abstract class BaseForDbContextTests<T> : Common.Tests.BaseForDbContextTests<T> where T : DbContext
     {
         public override void AddExecuteSqlCommandResult(T mockedDbContext, int expectedResult)
         {

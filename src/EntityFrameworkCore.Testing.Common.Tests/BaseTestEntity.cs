@@ -4,19 +4,18 @@ namespace EntityFrameworkCore.Testing.Common.Tests
 {
     public abstract class BaseTestEntity
     {
-        public virtual Guid Guid { get; set; }
+        public Guid Id { get; set; }
 
-        public string String { get; set; }
+        public string FullName { get; set; }
 
-        public int Int { get; set; }
+        public decimal Weight { get; set; }
 
-        public DateTime DateTime { get; set; }
+        public decimal Height { get; set; }
 
-        public DateTime FixedDateTime { get; set; }
+        public DateTime DateOfBirth { get; set; }
 
-        public override string ToString()
-        {
-            return $"Guid: {Guid}; String: {String}; Int: {Int}; DateTime: {DateTime:F}; FixedDateTime: {FixedDateTime:F}";
-        }
+        public DateTime CreatedAt { get; set; }
+
+        public DateTime LastModifiedAt { get; set; }
     }
 }

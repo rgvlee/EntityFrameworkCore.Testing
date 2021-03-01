@@ -6,7 +6,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
 {
     public class TestDbContext : DbContext
     {
-        private static readonly ILogger Logger = LoggingHelper.CreateLogger(typeof(TestDbContext));
+        private static readonly ILogger Logger = LoggingHelper.CreateLogger<TestDbContext>();
 
         public TestDbContext() { }
 
@@ -19,7 +19,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<TestEntity>().HasKey(c => c.Guid);
+            modelBuilder.Entity<TestEntity>().HasKey(c => c.Id);
             modelBuilder.Query<ViewEntity>().ToView("TestQuery");
         }
 

@@ -12,9 +12,10 @@ It includes support for queries, FromSql, ExecuteSqlCommand, and async LINQ oper
 
 ## Resources
 
-- [Source repository](https://github.com/rgvlee/EntityFrameworkCore.Testing)
-- [EntityFrameworkCore.Testing.Moq - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.Moq/1.2.1)
-- [EntityFrameworkCore.Testing.NSubstitute - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.NSubstitute/1.2.1)
+### EntityFrameworkCore >= 2.1.0 && < 3.0.0
+
+- [EntityFrameworkCore.Testing.Moq - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.Moq/1.3.0)
+- [EntityFrameworkCore.Testing.NSubstitute - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.NSubstitute/1.3.0)
 
 ## Prerequisites
 
@@ -60,7 +61,7 @@ There is no requirement to use the Microsoft in-memory provider. The following e
 using (var connection = new SqliteConnection("Filename=:memory:"))
 {
     connection.Open();
-    var testEntity = Fixture.Create<TestEntity>();
+    var testEntity = _fixture.Create<TestEntity>();
     var dbContextToMock = new TestDbContext(new DbContextOptionsBuilder<TestDbContext>().UseSqlite(connection).Options);
     dbContextToMock.Database.EnsureCreated();
     var mockedDbContext = new MockedDbContextBuilder<TestDbContext>().UseDbContext(dbContextToMock).MockedDbContext;
@@ -70,9 +71,9 @@ using (var connection = new SqliteConnection("Filename=:memory:"))
 
     Assert.Multiple(() =>
     {
-        Assert.AreNotEqual(default(Guid), testEntity.Guid);
+        Assert.AreNotEqual(default(Guid), testEntity.Id);
         Assert.DoesNotThrow(() => mockedDbContext.Set<TestEntity>().Single());
-        Assert.AreEqual(testEntity, mockedDbContext.Find<TestEntity>(testEntity.Guid));
+        Assert.AreEqual(testEntity, mockedDbContext.Find<TestEntity>(testEntity.Id));
     });
 }
 ```
@@ -82,16 +83,16 @@ using (var connection = new SqliteConnection("Filename=:memory:"))
 Start by creating a mocked db context and, if the SUT requires, populate it as if you were using the real thing:
 
 ```c#
-var testEntity = Fixture.Create<TestEntity>();
+var testEntity = _fixture.Create<TestEntity>();
 var mockedDbContext = Create.MockedDbContextFor<TestDbContext>();
 mockedDbContext.Set<TestEntity>().Add(testEntity);
 mockedDbContext.SaveChanges();
 
 Assert.Multiple(() =>
 {
-    Assert.AreNotEqual(default(Guid), testEntity.Guid);
+    Assert.AreNotEqual(default(Guid), testEntity.Id);
     Assert.DoesNotThrow(() => mockedDbContext.Set<TestEntity>().Single());
-    Assert.AreEqual(testEntity, mockedDbContext.Find<TestEntity>(testEntity.Guid));
+    Assert.AreEqual(testEntity, mockedDbContext.Find<TestEntity>(testEntity.Id));
 });
 ```
 
@@ -99,7 +100,7 @@ The Moq implementation of `Create.MockedDbContextFor<T>()` returns the mocked db
 
 ```c#
 var mockedDbContext = Create.MockedDbContextFor<TestDbContext>();
-mockedDbContext.Set<TestEntity>().AddRange(Fixture.CreateMany<TestEntity>().ToList());
+mockedDbContext.Set<TestEntity>().AddRange(_fixture.CreateMany<TestEntity>().ToList());
 mockedDbContext.SaveChanges();
 
 Assert.Multiple(() =>
@@ -114,7 +115,7 @@ Assert.Multiple(() =>
 Use `AddFromSqlResult` to add a from SQL result to the mock. The following will return `expectedResult` for any `FromSql<TestEntity>` invocation:
 
 ```c#
-var expectedResult = Fixture.CreateMany<TestEntity>().ToList();
+var expectedResult = _fixture.CreateMany<TestEntity>().ToList();
 var mockedDbContext = Create.MockedDbContextFor<TestDbContext>();
 mockedDbContext.Set<TestEntity>().AddFromSqlResult(expectedResult);
 
@@ -131,7 +132,7 @@ Assert.Multiple(() =>
 The following will return `expectedResult` if the `FromSql` SQL query text contains `usp_StoredProcedureWithParameters` and a `@Parameter2` SQL parameter with a value of `Value2` has been provided:
 
 ```c#
-var expectedResult = Fixture.CreateMany<TestEntity>().ToList();
+var expectedResult = _fixture.CreateMany<TestEntity>().ToList();
 var sqlParameters = new List<SqlParameter> { new SqlParameter("@Parameter2", "Value2") };
 var mockedDbContext = Create.MockedDbContextFor<TestDbContext>();
 mockedDbContext.Set<TestEntity>().AddFromSqlResult("usp_StoredProcedureWithParameters", sqlParameters, expectedResult);
@@ -151,9 +152,9 @@ Assert.Multiple(() =>
 SQL query text matching supports partial, case insensitive matches. Individual parameter name and value matching is also case insentive. Case insensitive interpolated strings are also supported:
 
 ```c#
-var expectedResult = Fixture.CreateMany<TestEntity>().ToList();
-var parameter1 = Fixture.Create<DateTime>();
-var parameter2 = Fixture.Create<string>();
+var expectedResult = _fixture.CreateMany<TestEntity>().ToList();
+var parameter1 = _fixture.Create<DateTime>();
+var parameter2 = _fixture.Create<string>();
 var mockedDbContext = Create.MockedDbContextFor<TestDbContext>();
 mockedDbContext.Set<TestEntity>().AddFromSqlResult($"usp_StoredProcedureWithParameters {parameter1}, {parameter2.ToUpper()}", expectedResult);
 
@@ -172,15 +173,15 @@ Assert.Multiple(() =>
 Use `AddToReadOnlySource`, `AddRangeToReadOnlySource` and `ClearReadOnlySource` to manage a query source.
 
 ```c#
-var expectedResult = Fixture.CreateMany<TestQuery>().ToList();
+var expectedResult = _fixture.CreateMany<ViewEntity>().ToList();
 var mockedDbContext = Create.MockedDbContextFor<TestDbContext>();
 
-mockedDbContext.Query<TestQuery>().AddRangeToReadOnlySource(expectedResult);
+mockedDbContext.Query<ViewEntity>().AddRangeToReadOnlySource(expectedResult);
 
 Assert.Multiple(() =>
 {
-    CollectionAssert.AreEquivalent(expectedResult, mockedDbContext.Query<TestQuery>().ToList());
-    CollectionAssert.AreEquivalent(mockedDbContext.Query<TestQuery>().ToList(), mockedDbContext.TestView.ToList());
+    CollectionAssert.AreEquivalent(expectedResult, mockedDbContext.Query<ViewEntity>().ToList());
+    CollectionAssert.AreEquivalent(mockedDbContext.Query<ViewEntity>().ToList(), mockedDbContext.ViewEntities.ToList());
 });
 ```
 
@@ -208,7 +209,7 @@ All of the overloads have an optional `Action<string, IEnumerable<object>>` para
 var mockedDbContext = Create.MockedDbContextFor<TestDbContext>();
 
 var itemsToCreate = 100;
-mockedDbContext.Set<TestEntity>().AddRange(Fixture.CreateMany<TestEntity>(itemsToCreate).ToList());
+mockedDbContext.Set<TestEntity>().AddRange(_fixture.CreateMany<TestEntity>(itemsToCreate).ToList());
 mockedDbContext.SaveChanges();
 
 var numberOfRowsToDelete = itemsToCreate / 2;
@@ -245,7 +246,7 @@ The db context and each set, query and their respective query providers are sepa
 
 ```c#
 var mockedDbContext = Create.MockedDbContextFor<TestDbContext>();
-mockedDbContext.Set<TestEntity>().AddRange(Fixture.CreateMany<TestEntity>().ToList());
+mockedDbContext.Set<TestEntity>().AddRange(_fixture.CreateMany<TestEntity>().ToList());
 mockedDbContext.SaveChanges();
 
 var dbContextMock = Mock.Get(mockedDbContext);

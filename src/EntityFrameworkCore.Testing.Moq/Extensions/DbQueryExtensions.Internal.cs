@@ -13,45 +13,44 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
 {
     public static partial class DbQueryExtensions
     {
-        internal static DbQuery<TQuery> CreateMockedDbQuery<TQuery>(this DbQuery<TQuery> dbQuery) where TQuery : class
+        internal static DbQuery<TEntity> CreateMockedDbQuery<TEntity>(this DbQuery<TEntity> dbQuery) where TEntity : class
         {
             EnsureArgument.IsNotNull(dbQuery, nameof(dbQuery));
 
-            var dbQueryMock = new Mock<DbQuery<TQuery>>();
+            var dbQueryMock = new Mock<DbQuery<TEntity>>();
 
-            var queryable = new List<TQuery>().AsQueryable();
+            var asyncEnumerable = new AsyncEnumerable<TEntity>(new List<TEntity>());
+            var mockedQueryProvider = ((IQueryable<TEntity>) dbQuery).Provider.CreateMockedQueryProvider(asyncEnumerable);
 
-            dbQueryMock.As<IAsyncEnumerableAccessor<TQuery>>().Setup(m => m.AsyncEnumerable).Returns(queryable.ToAsyncEnumerable());
-            dbQueryMock.As<IQueryable<TQuery>>().Setup(m => m.ElementType).Returns(queryable.ElementType);
-            dbQueryMock.As<IQueryable<TQuery>>().Setup(m => m.Expression).Returns(queryable.Expression);
-            dbQueryMock.As<IEnumerable>().Setup(m => m.GetEnumerator()).Returns(queryable.GetEnumerator());
-            dbQueryMock.As<IEnumerable<TQuery>>().Setup(m => m.GetEnumerator()).Returns(queryable.GetEnumerator());
+            dbQueryMock.As<IAsyncEnumerableAccessor<TEntity>>().Setup(m => m.AsyncEnumerable).Returns(() => asyncEnumerable);
+            dbQueryMock.As<IQueryable<TEntity>>().Setup(m => m.ElementType).Returns(() => asyncEnumerable.ElementType);
+            dbQueryMock.As<IQueryable<TEntity>>().Setup(m => m.Expression).Returns(() => asyncEnumerable.Expression);
+            dbQueryMock.As<IEnumerable>().Setup(m => m.GetEnumerator()).Returns(() => ((IEnumerable) asyncEnumerable).GetEnumerator());
+            dbQueryMock.As<IEnumerable<TEntity>>().Setup(m => m.GetEnumerator()).Returns(() => ((IEnumerable<TEntity>) asyncEnumerable).GetEnumerator());
 
-            dbQueryMock.As<IInfrastructure<IServiceProvider>>().Setup(m => m.Instance).Returns(((IInfrastructure<IServiceProvider>) dbQuery).Instance);
+            dbQueryMock.As<IInfrastructure<IServiceProvider>>().Setup(m => m.Instance).Returns(() => ((IInfrastructure<IServiceProvider>) dbQuery).Instance);
 
-            var mockedQueryProvider = ((IQueryable<TQuery>) dbQuery).Provider.CreateMockedQueryProvider(new List<TQuery>());
-            dbQueryMock.As<IQueryable<TQuery>>().Setup(m => m.Provider).Returns(mockedQueryProvider);
+            dbQueryMock.As<IQueryable<TEntity>>().Setup(m => m.Provider).Returns(() => mockedQueryProvider);
 
             return dbQueryMock.Object;
         }
 
-        internal static void SetSource<TQuery>(this DbQuery<TQuery> mockedDbQuery, IEnumerable<TQuery> source) where TQuery : class
+        internal static void SetSource<TEntity>(this DbQuery<TEntity> mockedDbQuery, IEnumerable<TEntity> source) where TEntity : class
         {
             EnsureArgument.IsNotNull(mockedDbQuery, nameof(mockedDbQuery));
             EnsureArgument.IsNotNull(source, nameof(source));
 
             var dbQueryMock = Mock.Get(mockedDbQuery);
 
-            var queryable = source.AsQueryable();
+            var asyncEnumerable = new AsyncEnumerable<TEntity>(source);
+            var mockedQueryProvider = ((IQueryable<TEntity>) mockedDbQuery).Provider;
 
-            dbQueryMock.As<IAsyncEnumerableAccessor<TQuery>>().Setup(m => m.AsyncEnumerable).Returns(queryable.ToAsyncEnumerable());
-            dbQueryMock.As<IQueryable<TQuery>>().Setup(m => m.ElementType).Returns(queryable.ElementType);
-            dbQueryMock.As<IQueryable<TQuery>>().Setup(m => m.Expression).Returns(queryable.Expression);
-            dbQueryMock.As<IEnumerable>().Setup(m => m.GetEnumerator()).Returns(queryable.GetEnumerator());
-            dbQueryMock.As<IEnumerable<TQuery>>().Setup(m => m.GetEnumerator()).Returns(queryable.GetEnumerator());
+            dbQueryMock.As<IAsyncEnumerableAccessor<TEntity>>().Setup(m => m.AsyncEnumerable).Returns(() => asyncEnumerable);
+            dbQueryMock.As<IQueryable<TEntity>>().Setup(m => m.Expression).Returns(() => asyncEnumerable.Expression);
+            dbQueryMock.As<IEnumerable>().Setup(m => m.GetEnumerator()).Returns(() => ((IEnumerable) asyncEnumerable).GetEnumerator());
+            dbQueryMock.As<IEnumerable<TEntity>>().Setup(m => m.GetEnumerator()).Returns(() => ((IEnumerable<TEntity>) asyncEnumerable).GetEnumerator());
 
-            var provider = ((IQueryable<TQuery>) mockedDbQuery).Provider;
-            ((AsyncQueryProvider<TQuery>) provider).SetSource(queryable);
+            ((AsyncQueryProvider<TEntity>) mockedQueryProvider).SetSource(asyncEnumerable);
         }
     }
 }

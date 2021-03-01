@@ -2,36 +2,36 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Threading.Tasks;
 using AutoFixture;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore.Extensions.Internal;
 using NUnit.Framework;
 
 namespace EntityFrameworkCore.Testing.Common.Tests
 {
-    [TestFixture]
-    public abstract class BaseForDbQueryTests<TQuery> : BaseForMockedQueryableTests<TQuery> where TQuery : BaseTestEntity
+    public abstract class BaseForDbQueryTests<TEntity> : BaseForMockedQueryableTests<TEntity> where TEntity : BaseTestEntity
     {
+        protected DbQuery<TEntity> DbQuery => (DbQuery<TEntity>) Queryable;
+
         protected override void SeedQueryableSource()
         {
-            var itemsToAdd = Fixture.Build<TQuery>().With(p => p.FixedDateTime, DateTime.Parse("2019-01-01")).CreateMany().ToList();
+            var itemsToAdd = Fixture.Build<TEntity>().With(p => p.CreatedAt, DateTime.Parse("2019-01-01")).CreateMany().ToList();
             AddRangeToReadOnlySource(DbQuery, itemsToAdd);
             //MockedDbContext.SaveChanges();
             ItemsAddedToQueryableSource = itemsToAdd;
         }
 
-        protected DbQuery<TQuery> DbQuery => (DbQuery<TQuery>) Queryable;
+        protected abstract void AddToReadOnlySource(DbQuery<TEntity> mockedDbQuery, TEntity item);
 
-        protected abstract void AddToReadOnlySource(DbQuery<TQuery> mockedDbQuery, TQuery item);
+        protected abstract void AddRangeToReadOnlySource(DbQuery<TEntity> mockedDbQuery, IEnumerable<TEntity> items);
 
-        protected abstract void AddRangeToReadOnlySource(DbQuery<TQuery> mockedDbQuery, IEnumerable<TQuery> items);
-
-        protected abstract void ClearReadOnlySource(DbQuery<TQuery> mockedDbQuery);
+        protected abstract void ClearReadOnlySource(DbQuery<TEntity> mockedDbQuery);
 
         [Test]
         public virtual void AddRangeToReadOnlySource_Items_AddsItemsToReadOnlySource()
         {
-            var expectedResult = Fixture.CreateMany<TQuery>().ToList();
+            var expectedResult = Fixture.CreateMany<TEntity>().ToList();
 
             AddRangeToReadOnlySource(DbQuery, expectedResult);
 
@@ -41,7 +41,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         [Test]
         public virtual void AddRangeToReadOnlySourceThenAddRangeToReadOnlySource_Items_AddsAllItemsToReadOnlySource()
         {
-            var expectedResult = Fixture.CreateMany<TQuery>(4).ToList();
+            var expectedResult = Fixture.CreateMany<TEntity>(4).ToList();
 
             AddRangeToReadOnlySource(DbQuery, expectedResult.Take(2));
             AddRangeToReadOnlySource(DbQuery, expectedResult.Skip(2));
@@ -52,7 +52,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         [Test]
         public virtual void AddToReadOnlySource_Item_AddsItemToReadOnlySource()
         {
-            var expectedResult = Fixture.Create<TQuery>();
+            var expectedResult = Fixture.Create<TEntity>();
 
             AddToReadOnlySource(DbQuery, expectedResult);
             var numberOfItemsAdded = DbQuery.ToList().Count;
@@ -63,7 +63,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         [Test]
         public virtual void AddToReadOnlySourceThenAddToReadOnlySource_Items_AddsBothItemsToReadOnlySource()
         {
-            var expectedResult = Fixture.CreateMany<TQuery>(2).ToList();
+            var expectedResult = Fixture.CreateMany<TEntity>(2).ToList();
 
             AddToReadOnlySource(DbQuery, expectedResult.First());
             AddToReadOnlySource(DbQuery, expectedResult.Last());
@@ -75,13 +75,49 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         public virtual void AnyThenAddToReadOnlySourceThenAny_ReturnsFalseThenTrue()
         {
             var actualResult1 = DbQuery.Any();
-            AddToReadOnlySource(DbQuery, Fixture.Create<TQuery>());
+            AddToReadOnlySource(DbQuery, Fixture.Create<TEntity>());
             var actualResult2 = DbQuery.Any();
 
             Assert.Multiple(() =>
             {
                 Assert.That(actualResult1, Is.False);
                 Assert.That(actualResult2, Is.True);
+            });
+        }
+
+        [Test]
+        public virtual async Task AsAsyncEnumerable_ReturnsAsyncEnumerable()
+        {
+            var expectedResult = Fixture.Create<TEntity>();
+            AddToReadOnlySource(DbQuery, expectedResult);
+
+            var asyncEnumerable = await DbQuery.AsAsyncEnumerable().ToList();
+
+            var actualResults = new List<TEntity>();
+            foreach (var item in asyncEnumerable)
+            {
+                actualResults.Add(item);
+            }
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(actualResults.Single(), Is.EqualTo(expectedResult));
+                Assert.That(actualResults.Single(), Is.EqualTo(expectedResult));
+            });
+        }
+
+        [Test]
+        public virtual void AsQueryable_ReturnsQueryable()
+        {
+            var expectedResult = Fixture.Create<TEntity>();
+            AddToReadOnlySource(DbQuery, expectedResult);
+
+            var queryable = DbQuery.AsQueryable();
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(queryable.Single(), Is.EqualTo(expectedResult));
+                Assert.That(queryable.Single(), Is.EqualTo(expectedResult));
             });
         }
 
@@ -103,7 +139,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         [Test]
         public virtual void ClearReadOnlySourceWithExistingItems_RemovesAllItemsFromReadOnlySource()
         {
-            var expectedResult = Fixture.CreateMany<TQuery>().ToList();
+            var expectedResult = Fixture.CreateMany<TEntity>().ToList();
             AddRangeToReadOnlySource(DbQuery, expectedResult);
             var numberOfItemsAdded = DbQuery.ToList().Count;
 
@@ -120,23 +156,23 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         public override void FromSql_QueryProviderWithManyFromSqlResults_ReturnsExpectedResults()
         {
             var sql1 = "sp_NoParams";
-            var expectedResult1 = Fixture.CreateMany<TQuery>().ToList();
+            var expectedResult1 = Fixture.CreateMany<TEntity>().ToList();
 
             var sql2 = "sp_WithParams";
             var parameters2 = new List<SqlParameter> { new SqlParameter("@SomeParameter1", "Value1"), new SqlParameter("@SomeParameter2", "Value2") };
-            var expectedResult2 = Fixture.CreateMany<TQuery>().ToList();
+            var expectedResult2 = Fixture.CreateMany<TEntity>().ToList();
 
             AddFromSqlResult(DbQuery, sql1, expectedResult1);
 
             //Change the source, this will force the query provider mock to aggregate
-            AddRangeToReadOnlySource(DbQuery, Fixture.CreateMany<TQuery>().ToList());
+            AddRangeToReadOnlySource(DbQuery, Fixture.CreateMany<TEntity>().ToList());
 
             AddFromSqlResult(DbQuery, sql2, parameters2, expectedResult2);
 
-            Logger.LogDebug("actualResult1");
+            Console.WriteLine("actualResult1");
             var actualResult1 = DbQuery.FromSql("[dbo].[sp_NoParams]").ToList();
 
-            Logger.LogDebug("actualResult2");
+            Console.WriteLine("actualResult2");
             var actualResult2 = DbQuery.FromSql("[dbo].[sp_WithParams]", parameters2.ToArray()).ToList();
 
             Assert.Multiple(() =>

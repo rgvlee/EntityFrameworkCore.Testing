@@ -7,17 +7,17 @@ using NUnit.Framework;
 
 namespace EntityFrameworkCore.Testing.Moq.Tests
 {
-    [TestFixture]
     public abstract class BaseForDbQueryTests<T> : Common.Tests.BaseForDbQueryTests<T> where T : BaseTestEntity
     {
+        protected TestDbContext MockedDbContext;
+
         [SetUp]
         public override void SetUp()
         {
-            MockedDbContext = Create.MockedDbContextFor<TestDbContext>();
             base.SetUp();
-        }
 
-        protected TestDbContext MockedDbContext;
+            MockedDbContext = Create.MockedDbContextFor<TestDbContext>();
+        }
 
         protected override void AddFromSqlResult(IQueryable<T> mockedQueryable, IEnumerable<T> expectedResult)
         {

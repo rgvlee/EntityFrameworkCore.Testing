@@ -5,12 +5,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoFixture;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using NUnit.Framework;
 
 namespace EntityFrameworkCore.Testing.Common.Tests
 {
-    [TestFixture]
     public abstract class BaseForDbContextTests<TDbContext> : BaseForTests where TDbContext : DbContext
     {
         protected TDbContext MockedDbContext;
@@ -46,9 +44,9 @@ namespace EntityFrameworkCore.Testing.Common.Tests
 
             void Callback(string providedSql, IEnumerable<object> providedParameters)
             {
-                Logger.LogDebug($"Before callback invoked: {source.Count}");
+                Console.WriteLine($"Before callback invoked: {source.Count}");
                 source = source.Take(1).ToList();
-                Logger.LogDebug($"After callback invoked: {source.Count}");
+                Console.WriteLine($"After callback invoked: {source.Count}");
             }
 
             var parameters = new List<object>();
@@ -57,7 +55,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
                 parameters.Add(new SqlParameter(parameterName, parameterValue));
             }
 
-            Logger.LogDebug("Setting up ExecuteSqlCommand");
+            Console.WriteLine("Setting up ExecuteSqlCommand");
             if (!string.IsNullOrWhiteSpace(sql) && parameters.Any())
             {
                 AddExecuteSqlCommandResult(MockedDbContext, sql, parameters, expectedResult, Callback);
@@ -73,7 +71,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
 
             var postSetUpCount = source.Count;
 
-            Logger.LogDebug("Invoking ExecuteSqlCommand");
+            Console.WriteLine("Invoking ExecuteSqlCommand");
             var actualResult1 = default(int);
             var actualResult2 = default(int);
             if (!string.IsNullOrWhiteSpace(sql) && parameters.Any())
@@ -92,7 +90,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
                 actualResult2 = MockedDbContext.Database.ExecuteSqlCommand("sp_NoParams");
             }
 
-            Logger.LogDebug("ExecuteSqlCommand invoked");
+            Console.WriteLine("ExecuteSqlCommand invoked");
 
             Assert.Multiple(() =>
             {
@@ -116,9 +114,9 @@ namespace EntityFrameworkCore.Testing.Common.Tests
 
             void Callback(string providedSql, IEnumerable<object> providedParameters)
             {
-                Logger.LogDebug($"Before callback invoked: {source.Count}");
+                Console.WriteLine($"Before callback invoked: {source.Count}");
                 source = source.Take(1).ToList();
-                Logger.LogDebug($"After callback invoked: {source.Count}");
+                Console.WriteLine($"After callback invoked: {source.Count}");
             }
 
             var parameters = new List<object>();
@@ -127,7 +125,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
                 parameters.Add(new SqlParameter(parameterName, parameterValue));
             }
 
-            Logger.LogDebug("Setting up ExecuteSqlCommand");
+            Console.WriteLine("Setting up ExecuteSqlCommand");
             if (!string.IsNullOrWhiteSpace(sql) && parameters.Any())
             {
                 AddExecuteSqlCommandResult(MockedDbContext, sql, parameters, expectedResult, Callback);
@@ -143,7 +141,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
 
             var postSetUpCount = source.Count;
 
-            Logger.LogDebug("Invoking ExecuteSqlCommand");
+            Console.WriteLine("Invoking ExecuteSqlCommand");
             var actualResult1 = default(int);
             var actualResult2 = default(int);
             if (!string.IsNullOrWhiteSpace(sql) && parameters.Any())
@@ -162,7 +160,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
                 actualResult2 = await MockedDbContext.Database.ExecuteSqlCommandAsync("sp_NoParams");
             }
 
-            Logger.LogDebug("ExecuteSqlCommand invoked");
+            Console.WriteLine("ExecuteSqlCommand invoked");
 
             Assert.Multiple(() =>
             {
@@ -403,6 +401,15 @@ namespace EntityFrameworkCore.Testing.Common.Tests
             {
                 var ex = Assert.Throws<InvalidOperationException>(() => MockedDbContext.Set<NotRegisteredEntity>().ToList());
                 Assert.That(ex.Message, Is.EqualTo(string.Format(ExceptionMessages.CannotCreateDbSetTypeNotIncludedInModel, nameof(NotRegisteredEntity))));
+            });
+        }
+
+        [Test]
+        public virtual void SetCommandTimeout_ValidTimeout_DoesNotThrowException()
+        {
+            Assert.DoesNotThrow(() =>
+            {
+                MockedDbContext.Database.SetCommandTimeout(60);
             });
         }
     }

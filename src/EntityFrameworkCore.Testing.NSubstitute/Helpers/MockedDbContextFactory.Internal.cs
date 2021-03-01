@@ -8,9 +8,11 @@ using EntityFrameworkCore.Testing.NSubstitute.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Internal;
+using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
 using NSubstitute.Core;
+using NSubstitute.ExceptionExtensions;
 using NSubstitute.Extensions;
 
 namespace EntityFrameworkCore.Testing.NSubstitute.Helpers
@@ -100,22 +102,41 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Helpers
 
             foreach (var entity in DbContext.Model.GetEntityTypes().Where(x => !x.IsQueryType))
             {
-                typeof(MockedDbContextFactory<TDbContext>).GetMethod(nameof(SetUpDbSetFor), BindingFlags.Instance | BindingFlags.NonPublic)
+                typeof(MockedDbContextFactory<TDbContext>).GetMethod(nameof(SetUpModelEntity), BindingFlags.Instance | BindingFlags.NonPublic)
                     .MakeGenericMethod(entity.ClrType)
                     .Invoke(this, new object[] { mockedDbContext });
             }
 
             foreach (var entity in DbContext.Model.GetEntityTypes().Where(x => x.IsQueryType))
             {
-                typeof(MockedDbContextFactory<TDbContext>).GetMethod(nameof(SetUpDbQueryFor), BindingFlags.Instance | BindingFlags.NonPublic)
+                typeof(MockedDbContextFactory<TDbContext>).GetMethod(nameof(SetUpReadOnlyModelEntity), BindingFlags.Instance | BindingFlags.NonPublic)
                     .MakeGenericMethod(entity.ClrType)
                     .Invoke(this, new object[] { mockedDbContext });
             }
 
+            //Relational set up
+            var rawSqlCommandBuilder = Substitute.For<IRawSqlCommandBuilder>();
+            rawSqlCommandBuilder.Build(Arg.Any<string>(), Arg.Any<IEnumerable<object>>())
+                .Throws(callInfo =>
+                {
+                    Logger.LogDebug("Catch all exception invoked");
+                    return new InvalidOperationException();
+                });
+
+            var serviceProvider = Substitute.For<IServiceProvider>();
+            serviceProvider.GetService(Arg.Is<Type>(t => t == typeof(IConcurrencyDetector))).Returns(callInfo => Substitute.For<IConcurrencyDetector>());
+            serviceProvider.GetService(Arg.Is<Type>(t => t == typeof(IRawSqlCommandBuilder))).Returns(callInfo => rawSqlCommandBuilder);
+            serviceProvider.GetService(Arg.Is<Type>(t => t == typeof(IRelationalConnection))).Returns(callInfo => Substitute.For<IRelationalConnection>());
+
+            var databaseFacade = Substitute.For(new[] { typeof(DatabaseFacade), typeof(IInfrastructure<IServiceProvider>) }, new[] { mockedDbContext });
+            ((IInfrastructure<IServiceProvider>) databaseFacade).Instance.Returns(callInfo => serviceProvider);
+
+            mockedDbContext.Database.Returns(callInfo => databaseFacade);
+
             return mockedDbContext;
         }
 
-        private void SetUpDbSetFor<TEntity>(TDbContext mockedDbContext) where TEntity : class
+        private void SetUpModelEntity<TEntity>(TDbContext mockedDbContext) where TEntity : class
         {
             var mockedDbSet = DbContext.Set<TEntity>().CreateMockedDbSet();
 
@@ -123,11 +144,11 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Helpers
 
             if (property != null)
             {
-                property.GetValue(mockedDbContext.Configure()).Returns(mockedDbSet);
+                property.GetValue(mockedDbContext.Configure()).Returns(callInfo => mockedDbSet);
             }
             else
             {
-                Logger.LogDebug($"Could not find a DbContext property for type '{typeof(TEntity)}'");
+                Logger.LogDebug("Could not find a DbContext property for type '{type}'", typeof(TEntity));
             }
 
             mockedDbContext.Configure().Set<TEntity>().Returns(callInfo => mockedDbSet);
@@ -153,22 +174,22 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Helpers
             mockedDbContext.Update(Arg.Any<TEntity>()).Returns(callInfo => DbContext.Update(callInfo.Arg<TEntity>()));
         }
 
-        private void SetUpDbQueryFor<TQuery>(TDbContext mockedDbContext) where TQuery : class
+        private void SetUpReadOnlyModelEntity<TEntity>(TDbContext mockedDbContext) where TEntity : class
         {
-            var mockedDbQuery = DbContext.Query<TQuery>().CreateMockedDbQuery();
+            var mockedDbQuery = DbContext.Query<TEntity>().CreateMockedDbQuery();
 
-            var property = typeof(TDbContext).GetProperties().SingleOrDefault(p => p.PropertyType == typeof(DbQuery<TQuery>));
+            var property = typeof(TDbContext).GetProperties().SingleOrDefault(p => p.PropertyType == typeof(DbQuery<TEntity>));
 
             if (property != null)
             {
-                property.GetValue(mockedDbContext.Configure()).Returns(mockedDbQuery);
+                property.GetValue(mockedDbContext.Configure()).Returns(callInfo => mockedDbQuery);
             }
             else
             {
-                Logger.LogDebug($"Could not find a DbContext property for type '{typeof(TQuery)}'");
+                Logger.LogDebug("Could not find a DbContext property for type '{type}'", typeof(TEntity));
             }
 
-            mockedDbContext.Configure().Query<TQuery>().Returns(callInfo => mockedDbQuery);
+            mockedDbContext.Configure().Query<TEntity>().Returns(callInfo => mockedDbQuery);
         }
     }
 }
