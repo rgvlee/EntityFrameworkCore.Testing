@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EntityFrameworkCore.Testing.Moq.Tests
 {
-    public class BaseForDbContextTests<T> : Common.Tests.BaseForDbContextTests<T> where T : DbContext
+    public abstract class BaseForDbContextTests<T> : Common.Tests.BaseForDbContextTests<T> where T : DbContext
     {
         public override void AddExecuteSqlInterpolatedResult(T mockedDbContext, int expectedResult)
         {
