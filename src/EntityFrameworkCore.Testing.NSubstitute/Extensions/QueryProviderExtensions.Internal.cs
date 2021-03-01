@@ -14,7 +14,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
             EnsureArgument.IsNotNull(queryProviderToMock, nameof(queryProviderToMock));
             EnsureArgument.IsNotNull(collection, nameof(collection));
 
-            var mockedQueryProvider = Substitute.ForPartsOf<AsyncQueryProvider<T>>(collection.AsQueryable());
+            var mockedQueryProvider = Substitute.ForPartsOf<AsyncQueryProvider<T>>(collection);
             return mockedQueryProvider;
         }
 

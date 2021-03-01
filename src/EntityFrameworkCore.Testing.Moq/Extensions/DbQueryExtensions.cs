@@ -23,9 +23,8 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
 
             var list = mockedDbQuery.ToList();
             list.Add(item);
-            var queryable = list.AsQueryable();
 
-            mockedDbQuery.SetSource(queryable);
+            mockedDbQuery.SetSource(list);
         }
 
         /// <summary>
@@ -41,9 +40,8 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
 
             var list = mockedDbQuery.ToList();
             list.AddRange(items);
-            var queryable = list.AsQueryable();
 
-            mockedDbQuery.SetSource(queryable);
+            mockedDbQuery.SetSource(list);
         }
 
         /// <summary>
