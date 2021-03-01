@@ -83,19 +83,12 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         }
 
         [Test]
-        public void ContainsListCollection_ReturnsFalse()
-        {
-            var containsListCollection = ((IListSource) DbSet).ContainsListCollection;
-            Assert.That(containsListCollection, Is.False);
-        }
-
-        [Test]
         public void Find_Item_ThrowsException()
         {
             var itemToFind = Fixture.Create<TEntity>();
             var ex = Assert.Throws<NullReferenceException>(() =>
             {
-                DbSet.Find(itemToFind.Guid);
+                DbSet.Find(itemToFind.Id);
             });
             Assert.That(ex.Message, Is.EqualTo("Object reference not set to an instance of an object."));
         }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Linq;
 using EntityFrameworkCore.Testing.Common.Tests;
 using Microsoft.EntityFrameworkCore;
@@ -15,6 +16,8 @@ namespace EntityFrameworkCore.DefaultBehaviour.Tests
         [SetUp]
         public override void SetUp()
         {
+            base.SetUp();
+
             DbContext = new TestDbContext(new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
         }
 
@@ -32,6 +35,13 @@ namespace EntityFrameworkCore.DefaultBehaviour.Tests
             var queryable = DbQuery.AsQueryable();
 
             Assert.That(queryable, Is.Not.Null);
+        }
+
+        [Test]
+        public void ContainsListCollection_ReturnsFalse()
+        {
+            var containsListCollection = ((IListSource) DbQuery).ContainsListCollection;
+            Assert.That(containsListCollection, Is.False);
         }
     }
 }

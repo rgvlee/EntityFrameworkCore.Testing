@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,8 +10,10 @@ using NUnit.Framework;
 
 namespace EntityFrameworkCore.Testing.Common.Tests
 {
-    public abstract class BaseForMockedDbSetQueryProviderTests<TEntity> : BaseForQueryableTests<TEntity> where TEntity : BaseTestEntity
+    public abstract class BaseForMockedQueryableTests<TEntity> : BaseForQueryableTests<TEntity> where TEntity : BaseTestEntity
     {
+        protected DbSet<TEntity> DbSet => (DbSet<TEntity>) Queryable;
+
         protected abstract void AddFromSqlRawResult(DbSet<TEntity> mockedDbSet, IEnumerable<TEntity> expectedResult);
 
         protected abstract void AddFromSqlRawResult(DbSet<TEntity> mockedDbSet, string sql, IEnumerable<TEntity> expectedResult);
@@ -22,8 +25,6 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         protected abstract void AddFromSqlInterpolatedResult(DbSet<TEntity> mockedDbSet, FormattableString sql, IEnumerable<TEntity> expectedResult);
 
         protected abstract void AddFromSqlInterpolatedResult(DbSet<TEntity> mockedDbSet, string sql, IEnumerable<object> parameters, IEnumerable<TEntity> expectedResult);
-
-        protected DbSet<TEntity> DbSet => (DbSet<TEntity>) Queryable;
 
         [Test]
         public virtual void FormattableStringSetUpFromSqlInterpolated_SpecifiedSqlWithStringParameters_ReturnsExpectedResult()
@@ -307,6 +308,13 @@ namespace EntityFrameworkCore.Testing.Common.Tests
                 Assert.That(actualResult1, Is.EqualTo(expectedResult.First()));
                 Assert.That(actualResult2, Is.EqualTo(expectedResult.First()));
             });
+        }
+
+        [Test]
+        public void ContainsListCollection_ReturnsFalse()
+        {
+            var containsListCollection = ((IListSource) Queryable).ContainsListCollection;
+            Assert.That(containsListCollection, Is.False);
         }
     }
 }

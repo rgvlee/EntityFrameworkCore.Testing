@@ -9,11 +9,11 @@ using NUnit.Framework;
 
 namespace EntityFrameworkCore.Testing.Common.Tests
 {
-    public abstract class BaseForReadOnlyDbSetTests<TEntity> : BaseForMockedDbSetQueryProviderTests<TEntity> where TEntity : BaseTestEntity
+    public abstract class BaseForReadOnlyDbSetTests<TEntity> : BaseForMockedQueryableTests<TEntity> where TEntity : BaseTestEntity
     {
         protected override void SeedQueryableSource()
         {
-            var itemsToAdd = Fixture.Build<TEntity>().With(p => p.FixedDateTime, DateTime.Parse("2019-01-01")).CreateMany().ToList();
+            var itemsToAdd = Fixture.Build<TEntity>().With(p => p.CreatedAt, DateTime.Parse("2019-01-01")).CreateMany().ToList();
             AddRangeToReadOnlySource(DbSet, itemsToAdd);
             //MockedDbContext.SaveChanges();
             ItemsAddedToQueryableSource = itemsToAdd;

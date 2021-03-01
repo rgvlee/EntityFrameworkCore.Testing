@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoFixture;
+using AutoMapper;
+using KellermanSoftware.CompareNetObjects;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 
@@ -12,19 +13,19 @@ namespace EntityFrameworkCore.Testing.Common.Tests
 {
     public abstract class BaseForQueryableTests<T> : BaseForTests where T : BaseTestEntity
     {
+        protected List<T> ItemsAddedToQueryableSource;
+
         protected abstract IQueryable<T> Queryable { get; }
 
         protected abstract void SeedQueryableSource();
-
-        protected List<T> ItemsAddedToQueryableSource;
 
         [Test]
         public virtual void All_FalseCondition_ReturnsFalse()
         {
             SeedQueryableSource();
 
-            var actualResult1 = Queryable.All(x => string.IsNullOrWhiteSpace(x.String));
-            var actualResult2 = Queryable.All(x => string.IsNullOrWhiteSpace(x.String));
+            var actualResult1 = Queryable.All(x => string.IsNullOrWhiteSpace(x.FullName));
+            var actualResult2 = Queryable.All(x => string.IsNullOrWhiteSpace(x.FullName));
 
             Assert.Multiple(() =>
             {
@@ -38,8 +39,8 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         {
             SeedQueryableSource();
 
-            var actualResult1 = Queryable.All(x => !string.IsNullOrWhiteSpace(x.String));
-            var actualResult2 = Queryable.All(x => !string.IsNullOrWhiteSpace(x.String));
+            var actualResult1 = Queryable.All(x => !string.IsNullOrWhiteSpace(x.FullName));
+            var actualResult2 = Queryable.All(x => !string.IsNullOrWhiteSpace(x.FullName));
 
             Assert.Multiple(() =>
             {
@@ -53,8 +54,8 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         {
             SeedQueryableSource();
 
-            var actualResult1 = await Queryable.AllAsync(x => string.IsNullOrWhiteSpace(x.String));
-            var actualResult2 = await Queryable.AllAsync(x => string.IsNullOrWhiteSpace(x.String));
+            var actualResult1 = await Queryable.AllAsync(x => string.IsNullOrWhiteSpace(x.FullName));
+            var actualResult2 = await Queryable.AllAsync(x => string.IsNullOrWhiteSpace(x.FullName));
 
             Assert.Multiple(() =>
             {
@@ -68,8 +69,8 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         {
             SeedQueryableSource();
 
-            var actualResult1 = await Queryable.AllAsync(x => !string.IsNullOrWhiteSpace(x.String));
-            var actualResult2 = await Queryable.AllAsync(x => !string.IsNullOrWhiteSpace(x.String));
+            var actualResult1 = await Queryable.AllAsync(x => !string.IsNullOrWhiteSpace(x.FullName));
+            var actualResult2 = await Queryable.AllAsync(x => !string.IsNullOrWhiteSpace(x.FullName));
 
             Assert.Multiple(() =>
             {
@@ -140,19 +141,19 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         }
 
         [Test]
-        public virtual void Average_Int_ReturnsAverage()
+        public virtual void Average_Decimal_ReturnsAverage()
         {
             SeedQueryableSource();
 
-            var actualResult1 = Queryable.Average(x => x.Int);
-            var actualResult2 = Queryable.Average(x => x.Int);
+            var actualResult1 = Queryable.Average(x => x.Weight);
+            var actualResult2 = Queryable.Average(x => x.Weight);
 
             Assert.Multiple(() =>
             {
-                var average = 0d;
+                var average = 0m;
                 for (var i = 0; i < ItemsAddedToQueryableSource.Count; i++)
                 {
-                    average += ItemsAddedToQueryableSource[i].Int;
+                    average += ItemsAddedToQueryableSource[i].Weight;
                 }
 
                 average = average / ItemsAddedToQueryableSource.Count;
@@ -163,19 +164,19 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         }
 
         [Test]
-        public virtual async Task AverageAsync_Int_ReturnsAverage()
+        public virtual async Task AverageAsync_Decimal_ReturnsAverage()
         {
             SeedQueryableSource();
 
-            var actualResult1 = await Queryable.AverageAsync(x => x.Int);
-            var actualResult2 = await Queryable.AverageAsync(x => x.Int);
+            var actualResult1 = await Queryable.AverageAsync(x => x.Weight);
+            var actualResult2 = await Queryable.AverageAsync(x => x.Weight);
 
             Assert.Multiple(() =>
             {
-                var average = 0d;
+                var average = 0m;
                 for (var i = 0; i < ItemsAddedToQueryableSource.Count; i++)
                 {
-                    average += ItemsAddedToQueryableSource[i].Int;
+                    average += ItemsAddedToQueryableSource[i].Weight;
                 }
 
                 average = average / ItemsAddedToQueryableSource.Count;
@@ -254,52 +255,109 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         }
 
         [Test]
-        public void ContainsListCollection_ReturnsFalse()
-        {
-            var containsListCollection = ((IListSource) Queryable).ContainsListCollection;
-            Assert.That(containsListCollection, Is.False);
-        }
-
-        [Test]
-        public virtual void ElementAt_ReturnsElementAtSpecifiedIndex()
+        public virtual void ElementAt_ThrowsException()
         {
             SeedQueryableSource();
 
-            var firstElement = Queryable.ElementAt(0);
-            var lastElement = Queryable.ElementAt(Queryable.ToList().Count - 1);
-
             Assert.Multiple(() =>
             {
-                Assert.That(firstElement, Is.EqualTo(ItemsAddedToQueryableSource[0]));
-                Assert.That(lastElement, Is.EqualTo(ItemsAddedToQueryableSource[ItemsAddedToQueryableSource.Count - 1]));
+                var ex1 = Assert.Throws<InvalidOperationException>(() =>
+                {
+                    var firstElement = Queryable.ElementAt(0);
+                });
+
+                //Assert.That(ex1.Message, Is.EqualTo(string.Format(ExceptionMessages.TranslationFailedExceptionMessage, $"DbSet<{typeof(T).Name}>()\r\n    .ElementAt(0)")));
+
+                var ex2 = Assert.Throws<InvalidOperationException>(() =>
+                {
+                    var lastElement = Queryable.ElementAt(Queryable.ToList().Count - 1);
+                });
+
+                //Assert.That(ex2.Message, Is.EqualTo(string.Format(ExceptionMessages.TranslationFailedExceptionMessage, $"DbSet<{typeof(T).Name}>()\r\n    .ElementAt({Queryable.ToList().Count - 1})")));
             });
         }
 
         [Test]
-        public virtual void ElementAtOrDefault_ReturnsElementAtSpecifiedIndex()
+        public virtual void ElementAt_AfterAsEnumerable_DoesNotThrowException()
         {
             SeedQueryableSource();
 
-            var firstElement = Queryable.ElementAtOrDefault(0);
-            var lastElement = Queryable.ElementAtOrDefault(Queryable.ToList().Count - 1);
+            Console.WriteLine("Assert start");
 
             Assert.Multiple(() =>
             {
-                Assert.That(firstElement, Is.EqualTo(ItemsAddedToQueryableSource[0]));
-                Assert.That(lastElement, Is.EqualTo(ItemsAddedToQueryableSource[ItemsAddedToQueryableSource.Count - 1]));
+                Assert.DoesNotThrow(() =>
+                {
+                    var firstElement = Queryable.AsEnumerable().ElementAt(0);
+                });
+
+                Assert.DoesNotThrow(() =>
+                {
+                    var lastElement = Queryable.AsEnumerable().ElementAt(Queryable.ToList().Count - 1);
+                });
             });
         }
 
         [Test]
-        public virtual void ElementAtOrDefault_WithNoItemsAdded_ReturnsDefault()
+        public virtual void ElementAt_AfterToList_DoesNotThrowException()
         {
-            var firstElement = Queryable.ElementAtOrDefault(0);
-            var lastElement = Queryable.ElementAtOrDefault(Queryable.ToList().Count - 1);
+            SeedQueryableSource();
 
             Assert.Multiple(() =>
             {
-                Assert.That(firstElement, Is.EqualTo(default(T)));
-                Assert.That(lastElement, Is.EqualTo(default(T)));
+                Assert.DoesNotThrow(() =>
+                {
+                    var firstElement = Queryable.ToList().ElementAt(0);
+                });
+
+                Assert.DoesNotThrow(() =>
+                {
+                    var lastElement = Queryable.ToList().ElementAt(Queryable.ToList().Count - 1);
+                });
+            });
+        }
+
+        [Test]
+        public virtual void ElementAtOrDefault_ThrowsException()
+        {
+            SeedQueryableSource();
+
+            Assert.Multiple(() =>
+            {
+                var ex1 = Assert.Throws<InvalidOperationException>(() =>
+                {
+                    var firstElement = Queryable.ElementAtOrDefault(0);
+                });
+
+                //Assert.That(ex1.Message, Is.EqualTo(string.Format(ExceptionMessages.TranslationFailedExceptionMessage, $"DbSet<{typeof(T).Name}>()\r\n    .ElementAtOrDefault(0)")));
+
+                var ex2 = Assert.Throws<InvalidOperationException>(() =>
+                {
+                    var lastElement = Queryable.ElementAtOrDefault(Queryable.ToList().Count - 1);
+                });
+
+                //Assert.That(ex2.Message, Is.EqualTo(string.Format(ExceptionMessages.TranslationFailedExceptionMessage, $"DbSet<{typeof(T).Name}>()\r\n    .ElementAtOrDefault({Queryable.ToList().Count - 1})")));
+            });
+        }
+
+        [Test]
+        public virtual void ElementAtOrDefault_WithNoItemsAdded_ThrowsException()
+        {
+            Assert.Multiple(() =>
+            {
+                var ex1 = Assert.Throws<InvalidOperationException>(() =>
+                {
+                    var firstElement = Queryable.ElementAtOrDefault(0);
+                });
+
+                //Assert.That(ex1.Message, Is.EqualTo(string.Format(ExceptionMessages.TranslationFailedExceptionMessage, $"DbSet<{typeof(T).Name}>()\r\n    .ElementAtOrDefault(0)")));
+
+                var ex2 = Assert.Throws<InvalidOperationException>(() =>
+                {
+                    var lastElement = Queryable.ElementAtOrDefault(Queryable.ToList().Count - 1);
+                });
+
+                //Assert.That(ex2.Message, Is.EqualTo(string.Format(ExceptionMessages.TranslationFailedExceptionMessage, $"DbSet<{typeof(T).Name}>()\r\n    .ElementAtOrDefault({Queryable.ToList().Count - 1})")));
             });
         }
 
@@ -382,21 +440,6 @@ namespace EntityFrameworkCore.Testing.Common.Tests
             {
                 Assert.That(actualResult1, Is.EqualTo(ItemsAddedToQueryableSource.First()));
                 Assert.That(actualResult2, Is.EqualTo(ItemsAddedToQueryableSource.First()));
-            });
-        }
-
-        [Test]
-        public virtual void IndexedSelectThenWhereThenAny_TrueCondition_ReturnsTrue()
-        {
-            SeedQueryableSource();
-
-            var actualResult1 = Queryable.Select((x, i) => new { Index = i, Item = x }).Where(x => !x.Index.Equals(0)).Any();
-            var actualResult2 = Queryable.Select((x, i) => new { Index = i, Item = x }).Where(x => !x.Index.Equals(0)).Any();
-
-            Assert.Multiple(() =>
-            {
-                Assert.That(actualResult1, Is.True);
-                Assert.That(actualResult2, Is.True);
             });
         }
 
@@ -487,17 +530,17 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         {
             SeedQueryableSource();
 
-            var actualResult1 = Queryable.Max(x => x.DateTime);
-            var actualResult2 = Queryable.Max(x => x.DateTime);
+            var actualResult1 = Queryable.Max(x => x.DateOfBirth);
+            var actualResult2 = Queryable.Max(x => x.DateOfBirth);
 
             Assert.Multiple(() =>
             {
-                var maxDateTime = ItemsAddedToQueryableSource[0].DateTime;
+                var maxDateTime = ItemsAddedToQueryableSource[0].DateOfBirth;
                 for (var i = 1; i < ItemsAddedToQueryableSource.Count; i++)
                 {
-                    if (ItemsAddedToQueryableSource[i].DateTime > maxDateTime)
+                    if (ItemsAddedToQueryableSource[i].DateOfBirth > maxDateTime)
                     {
-                        maxDateTime = ItemsAddedToQueryableSource[i].DateTime;
+                        maxDateTime = ItemsAddedToQueryableSource[i].DateOfBirth;
                     }
                 }
 
@@ -511,17 +554,17 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         {
             SeedQueryableSource();
 
-            var actualResult1 = await Queryable.MaxAsync(x => x.DateTime);
-            var actualResult2 = await Queryable.MaxAsync(x => x.DateTime);
+            var actualResult1 = await Queryable.MaxAsync(x => x.DateOfBirth);
+            var actualResult2 = await Queryable.MaxAsync(x => x.DateOfBirth);
 
             Assert.Multiple(() =>
             {
-                var maxDateTime = ItemsAddedToQueryableSource[0].DateTime;
+                var maxDateTime = ItemsAddedToQueryableSource[0].DateOfBirth;
                 for (var i = 1; i < ItemsAddedToQueryableSource.Count; i++)
                 {
-                    if (ItemsAddedToQueryableSource[i].DateTime > maxDateTime)
+                    if (ItemsAddedToQueryableSource[i].DateOfBirth > maxDateTime)
                     {
-                        maxDateTime = ItemsAddedToQueryableSource[i].DateTime;
+                        maxDateTime = ItemsAddedToQueryableSource[i].DateOfBirth;
                     }
                 }
 
@@ -535,17 +578,17 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         {
             SeedQueryableSource();
 
-            var actualResult1 = Queryable.Min(x => x.DateTime);
-            var actualResult2 = Queryable.Min(x => x.DateTime);
+            var actualResult1 = Queryable.Min(x => x.DateOfBirth);
+            var actualResult2 = Queryable.Min(x => x.DateOfBirth);
 
             Assert.Multiple(() =>
             {
-                var minDateTime = ItemsAddedToQueryableSource[0].DateTime;
+                var minDateTime = ItemsAddedToQueryableSource[0].DateOfBirth;
                 for (var i = 1; i < ItemsAddedToQueryableSource.Count; i++)
                 {
-                    if (ItemsAddedToQueryableSource[i].DateTime < minDateTime)
+                    if (ItemsAddedToQueryableSource[i].DateOfBirth < minDateTime)
                     {
-                        minDateTime = ItemsAddedToQueryableSource[i].DateTime;
+                        minDateTime = ItemsAddedToQueryableSource[i].DateOfBirth;
                     }
                 }
 
@@ -559,17 +602,17 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         {
             SeedQueryableSource();
 
-            var actualResult1 = await Queryable.MinAsync(x => x.DateTime);
-            var actualResult2 = await Queryable.MinAsync(x => x.DateTime);
+            var actualResult1 = await Queryable.MinAsync(x => x.DateOfBirth);
+            var actualResult2 = await Queryable.MinAsync(x => x.DateOfBirth);
 
             Assert.Multiple(() =>
             {
-                var minDateTime = ItemsAddedToQueryableSource[0].DateTime;
+                var minDateTime = ItemsAddedToQueryableSource[0].DateOfBirth;
                 for (var i = 1; i < ItemsAddedToQueryableSource.Count; i++)
                 {
-                    if (ItemsAddedToQueryableSource[i].DateTime < minDateTime)
+                    if (ItemsAddedToQueryableSource[i].DateOfBirth < minDateTime)
                     {
-                        minDateTime = ItemsAddedToQueryableSource[i].DateTime;
+                        minDateTime = ItemsAddedToQueryableSource[i].DateOfBirth;
                     }
                 }
 
@@ -583,19 +626,19 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         {
             SeedQueryableSource();
 
-            var actualResult1 = Queryable.OrderBy(x => x.DateTime).ToList();
-            var actualResult2 = Queryable.OrderBy(x => x.DateTime).ToList();
+            var actualResult1 = Queryable.OrderBy(x => x.DateOfBirth).ToList();
+            var actualResult2 = Queryable.OrderBy(x => x.DateOfBirth).ToList();
 
             Assert.Multiple(() =>
             {
                 for (var i = 1; i < actualResult1.Count; i++)
                 {
-                    Assert.That(actualResult1[i].DateTime, Is.GreaterThanOrEqualTo(actualResult1[i - 1].DateTime));
+                    Assert.That(actualResult1[i].DateOfBirth, Is.GreaterThanOrEqualTo(actualResult1[i - 1].DateOfBirth));
                 }
 
                 for (var i = 1; i < actualResult2.Count; i++)
                 {
-                    Assert.That(actualResult2[i].DateTime, Is.GreaterThanOrEqualTo(actualResult2[i - 1].DateTime));
+                    Assert.That(actualResult2[i].DateOfBirth, Is.GreaterThanOrEqualTo(actualResult2[i - 1].DateOfBirth));
                 }
             });
         }
@@ -605,41 +648,41 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         {
             SeedQueryableSource();
 
-            var actualResult1 = Queryable.OrderByDescending(x => x.DateTime).ToList();
-            var actualResult2 = Queryable.OrderByDescending(x => x.DateTime).ToList();
+            var actualResult1 = Queryable.OrderByDescending(x => x.DateOfBirth).ToList();
+            var actualResult2 = Queryable.OrderByDescending(x => x.DateOfBirth).ToList();
 
             Assert.Multiple(() =>
             {
                 for (var i = 1; i < actualResult1.Count; i++)
                 {
-                    Assert.That(actualResult1[i].DateTime, Is.LessThanOrEqualTo(actualResult1[i - 1].DateTime));
+                    Assert.That(actualResult1[i].DateOfBirth, Is.LessThanOrEqualTo(actualResult1[i - 1].DateOfBirth));
                 }
 
                 for (var i = 1; i < actualResult2.Count; i++)
                 {
-                    Assert.That(actualResult2[i].DateTime, Is.LessThanOrEqualTo(actualResult2[i - 1].DateTime));
+                    Assert.That(actualResult2[i].DateOfBirth, Is.LessThanOrEqualTo(actualResult2[i - 1].DateOfBirth));
                 }
             });
         }
 
         [Test]
-        public virtual void OrderByThenOrderBy_FixedDateTimeAndInt_ReturnsItemsInAscendingOrder()
+        public virtual void OrderByThenOrderBy_FixedDateTimeAndDecimal_ReturnsItemsInAscendingOrder()
         {
             SeedQueryableSource();
 
-            var actualResult1 = Queryable.OrderBy(x => x.FixedDateTime).ThenBy(x => x.Int).ToList();
-            var actualResult2 = Queryable.OrderBy(x => x.FixedDateTime).ThenBy(x => x.Int).ToList();
+            var actualResult1 = Queryable.OrderBy(x => x.CreatedAt).ThenBy(x => x.Weight).ToList();
+            var actualResult2 = Queryable.OrderBy(x => x.CreatedAt).ThenBy(x => x.Weight).ToList();
 
             Assert.Multiple(() =>
             {
                 for (var i = 1; i < actualResult1.Count; i++)
                 {
-                    Assert.That(actualResult1[i].Int, Is.GreaterThanOrEqualTo(actualResult1[i - 1].Int));
+                    Assert.That(actualResult1[i].Weight, Is.GreaterThanOrEqualTo(actualResult1[i - 1].Weight));
                 }
 
                 for (var i = 1; i < actualResult2.Count; i++)
                 {
-                    Assert.That(actualResult2[i].Int, Is.GreaterThanOrEqualTo(actualResult2[i - 1].Int));
+                    Assert.That(actualResult2[i].Weight, Is.GreaterThanOrEqualTo(actualResult2[i - 1].Weight));
                 }
             });
         }
@@ -663,40 +706,58 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         }
 
         [Test]
-        public virtual void Select_WithIndex_ReturnsIndexedSequence()
-        {
-            SeedQueryableSource();
-
-            var actualResult1 = Queryable.Select((x, i) => new { Index = i, Item = x }).ToList();
-            var actualResult2 = Queryable.Select((x, i) => new { Index = i, Item = x }).ToList();
-
-            Assert.Multiple(() =>
-            {
-                for (var i = 0; i < ItemsAddedToQueryableSource.Count; i++)
-                {
-                    Assert.That(actualResult1[i].Index, Is.EqualTo(i));
-                    Assert.That(actualResult1[i].Item, Is.EqualTo(ItemsAddedToQueryableSource[i]));
-
-                    Assert.That(actualResult2[i].Index, Is.EqualTo(i));
-                    Assert.That(actualResult2[i].Item, Is.EqualTo(ItemsAddedToQueryableSource[i]));
-                }
-            });
-        }
-
-        [Test]
         public virtual async Task SelectAnonymousObjectThenToListAsync_ReturnsList()
         {
             SeedQueryableSource();
 
-            var expectedResult = Queryable.Select(x => new { Id = x.Guid }).ToList();
+            var expectedResult = Queryable.Select(x => new { x.Id }).ToList();
 
-            var actualResult1 = await Queryable.Select(x => new { Id = x.Guid }).ToListAsync();
-            var actualResult2 = await Queryable.Select(x => new { Id = x.Guid }).ToListAsync();
+            var actualResult1 = await Queryable.Select(x => new { x.Id }).ToListAsync();
+            var actualResult2 = await Queryable.Select(x => new { x.Id }).ToListAsync();
 
             Assert.Multiple(() =>
             {
                 Assert.That(actualResult1, Is.EquivalentTo(expectedResult));
                 Assert.That(actualResult2, Is.EquivalentTo(expectedResult));
+            });
+        }
+
+        [Test]
+        public virtual void SelectWithIndex_ThrowsException()
+        {
+            SeedQueryableSource();
+
+            Assert.Multiple(() =>
+            {
+                var ex1 = Assert.Throws<InvalidOperationException>(() =>
+                {
+                    var actualResult1 = Queryable.Select((x, i) => new { Index = i, Item = x }).ToList();
+                });
+
+                //Assert.That(ex1.Message, Is.EqualTo(string.Format(ExceptionMessages.TranslationFailedExceptionMessage, typeof(T).Name)));
+
+                var ex2 = Assert.Throws<InvalidOperationException>(() =>
+                {
+                    var actualResult2 = Queryable.Select((x, i) => new { Index = i, Item = x }).ToList();
+                });
+
+                //Assert.That(ex2.Message, Is.EqualTo(string.Format(ExceptionMessages.TranslationFailedExceptionMessage, typeof(T).Name)));
+            });
+        }
+
+        [Test]
+        public virtual void SelectWithIndexThenWhereThenAny_TrueCondition_ThrowsException()
+        {
+            SeedQueryableSource();
+
+            Assert.Multiple(() =>
+            {
+                var ex = Assert.Throws<InvalidOperationException>(() =>
+                {
+                    var actualResult1 = Queryable.Select((x, i) => new { Index = i, Item = x }).Where(x => !x.Index.Equals(0)).Any();
+                });
+
+                //Assert.That(ex.Message, Is.EqualTo(string.Format(ExceptionMessages.TranslationFailedExceptionMessage, typeof(T).Name)));
             });
         }
 
@@ -721,22 +782,27 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         }
 
         [Test]
-        public virtual void SkipWhile_SkipFirstItem_ReturnsSequenceThatDoesNotIncludeFirstItem()
+        public virtual void SkipWhile_SkipFirstItem_ThrowsException()
         {
             SeedQueryableSource();
 
             var firstItem = Queryable.First();
 
-            var actualResult1 = Queryable.SkipWhile(x => x.Equals(firstItem));
-            var actualResult2 = Queryable.SkipWhile(x => x.Equals(firstItem));
-
             Assert.Multiple(() =>
             {
-                Assert.That(actualResult1.Contains(firstItem), Is.False);
-                Assert.That(actualResult1.Count(), Is.EqualTo(Queryable.Count() - 1));
+                var ex1 = Assert.Throws<InvalidOperationException>(() =>
+                {
+                    var actualResult1 = Queryable.SkipWhile(x => x.Equals(firstItem)).ToList();
+                });
 
-                Assert.That(actualResult2.Contains(firstItem), Is.False);
-                Assert.That(actualResult2.Count(), Is.EqualTo(Queryable.Count() - 1));
+                //Assert.That(ex1.Message, Is.EqualTo(string.Format(ExceptionMessages.TranslationFailedExceptionMessage, typeof(T).Name)));
+
+                var ex2 = Assert.Throws<InvalidOperationException>(() =>
+                {
+                    var actualResult2 = Queryable.SkipWhile(x => x.Equals(firstItem)).ToList();
+                });
+
+                //Assert.That(ex2.Message, Is.EqualTo(string.Format(ExceptionMessages.TranslationFailedExceptionMessage, typeof(T).Name)));
             });
         }
 
@@ -761,42 +827,50 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         }
 
         [Test]
-        public virtual void TakeWhile_TakeFirstItem_ReturnsFirstItem()
+        public virtual void TakeWhile_TakeFirstItem_ThrowsException()
         {
             SeedQueryableSource();
 
             var firstItem = Queryable.First();
 
-            var actualResult1 = Queryable.TakeWhile(x => x.Equals(firstItem));
-            var actualResult2 = Queryable.TakeWhile(x => x.Equals(firstItem));
-
             Assert.Multiple(() =>
             {
-                Assert.That(actualResult1.Count(), Is.EqualTo(1));
-                Assert.That(actualResult1.First(), Is.EqualTo(firstItem));
+                var ex1 = Assert.Throws<InvalidOperationException>(() =>
+                {
+                    var actualResult1 = Queryable.TakeWhile(x => x.Equals(firstItem)).ToList();
+                });
 
-                Assert.That(actualResult2.Count(), Is.EqualTo(1));
-                Assert.That(actualResult2.First(), Is.EqualTo(firstItem));
+                //Assert.That(ex1.Message, Is.EqualTo(string.Format(ExceptionMessages.TranslationFailedExceptionMessage, typeof(T).Name)));
+
+                var ex2 = Assert.Throws<InvalidOperationException>(() =>
+                {
+                    var actualResult2 = Queryable.TakeWhile(x => x.Equals(firstItem)).ToList();
+                });
+
+                //Assert.That(ex2.Message, Is.EqualTo(string.Format(ExceptionMessages.TranslationFailedExceptionMessage, typeof(T).Name)));
             });
         }
 
         [Test]
-        public virtual void TakeWhile_TakeFirstItemUsingIndex_ReturnsFirstItem()
+        public virtual void TakeWhile_TakeFirstItemUsingIndex_ThrowsException()
         {
             SeedQueryableSource();
 
-            var firstItem = Queryable.First();
-
-            var actualResult1 = Queryable.TakeWhile((x, i) => i.Equals(0));
-            var actualResult2 = Queryable.TakeWhile((x, i) => i.Equals(0));
-
             Assert.Multiple(() =>
             {
-                Assert.That(actualResult1.Count(), Is.EqualTo(1));
-                Assert.That(actualResult1.First(), Is.EqualTo(firstItem));
+                var ex1 = Assert.Throws<InvalidOperationException>(() =>
+                {
+                    var actualResult1 = Queryable.TakeWhile((x, i) => i.Equals(0)).ToList();
+                });
 
-                Assert.That(actualResult2.Count(), Is.EqualTo(1));
-                Assert.That(actualResult2.First(), Is.EqualTo(firstItem));
+                //Assert.That(ex1.Message, Is.EqualTo(string.Format(ExceptionMessages.TranslationFailedExceptionMessage, typeof(T).Name)));
+
+                var ex2 = Assert.Throws<InvalidOperationException>(() =>
+                {
+                    var actualResult2 = Queryable.TakeWhile((x, i) => i.Equals(0)).ToList();
+                });
+
+                //Assert.That(ex2.Message, Is.EqualTo(string.Format(ExceptionMessages.TranslationFailedExceptionMessage, typeof(T).Name)));
             });
         }
 
@@ -822,23 +896,42 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         {
             SeedQueryableSource();
 
-            var actualResult1 = Queryable.Where(x => !x.Guid.Equals(default)).ToList();
-            var actualResult2 = Queryable.Where(x => !x.Guid.Equals(default)).ToList();
+            var actualResult1 = Queryable.Where(x => !x.Id.Equals(default)).ToList();
+            var actualResult2 = Queryable.Where(x => !x.Id.Equals(default)).ToList();
 
             Assert.Multiple(() =>
             {
                 for (var i = 0; i < ItemsAddedToQueryableSource.Count; i++)
                 {
                     var item = ItemsAddedToQueryableSource[i];
-                    Assert.That(item.Guid, Is.Not.EqualTo(default(Guid)));
+                    Assert.That(item.Id, Is.Not.EqualTo(default(Guid)));
 
                     Assert.That(actualResult1[i], Is.EqualTo(item));
-                    Assert.That(actualResult1[i].Guid, Is.Not.EqualTo(default(Guid)));
+                    Assert.That(actualResult1[i].Id, Is.Not.EqualTo(default(Guid)));
 
                     Assert.That(actualResult2[i], Is.EqualTo(item));
-                    Assert.That(actualResult2[i].Guid, Is.Not.EqualTo(default(Guid)));
+                    Assert.That(actualResult2[i].Id, Is.Not.EqualTo(default(Guid)));
                 }
             });
+        }
+
+        [Test]
+        public async Task ProjectToThenToListAsync_ReturnsExpectedResult()
+        {
+            SeedQueryableSource();
+
+            var expectedResult = new AsyncEnumerable<TestViewModel>(Queryable.Select(x => new TestViewModel { id = x.Id, fullName = x.FullName }));
+
+            var mapper = new Mapper(new MapperConfiguration(x => x.AddProfile(new MappingProfile())));
+
+            Console.WriteLine("ProjectTo about to be invoked");
+
+            var actualResult = await mapper.ProjectTo<TestViewModel>(Queryable, null).ToListAsync();
+
+            var compareLogic = new CompareLogic { Config = { IgnoreObjectTypes = true, IgnoreCollectionOrder = true } };
+            var comparisonResult = compareLogic.Compare(expectedResult, actualResult);
+
+            Assert.That(comparisonResult.AreEqual, Is.True);
         }
     }
 }

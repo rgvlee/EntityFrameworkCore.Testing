@@ -7,6 +7,8 @@ namespace EntityFrameworkCore.Testing.Common.Tests
 {
     public abstract class BaseForTests
     {
+        protected Fixture Fixture;
+
         [SetUp]
         public virtual void SetUp()
         {
@@ -20,7 +22,5 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         {
             LoggingHelper.LoggerFactory.Dispose();
         }
-
-        protected Fixture Fixture;
     }
 }
