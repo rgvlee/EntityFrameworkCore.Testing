@@ -20,10 +20,10 @@ jobs:
         dotnet-version: 5.0.x
 
     - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet restore src
 
     - name: Build
-      run: dotnet build --no-restore --configuration Release
+      run: dotnet build src --no-restore --configuration Release
 
     - name: Test
-      run: dotnet test --no-build --verbosity normal
+      run: dotnet test src --no-build --verbosity normal
