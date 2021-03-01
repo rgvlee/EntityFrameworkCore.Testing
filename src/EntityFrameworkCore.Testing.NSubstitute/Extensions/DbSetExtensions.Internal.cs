@@ -84,8 +84,8 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
 
             ((IQueryable<TEntity>) mockedDbSet).Provider.Returns(callInfo => mockedQueryProvider);
 
-            mockedDbSet.AsAsyncEnumerable().Returns(callInfo => dbSet.AsAsyncEnumerable());
-            mockedDbSet.AsQueryable().Returns(callInfo => dbSet.AsQueryable());
+            mockedDbSet.AsAsyncEnumerable().Returns(callInfo => dbSet);
+            mockedDbSet.AsQueryable().Returns(callInfo => dbSet);
 
             return mockedDbSet;
         }

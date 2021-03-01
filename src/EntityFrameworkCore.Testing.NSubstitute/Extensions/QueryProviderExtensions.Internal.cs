@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using EntityFrameworkCore.Testing.Common;
-using Microsoft.EntityFrameworkCore.Query.Internal;
-using Microsoft.Extensions.Logging;
 using NSubstitute;
-using NSubstitute.ExceptionExtensions;
 using NSubstitute.Extensions;
 using rgvlee.Core.Common.Helpers;
 
@@ -18,16 +14,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
             EnsureArgument.IsNotNull(queryProviderToMock, nameof(queryProviderToMock));
             EnsureArgument.IsNotNull(collection, nameof(collection));
 
-            var mockedQueryProvider = Substitute.ForPartsOf<AsyncQueryProvider<T>>(collection.AsQueryable());
-
-            mockedQueryProvider.Configure()
-                .CreateQuery<T>(Arg.Any<FromSqlQueryRootExpression>())
-                .Throws(callInfo =>
-                {
-                    Logger.LogDebug("Catch all exception invoked");
-                    return new NotSupportedException();
-                });
-
+            var mockedQueryProvider = Substitute.ForPartsOf<AsyncQueryProvider<T>>(collection);
             return mockedQueryProvider;
         }
 

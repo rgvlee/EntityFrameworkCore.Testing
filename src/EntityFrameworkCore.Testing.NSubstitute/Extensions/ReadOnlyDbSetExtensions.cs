@@ -23,9 +23,8 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
 
             var list = mockedReadOnlyDbSet.ToList();
             list.Add(item);
-            var queryable = list.AsQueryable();
 
-            mockedReadOnlyDbSet.SetSource(queryable);
+            mockedReadOnlyDbSet.SetSource(list);
         }
 
         /// <summary>
@@ -41,9 +40,8 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
 
             var list = mockedReadOnlyDbSet.ToList();
             list.AddRange(items);
-            var queryable = list.AsQueryable();
 
-            mockedReadOnlyDbSet.SetSource(queryable);
+            mockedReadOnlyDbSet.SetSource(list);
         }
 
         /// <summary>
