@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoFixture;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using NUnit.Framework;
 
 namespace EntityFrameworkCore.Testing.Common.Tests
@@ -402,6 +401,15 @@ namespace EntityFrameworkCore.Testing.Common.Tests
             {
                 var ex = Assert.Throws<InvalidOperationException>(() => MockedDbContext.Set<NotRegisteredEntity>().ToList());
                 Assert.That(ex.Message, Is.EqualTo(string.Format(ExceptionMessages.CannotCreateDbSetTypeNotIncludedInModel, nameof(NotRegisteredEntity))));
+            });
+        }
+
+        [Test]
+        public virtual void SetCommandTimeout_ValidTimeout_DoesNotThrowException()
+        {
+            Assert.DoesNotThrow(() =>
+            {
+                MockedDbContext.Database.SetCommandTimeout(60);
             });
         }
     }

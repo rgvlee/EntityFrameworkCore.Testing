@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoFixture;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Extensions.Internal;
 using NUnit.Framework;
 
 namespace EntityFrameworkCore.Testing.Common.Tests
@@ -11,6 +13,10 @@ namespace EntityFrameworkCore.Testing.Common.Tests
     public abstract class BaseForDbSetTests<TDbContext, TEntity> : BaseForMockedQueryableTests<TEntity> where TDbContext : DbContext
         where TEntity : BaseTestEntity
     {
+        protected TDbContext MockedDbContext;
+
+        protected DbSet<TEntity> DbSet => (DbSet<TEntity>) Queryable;
+
         [SetUp]
         public override void SetUp()
         {
@@ -21,15 +27,11 @@ namespace EntityFrameworkCore.Testing.Common.Tests
 
         protected override void SeedQueryableSource()
         {
-            var itemsToAdd = Fixture.Build<TEntity>().With(p => p.FixedDateTime, DateTime.Parse("2019-01-01")).CreateMany().ToList();
+            var itemsToAdd = Fixture.Build<TEntity>().With(p => p.CreatedAt, DateTime.Parse("2019-01-01")).CreateMany().ToList();
             DbSet.AddRange(itemsToAdd);
             MockedDbContext.SaveChanges();
             ItemsAddedToQueryableSource = itemsToAdd;
         }
-
-        protected TDbContext MockedDbContext;
-
-        protected DbSet<TEntity> DbSet => (DbSet<TEntity>) Queryable;
 
         protected abstract TDbContext CreateMockedDbContext();
 
@@ -141,6 +143,51 @@ namespace EntityFrameworkCore.Testing.Common.Tests
                 Assert.That(actualResult1, Is.False);
                 Assert.That(actualResult2, Is.True);
             });
+        }
+
+        [Test]
+        public virtual async Task AsAsyncEnumerable_ReturnsAsyncEnumerable()
+        {
+            var expectedResult = Fixture.Create<TEntity>();
+            DbSet.Add(expectedResult);
+            MockedDbContext.SaveChanges();
+
+            var asyncEnumerable = await DbSet.AsAsyncEnumerable().ToList();
+
+            var actualResults = new List<TEntity>();
+            foreach (var item in asyncEnumerable)
+            {
+                actualResults.Add(item);
+            }
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(actualResults.Single(), Is.EqualTo(expectedResult));
+                Assert.That(actualResults.Single(), Is.EqualTo(expectedResult));
+            });
+        }
+
+        [Test]
+        public virtual void AsQueryable_ReturnsQueryable()
+        {
+            var expectedResult = Fixture.Create<TEntity>();
+            DbSet.Add(expectedResult);
+            MockedDbContext.SaveChanges();
+
+            var queryable = DbSet.AsQueryable();
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(queryable.Single(), Is.EqualTo(expectedResult));
+                Assert.That(queryable.Single(), Is.EqualTo(expectedResult));
+            });
+        }
+
+        [Test]
+        public void ContainsListCollection_ReturnsFalse()
+        {
+            var containsListCollection = ((IListSource) Queryable).ContainsListCollection;
+            Assert.That(containsListCollection, Is.False);
         }
     }
 }
