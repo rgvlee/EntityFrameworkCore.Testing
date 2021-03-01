@@ -132,9 +132,8 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
             rawSqlCommand.ParameterValues.Returns(callInfo => new Dictionary<string, object>());
 
             var existingRawSqlCommandBuilder =
-                ((IRelationalDatabaseFacadeDependencies)
-                    ((IInfrastructure<IServiceProvider>) mockedDbContext).Instance.GetService(typeof(IDatabaseFacadeDependencies))
-                ).RawSqlCommandBuilder;
+                ((IRelationalDatabaseFacadeDependencies) ((IInfrastructure<IServiceProvider>) mockedDbContext).Instance.GetService(typeof(IDatabaseFacadeDependencies)))
+                .RawSqlCommandBuilder;
 
             existingRawSqlCommandBuilder.Build(
                     Arg.Is<string>(s => s.Contains(sql, StringComparison.CurrentCultureIgnoreCase)),
