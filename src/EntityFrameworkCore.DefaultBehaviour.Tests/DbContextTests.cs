@@ -7,17 +7,17 @@ using NUnit.Framework;
 
 namespace EntityFrameworkCore.DefaultBehaviour.Tests
 {
-    [TestFixture]
     public class DbContextTests : BaseForTests
     {
+        protected TestDbContext DbContext;
+
         [SetUp]
         public override void SetUp()
         {
-            DbContext = new TestDbContext(new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
             base.SetUp();
-        }
 
-        protected TestDbContext DbContext;
+            DbContext = new TestDbContext(new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
+        }
 
         [Test]
         public virtual void ExecuteSqlInterpolated_ThrowsException()

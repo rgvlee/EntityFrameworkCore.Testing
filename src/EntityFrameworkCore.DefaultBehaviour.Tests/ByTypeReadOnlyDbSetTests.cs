@@ -5,17 +5,17 @@ using NUnit.Framework;
 
 namespace EntityFrameworkCore.DefaultBehaviour.Tests
 {
-    [TestFixture]
     public class ByTypeReadOnlyDbSetTests
     {
+        protected TestDbContext DbContext;
+
+        protected DbSet<TestReadOnlyEntity> DbSet => DbContext.Set<TestReadOnlyEntity>();
+
         [SetUp]
         public virtual void SetUp()
         {
             DbContext = new TestDbContext(new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
         }
-
-        protected TestDbContext DbContext;
-        protected DbSet<TestReadOnlyEntity> DbSet => DbContext.Set<TestReadOnlyEntity>();
 
         [Test]
         public virtual void AsAsyncEnumerable_ReturnsAsyncEnumerable()
