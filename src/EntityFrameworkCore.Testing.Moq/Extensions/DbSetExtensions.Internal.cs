@@ -77,8 +77,8 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
 
             dbSetMock.As<IQueryable<TEntity>>().Setup(m => m.Provider).Returns(() => mockedQueryProvider);
 
-            dbSetMock.Setup(m => m.AsAsyncEnumerable()).Returns(() => dbSet.AsAsyncEnumerable());
-            dbSetMock.Setup(m => m.AsQueryable()).Returns(() => dbSet.AsQueryable());
+            dbSetMock.Setup(m => m.AsAsyncEnumerable()).Returns(() => dbSet);
+            dbSetMock.Setup(m => m.AsQueryable()).Returns(() => dbSet);
 
             return dbSetMock.Object;
         }
