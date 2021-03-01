@@ -8,26 +8,26 @@ using NUnit.Framework;
 
 namespace EntityFrameworkCore.Testing.Common.Tests
 {
-    [TestFixture]
-    public abstract class BaseForDbSetTests<TDbContext, TEntity> : BaseForMockedDbSetQueryProviderTests<TEntity> where TDbContext : DbContext
+    public abstract class BaseForDbSetTests<TDbContext, TEntity> : BaseForMockedQueryableTests<TEntity> where TDbContext : DbContext
         where TEntity : BaseTestEntity
     {
+        protected TDbContext MockedDbContext;
+
         [SetUp]
         public override void SetUp()
         {
-            MockedDbContext = CreateMockedDbContext();
             base.SetUp();
+
+            MockedDbContext = CreateMockedDbContext();
         }
 
         protected override void SeedQueryableSource()
         {
-            var itemsToAdd = Fixture.Build<TEntity>().With(p => p.FixedDateTime, DateTime.Parse("2019-01-01")).CreateMany().ToList();
+            var itemsToAdd = Fixture.Build<TEntity>().With(p => p.CreatedAt, DateTime.Parse("2019-01-01")).CreateMany().ToList();
             DbSet.AddRange(itemsToAdd);
             MockedDbContext.SaveChanges();
             ItemsAddedToQueryableSource = itemsToAdd;
         }
-
-        protected TDbContext MockedDbContext;
 
         protected abstract TDbContext CreateMockedDbContext();
 

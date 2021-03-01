@@ -17,34 +17,40 @@ namespace EntityFrameworkCore.Testing.NSubstitute.PackageVerification.Tests
 {
     public class ReadmeTests
     {
-        public Fixture Fixture = new Fixture();
+        private readonly Fixture _fixture = new Fixture();
 
         [SetUp]
         public virtual void SetUp()
         {
-            LoggingHelper.LoggerFactory = LoggerFactory.Create(builder => builder.AddConsole().SetMinimumLevel(LogLevel.Debug));
+            LoggingHelper.LoggerFactory = LoggerFactory.Create(builder => builder.AddConsole().SetMinimumLevel(LogLevel.Trace));
+        }
+
+        [TearDown]
+        public virtual void TearDown()
+        {
+            LoggingHelper.LoggerFactory.Dispose();
         }
 
         [Test]
         public void UsageExample1()
         {
-            var testEntity = Fixture.Create<TestEntity>();
+            var testEntity = _fixture.Create<TestEntity>();
             var mockedDbContext = Create.MockedDbContextFor<TestDbContext>();
             mockedDbContext.Set<TestEntity>().Add(testEntity);
             mockedDbContext.SaveChanges();
 
             Assert.Multiple(() =>
             {
-                Assert.AreNotEqual(default(Guid), testEntity.Guid);
+                Assert.AreNotEqual(default(Guid), testEntity.Id);
                 Assert.DoesNotThrow(() => mockedDbContext.Set<TestEntity>().Single());
-                Assert.AreEqual(testEntity, mockedDbContext.Find<TestEntity>(testEntity.Guid));
+                Assert.AreEqual(testEntity, mockedDbContext.Find<TestEntity>(testEntity.Id));
             });
         }
 
         [Test]
         public void UsageExample3()
         {
-            var expectedResult = Fixture.CreateMany<TestEntity>().ToList();
+            var expectedResult = _fixture.CreateMany<TestEntity>().ToList();
             var mockedDbContext = Create.MockedDbContextFor<TestDbContext>();
             mockedDbContext.Set<TestEntity>().AddFromSqlRawResult(expectedResult);
 
@@ -61,7 +67,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.PackageVerification.Tests
         [Test]
         public void UsageExample4()
         {
-            var expectedResult = Fixture.CreateMany<TestEntity>().ToList();
+            var expectedResult = _fixture.CreateMany<TestEntity>().ToList();
             var sqlParameters = new List<SqlParameter> { new SqlParameter("@Parameter2", "Value2") };
             var mockedDbContext = Create.MockedDbContextFor<TestDbContext>();
             mockedDbContext.Set<TestEntity>().AddFromSqlRawResult("usp_StoredProcedureWithParameters", sqlParameters, expectedResult);
@@ -83,9 +89,9 @@ namespace EntityFrameworkCore.Testing.NSubstitute.PackageVerification.Tests
         [Test]
         public void UsageExample5()
         {
-            var expectedResult = Fixture.CreateMany<TestEntity>().ToList();
-            var parameter1 = Fixture.Create<DateTime>();
-            var parameter2 = Fixture.Create<string>();
+            var expectedResult = _fixture.CreateMany<TestEntity>().ToList();
+            var parameter1 = _fixture.Create<DateTime>();
+            var parameter2 = _fixture.Create<string>();
             var mockedDbContext = Create.MockedDbContextFor<TestDbContext>();
             mockedDbContext.Set<TestEntity>().AddFromSqlInterpolatedResult($"usp_StoredProcedureWithParameters {parameter1}, {parameter2.ToUpper()}", expectedResult);
 
@@ -102,7 +108,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.PackageVerification.Tests
         [Test]
         public void UsageExample6()
         {
-            var expectedResult = Fixture.CreateMany<ViewEntity>().ToList();
+            var expectedResult = _fixture.CreateMany<ViewEntity>().ToList();
             var mockedDbContext = Create.MockedDbContextFor<TestDbContext>();
 
             mockedDbContext.Query<ViewEntity>().AddRangeToReadOnlySource(expectedResult);
@@ -134,7 +140,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.PackageVerification.Tests
             var mockedDbContext = Create.MockedDbContextFor<TestDbContext>();
 
             var itemsToCreate = 100;
-            mockedDbContext.Set<TestEntity>().AddRange(Fixture.CreateMany<TestEntity>(itemsToCreate).ToList());
+            mockedDbContext.Set<TestEntity>().AddRange(_fixture.CreateMany<TestEntity>(itemsToCreate).ToList());
             mockedDbContext.SaveChanges();
 
             var numberOfRowsToDelete = itemsToCreate / 2;
@@ -183,7 +189,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.PackageVerification.Tests
             using (var connection = new SqliteConnection("Filename=:memory:"))
             {
                 connection.Open();
-                var testEntity = Fixture.Create<TestEntity>();
+                var testEntity = _fixture.Create<TestEntity>();
                 var dbContextToMock = new TestDbContext(new DbContextOptionsBuilder<TestDbContext>().UseSqlite(connection).Options);
                 dbContextToMock.Database.EnsureCreated();
                 var mockedDbContext = new MockedDbContextBuilder<TestDbContext>().UseDbContext(dbContextToMock).MockedDbContext;
@@ -193,9 +199,9 @@ namespace EntityFrameworkCore.Testing.NSubstitute.PackageVerification.Tests
 
                 Assert.Multiple(() =>
                 {
-                    Assert.AreNotEqual(default(Guid), testEntity.Guid);
+                    Assert.AreNotEqual(default(Guid), testEntity.Id);
                     Assert.DoesNotThrow(() => mockedDbContext.Set<TestEntity>().Single());
-                    Assert.AreEqual(testEntity, mockedDbContext.Find<TestEntity>(testEntity.Guid));
+                    Assert.AreEqual(testEntity, mockedDbContext.Find<TestEntity>(testEntity.Id));
                 });
             }
         }
