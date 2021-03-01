@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using EntityFrameworkCore.Testing.Common;
-using Microsoft.Extensions.Logging;
 using Moq;
 using rgvlee.Core.Common.Helpers;
 
@@ -16,17 +13,8 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
             EnsureArgument.IsNotNull(queryProviderToMock, nameof(queryProviderToMock));
             EnsureArgument.IsNotNull(collection, nameof(collection));
 
-            var queryProviderMock = new Mock<AsyncQueryProvider<T>>(collection.AsQueryable());
+            var queryProviderMock = new Mock<AsyncQueryProvider<T>>(collection);
             queryProviderMock.CallBase = true;
-
-            queryProviderMock.As<IQueryProvider>()
-                .Setup(m => m.CreateQuery<T>(It.Is<MethodCallExpression>(mce => mce.Method.Name.Equals("FromSqlOnQueryable"))))
-                .Callback((Expression providedExpression) =>
-                {
-                    Logger.LogDebug("Catch all exception invoked");
-                })
-                .Throws<NotSupportedException>();
-
             return queryProviderMock.Object;
         }
 
@@ -38,7 +26,7 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
             var queryProviderMock = Mock.Get(mockedQueryProvider);
 
             var queryable = source.AsQueryable();
-            queryProviderMock.Setup(m => m.Source).Returns(queryable);
+            queryProviderMock.Setup(m => m.Source).Returns(() => queryable);
         }
     }
 }

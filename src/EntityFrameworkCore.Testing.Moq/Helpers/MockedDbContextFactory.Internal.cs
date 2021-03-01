@@ -40,10 +40,10 @@ namespace EntityFrameworkCore.Testing.Moq.Helpers
             dbContextMock.Setup(m => m.AttachRange(It.IsAny<IEnumerable<object>>())).Callback((IEnumerable<object> providedEntities) => DbContext.AttachRange(providedEntities));
 
             dbContextMock.As<IDbContextDependencies>().Setup(m => m.ChangeDetector).Returns(((IDbContextDependencies) DbContext).ChangeDetector);
-            dbContextMock.Setup(m => m.ChangeTracker).Returns(DbContext.ChangeTracker);
-            dbContextMock.Setup(m => m.ContextId).Returns(DbContext.ContextId);
-            dbContextMock.Setup(m => m.Database).Returns(DbContext.Database);
-            dbContextMock.Setup(m => m.Dispose()).Callback(DbContext.Dispose);
+            dbContextMock.Setup(m => m.ChangeTracker).Returns(() => DbContext.ChangeTracker);
+            dbContextMock.Setup(m => m.ContextId).Returns(() => DbContext.ContextId);
+            dbContextMock.Setup(m => m.Database).Returns(() => DbContext.Database);
+            dbContextMock.Setup(m => m.Dispose()).Callback(() => DbContext.Dispose());
             dbContextMock.Setup(m => m.DisposeAsync()).Callback(() => DbContext.DisposeAsync());
             dbContextMock.As<IDbContextDependencies>().Setup(m => m.EntityFinderFactory).Returns(((IDbContextDependencies) DbContext).EntityFinderFactory);
             dbContextMock.As<IDbContextDependencies>().Setup(m => m.EntityGraphAttacher).Returns(((IDbContextDependencies) DbContext).EntityGraphAttacher);
@@ -77,7 +77,7 @@ namespace EntityFrameworkCore.Testing.Moq.Helpers
                 .Setup(m => m.Resurrect(It.IsAny<DbContextPoolConfigurationSnapshot>()))
                 .Callback((DbContextPoolConfigurationSnapshot providedConfigurationSnapshot) => ((IDbContextPoolable) DbContext).Resurrect(providedConfigurationSnapshot));
 
-            dbContextMock.Setup(m => m.SaveChanges()).Returns(DbContext.SaveChanges);
+            dbContextMock.Setup(m => m.SaveChanges()).Returns(() => DbContext.SaveChanges());
             dbContextMock.Setup(m => m.SaveChanges(It.IsAny<bool>())).Returns((bool providedAcceptAllChangesOnSuccess) => DbContext.SaveChanges(providedAcceptAllChangesOnSuccess));
             dbContextMock.Setup(m => m.SaveChangesAsync(It.IsAny<CancellationToken>()))
                 .Returns((CancellationToken providedCancellationToken) => DbContext.SaveChangesAsync(providedCancellationToken));
@@ -99,36 +99,32 @@ namespace EntityFrameworkCore.Testing.Moq.Helpers
             dbContextMock.Setup(m => m.UpdateRange(It.IsAny<IEnumerable<object>>())).Callback((IEnumerable<object> providedEntities) => DbContext.UpdateRange(providedEntities));
             dbContextMock.Setup(m => m.UpdateRange(It.IsAny<object[]>())).Callback((object[] providedEntities) => DbContext.UpdateRange(providedEntities));
 
-            //Imported from AddExecuteSqlRawResult start
+            //Relational set up
             var rawSqlCommandBuilderMock = new Mock<IRawSqlCommandBuilder>();
             rawSqlCommandBuilderMock.Setup(m => m.Build(It.IsAny<string>(), It.IsAny<IEnumerable<object>>()))
                 .Callback((string providedSql, IEnumerable<object> providedParameters) => Logger.LogDebug("Catch all exception invoked"))
                 .Throws<InvalidOperationException>();
-
             var rawSqlCommandBuilder = rawSqlCommandBuilderMock.Object;
 
             var dependenciesMock = new Mock<IRelationalDatabaseFacadeDependencies>();
-            dependenciesMock.Setup(m => m.ConcurrencyDetector).Returns(Mock.Of<IConcurrencyDetector>());
-            dependenciesMock.Setup(m => m.CommandLogger).Returns(Mock.Of<IDiagnosticsLogger<DbLoggerCategory.Database.Command>>());
-            dependenciesMock.Setup(m => m.RawSqlCommandBuilder).Returns(rawSqlCommandBuilder);
-            dependenciesMock.Setup(m => m.RelationalConnection).Returns(Mock.Of<IRelationalConnection>());
+            dependenciesMock.Setup(m => m.ConcurrencyDetector).Returns(() => Mock.Of<IConcurrencyDetector>());
+            dependenciesMock.Setup(m => m.CommandLogger).Returns(() => Mock.Of<IDiagnosticsLogger<DbLoggerCategory.Database.Command>>());
+            dependenciesMock.Setup(m => m.RawSqlCommandBuilder).Returns(() => rawSqlCommandBuilder);
+            dependenciesMock.Setup(m => m.RelationalConnection).Returns(() => Mock.Of<IRelationalConnection>());
             var dependencies = dependenciesMock.Object;
 
             var serviceProviderMock = new Mock<IServiceProvider>();
             serviceProviderMock.Setup(m => m.GetService(It.Is<Type>(t => t == typeof(IDatabaseFacadeDependencies)))).Returns((Type providedType) => dependencies);
             var serviceProvider = serviceProviderMock.Object;
 
-            dbContextMock.As<IInfrastructure<IServiceProvider>>().Setup(m => m.Instance).Returns(serviceProvider);
-            //Imported from AddExecuteSqlRawResult end
-
-            dbContextMock.Setup(m => m.Database).Returns(() => null);
+            dbContextMock.As<IInfrastructure<IServiceProvider>>().Setup(m => m.Instance).Returns(() => serviceProvider);
 
             var mockedDbContext = dbContextMock.Object;
 
             var databaseFacadeMock = new Mock<DatabaseFacade>(mockedDbContext);
             var databaseFacade = databaseFacadeMock.Object;
 
-            dbContextMock.Setup(m => m.Database).Returns(databaseFacade);
+            dbContextMock.Setup(m => m.Database).Returns(() => databaseFacade);
 
             return mockedDbContext;
         }

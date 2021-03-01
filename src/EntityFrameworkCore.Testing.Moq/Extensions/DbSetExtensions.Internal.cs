@@ -81,14 +81,14 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
             if (asyncEnumerableMethod != null)
             {
                 var asyncEnumerableExpression = ExpressionHelper.CreateMethodCallExpression<DbSet<TEntity>, IAsyncEnumerable<TEntity>>(asyncEnumerableMethod);
-                dbSetMock.Setup(asyncEnumerableExpression).Returns(dbSet.AsAsyncEnumerable());
+                dbSetMock.Setup(asyncEnumerableExpression).Returns(() => dbSet.AsAsyncEnumerable());
             }
 
             var queryableMethod = typeof(DbSet<TEntity>).GetMethod("AsQueryable");
             if (queryableMethod != null)
             {
                 var queryableExpression = ExpressionHelper.CreateMethodCallExpression<DbSet<TEntity>, IQueryable<TEntity>>(queryableMethod);
-                dbSetMock.Setup(queryableExpression).Returns(dbSet.AsQueryable());
+                dbSetMock.Setup(queryableExpression).Returns(() => dbSet.AsQueryable());
             }
 
             return dbSetMock.Object;
