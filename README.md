@@ -12,6 +12,8 @@ It includes support for queries, FromSql, ExecuteSqlCommand, and async LINQ oper
 
 ## Resources
 
+### EntityFrameworkCore >= 2.1.0 && < 3.0.0
+
 - [EntityFrameworkCore.Testing.Moq - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.Moq/1.3.0)
 - [EntityFrameworkCore.Testing.NSubstitute - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.NSubstitute/1.3.0)
 
