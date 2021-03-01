@@ -1,11 +1,12 @@
 ﻿using System;
+using System.ComponentModel;
 using EntityFrameworkCore.Testing.Common.Tests;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 
 namespace EntityFrameworkCore.DefaultBehaviour.Tests
 {
-    public class ByTypeReadOnlyDbSetTests
+    public class ByTypeReadOnlyDbSetTests : BaseForTests
     {
         protected TestDbContext DbContext;
 
@@ -14,6 +15,8 @@ namespace EntityFrameworkCore.DefaultBehaviour.Tests
         [SetUp]
         public virtual void SetUp()
         {
+            base.SetUp();
+
             DbContext = new TestDbContext(new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
         }
 
@@ -31,6 +34,13 @@ namespace EntityFrameworkCore.DefaultBehaviour.Tests
             var queryable = DbSet.AsQueryable();
 
             Assert.That(queryable, Is.Not.Null);
+        }
+
+        [Test]
+        public void ContainsListCollection_ReturnsFalse()
+        {
+            var containsListCollection = ((IListSource) DbSet).ContainsListCollection;
+            Assert.That(containsListCollection, Is.False);
         }
     }
 }

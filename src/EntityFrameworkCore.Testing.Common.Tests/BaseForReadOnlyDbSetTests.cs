@@ -1,20 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoFixture;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using NUnit.Framework;
 
 namespace EntityFrameworkCore.Testing.Common.Tests
 {
-    public abstract class BaseForReadOnlyDbSetTests<TEntity> : BaseForMockedDbSetQueryProviderTests<TEntity> where TEntity : BaseTestEntity
+    public abstract class BaseForReadOnlyDbSetTests<TEntity> : BaseForMockedQueryableTests<TEntity> where TEntity : BaseTestEntity
     {
         protected override void SeedQueryableSource()
         {
-            var itemsToAdd = Fixture.Build<TEntity>().With(p => p.FixedDateTime, DateTime.Parse("2019-01-01")).CreateMany().ToList();
+            var itemsToAdd = Fixture.Build<TEntity>().With(p => p.CreatedAt, DateTime.Today).With(p => p.LastModifiedAt, DateTime.Today).CreateMany().ToList();
             AddRangeToReadOnlySource(DbSet, itemsToAdd);
             //MockedDbContext.SaveChanges();
             ItemsAddedToQueryableSource = itemsToAdd;
@@ -167,10 +167,10 @@ namespace EntityFrameworkCore.Testing.Common.Tests
 
             AddFromSqlRawResult(DbSet, sql2, parameters2, expectedResult2);
 
-            Logger.LogDebug("actualResult1");
+            Console.WriteLine("actualResult1");
             var actualResult1 = DbSet.FromSqlRaw("[dbo].[sp_NoParams]").ToList();
 
-            Logger.LogDebug("actualResult2");
+            Console.WriteLine("actualResult2");
             var actualResult2 = DbSet.FromSqlRaw("[dbo].[sp_WithParams]", parameters2.ToArray()).ToList();
 
             Assert.Multiple(() =>

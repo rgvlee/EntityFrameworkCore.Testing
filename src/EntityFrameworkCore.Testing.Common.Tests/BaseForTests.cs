@@ -7,15 +7,20 @@ namespace EntityFrameworkCore.Testing.Common.Tests
 {
     public abstract class BaseForTests
     {
-        protected static readonly ILogger Logger = LoggingHelper.CreateLogger(typeof(BaseForTests));
-
         protected Fixture Fixture;
 
         [SetUp]
         public virtual void SetUp()
         {
-            LoggingHelper.LoggerFactory = LoggerFactory.Create(builder => builder.AddConsole().SetMinimumLevel(LogLevel.Debug));
+            LoggingHelper.LoggerFactory = LoggerFactory.Create(builder => builder.AddConsole().SetMinimumLevel(LogLevel.Trace));
+
             Fixture = new Fixture();
+        }
+
+        [TearDown]
+        public virtual void TearDown()
+        {
+            LoggingHelper.LoggerFactory.Dispose();
         }
     }
 }

@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoFixture;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using NUnit.Framework;
 
 namespace EntityFrameworkCore.Testing.Common.Tests
 {
-    public abstract class BaseForMockedDbSetQueryProviderTests<TEntity> : BaseForQueryableTests<TEntity> where TEntity : BaseTestEntity
+    public abstract class BaseForMockedQueryableTests<TEntity> : BaseForQueryableTests<TEntity> where TEntity : BaseTestEntity
     {
         protected DbSet<TEntity> DbSet => (DbSet<TEntity>) Queryable;
 
@@ -185,10 +185,10 @@ namespace EntityFrameworkCore.Testing.Common.Tests
             AddFromSqlRawResult(DbSet, sql1, expectedResult1);
             AddFromSqlRawResult(DbSet, sql2, parameters2, expectedResult2);
 
-            Logger.LogDebug("actualResult1");
+            Console.WriteLine("actualResult1");
             var actualResult1 = DbSet.FromSqlRaw("[dbo].[sp_NoParams]").ToList();
 
-            Logger.LogDebug("actualResult2");
+            Console.WriteLine("actualResult2");
             var actualResult2 = DbSet.FromSqlRaw("[dbo].[sp_WithParams]", parameters2.ToArray()).ToList();
 
             Assert.Multiple(() =>
@@ -308,6 +308,13 @@ namespace EntityFrameworkCore.Testing.Common.Tests
                 Assert.That(actualResult1, Is.EqualTo(expectedResult.First()));
                 Assert.That(actualResult2, Is.EqualTo(expectedResult.First()));
             });
+        }
+
+        [Test]
+        public void ContainsListCollection_ReturnsFalse()
+        {
+            var containsListCollection = ((IListSource) Queryable).ContainsListCollection;
+            Assert.That(containsListCollection, Is.False);
         }
     }
 }
