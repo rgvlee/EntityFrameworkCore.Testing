@@ -9,6 +9,8 @@ namespace EntityFrameworkCore.DefaultBehaviour.Tests
 {
     public class DbContextTests : BaseForTests
     {
+        protected TestDbContext DbContext;
+
         [SetUp]
         public override void SetUp()
         {
@@ -16,8 +18,6 @@ namespace EntityFrameworkCore.DefaultBehaviour.Tests
 
             DbContext = new TestDbContext(new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
         }
-
-        protected TestDbContext DbContext;
 
         [Test]
         public virtual void ExecuteSqlCommand_ThrowsException()

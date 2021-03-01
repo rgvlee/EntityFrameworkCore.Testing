@@ -7,6 +7,10 @@ namespace EntityFrameworkCore.DefaultBehaviour.Tests
 {
     public class ReadOnlyDbSetExceptionTests : ReadOnlyDbSetExceptionTests<TestReadOnlyEntity>
     {
+        protected TestDbContext DbContext;
+
+        protected override DbSet<TestReadOnlyEntity> DbSet => DbContext.Set<TestReadOnlyEntity>();
+
         [SetUp]
         public override void SetUp()
         {
@@ -14,9 +18,5 @@ namespace EntityFrameworkCore.DefaultBehaviour.Tests
 
             DbContext = new TestDbContext(new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
         }
-
-        protected TestDbContext DbContext;
-
-        protected override DbSet<TestReadOnlyEntity> DbSet => DbContext.Set<TestReadOnlyEntity>();
     }
 }

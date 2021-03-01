@@ -8,15 +8,15 @@ namespace EntityFrameworkCore.DefaultBehaviour.Tests
 {
     public class ByTypeDbQueryTests : BaseForTests
     {
+        protected TestDbContext DbContext;
+
+        protected DbQuery<ViewEntity> DbQuery => DbContext.Query<ViewEntity>();
+
         [SetUp]
         public override void SetUp()
         {
             DbContext = new TestDbContext(new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
         }
-
-        protected TestDbContext DbContext;
-
-        protected DbQuery<ViewEntity> DbQuery => DbContext.Query<ViewEntity>();
 
         [Test]
         public virtual void AsAsyncEnumerable_ReturnsAsyncEnumerable()
