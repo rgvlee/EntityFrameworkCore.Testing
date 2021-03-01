@@ -2,7 +2,6 @@
 using System.Linq;
 using EntityFrameworkCore.Testing.Common.Tests;
 using EntityFrameworkCore.Testing.Moq.Extensions;
-using NUnit.Framework;
 
 namespace EntityFrameworkCore.Testing.Moq.Tests
 {

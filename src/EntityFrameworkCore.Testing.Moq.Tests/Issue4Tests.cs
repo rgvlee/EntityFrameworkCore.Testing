@@ -31,7 +31,7 @@ namespace EntityFrameworkCore.Testing.Moq.Tests
             mockedSet.AddRange(entities);
             mockedDbContext.SaveChanges();
 
-            var result = await mockedSet.AsQueryable().Where(x => x.Guid.Equals(Guid.NewGuid())).SingleOrDefaultAsync();
+            var result = await mockedSet.AsQueryable().Where(x => x.Id.Equals(Guid.NewGuid())).SingleOrDefaultAsync();
 
             Assert.That(result, Is.Null);
         }
@@ -46,7 +46,7 @@ namespace EntityFrameworkCore.Testing.Moq.Tests
             mockedSet.AddRange(entities);
             mockedDbContext.SaveChanges();
 
-            var result = await mockedSet.AsQueryable().Where(x => x.Guid.Equals(entityToFind.Guid)).SingleOrDefaultAsync();
+            var result = await mockedSet.AsQueryable().Where(x => x.Id.Equals(entityToFind.Id)).SingleOrDefaultAsync();
 
             Assert.That(result, Is.EqualTo(entityToFind));
         }
