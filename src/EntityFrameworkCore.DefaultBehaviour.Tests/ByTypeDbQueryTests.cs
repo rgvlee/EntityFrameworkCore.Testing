@@ -37,12 +37,5 @@ namespace EntityFrameworkCore.DefaultBehaviour.Tests
 
             Assert.That(queryable, Is.Not.Null);
         }
-
-        [Test]
-        public void ContainsListCollection_ReturnsFalse()
-        {
-            var containsListCollection = ((IListSource) DbQuery).ContainsListCollection;
-            Assert.That(containsListCollection, Is.False);
-        }
     }
 }
