@@ -117,17 +117,8 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ArgumentNull" xml:space="preserve">
-    <value>Value required for '{0}' (type: '{1}').</value>
-  </data>
   <data name="CannotCreateDbSetTypeNotIncludedInModel" xml:space="preserve">
     <value>Cannot create a DbSet for '{0}' because this type is not included in the model for the context.</value>
-  </data>
-  <data name="EnumerationEmpty" xml:space="preserve">
-    <value>Enumeration '{0}' (type: '{1}') must contain 1 or more elements.</value>
-  </data>
-  <data name="StringNullOrEmpty" xml:space="preserve">
-    <value>Value required for '{0}'.</value>
   </data>
   <data name="UnableToFindSuitableDbContextConstructor" xml:space="preserve">
     <value>Unable to find a suitable constructor. TDbContext must have a parameterless or DbContextOptions/DbContextOptions&lt;TDbContext&gt; constructor.</value>

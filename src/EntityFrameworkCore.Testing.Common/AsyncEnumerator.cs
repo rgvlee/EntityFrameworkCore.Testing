@@ -20,7 +20,7 @@ namespace EntityFrameworkCore.Testing.Common
 
         public Task<bool> MoveNext(CancellationToken cancellationToken)
         {
-            return Task.Run(() => _enumerator.MoveNext());
+            return Task.FromResult(_enumerator.MoveNext());
         }
 
         public T Current => _enumerator.Current;
