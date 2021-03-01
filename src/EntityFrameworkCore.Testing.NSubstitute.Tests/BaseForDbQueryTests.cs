@@ -14,8 +14,9 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Tests
         [SetUp]
         public override void SetUp()
         {
-            MockedDbContext = Create.MockedDbContextFor<TestDbContext>();
             base.SetUp();
+
+            MockedDbContext = Create.MockedDbContextFor<TestDbContext>();
         }
 
         protected override void AddFromSqlRawResult(DbSet<T> mockedDbSet, IEnumerable<T> expectedResult)
