@@ -11,7 +11,7 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using rgvlee.Core.Common.Extensions;
 using rgvlee.Core.Common.Helpers;
-using ExpressionHelper = EntityFrameworkCore.Testing.Common.Helpers.ExpressionHelper;
+using ProjectExpressionHelper = EntityFrameworkCore.Testing.Common.Helpers.ExpressionHelper;
 
 namespace EntityFrameworkCore.Testing.Moq.Helpers
 {
@@ -59,7 +59,7 @@ namespace EntityFrameworkCore.Testing.Moq.Helpers
                 }
 
                 var setUpModelEntityMethod = typeof(NoSetUpDefaultValueProvider<TDbContext>).GetMethods(BindingFlags.Instance | BindingFlags.NonPublic)
-                    .Single(x => x.Name.Equals(entityType.FindPrimaryKey() != null ? "SetUpModelEntity" : "SetUpReadOnlyModelEntity"));
+                    .Single(x => x.Name.Equals(!entityType.IsQueryType ? "SetUpModelEntity" : "SetUpReadOnlyModelEntity"));
 
                 setUpModelEntityMethod.MakeGenericMethod(setType).Invoke(this, new[] { mock });
 
@@ -77,15 +77,15 @@ namespace EntityFrameworkCore.Testing.Moq.Helpers
 
             if (property != null)
             {
-                var propertyExpression = ExpressionHelper.CreatePropertyExpression<TDbContext, DbSet<TEntity>>(property);
-                dbContextMock.Setup(propertyExpression).Returns(mockedDbSet);
+                var propertyExpression = ProjectExpressionHelper.CreatePropertyExpression<TDbContext, DbSet<TEntity>>(property);
+                dbContextMock.Setup(propertyExpression).Returns(() => mockedDbSet);
             }
             else
             {
                 Logger.LogDebug("Could not find a DbContext property for type '{type}'", typeof(TEntity));
             }
 
-            dbContextMock.Setup(m => m.Set<TEntity>()).Returns(mockedDbSet);
+            dbContextMock.Setup(m => m.Set<TEntity>()).Returns(() => mockedDbSet);
 
             dbContextMock.Setup(m => m.Add(It.IsAny<TEntity>())).Returns((TEntity providedEntity) => _dbContext.Add(providedEntity));
             dbContextMock.Setup(m => m.AddAsync(It.IsAny<TEntity>(), It.IsAny<CancellationToken>()))
@@ -117,15 +117,15 @@ namespace EntityFrameworkCore.Testing.Moq.Helpers
 
             if (property != null)
             {
-                var propertyExpression = ExpressionHelper.CreatePropertyExpression<TDbContext, DbQuery<TEntity>>(property);
-                dbContextMock.Setup(propertyExpression).Returns(mockedDbQuery);
+                var propertyExpression = ProjectExpressionHelper.CreatePropertyExpression<TDbContext, DbQuery<TEntity>>(property);
+                dbContextMock.Setup(propertyExpression).Returns(() => mockedDbQuery);
             }
             else
             {
                 Logger.LogDebug("Could not find a DbContext property for type '{type}'", typeof(TEntity));
             }
 
-            dbContextMock.Setup(m => m.Query<TEntity>()).Returns(mockedDbQuery);
+            dbContextMock.Setup(m => m.Query<TEntity>()).Returns(() => mockedDbQuery);
         }
     }
 }
