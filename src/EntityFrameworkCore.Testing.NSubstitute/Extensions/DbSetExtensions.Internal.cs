@@ -88,13 +88,13 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
             var asyncEnumerableMethod = typeof(DbSet<TEntity>).GetMethod("AsAsyncEnumerable");
             if (asyncEnumerableMethod != null)
             {
-                asyncEnumerableMethod.Invoke(mockedDbSet.Configure(), null).Returns(dbSet.AsAsyncEnumerable());
+                asyncEnumerableMethod.Invoke(mockedDbSet.Configure(), null).Returns(dbSet);
             }
 
             var queryableMethod = typeof(DbSet<TEntity>).GetMethod("AsQueryable");
             if (queryableMethod != null)
             {
-                queryableMethod.Invoke(mockedDbSet.Configure(), null).Returns(dbSet.AsQueryable());
+                queryableMethod.Invoke(mockedDbSet.Configure(), null).Returns(dbSet);
             }
 
             return mockedDbSet;
