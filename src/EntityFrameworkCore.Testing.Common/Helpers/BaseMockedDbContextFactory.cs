@@ -17,7 +17,7 @@ namespace EntityFrameworkCore.Testing.Common.Helpers
         /// <summary>
         ///     The logger instance.
         /// </summary>
-        protected static readonly ILogger Logger = LoggingHelper.CreateLogger(typeof(BaseMockedDbContextFactory<TDbContext>));
+        protected static readonly ILogger Logger = LoggingHelper.CreateLogger<BaseMockedDbContextFactory<TDbContext>>();
 
         /// <summary>
         ///     The parameters that will be used to create the mocked db context and, if one is not provided,

@@ -37,17 +37,17 @@ namespace EntityFrameworkCore.Testing.Common.Helpers
             for (var i = 0; i < invocationParametersAsList.Count; i++)
             {
                 var invocationParameter = invocationParametersAsList[i];
-                Logger.LogDebug($"Checking invocationParameter '{invocationParameter}'");
+                Logger.LogDebug("Checking invocationParameter '{invocationParameter}'", invocationParameter);
                 matches.Add(i, -1);
 
                 //What was the last set up parameter matched?
                 var startAt = matches.Any() ? matches.Max(x => x.Value) + 1 : 0;
-                Logger.LogDebug($"startAt: {startAt}");
+                Logger.LogDebug("startAt: {startAt}", startAt);
 
                 for (var j = 0; j < setUpParametersAsList.Count; j++)
                 {
                     var setUpParameter = setUpParametersAsList[j];
-                    Logger.LogDebug($"Checking setUpParameter '{setUpParameter}'");
+                    Logger.LogDebug("Checking setUpParameter '{setUpParameter}'", setUpParameter);
 
                     if (invocationParameter is DbParameter dbInvocationParameter &&
                         setUpParameter is DbParameter dbSetUpParameter &&
@@ -65,7 +65,7 @@ namespace EntityFrameworkCore.Testing.Common.Helpers
                 }
             }
 
-            Logger.LogDebug($"Match summary '{string.Join(Environment.NewLine, matches.Select(x => $"{x.Key}: {x.Value}"))}'");
+            Logger.LogDebug("Match summary '{summary}'", string.Join(Environment.NewLine, matches.Select(x => $"{x.Key}: {x.Value}")));
 
             return matches.Count(x => x.Value > -1) >= setUpParametersAsList.Count;
         }

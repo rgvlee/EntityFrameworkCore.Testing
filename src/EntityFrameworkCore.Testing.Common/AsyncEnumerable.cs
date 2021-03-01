@@ -9,32 +9,44 @@ namespace EntityFrameworkCore.Testing.Common
 {
     public class AsyncEnumerable<T> : IAsyncEnumerable<T>, IOrderedQueryable<T>
     {
-        private readonly IEnumerable<T> _enumerable;
+        private readonly IEnumerable<T> _innerEnumerable;
 
         public AsyncEnumerable(IEnumerable<T> enumerable)
         {
-            _enumerable = enumerable;
-            Expression = enumerable.AsQueryable().Expression;
-            Provider = new AsyncQueryProvider<T>(_enumerable);
+            _innerEnumerable = enumerable;
+
+            var provider = new AsyncQueryProvider<T>(_innerEnumerable);
+            Provider = provider;
+
+            if (_innerEnumerable is IQueryable<T> queryable && queryable.Expression is Microsoft.EntityFrameworkCore.Query.QueryRootExpression)
+            {
+                Expression = queryable.Expression;
+            }
+            else
+            {
+                Expression = new QueryRootExpression(provider, new FakeEntityType(typeof(T)));
+            }
         }
 
         public IAsyncEnumerator<T> GetAsyncEnumerator(CancellationToken cancellationToken = new())
         {
-            return new AsyncEnumerator<T>(_enumerable);
+            return new AsyncEnumerator<T>(_innerEnumerable);
         }
 
         IEnumerator<T> IEnumerable<T>.GetEnumerator()
         {
-            return _enumerable.GetEnumerator();
+            return _innerEnumerable.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return _enumerable.GetEnumerator();
+            return _innerEnumerable.GetEnumerator();
         }
 
         public Type ElementType => typeof(T);
+
         public Expression Expression { get; }
+
         public IQueryProvider Provider { get; }
     }
 }
