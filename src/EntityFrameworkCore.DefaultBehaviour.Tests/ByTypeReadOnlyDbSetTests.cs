@@ -13,7 +13,7 @@ namespace EntityFrameworkCore.DefaultBehaviour.Tests
         protected DbSet<TestReadOnlyEntity> DbSet => DbContext.Set<TestReadOnlyEntity>();
 
         [SetUp]
-        public virtual void SetUp()
+        public override void SetUp()
         {
             base.SetUp();
 
