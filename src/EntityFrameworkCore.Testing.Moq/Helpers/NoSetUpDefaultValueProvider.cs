@@ -4,7 +4,6 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using EntityFrameworkCore.Testing.Common;
-using EntityFrameworkCore.Testing.Common.Helpers;
 using EntityFrameworkCore.Testing.Moq.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
@@ -12,6 +11,7 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using rgvlee.Core.Common.Extensions;
 using rgvlee.Core.Common.Helpers;
+using ProjectExpressionHelper = EntityFrameworkCore.Testing.Common.Helpers.ExpressionHelper;
 
 namespace EntityFrameworkCore.Testing.Moq.Helpers
 {
@@ -76,15 +76,15 @@ namespace EntityFrameworkCore.Testing.Moq.Helpers
 
             if (property != null)
             {
-                var propertyExpression = ExpressionHelper.CreatePropertyExpression<TDbContext, DbSet<TEntity>>(property);
-                dbContextMock.Setup(propertyExpression).Returns(mockedDbSet);
+                var propertyExpression = ProjectExpressionHelper.CreatePropertyExpression<TDbContext, DbSet<TEntity>>(property);
+                dbContextMock.Setup(propertyExpression).Returns(() => mockedDbSet);
             }
             else
             {
                 Logger.LogDebug("Could not find a DbContext property for type '{type}'", typeof(TEntity));
             }
 
-            dbContextMock.Setup(m => m.Set<TEntity>()).Returns(mockedDbSet);
+            dbContextMock.Setup(m => m.Set<TEntity>()).Returns(() => mockedDbSet);
 
             dbContextMock.Setup(m => m.Add(It.IsAny<TEntity>())).Returns((TEntity providedEntity) => _dbContext.Add(providedEntity));
             dbContextMock.Setup(m => m.AddAsync(It.IsAny<TEntity>(), It.IsAny<CancellationToken>()))
@@ -115,15 +115,15 @@ namespace EntityFrameworkCore.Testing.Moq.Helpers
             var property = typeof(TDbContext).GetProperties().SingleOrDefault(p => p.PropertyType == typeof(DbSet<TEntity>));
             if (property != null)
             {
-                var propertyExpression = ExpressionHelper.CreatePropertyExpression<TDbContext, DbSet<TEntity>>(property);
-                dbContextMock.Setup(propertyExpression).Returns(mockedReadOnlyDbSet);
+                var propertyExpression = ProjectExpressionHelper.CreatePropertyExpression<TDbContext, DbSet<TEntity>>(property);
+                dbContextMock.Setup(propertyExpression).Returns(() => mockedReadOnlyDbSet);
             }
             else
             {
                 Logger.LogDebug("Could not find a DbContext property for type '{type}'", typeof(TEntity));
             }
 
-            dbContextMock.Setup(m => m.Set<TEntity>()).Returns(mockedReadOnlyDbSet);
+            dbContextMock.Setup(m => m.Set<TEntity>()).Returns(() => mockedReadOnlyDbSet);
         }
     }
 }

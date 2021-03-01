@@ -129,9 +129,9 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
                     Task.FromResult(executeSqlRawResult));
             var relationalCommand = relationalCommandMock.Object;
 
-            var rawSqlCommandMock = new Mock<RawSqlCommand>(MockBehavior.Strict, relationalCommand, new Dictionary<string, object>());
-            rawSqlCommandMock.Setup(m => m.RelationalCommand).Returns(relationalCommand);
-            rawSqlCommandMock.Setup(m => m.ParameterValues).Returns(new Dictionary<string, object>());
+            var rawSqlCommandMock = new Mock<RawSqlCommand>(relationalCommand, new Dictionary<string, object>());
+            rawSqlCommandMock.Setup(m => m.RelationalCommand).Returns(() => relationalCommand);
+            rawSqlCommandMock.Setup(m => m.ParameterValues).Returns(() => new Dictionary<string, object>());
             var rawSqlCommand = rawSqlCommandMock.Object;
 
             var existingRawSqlCommandBuilder =
