@@ -6,6 +6,10 @@ namespace EntityFrameworkCore.Testing.Moq.Tests
 {
     public class ByPropertyReadOnlyDbSetExceptionTests : ReadOnlyDbSetExceptionTests<TestReadOnlyEntity>
     {
+        protected TestDbContext MockedDbContext;
+
+        protected override DbSet<TestReadOnlyEntity> DbSet => MockedDbContext.TestReadOnlyEntities;
+
         [SetUp]
         public override void SetUp()
         {
@@ -13,9 +17,5 @@ namespace EntityFrameworkCore.Testing.Moq.Tests
 
             MockedDbContext = Create.MockedDbContextFor<TestDbContext>();
         }
-
-        protected TestDbContext MockedDbContext;
-
-        protected override DbSet<TestReadOnlyEntity> DbSet => MockedDbContext.TestReadOnlyEntities;
     }
 }

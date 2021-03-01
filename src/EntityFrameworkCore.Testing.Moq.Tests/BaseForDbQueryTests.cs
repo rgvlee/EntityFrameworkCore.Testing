@@ -9,6 +9,8 @@ namespace EntityFrameworkCore.Testing.Moq.Tests
 {
     public abstract class BaseForDbQueryTests<T> : BaseForReadOnlyDbSetTests<T> where T : BaseTestEntity
     {
+        protected TestDbContext MockedDbContext;
+
         [SetUp]
         public override void SetUp()
         {
@@ -16,8 +18,6 @@ namespace EntityFrameworkCore.Testing.Moq.Tests
 
             MockedDbContext = Create.MockedDbContextFor<TestDbContext>();
         }
-
-        protected TestDbContext MockedDbContext;
 
         protected override void AddFromSqlRawResult(DbSet<T> mockedDbSet, IEnumerable<T> expectedResult)
         {
