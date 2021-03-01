@@ -1,14 +1,23 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using AutoFixture;
 using EntityFrameworkCore.Testing.Common.Tests;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Extensions.Internal;
 using NUnit.Framework;
 
 namespace EntityFrameworkCore.DefaultBehaviour.Tests
 {
     public class ByTypeDbSetTests : BaseForQueryableTests<TestEntity>
     {
+        protected TestDbContext DbContext;
+
+        protected DbSet<TestEntity> DbSet => DbContext.Set<TestEntity>();
+
+        protected override IQueryable<TestEntity> Queryable => DbSet;
+
         [SetUp]
         public override void SetUp()
         {
@@ -17,31 +26,51 @@ namespace EntityFrameworkCore.DefaultBehaviour.Tests
             DbContext = new TestDbContext(new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
         }
 
-        protected TestDbContext DbContext;
-
-        protected DbSet<TestEntity> DbSet => DbContext.Set<TestEntity>();
-
-        protected override IQueryable<TestEntity> Queryable => DbSet;
-
         protected override void SeedQueryableSource()
         {
-            var itemsToAdd = Fixture.Build<TestEntity>().With(p => p.FixedDateTime, DateTime.Parse("2019-01-01")).CreateMany().ToList();
+            var itemsToAdd = Fixture.Build<TestEntity>().With(p => p.CreatedAt, DateTime.Parse("2019-01-01")).CreateMany().ToList();
             DbContext.Set<TestEntity>().AddRange(itemsToAdd);
             DbContext.SaveChanges();
             ItemsAddedToQueryableSource = itemsToAdd;
         }
 
         [Test]
-        [Ignore("This is not supported by the in memory database provider.")]
-        public override void ElementAt_ReturnsElementAtSpecifiedIndex() { }
+        public virtual async Task AsAsyncEnumerable_ReturnsAsyncEnumerable()
+        {
+            var expectedResult = Fixture.Create<TestEntity>();
+            DbSet.Add(expectedResult);
+            DbContext.SaveChanges();
+
+            var asyncEnumerable = await DbSet.AsAsyncEnumerable().ToList();
+
+            var actualResults = new List<TestEntity>();
+            foreach (var item in asyncEnumerable)
+            {
+                actualResults.Add(item);
+            }
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(actualResults.Single(), Is.EqualTo(expectedResult));
+                Assert.That(actualResults.Single(), Is.EqualTo(expectedResult));
+            });
+        }
 
         [Test]
-        [Ignore("This is not supported by the in memory database provider.")]
-        public override void ElementAtOrDefault_ReturnsElementAtSpecifiedIndex() { }
+        public virtual void AsQueryable_ReturnsQueryable()
+        {
+            var expectedResult = Fixture.Create<TestEntity>();
+            DbSet.Add(expectedResult);
+            DbContext.SaveChanges();
 
-        [Test]
-        [Ignore("This is not supported by the in memory database provider.")]
-        public override void ElementAtOrDefault_WithNoItemsAdded_ReturnsDefault() { }
+            var queryable = DbSet.AsQueryable();
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(queryable.Single(), Is.EqualTo(expectedResult));
+                Assert.That(queryable.Single(), Is.EqualTo(expectedResult));
+            });
+        }
 
         [Test]
         public virtual void FromSql_ThrowsException()
@@ -51,25 +80,5 @@ namespace EntityFrameworkCore.DefaultBehaviour.Tests
                 var actualResult = DbSet.FromSql("sp_NoParams").ToList();
             });
         }
-
-        [Test]
-        [Ignore("This is not supported by the in memory database provider.")]
-        public override void IndexedSelectThenWhereThenAny_TrueCondition_ReturnsTrue() { }
-
-        [Test]
-        [Ignore("This is not supported by the in memory database provider.")]
-        public override void Select_WithIndex_ReturnsIndexedSequence() { }
-
-        [Test]
-        [Ignore("This is not supported by the in memory database provider.")]
-        public override void SkipWhile_SkipFirstItem_ReturnsSequenceThatDoesNotIncludeFirstItem() { }
-
-        [Test]
-        [Ignore("This is not supported by the in memory database provider.")]
-        public override void TakeWhile_TakeFirstItem_ReturnsFirstItem() { }
-
-        [Test]
-        [Ignore("This is not supported by the in memory database provider.")]
-        public override void TakeWhile_TakeFirstItemUsingIndex_ReturnsFirstItem() { }
     }
 }

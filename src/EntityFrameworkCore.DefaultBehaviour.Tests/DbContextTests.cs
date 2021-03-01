@@ -9,6 +9,8 @@ namespace EntityFrameworkCore.DefaultBehaviour.Tests
 {
     public class DbContextTests : BaseForTests
     {
+        protected TestDbContext DbContext;
+
         [SetUp]
         public override void SetUp()
         {
@@ -16,8 +18,6 @@ namespace EntityFrameworkCore.DefaultBehaviour.Tests
 
             DbContext = new TestDbContext(new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
         }
-
-        protected TestDbContext DbContext;
 
         [Test]
         public virtual void ExecuteSqlCommand_ThrowsException()
@@ -45,6 +45,15 @@ namespace EntityFrameworkCore.DefaultBehaviour.Tests
             {
                 var ex = Assert.Throws<InvalidOperationException>(() => DbContext.Set<NotRegisteredEntity>().ToList());
                 Assert.That(ex.Message, Is.EqualTo(string.Format(ExceptionMessages.CannotCreateDbSetTypeNotIncludedInModel, nameof(NotRegisteredEntity))));
+            });
+        }
+
+        [Test]
+        public virtual void SetCommandTimeout_ValidTimeout_ThrowsException()
+        {
+            Assert.Throws<InvalidOperationException>(() =>
+            {
+                DbContext.Database.SetCommandTimeout(60);
             });
         }
     }
