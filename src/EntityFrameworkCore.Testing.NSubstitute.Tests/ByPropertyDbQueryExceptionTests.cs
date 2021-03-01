@@ -6,6 +6,10 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Tests
 {
     public class ByPropertyDbQueryExceptionTests : ReadOnlyDbSetExceptionTests<ViewEntity>
     {
+        protected TestDbContext MockedDbContext;
+
+        protected override DbSet<ViewEntity> DbSet => MockedDbContext.ViewEntities;
+
         [SetUp]
         public override void SetUp()
         {
@@ -13,9 +17,5 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Tests
 
             MockedDbContext = Create.MockedDbContextFor<TestDbContext>();
         }
-
-        protected TestDbContext MockedDbContext;
-
-        protected override DbSet<ViewEntity> DbSet => MockedDbContext.ViewEntities;
     }
 }
