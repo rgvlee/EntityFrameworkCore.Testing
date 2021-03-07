@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
@@ -18,7 +18,7 @@
     <PackageReference Include="AutoFixture" Version="4.15.0" />
     <PackageReference Include="AutoMapper" Version="10.1.1" />
     <PackageReference Include="CompareNETObjects" Version="4.72.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="6.0.0-preview.1.21102.12" />
     <PackageReference Include="nunit" Version="3.13.1" />
     <PackageReference Include="NUnit.Analyzers" Version="3.0.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.17.0">
