@@ -19,7 +19,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
             });
             Assert.That(ex.Message,
                 Is.EqualTo(
-                    $"Unable to track an instance of type '{typeof(TEntity).Name}' because it does not have a primary key. Only entity types with primary keys may be tracked."));
+                    $"Unable to track an instance of type '{typeof(TEntity).Name}' because it does not have a primary key. Only entity types with a primary key may be tracked."));
         }
 
         [Test]
@@ -31,7 +31,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
             });
             Assert.That(ex.Message,
                 Is.EqualTo(
-                    $"Unable to track an instance of type '{typeof(TEntity).Name}' because it does not have a primary key. Only entity types with primary keys may be tracked."));
+                    $"Unable to track an instance of type '{typeof(TEntity).Name}' because it does not have a primary key. Only entity types with a primary key may be tracked."));
         }
 
         [Test]
@@ -43,7 +43,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
             });
             Assert.That(ex.Message,
                 Is.EqualTo(
-                    $"Unable to track an instance of type '{typeof(TEntity).Name}' because it does not have a primary key. Only entity types with primary keys may be tracked."));
+                    $"Unable to track an instance of type '{typeof(TEntity).Name}' because it does not have a primary key. Only entity types with a primary key may be tracked."));
         }
 
         [Test]
@@ -55,7 +55,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
             });
             Assert.That(ex.Message,
                 Is.EqualTo(
-                    $"Unable to track an instance of type '{typeof(TEntity).Name}' because it does not have a primary key. Only entity types with primary keys may be tracked."));
+                    $"Unable to track an instance of type '{typeof(TEntity).Name}' because it does not have a primary key. Only entity types with a primary key may be tracked."));
         }
 
         [Test]
@@ -67,7 +67,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
             });
             Assert.That(ex.Message,
                 Is.EqualTo(
-                    $"Unable to track an instance of type '{typeof(TEntity).Name}' because it does not have a primary key. Only entity types with primary keys may be tracked."));
+                    $"Unable to track an instance of type '{typeof(TEntity).Name}' because it does not have a primary key. Only entity types with a primary key may be tracked."));
         }
 
         [Test]
@@ -79,7 +79,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
             });
             Assert.That(ex.Message,
                 Is.EqualTo(
-                    $"Unable to track an instance of type '{typeof(TEntity).Name}' because it does not have a primary key. Only entity types with primary keys may be tracked."));
+                    $"Unable to track an instance of type '{typeof(TEntity).Name}' because it does not have a primary key. Only entity types with a primary key may be tracked."));
         }
 
         [Test]
@@ -123,7 +123,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
             });
             Assert.That(ex.Message,
                 Is.EqualTo(
-                    $"Unable to track an instance of type '{typeof(TEntity).Name}' because it does not have a primary key. Only entity types with primary keys may be tracked."));
+                    $"Unable to track an instance of type '{typeof(TEntity).Name}' because it does not have a primary key. Only entity types with a primary key may be tracked."));
         }
 
         [Test]
@@ -135,7 +135,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
             });
             Assert.That(ex.Message,
                 Is.EqualTo(
-                    $"Unable to track an instance of type '{typeof(TEntity).Name}' because it does not have a primary key. Only entity types with primary keys may be tracked."));
+                    $"Unable to track an instance of type '{typeof(TEntity).Name}' because it does not have a primary key. Only entity types with a primary key may be tracked."));
         }
 
         [Test]
@@ -147,7 +147,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
             });
             Assert.That(ex.Message,
                 Is.EqualTo(
-                    $"Unable to track an instance of type '{typeof(TEntity).Name}' because it does not have a primary key. Only entity types with primary keys may be tracked."));
+                    $"Unable to track an instance of type '{typeof(TEntity).Name}' because it does not have a primary key. Only entity types with a primary key may be tracked."));
         }
 
         [Test]
@@ -159,7 +159,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
             });
             Assert.That(ex.Message,
                 Is.EqualTo(
-                    $"Unable to track an instance of type '{typeof(TEntity).Name}' because it does not have a primary key. Only entity types with primary keys may be tracked."));
+                    $"Unable to track an instance of type '{typeof(TEntity).Name}' because it does not have a primary key. Only entity types with a primary key may be tracked."));
         }
     }
 }

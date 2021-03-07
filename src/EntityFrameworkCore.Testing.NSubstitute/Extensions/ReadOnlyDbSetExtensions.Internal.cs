@@ -34,7 +34,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
             var mockedQueryProvider = ((IQueryable<TEntity>) readOnlyDbSet).Provider.CreateMockedQueryProvider(asyncEnumerable);
 
             var invalidOperationException = new InvalidOperationException(
-                $"Unable to track an instance of type '{typeof(TEntity).Name}' because it does not have a primary key. Only entity types with primary keys may be tracked.");
+                $"Unable to track an instance of type '{typeof(TEntity).Name}' because it does not have a primary key. Only entity types with a primary key may be tracked.");
 
             mockedReadOnlyDbSet.Add(Arg.Any<TEntity>()).Throws(callInfo => invalidOperationException);
             mockedReadOnlyDbSet.AddAsync(Arg.Any<TEntity>(), Arg.Any<CancellationToken>()).Throws(callInfo => invalidOperationException);
