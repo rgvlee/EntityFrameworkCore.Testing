@@ -26,4 +26,4 @@ jobs:
       run: dotnet build src --no-restore --configuration Release
 
     - name: Test
-      run: dotnet test src --no-build --verbosity normal
+      run: dotnet test src --configuration Release --no-build --verbosity normal
