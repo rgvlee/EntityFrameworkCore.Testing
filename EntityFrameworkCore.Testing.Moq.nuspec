@@ -27,12 +27,12 @@ It includes support for queries/keyless db sets, FromSql/FromSqlRaw/FromSqlInter
     </dependencies>
   </metadata>
   <files>
-    <file src="src\EntityFrameworkCore.Testing.Common\bin\Release\net5.0\EntityFrameworkCore.Testing.Common.dll" target="lib\net5.0" />
-    <file src="src\EntityFrameworkCore.Testing.Common\bin\Release\net5.0\EntityFrameworkCore.Testing.Common.xml" target="lib\net5.0" />
-    <file src="src\EntityFrameworkCore.Testing.Common\bin\Release\net5.0\EntityFrameworkCore.Testing.Common.pdb" target="lib\net5.0" />
-    <file src="src\EntityFrameworkCore.Testing.Moq\bin\Release\net5.0\EntityFrameworkCore.Testing.Moq.dll" target="lib\net5.0" />
-    <file src="src\EntityFrameworkCore.Testing.Moq\bin\Release\net5.0\EntityFrameworkCore.Testing.Moq.xml" target="lib\net5.0" />
-    <file src="src\EntityFrameworkCore.Testing.Moq\bin\Release\net5.0\EntityFrameworkCore.Testing.Moq.pdb" target="lib\net5.0" />
+    <file src="src\EntityFrameworkCore.Testing.Common\bin\Release\net6.0\EntityFrameworkCore.Testing.Common.dll" target="lib\net6.0" />
+    <file src="src\EntityFrameworkCore.Testing.Common\bin\Release\net6.0\EntityFrameworkCore.Testing.Common.xml" target="lib\net6.0" />
+    <file src="src\EntityFrameworkCore.Testing.Common\bin\Release\net6.0\EntityFrameworkCore.Testing.Common.pdb" target="lib\net6.0" />
+    <file src="src\EntityFrameworkCore.Testing.Moq\bin\Release\net6.0\EntityFrameworkCore.Testing.Moq.dll" target="lib\net6.0" />
+    <file src="src\EntityFrameworkCore.Testing.Moq\bin\Release\net6.0\EntityFrameworkCore.Testing.Moq.xml" target="lib\net6.0" />
+    <file src="src\EntityFrameworkCore.Testing.Moq\bin\Release\net6.0\EntityFrameworkCore.Testing.Moq.pdb" target="lib\net6.0" />
     <file src="LICENSE" />
   </files>
 </package>
