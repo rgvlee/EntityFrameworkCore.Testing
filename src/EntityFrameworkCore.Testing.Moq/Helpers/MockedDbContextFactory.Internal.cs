@@ -114,7 +114,12 @@ namespace EntityFrameworkCore.Testing.Moq.Helpers
             dependenciesMock.Setup(m => m.ConcurrencyDetector).Returns(concurrencyDetector);
             dependenciesMock.Setup(m => m.CommandLogger).Returns(() => Mock.Of<IDiagnosticsLogger<DbLoggerCategory.Database.Command>>());
             dependenciesMock.Setup(m => m.RawSqlCommandBuilder).Returns(() => rawSqlCommandBuilder);
-            dependenciesMock.Setup(m => m.RelationalConnection).Returns(() => Mock.Of<IRelationalConnection>());
+
+            var relationalConnectionMock = new Mock<IRelationalConnection>();
+            relationalConnectionMock.Setup(m => m.CommandTimeout).Returns(() => 0);
+            var relationalConnection = relationalConnectionMock.Object;
+            dependenciesMock.Setup(m => m.RelationalConnection).Returns(() => relationalConnection);
+
             var dependencies = dependenciesMock.Object;
 
             var serviceProviderMock = new Mock<IServiceProvider>();

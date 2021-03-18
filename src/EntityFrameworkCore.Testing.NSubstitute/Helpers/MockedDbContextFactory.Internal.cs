@@ -129,7 +129,10 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Helpers
             dependencies.ConcurrencyDetector.Returns(callInfo => concurrencyDetector);
             dependencies.CommandLogger.Returns(callInfo => Substitute.For<IDiagnosticsLogger<DbLoggerCategory.Database.Command>>());
             dependencies.RawSqlCommandBuilder.Returns(callInfo => rawSqlCommandBuilder);
-            dependencies.RelationalConnection.Returns(callInfo => Substitute.For<IRelationalConnection>());
+
+            var relationalConnection = Substitute.For<IRelationalConnection>();
+            relationalConnection.CommandTimeout.Returns(0);
+            dependencies.RelationalConnection.Returns(callInfo => relationalConnection);
 
             var serviceProvider = Substitute.For<IServiceProvider>();
             serviceProvider.GetService(Arg.Is<Type>(t => t == typeof(IDatabaseFacadeDependencies))).Returns(callInfo => dependencies);

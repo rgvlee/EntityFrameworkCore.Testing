@@ -465,5 +465,13 @@ namespace EntityFrameworkCore.Testing.Common.Tests
                 MockedDbContext.Database.SetCommandTimeout(60);
             });
         }
+
+        [Test]
+        public virtual void GetCommandTimeout_ReturnsZero()
+        {
+            var actualResult = MockedDbContext.Database.GetCommandTimeout();
+
+            Assert.That(actualResult, Is.EqualTo(0));
+        }
     }
 }
