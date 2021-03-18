@@ -933,5 +933,15 @@ namespace EntityFrameworkCore.Testing.Common.Tests
 
             Assert.That(comparisonResult.AreEqual, Is.True);
         }
+
+        [Test]
+        public virtual void ToListThenElementAt_Zero_ReturnsFirstElement()
+        {
+            SeedQueryableSource();
+
+            var firstElement = Queryable.ToList().ElementAt(0);
+
+            Assert.That(firstElement, Is.EqualTo(ItemsAddedToQueryableSource.First()));
+        }
     }
 }

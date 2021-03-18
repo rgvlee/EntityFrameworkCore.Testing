@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Query.Internal;
 using Microsoft.Extensions.Logging;
 using rgvlee.Core.Common.Helpers;
@@ -37,7 +36,7 @@ namespace EntityFrameworkCore.Testing.Common.Helpers
             EnsureArgument.IsNotNull(expression, nameof(expression));
             EnsureArgument.IsNotNull(parameters, nameof(parameters));
 
-            var result = SqlMatchesFromSqlExpression(sql, expression) && 
+            var result = SqlMatchesFromSqlExpression(sql, expression) &&
                          ParameterMatchingHelper.DoInvocationParametersMatchSetUpParameters(parameters, (object[]) ((ConstantExpression) expression.Argument).Value);
 
             Logger.LogDebug("Match? {result}", result);
