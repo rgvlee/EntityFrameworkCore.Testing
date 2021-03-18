@@ -131,7 +131,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Helpers
             dependencies.RawSqlCommandBuilder.Returns(callInfo => rawSqlCommandBuilder);
 
             var relationalConnection = Substitute.For<IRelationalConnection>();
-            relationalConnection.CommandTimeout.Returns(0);
+            relationalConnection.CommandTimeout.Returns(callInfo => 0);
             dependencies.RelationalConnection.Returns(callInfo => relationalConnection);
 
             var serviceProvider = Substitute.For<IServiceProvider>();
