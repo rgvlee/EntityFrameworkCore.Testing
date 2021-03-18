@@ -17,14 +17,14 @@ namespace EntityFrameworkCore.Testing.Moq.PackageVerification.Tests
 {
     public class ReadmeTests
     {
-        private readonly Fixture _fixture = new Fixture();
+        private readonly Fixture _fixture = new();
 
         [SetUp]
         public virtual void SetUp()
         {
             LoggingHelper.LoggerFactory = LoggerFactory.Create(builder => builder.AddConsole().SetMinimumLevel(LogLevel.Trace));
         }
-        
+
         [TearDown]
         public virtual void TearDown()
         {
@@ -82,7 +82,7 @@ namespace EntityFrameworkCore.Testing.Moq.PackageVerification.Tests
         public void UsageExample4()
         {
             var expectedResult = _fixture.CreateMany<TestEntity>().ToList();
-            var sqlParameters = new List<SqlParameter> { new SqlParameter("@Parameter2", "Value2") };
+            var sqlParameters = new List<SqlParameter> { new("@Parameter2", "Value2") };
             var mockedDbContext = Create.MockedDbContextFor<TestDbContext>();
             mockedDbContext.Set<TestEntity>().AddFromSqlRawResult("usp_StoredProcedureWithParameters", sqlParameters, expectedResult);
 
