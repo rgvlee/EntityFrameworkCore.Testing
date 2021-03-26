@@ -28,7 +28,7 @@ namespace EntityFrameworkCore.Testing.Common
             }
         }
 
-        public IAsyncEnumerator<T> GetAsyncEnumerator(CancellationToken cancellationToken = new())
+        public IAsyncEnumerator<T> GetAsyncEnumerator(CancellationToken cancellationToken = new CancellationToken())
         {
             return new AsyncEnumerator<T>(_innerEnumerable);
         }
