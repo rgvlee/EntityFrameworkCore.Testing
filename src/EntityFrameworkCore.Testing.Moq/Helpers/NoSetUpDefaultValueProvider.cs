@@ -23,13 +23,13 @@ namespace EntityFrameworkCore.Testing.Moq.Helpers
 
         private readonly TDbContext _dbContext;
 
-        private readonly List<PropertyInfo> _dbContextModelEntityProperties;
+        private readonly List<PropertyInfo> _dbContextModelProperties;
 
         public NoSetUpDefaultValueProvider(TDbContext dbContext)
         {
             _dbContext = dbContext;
             _allModelEntityTypes = _dbContext.Model.GetEntityTypes().ToList();
-            _dbContextModelEntityProperties = _dbContext.GetType()
+            _dbContextModelProperties = _dbContext.GetType()
                 .GetProperties()
                 .Where(x => x.PropertyType.IsGenericType &&
                             (x.PropertyType.GetGenericTypeDefinition() == typeof(DbSet<>) || x.PropertyType.GetGenericTypeDefinition() == typeof(DbQuery<>)))
@@ -40,35 +40,35 @@ namespace EntityFrameworkCore.Testing.Moq.Helpers
         {
             var lastInvocation = mock.Invocations.Last();
 
-            var modelEntityType = GetModelEntityType(lastInvocation);
-            if (modelEntityType == null)
+            var modelType = GetModelType(lastInvocation);
+            if (modelType == null)
             {
                 return type.GetDefaultValue();
             }
 
-            Logger.LogDebug("Setting up model entity '{type}'", modelEntityType);
+            Logger.LogDebug("Setting up model '{type}'", modelType);
 
-            var entityType = _allModelEntityTypes.SingleOrDefault(x => x.ClrType.Equals(modelEntityType));
-            if (entityType == null)
+            var modelEntityType = _allModelEntityTypes.SingleOrDefault(x => x.ClrType.Equals(modelType));
+            if (modelEntityType == null)
             {
                 throw new InvalidOperationException(string.Format(ExceptionMessages.CannotCreateDbSetTypeNotIncludedInModel,
                     lastInvocation.Method.GetGenericArguments().Single().Name));
             }
 
-            var setUpModelEntityMethod = typeof(NoSetUpDefaultValueProvider<TDbContext>).GetMethods(BindingFlags.Instance | BindingFlags.NonPublic)
-                .Single(x => x.Name.Equals(!entityType.IsQueryType ? "SetUpModelEntity" : "SetUpReadOnlyModelEntity"));
+            var setUpModelMethod = typeof(NoSetUpDefaultValueProvider<TDbContext>).GetMethods(BindingFlags.Instance | BindingFlags.NonPublic)
+                .Single(x => x.Name.Equals(!modelEntityType.IsQueryType ? "SetUpModel" : "SetUpReadOnlyModel"));
 
-            setUpModelEntityMethod.MakeGenericMethod(modelEntityType).Invoke(this, new[] { mock });
+            setUpModelMethod.MakeGenericMethod(modelType).Invoke(this, new[] { mock });
 
             return lastInvocation.Method.Invoke(mock.Object, lastInvocation.Arguments?.ToArray());
         }
 
-        private Type GetModelEntityType(IInvocation invocation)
+        private Type GetModelType(IInvocation invocation)
         {
-            var dbContextModelEntityProperty = _dbContextModelEntityProperties.SingleOrDefault(x => x.GetMethod.Name.Equals(invocation.Method.Name));
-            if (dbContextModelEntityProperty != null)
+            var dbContextModelProperty = _dbContextModelProperties.SingleOrDefault(x => x.GetMethod.Name.Equals(invocation.Method.Name));
+            if (dbContextModelProperty != null)
             {
-                return dbContextModelEntityProperty.PropertyType.GetGenericArguments().Single();
+                return dbContextModelProperty.PropertyType.GetGenericArguments().Single();
             }
 
             if (!invocation.Method.IsGenericMethod)
@@ -87,7 +87,7 @@ namespace EntityFrameworkCore.Testing.Moq.Helpers
             return null;
         }
 
-        private void SetUpModelEntity<TEntity>(Mock<TDbContext> dbContextMock) where TEntity : class
+        private void SetUpModel<TEntity>(Mock<TDbContext> dbContextMock) where TEntity : class
         {
             var mockedDbSet = _dbContext.Set<TEntity>().CreateMockedDbSet();
 
@@ -124,7 +124,7 @@ namespace EntityFrameworkCore.Testing.Moq.Helpers
             dbContextMock.Setup(m => m.Update(It.IsAny<TEntity>())).Returns((TEntity providedEntity) => _dbContext.Update(providedEntity));
         }
 
-        private void SetUpReadOnlyModelEntity<TEntity>(Mock<TDbContext> dbContextMock) where TEntity : class
+        private void SetUpReadOnlyModel<TEntity>(Mock<TDbContext> dbContextMock) where TEntity : class
         {
             var mockedDbQuery = _dbContext.Query<TEntity>().CreateMockedDbQuery();
 
