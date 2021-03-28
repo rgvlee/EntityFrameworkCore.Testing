@@ -1,4 +1,4 @@
-name: .NET
+name: Build and test
 
 on:
   push:
@@ -7,8 +7,8 @@ on:
     branches: [ 3.x ]
 
 jobs:
-  build:
-
+  build-and-test:
+    name: Build and test
     runs-on: ubuntu-latest
 
     steps:
@@ -17,13 +17,13 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 5.0.x
+        dotnet-version: 5.x
 
     - name: Restore dependencies
       run: dotnet restore src
 
     - name: Build
-      run: dotnet build src --no-restore --configuration Release
+      run: dotnet build src --configuration Release --no-restore
 
     - name: Test
       run: dotnet test src --configuration Release --no-build --verbosity normal
