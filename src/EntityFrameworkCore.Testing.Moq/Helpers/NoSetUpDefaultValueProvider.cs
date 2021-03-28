@@ -35,27 +35,6 @@ namespace EntityFrameworkCore.Testing.Moq.Helpers
                 .ToList();
         }
 
-        private Type GetSetType(IInvocation invocation)
-        {
-            var dbContextModelEntityProperty = _dbContextModelEntityProperties.SingleOrDefault(x => x.GetMethod.Name.Equals(invocation.Method.Name));
-            if (dbContextModelEntityProperty != null)
-            {
-                return dbContextModelEntityProperty.PropertyType.GetGenericArguments().Single();
-            }
-
-            var dbContextMethod = typeof(DbContext).GetMethods(BindingFlags.Instance | BindingFlags.Public)
-                .SingleOrDefault(x => x.Name.Equals(invocation.Method.Name) &&
-                                      x.IsGenericMethod &&
-                                      x.GetGenericMethodDefinition().Equals(invocation.Method.GetGenericMethodDefinition()));
-
-            if (dbContextMethod != null)
-            {
-                return invocation.Method.GetGenericArguments().Single();
-            }
-
-            return null;
-        }
-
         protected override object GetDefaultValue(Type type, Mock mock)
         {
             var lastInvocation = mock.Invocations.Last();
@@ -82,6 +61,27 @@ namespace EntityFrameworkCore.Testing.Moq.Helpers
             setUpModelEntityMethod.MakeGenericMethod(setType).Invoke(this, new[] { mock });
 
             return lastInvocation.Method.Invoke(mock.Object, lastInvocation.Arguments?.ToArray());
+        }
+
+        private Type GetSetType(IInvocation invocation)
+        {
+            var dbContextModelEntityProperty = _dbContextModelEntityProperties.SingleOrDefault(x => x.GetMethod.Name.Equals(invocation.Method.Name));
+            if (dbContextModelEntityProperty != null)
+            {
+                return dbContextModelEntityProperty.PropertyType.GetGenericArguments().Single();
+            }
+
+            var dbContextMethod = typeof(DbContext).GetMethods(BindingFlags.Instance | BindingFlags.Public)
+                .SingleOrDefault(x => x.Name.Equals(invocation.Method.Name) &&
+                                      x.IsGenericMethod &&
+                                      x.GetGenericMethodDefinition().Equals(invocation.Method.GetGenericMethodDefinition()));
+
+            if (dbContextMethod != null)
+            {
+                return invocation.Method.GetGenericArguments().Single();
+            }
+
+            return null;
         }
 
         private void SetUpModelEntity<TEntity>(Mock<TDbContext> dbContextMock) where TEntity : class
