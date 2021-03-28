@@ -5,8 +5,7 @@ using NUnit.Framework;
 
 namespace EntityFrameworkCore.Testing.Common.Tests
 {
-    public abstract class Issue49Tests<TDbContext, TEntity> : BaseForTests 
-        where TDbContext : DbContext
+    public abstract class Issue49Tests<TDbContext, TEntity> : BaseForTests where TDbContext : DbContext
         where TEntity : BaseTestEntity
     {
         protected TDbContext DbContext;

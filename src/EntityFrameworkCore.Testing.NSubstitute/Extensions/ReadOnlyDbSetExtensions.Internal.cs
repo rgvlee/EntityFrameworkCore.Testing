@@ -114,7 +114,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
             ((IEnumerable<TEntity>) mockedReadOnlyDbSet).GetEnumerator().Returns(callInfo => ((IEnumerable<TEntity>) asyncEnumerable).GetEnumerator());
 
             ((IListSource) mockedReadOnlyDbSet).GetList().Returns(callInfo => asyncEnumerable.ToList());
-            
+
             //Backwards compatibility implementation for EFCore 3.0.0
             var asyncEnumerableMethod = typeof(DbSet<TEntity>).GetMethod("AsAsyncEnumerable");
             if (asyncEnumerableMethod != null)
