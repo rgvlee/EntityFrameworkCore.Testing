@@ -14,12 +14,12 @@ namespace EntityFrameworkCore.Testing.Common
 
         public ValueTask DisposeAsync()
         {
-            return new ValueTask();
+            return new();
         }
 
         public ValueTask<bool> MoveNextAsync()
         {
-            return new ValueTask<bool>(_enumerator.MoveNext());
+            return new(_enumerator.MoveNext());
         }
 
         public T Current => _enumerator.Current;
