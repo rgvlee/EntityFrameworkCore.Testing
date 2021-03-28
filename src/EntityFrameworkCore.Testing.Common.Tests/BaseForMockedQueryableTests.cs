@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoFixture;
+using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 
@@ -279,8 +280,8 @@ namespace EntityFrameworkCore.Testing.Common.Tests
 
             Assert.Multiple(() =>
             {
-                Assert.That(actualResult1, Is.EquivalentTo(expectedResult));
-                Assert.That(actualResult2, Is.EquivalentTo(actualResult1));
+                actualResult1.Should().BeEquivalentTo(expectedResult);
+                actualResult2.Should().BeEquivalentTo(expectedResult);
             });
         }
 

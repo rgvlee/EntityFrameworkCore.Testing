@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
@@ -132,6 +133,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Helpers
 
             var relationalConnection = Substitute.For<IRelationalConnection>();
             relationalConnection.CommandTimeout.Returns(callInfo => 0);
+            relationalConnection.DbConnection.Returns(callInfo => Substitute.For<DbConnection>());
             dependencies.RelationalConnection.Returns(callInfo => relationalConnection);
 
             var serviceProvider = Substitute.For<IServiceProvider>();

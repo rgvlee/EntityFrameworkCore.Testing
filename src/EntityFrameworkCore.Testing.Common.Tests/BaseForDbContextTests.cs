@@ -4,6 +4,8 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoFixture;
+using FluentAssertions;
+using FluentAssertions.Common;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 
@@ -313,8 +315,8 @@ namespace EntityFrameworkCore.Testing.Common.Tests
 
             Assert.Multiple(() =>
             {
-                Assert.That(actualResult1, Is.EqualTo(expectedResult));
-                Assert.That(actualResult2, Is.EqualTo(actualResult1));
+                actualResult1.Should().Be(expectedResult);
+                actualResult2.Should().Be(expectedResult);
             });
         }
 
@@ -464,14 +466,6 @@ namespace EntityFrameworkCore.Testing.Common.Tests
             {
                 MockedDbContext.Database.SetCommandTimeout(60);
             });
-        }
-
-        [Test]
-        public virtual void GetCommandTimeout_ReturnsZero()
-        {
-            var actualResult = MockedDbContext.Database.GetCommandTimeout();
-
-            Assert.That(actualResult, Is.EqualTo(0));
         }
     }
 }

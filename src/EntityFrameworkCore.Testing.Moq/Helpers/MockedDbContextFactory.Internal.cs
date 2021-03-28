@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Threading;
 using EntityFrameworkCore.Testing.Common.Helpers;
 using Microsoft.EntityFrameworkCore;
@@ -117,6 +118,7 @@ namespace EntityFrameworkCore.Testing.Moq.Helpers
 
             var relationalConnectionMock = new Mock<IRelationalConnection>();
             relationalConnectionMock.Setup(m => m.CommandTimeout).Returns(() => 0);
+            relationalConnectionMock.Setup(m => m.DbConnection).Returns(() => Mock.Of<DbConnection>());
             var relationalConnection = relationalConnectionMock.Object;
             dependenciesMock.Setup(m => m.RelationalConnection).Returns(() => relationalConnection);
 
