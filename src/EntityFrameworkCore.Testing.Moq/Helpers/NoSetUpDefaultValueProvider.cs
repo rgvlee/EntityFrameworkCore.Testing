@@ -46,7 +46,7 @@ namespace EntityFrameworkCore.Testing.Moq.Helpers
                 return type.GetDefaultValue();
             }
 
-            Logger.LogDebug("Setting up setType: '{setType}'", modelEntityType);
+            Logger.LogDebug("Setting up model entity '{type}'", modelEntityType);
 
             var entityType = _allModelEntityTypes.SingleOrDefault(x => x.ClrType.Equals(modelEntityType));
             if (entityType == null)
