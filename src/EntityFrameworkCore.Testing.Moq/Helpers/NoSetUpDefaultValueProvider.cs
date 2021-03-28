@@ -23,13 +23,13 @@ namespace EntityFrameworkCore.Testing.Moq.Helpers
 
         private readonly TDbContext _dbContext;
 
-        private readonly List<PropertyInfo> _dbContextModelEntityProperties;
+        private readonly List<PropertyInfo> _dbContextModelProperties;
 
         public NoSetUpDefaultValueProvider(TDbContext dbContext)
         {
             _dbContext = dbContext;
             _allModelEntityTypes = _dbContext.Model.GetEntityTypes().ToList();
-            _dbContextModelEntityProperties = _dbContext.GetType()
+            _dbContextModelProperties = _dbContext.GetType()
                 .GetProperties()
                 .Where(x => x.PropertyType.IsGenericType &&
                             (x.PropertyType.GetGenericTypeDefinition() == typeof(DbSet<>) || x.PropertyType.GetGenericTypeDefinition() == typeof(DbQuery<>)))
@@ -39,37 +39,55 @@ namespace EntityFrameworkCore.Testing.Moq.Helpers
         protected override object GetDefaultValue(Type type, Mock mock)
         {
             var lastInvocation = mock.Invocations.Last();
-            var lastInvocationIsByType = lastInvocation.Method.Name.Equals("Set") || lastInvocation.Method.Name.Equals("Query");
-            var dbContextModelEntityProperty = _dbContextModelEntityProperties.SingleOrDefault(x => x.GetMethod.Name.Equals(lastInvocation.Method.Name));
-            var lastInvocationIsByProperty = dbContextModelEntityProperty != null;
 
-            if (lastInvocationIsByType || lastInvocationIsByProperty)
+            var modelType = GetModelType(lastInvocation);
+            if (modelType == null)
             {
-                var setType = lastInvocationIsByType
-                    ? lastInvocation.Method.GetGenericArguments().Single()
-                    : dbContextModelEntityProperty.PropertyType.GetGenericArguments().Single();
-
-                Logger.LogDebug("Setting up setType: '{setType}'", setType);
-
-                var entityType = _allModelEntityTypes.SingleOrDefault(x => x.ClrType.Equals(setType));
-                if (entityType == null)
-                {
-                    throw new InvalidOperationException(string.Format(ExceptionMessages.CannotCreateDbSetTypeNotIncludedInModel,
-                        lastInvocation.Method.GetGenericArguments().Single().Name));
-                }
-
-                var setUpModelEntityMethod = typeof(NoSetUpDefaultValueProvider<TDbContext>).GetMethods(BindingFlags.Instance | BindingFlags.NonPublic)
-                    .Single(x => x.Name.Equals(!entityType.IsQueryType ? "SetUpModelEntity" : "SetUpReadOnlyModelEntity"));
-
-                setUpModelEntityMethod.MakeGenericMethod(setType).Invoke(this, new[] { mock });
-
-                return lastInvocation.Method.Invoke(mock.Object, null);
+                return type.GetDefaultValue();
             }
 
-            return type.GetDefaultValue();
+            Logger.LogDebug("Setting up model '{type}'", modelType);
+
+            var modelEntityType = _allModelEntityTypes.SingleOrDefault(x => x.ClrType.Equals(modelType));
+            if (modelEntityType == null)
+            {
+                throw new InvalidOperationException(string.Format(ExceptionMessages.CannotCreateDbSetTypeNotIncludedInModel,
+                    lastInvocation.Method.GetGenericArguments().Single().Name));
+            }
+
+            var setUpModelMethod = typeof(NoSetUpDefaultValueProvider<TDbContext>).GetMethods(BindingFlags.Instance | BindingFlags.NonPublic)
+                .Single(x => x.Name.Equals(!modelEntityType.IsQueryType ? "SetUpModel" : "SetUpReadOnlyModel"));
+
+            setUpModelMethod.MakeGenericMethod(modelType).Invoke(this, new[] { mock });
+
+            return lastInvocation.Method.Invoke(mock.Object, lastInvocation.Arguments?.ToArray());
         }
 
-        private void SetUpModelEntity<TEntity>(Mock<TDbContext> dbContextMock) where TEntity : class
+        private Type GetModelType(IInvocation invocation)
+        {
+            var dbContextModelProperty = _dbContextModelProperties.SingleOrDefault(x => x.GetMethod.Name.Equals(invocation.Method.Name));
+            if (dbContextModelProperty != null)
+            {
+                return dbContextModelProperty.PropertyType.GetGenericArguments().Single();
+            }
+
+            if (!invocation.Method.IsGenericMethod)
+            {
+                return null;
+            }
+
+            var dbContextMethod = typeof(DbContext).GetMethods(BindingFlags.Instance | BindingFlags.Public)
+                .SingleOrDefault(x => x.IsGenericMethod && x.GetGenericMethodDefinition().Equals(invocation.Method.GetGenericMethodDefinition()));
+
+            if (dbContextMethod != null)
+            {
+                return invocation.Method.GetGenericArguments().Single();
+            }
+
+            return null;
+        }
+
+        private void SetUpModel<TEntity>(Mock<TDbContext> dbContextMock) where TEntity : class
         {
             var mockedDbSet = _dbContext.Set<TEntity>().CreateMockedDbSet();
 
@@ -92,14 +110,11 @@ namespace EntityFrameworkCore.Testing.Moq.Helpers
                 .Returns((TEntity providedEntity, CancellationToken providedCancellationToken) => _dbContext.AddAsync(providedEntity, providedCancellationToken));
 
             dbContextMock.Setup(m => m.Attach(It.IsAny<TEntity>())).Returns((TEntity providedEntity) => _dbContext.Attach(providedEntity));
-            dbContextMock.Setup(m => m.AttachRange(It.IsAny<object[]>())).Callback((object[] providedEntities) => _dbContext.AttachRange(providedEntities));
-            dbContextMock.Setup(m => m.AttachRange(It.IsAny<IEnumerable<object>>())).Callback((IEnumerable<object> providedEntities) => _dbContext.AttachRange(providedEntities));
 
             dbContextMock.Setup(m => m.Entry(It.IsAny<TEntity>())).Returns((TEntity providedEntity) => _dbContext.Entry(providedEntity));
 
             dbContextMock.Setup(m => m.Find<TEntity>(It.IsAny<object[]>())).Returns((object[] providedKeyValues) => _dbContext.Find<TEntity>(providedKeyValues));
-            dbContextMock.Setup(m => m.Find(typeof(TEntity), It.IsAny<object[]>()))
-                .Returns((Type providedType, object[] providedKeyValues) => _dbContext.Find(providedType, providedKeyValues));
+
             dbContextMock.Setup(m => m.FindAsync<TEntity>(It.IsAny<object[]>())).Returns((object[] providedKeyValues) => _dbContext.FindAsync<TEntity>(providedKeyValues));
             dbContextMock.Setup(m => m.FindAsync<TEntity>(It.IsAny<object[]>(), It.IsAny<CancellationToken>()))
                 .Returns((object[] providedKeyValues, CancellationToken providedCancellationToken) => _dbContext.FindAsync<TEntity>(providedKeyValues, providedCancellationToken));
@@ -109,7 +124,7 @@ namespace EntityFrameworkCore.Testing.Moq.Helpers
             dbContextMock.Setup(m => m.Update(It.IsAny<TEntity>())).Returns((TEntity providedEntity) => _dbContext.Update(providedEntity));
         }
 
-        private void SetUpReadOnlyModelEntity<TEntity>(Mock<TDbContext> dbContextMock) where TEntity : class
+        private void SetUpReadOnlyModel<TEntity>(Mock<TDbContext> dbContextMock) where TEntity : class
         {
             var mockedDbQuery = _dbContext.Query<TEntity>().CreateMockedDbQuery();
 

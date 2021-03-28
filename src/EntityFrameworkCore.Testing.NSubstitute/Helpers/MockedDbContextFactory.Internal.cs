@@ -158,13 +158,11 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Helpers
                 .Returns(callInfo => DbContext.AddAsync(callInfo.Arg<TEntity>(), callInfo.Arg<CancellationToken>()));
 
             mockedDbContext.Attach(Arg.Any<TEntity>()).Returns(callInfo => DbContext.Attach(callInfo.Arg<TEntity>()));
-            mockedDbContext.When(x => x.AttachRange(Arg.Any<object[]>())).Do(callInfo => DbContext.AttachRange(callInfo.Arg<object[]>()));
-            mockedDbContext.When(x => x.AttachRange(Arg.Any<IEnumerable<object>>())).Do(callInfo => DbContext.AttachRange(callInfo.Arg<IEnumerable<object>>()));
 
             mockedDbContext.Entry(Arg.Any<TEntity>()).Returns(callInfo => DbContext.Entry(callInfo.Arg<TEntity>()));
 
             mockedDbContext.Find<TEntity>(Arg.Any<object[]>()).Returns(callInfo => DbContext.Find<TEntity>(callInfo.Arg<object[]>()));
-            mockedDbContext.Find(typeof(TEntity), Arg.Any<object[]>()).Returns(callInfo => DbContext.Find(callInfo.Arg<Type>(), callInfo.Arg<object[]>()));
+
             mockedDbContext.FindAsync<TEntity>(Arg.Any<object[]>()).Returns(callInfo => DbContext.FindAsync<TEntity>(callInfo.Arg<object[]>()));
             mockedDbContext.FindAsync<TEntity>(Arg.Any<object[]>(), Arg.Any<CancellationToken>())
                 .Returns(callInfo => DbContext.FindAsync<TEntity>(callInfo.Arg<object[]>(), callInfo.Arg<CancellationToken>()));
