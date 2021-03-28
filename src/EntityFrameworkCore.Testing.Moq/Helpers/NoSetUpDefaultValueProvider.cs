@@ -40,7 +40,6 @@ namespace EntityFrameworkCore.Testing.Moq.Helpers
             var lastInvocation = mock.Invocations.Last();
 
             var setType = GetSetType(lastInvocation);
-
             if (setType == null)
             {
                 return type.GetDefaultValue();
