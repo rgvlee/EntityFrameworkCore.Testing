@@ -1,4 +1,4 @@
-name: Build and test
+name: Continuous Integration Checks
 
 on:
   push:
@@ -7,8 +7,8 @@ on:
     branches: [ 3.x ]
 
 jobs:
-  build-and-test:
-
+  build:
+    name: Build and test
     runs-on: ubuntu-latest
 
     steps:
