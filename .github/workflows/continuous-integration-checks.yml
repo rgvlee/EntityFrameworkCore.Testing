@@ -7,8 +7,8 @@ on:
     branches: [ 3.x ]
 
 jobs:
-  build:
-    name: Build
+  build-and-test:
+    name: Build and test
     runs-on: ubuntu-latest
 
     steps:
@@ -25,11 +25,5 @@ jobs:
     - name: Build
       run: dotnet build src --configuration Release --no-restore
 
-  test:
-    name: Test
-    needs: Build
-    runs-on: ubuntu-latest
-
-    steps:
     - name: Test
       run: dotnet test src --configuration Release --no-build --verbosity normal
