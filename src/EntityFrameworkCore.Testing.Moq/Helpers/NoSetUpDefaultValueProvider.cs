@@ -71,10 +71,13 @@ namespace EntityFrameworkCore.Testing.Moq.Helpers
                 return dbContextModelEntityProperty.PropertyType.GetGenericArguments().Single();
             }
 
+            if (!invocation.Method.IsGenericMethod)
+            {
+                return null;
+            }
+
             var dbContextMethod = typeof(DbContext).GetMethods(BindingFlags.Instance | BindingFlags.Public)
-                .SingleOrDefault(x => x.Name.Equals(invocation.Method.Name) &&
-                                      x.IsGenericMethod &&
-                                      x.GetGenericMethodDefinition().Equals(invocation.Method.GetGenericMethodDefinition()));
+                .SingleOrDefault(x => x.IsGenericMethod && x.GetGenericMethodDefinition().Equals(invocation.Method.GetGenericMethodDefinition()));
 
             if (dbContextMethod != null)
             {
