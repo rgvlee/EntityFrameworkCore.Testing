@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Data.Common;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
@@ -130,11 +129,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Helpers
             dependencies.ConcurrencyDetector.Returns(callInfo => concurrencyDetector);
             dependencies.CommandLogger.Returns(callInfo => Substitute.For<IDiagnosticsLogger<DbLoggerCategory.Database.Command>>());
             dependencies.RawSqlCommandBuilder.Returns(callInfo => rawSqlCommandBuilder);
-
-            var relationalConnection = Substitute.For<IRelationalConnection>();
-            relationalConnection.CommandTimeout.Returns(callInfo => 0);
-            relationalConnection.DbConnection.Returns(callInfo => Substitute.For<DbConnection>());
-            dependencies.RelationalConnection.Returns(callInfo => relationalConnection);
+            dependencies.RelationalConnection.Returns(callInfo => Substitute.For<IRelationalConnection>());
 
             var serviceProvider = Substitute.For<IServiceProvider>();
             serviceProvider.GetService(Arg.Is<Type>(t => t == typeof(IDatabaseFacadeDependencies))).Returns(callInfo => dependencies);

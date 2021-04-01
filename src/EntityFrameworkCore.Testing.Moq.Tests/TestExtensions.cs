@@ -25,8 +25,12 @@ namespace EntityFrameworkCore.Testing.Moq.Tests
                 return;
             }
 
-            var relationalConnectionMock = Mock.Get(((IRelationalDatabaseFacadeDependencies) ((IDatabaseFacadeDependenciesAccessor) mockedDbContext.Database).Dependencies)
-                .RelationalConnection);
+            var dependencies = (IRelationalDatabaseFacadeDependencies) ((IDatabaseFacadeDependenciesAccessor) mockedDbContext.Database).Dependencies;
+            var dependenciesMock = Mock.Get(dependencies);
+
+            var relationalConnectionMock = new Mock<IRelationalConnection>();
+
+            relationalConnectionMock.Setup(m => m.CommandTimeout).Returns(() => 0);
 
             var dbCommandMock = new Mock<DbCommand>();
             dbCommandMock.Protected().Setup<DbParameter>("CreateDbParameter").Returns(() => Mock.Of<DbParameter>());
@@ -41,6 +45,9 @@ namespace EntityFrameworkCore.Testing.Moq.Tests
             var dbConnection = dbConnectionMock.Object;
 
             relationalConnectionMock.Setup(m => m.DbConnection).Returns(() => dbConnection);
+            var relationalConnection = relationalConnectionMock.Object;
+
+            dependenciesMock.Setup(m => m.RelationalConnection).Returns(() => relationalConnection);
         }
 
         private class DbDataReader<T> : DbDataReader
