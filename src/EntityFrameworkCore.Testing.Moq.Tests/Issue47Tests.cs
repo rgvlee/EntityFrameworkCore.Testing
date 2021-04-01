@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using EntityFrameworkCore.Testing.Common.Tests;
-using EntityFrameworkCore.Testing.Moq.Extensions;
 using NUnit.Framework;
 
 namespace EntityFrameworkCore.Testing.Moq.Tests
@@ -17,12 +16,12 @@ namespace EntityFrameworkCore.Testing.Moq.Tests
 
         protected override void AddExecuteSqlRawResult(string sql, IEnumerable<object> parameters, int expectedResult)
         {
-            MockedDbContext.AddExecuteSqlRawResult(sql, parameters, expectedResult);
+            MockedDbContext.AddSqlQueryAsyncResult<object>(sql, parameters);
         }
 
         protected override void AddFromSqlRawResult(string sql, IEnumerable<object> parameters, IEnumerable<TestEntity> expectedResult)
         {
-            MockedDbContext.Set<TestEntity>().AddFromSqlRawResult(sql, parameters, expectedResult);
+            MockedDbContext.AddSqlQueryAsyncResult(sql, parameters, expectedResult);
         }
     }
 }
