@@ -123,10 +123,13 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Helpers
                     return new InvalidOperationException();
                 });
 
+            var relationalConnection = Substitute.For<IRelationalConnection>();
+            relationalConnection.CommandTimeout.Returns(callInfo => 0);
+
             var serviceProvider = Substitute.For<IServiceProvider>();
             serviceProvider.GetService(Arg.Is<Type>(t => t == typeof(IConcurrencyDetector))).Returns(callInfo => Substitute.For<IConcurrencyDetector>());
             serviceProvider.GetService(Arg.Is<Type>(t => t == typeof(IRawSqlCommandBuilder))).Returns(callInfo => rawSqlCommandBuilder);
-            serviceProvider.GetService(Arg.Is<Type>(t => t == typeof(IRelationalConnection))).Returns(callInfo => Substitute.For<IRelationalConnection>());
+            serviceProvider.GetService(Arg.Is<Type>(t => t == typeof(IRelationalConnection))).Returns(callInfo => relationalConnection);
 
             var databaseFacade = Substitute.For(new[] { typeof(DatabaseFacade), typeof(IInfrastructure<IServiceProvider>) }, new[] { mockedDbContext });
             ((IInfrastructure<IServiceProvider>) databaseFacade).Instance.Returns(callInfo => serviceProvider);
