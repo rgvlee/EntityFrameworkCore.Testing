@@ -115,7 +115,7 @@ namespace EntityFrameworkCore.Testing.Moq.Helpers
             var relationalConnection = relationalConnectionMock.Object;
 
             var dependenciesMock = new Mock<IRelationalDatabaseFacadeDependencies>();
-            dependenciesMock.Setup(m => m.ConcurrencyDetector).Returns(concurrencyDetector);
+            dependenciesMock.Setup(m => m.ConcurrencyDetector).Returns(() => concurrencyDetector);
             dependenciesMock.Setup(m => m.CommandLogger).Returns(() => Mock.Of<IDiagnosticsLogger<DbLoggerCategory.Database.Command>>());
             dependenciesMock.Setup(m => m.RawSqlCommandBuilder).Returns(() => rawSqlCommandBuilder);
             dependenciesMock.Setup(m => m.RelationalConnection).Returns(() => relationalConnection);
