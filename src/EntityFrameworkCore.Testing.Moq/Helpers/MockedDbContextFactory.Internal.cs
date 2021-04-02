@@ -106,11 +106,15 @@ namespace EntityFrameworkCore.Testing.Moq.Helpers
                 .Throws<InvalidOperationException>();
             var rawSqlCommandBuilder = rawSqlCommandBuilderMock.Object;
 
+            var relationalConnectionMock = new Mock<IRelationalConnection>();
+            relationalConnectionMock.Setup(x => x.CommandTimeout).Returns(0);
+            var relationalConnection = relationalConnectionMock.Object;
+
             var dependenciesMock = new Mock<IRelationalDatabaseFacadeDependencies>();
             dependenciesMock.Setup(m => m.ConcurrencyDetector).Returns(() => Mock.Of<IConcurrencyDetector>());
             dependenciesMock.Setup(m => m.CommandLogger).Returns(() => Mock.Of<IDiagnosticsLogger<DbLoggerCategory.Database.Command>>());
             dependenciesMock.Setup(m => m.RawSqlCommandBuilder).Returns(() => rawSqlCommandBuilder);
-            dependenciesMock.Setup(m => m.RelationalConnection).Returns(() => Mock.Of<IRelationalConnection>());
+            dependenciesMock.Setup(m => m.RelationalConnection).Returns(() => relationalConnection);
             var dependencies = dependenciesMock.Object;
 
             var serviceProviderMock = new Mock<IServiceProvider>();
