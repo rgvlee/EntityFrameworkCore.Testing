@@ -101,7 +101,7 @@ namespace EntityFrameworkCore.Testing.Moq.Helpers
             var rawSqlCommandBuilder = rawSqlCommandBuilderMock.Object;
 
             var relationalConnectionMock = new Mock<IRelationalConnection>();
-            relationalConnectionMock.Setup(x => x.CommandTimeout).Returns(0);
+            relationalConnectionMock.Setup(x => x.CommandTimeout).Returns(() => 0);
             var relationalConnection = relationalConnectionMock.Object;
 
             var serviceProviderMock = new Mock<IServiceProvider>();
