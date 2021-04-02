@@ -4,6 +4,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoFixture;
+using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 
@@ -464,6 +465,14 @@ namespace EntityFrameworkCore.Testing.Common.Tests
             {
                 MockedDbContext.Database.SetCommandTimeout(60);
             });
+        }
+
+        [Test]
+        public virtual void GetCommandTimeout_ReturnsZero()
+        {
+            var actualResult = MockedDbContext.Database.GetCommandTimeout();
+
+            actualResult.Should().Be(0);
         }
     }
 }
