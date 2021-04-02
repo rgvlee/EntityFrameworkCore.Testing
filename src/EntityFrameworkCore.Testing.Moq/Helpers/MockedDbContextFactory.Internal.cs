@@ -100,10 +100,14 @@ namespace EntityFrameworkCore.Testing.Moq.Helpers
                 .Throws<InvalidOperationException>();
             var rawSqlCommandBuilder = rawSqlCommandBuilderMock.Object;
 
+            var relationalConnectionMock = new Mock<IRelationalConnection>();
+            relationalConnectionMock.Setup(x => x.CommandTimeout).Returns(0);
+            var relationalConnection = relationalConnectionMock.Object;
+
             var serviceProviderMock = new Mock<IServiceProvider>();
             serviceProviderMock.Setup(m => m.GetService(It.Is<Type>(t => t == typeof(IConcurrencyDetector)))).Returns((Type providedType) => Mock.Of<IConcurrencyDetector>());
             serviceProviderMock.Setup(m => m.GetService(It.Is<Type>(t => t == typeof(IRawSqlCommandBuilder)))).Returns((Type providedType) => rawSqlCommandBuilder);
-            serviceProviderMock.Setup(m => m.GetService(It.Is<Type>(t => t == typeof(IRelationalConnection)))).Returns((Type providedType) => Mock.Of<IRelationalConnection>());
+            serviceProviderMock.Setup(m => m.GetService(It.Is<Type>(t => t == typeof(IRelationalConnection)))).Returns((Type providedType) => relationalConnection);
             var serviceProvider = serviceProviderMock.Object;
 
             var mockedDbContext = dbContextMock.Object;
