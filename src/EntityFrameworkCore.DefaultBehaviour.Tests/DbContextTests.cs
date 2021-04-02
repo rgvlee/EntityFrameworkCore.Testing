@@ -55,5 +55,14 @@ namespace EntityFrameworkCore.DefaultBehaviour.Tests
                 DbContext.Database.SetCommandTimeout(60);
             });
         }
+
+        [Test]
+        public virtual void GetCommandTimeout_ThrowsException()
+        {
+            Assert.Throws<InvalidOperationException>(() =>
+            {
+                DbContext.Database.GetCommandTimeout();
+            });
+        }
     }
 }
