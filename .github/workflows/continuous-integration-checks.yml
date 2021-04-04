@@ -5,7 +5,7 @@ on: push
 jobs:
   build-and-test:
     name: Build and test
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
     - name: Checkout
@@ -23,10 +23,13 @@ jobs:
       run: dotnet build src --configuration Release --no-restore
 
     - name: Test
-      run: dotnet test src --configuration Release --no-build --verbosity normal /p:CollectCoverage=\"true\" /p:Exclude=\"[*.Tests]*,[rgvlee.Core.*]*\" /p:SkipAutoProps=\"false\" /p:IncludeTestAssembly=\"false\" /p:CoverletOutput=\"../../CoverageResults/\" /p:MergeWith=\"../../CoverageResults/coverage.json\" /p:CoverletOutputFormat=\"opencover,json\" -m:1
+      run: dotnet test src --configuration Release --no-build --verbosity normal
 
-    - name: Send coverage results to Codacy
-      uses: codacy/codacy-coverage-reporter-action@master
-      with:
-        project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
-        coverage-reports: ./CoverageResults/coverage.opencover.xml
+#    - name: Test
+#      run: dotnet test src --configuration Release --no-build --verbosity normal /p:CollectCoverage=\"true\" /p:Exclude=\"[*.Tests]*,[rgvlee.Core.*]*\" /p:SkipAutoProps=\"false\" /p:IncludeTestAssembly=\"false\" /p:CoverletOutput=\"../../CoverageResults/\" /p:MergeWith=\"../../CoverageResults/coverage.json\" /p:CoverletOutputFormat=\"opencover,json\" -m:1
+
+#    - name: Send coverage results to Codacy
+#      uses: codacy/codacy-coverage-reporter-action@master
+#      with:
+#        project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
+#        coverage-reports: ./CoverageResults/coverage.opencover.xml
