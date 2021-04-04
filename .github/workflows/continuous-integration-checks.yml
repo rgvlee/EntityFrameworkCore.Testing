@@ -1,6 +1,12 @@
 name: Continuous Integration Checks
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - 3.x
+  pull_request:
+    branches:
+      - *
 
 jobs:
   build-and-test:
