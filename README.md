@@ -12,7 +12,7 @@ The aim of this library is to allow you use the in-memory database provider in u
 
 ### With thanks to
 
-- JetBrains for providing an all products pack open source licence 
+- JetBrains for providing an all products pack open source licence
 
 ### EntityFrameworkCore 6 (preview.2.21154.6)
 
