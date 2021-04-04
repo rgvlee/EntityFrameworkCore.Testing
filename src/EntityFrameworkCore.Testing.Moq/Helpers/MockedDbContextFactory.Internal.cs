@@ -119,6 +119,7 @@ namespace EntityFrameworkCore.Testing.Moq.Helpers
             dependenciesMock.Setup(m => m.CommandLogger).Returns(() => Mock.Of<IDiagnosticsLogger<DbLoggerCategory.Database.Command>>());
             dependenciesMock.Setup(m => m.RawSqlCommandBuilder).Returns(() => rawSqlCommandBuilder);
             dependenciesMock.Setup(m => m.RelationalConnection).Returns(() => relationalConnection);
+            dependenciesMock.Setup(m => m.CoreOptions.IsConcurrencyDetectionEnabled).Returns(() => true);
             var dependencies = dependenciesMock.Object;
 
             var serviceProviderMock = new Mock<IServiceProvider>();
