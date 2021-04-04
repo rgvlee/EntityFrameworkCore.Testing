@@ -54,7 +54,7 @@ namespace EntityFrameworkCore.Testing.Common.Helpers
             parts.Add($"Set up sql: '{sql}'");
             Logger.LogDebug(string.Join(Environment.NewLine, parts));
 
-            var result = expressionSql.Contains(sql, StringComparison.CurrentCultureIgnoreCase);
+            var result = expressionSql.Contains(sql, StringComparison.OrdinalIgnoreCase);
 
             Logger.LogDebug("Match? {result}", result);
 
