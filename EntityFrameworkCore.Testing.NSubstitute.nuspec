@@ -2,22 +2,23 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata>
     <id>EntityFrameworkCore.Testing.NSubstitute</id>
-    <version>2.4.0</version>
+    <version>2.4.1</version>
     <authors>rgvlee</authors>
     <owners>rgvlee</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <license type="file">LICENSE</license>
     <projectUrl>https://github.com/rgvlee/EntityFrameworkCore.Testing</projectUrl>
-    <description>EntityFrameworkCore.Testing allows you to create an EntityFrameworkCore DbContext that you can use in your unit tests. It's easy to use (usually just a single line of code) with implementations for both Moq and NSubstitute.
+    <description>Adds relational support to the Microsoft EntityFrameworkCore in-memory database provider by mocking relational operations.
 
-It extends the functionality of an existing database provider by proxying over it. It was designed with the Microsoft in-memory provider in mind with supported operations sent to the database provider and unsupported operations, such as relational operations, handled by EntityFrameworkCore.Testing. While it does not attempt to mock supported operations, it does proxy over them using a mocking framework so you get all of the benefits of the latter such as being able to assert an invocation.
-
-It includes support for queries/keyless db sets, FromSql/FromSqlRaw/FromSqlInterpolated, ExecuteSqlCommand/ExecuteSqlRaw/ExecuteSqlInterpolated, and async LINQ operations.</description>
+EntityFrameworkCore.Testing v1.x = EntityFrameworkCore 2.1.x
+EntityFrameworkCore.Testing v2.x = EntityFrameworkCore 3.x
+EntityFrameworkCore.Testing v3.x = EntityFrameworkCore 5.x
+EntityFrameworkCore.Testing v4.x = EntityFrameworkCore 6.x</description>
     <copyright>Copyright (c) 2021 Lee Anderson</copyright>
     <tags>EntityFrameworkCore EFCore NSubstitute nsub mock testing</tags>
     <repository url="https://github.com/rgvlee/EntityFrameworkCore.Testing" />
     <dependencies>
-      <group targetFramework=".NETStandard2.0">
+      <group targetFramework="netstandard2.1">
         <dependency id="Microsoft.EntityFrameworkCore.InMemory" version="[3,5)" exclude="Build,Analyzers" />
         <dependency id="Microsoft.EntityFrameworkCore.SqlServer" version="[3,5)" exclude="Build,Analyzers" />
         <dependency id="Microsoft.Extensions.Logging" version="3.0.0" exclude="Build,Analyzers" />

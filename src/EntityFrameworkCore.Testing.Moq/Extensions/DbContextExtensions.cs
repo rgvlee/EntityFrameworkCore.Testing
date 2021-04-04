@@ -140,7 +140,7 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
                 .RawSqlCommandBuilder;
 
             Mock.Get(existingRawSqlCommandBuilder)
-                .Setup(m => m.Build(It.Is<string>(s => s.Contains(sql, StringComparison.CurrentCultureIgnoreCase)),
+                .Setup(m => m.Build(It.Is<string>(s => s.Contains(sql, StringComparison.OrdinalIgnoreCase)),
                     It.Is<IEnumerable<object>>(p => ParameterMatchingHelper.DoInvocationParametersMatchSetUpParameters(parameters, p))))
                 .Returns((string providedSql, IEnumerable<object> providedParameters) => rawSqlCommand)
                 .Callback((string providedSql, IEnumerable<object> providedParameters) =>
