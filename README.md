@@ -4,28 +4,39 @@
 
 ## Overview
 
-EntityFrameworkCore.Testing allows you to create an EntityFrameworkCore DbContext that you can use in your unit tests. It's easy to use (usually just a single line of code) with implementations for both Moq and NSubstitute.
+EntityFrameworkCore.Testing adds relational support to the Microsoft EntityFrameworkCore in-memory database provider by mocking relational operations. It's easy to use (usually just a single line of code) with implementations for both Moq and NSubstitute.
 
-It extends the functionality of an existing database provider by proxying over it. It was designed with the [Microsoft in-memory provider](https://docs.microsoft.com/en-us/ef/core/providers/in-memory/?tabs=dotnet-core-cli) in mind with supported operations sent to the database provider and unsupported operations, such as relational operations, handled by EntityFrameworkCore.Testing. While it does not attempt to mock supported operations, it does proxy over them using a mocking framework so you get all of the benefits of the latter such as being able to assert an invocation.
+The aim of this library is to allow you use the in-memory database provider in unit tests where the SUT invokes a relational operation. It'll allow you to specify expected results for these relational operations. It does not test your relational operations.
 
-It includes support for queries/keyless db sets, FromSql/FromSqlRaw/FromSqlInterpolated, ExecuteSqlCommand/ExecuteSqlRaw/ExecuteSqlInterpolated, and async LINQ operations.
+[Microsoft does not recommend mocking a db context](https://docs.microsoft.com/en-us/ef/core/testing/#unit-testing) and EntityFrameworkCore.Testing follows this advice by sending operations supported by the in-memory database provider to the in-memory database provider.
 
-### EntityFrameworkCore >= 5.0.0
+### With thanks to
 
-- [EntityFrameworkCore.Testing.Moq - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.Moq/3.0.0)
-- [EntityFrameworkCore.Testing.NSubstitute - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.NSubstitute/3.0.0)
+- JetBrains for providing an all products pack open source licence 
 
-### EntityFrameworkCore >= 3.0.0 && < 5.0.0
+### EntityFrameworkCore 6 (preview.2.21154.6)
+
+- [Source](https://github.com/rgvlee/EntityFrameworkCore.Testing/tree/4.x)
+- [EntityFrameworkCore.Testing.Moq - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.Moq/4.0.0-preview.2.21154.6)
+- [EntityFrameworkCore.Testing.NSubstitute - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.NSubstitute/4.0.0-preview.2.21154.6)
+
+### EntityFrameworkCore 5
+
+- [Source](https://github.com/rgvlee/EntityFrameworkCore.Testing/tree/3.x)
+- [EntityFrameworkCore.Testing.Moq - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.Moq/3.0.1)
+- [EntityFrameworkCore.Testing.NSubstitute - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.NSubstitute/3.0.1)
+
+### EntityFrameworkCore 3
 
 - [Source](https://github.com/rgvlee/EntityFrameworkCore.Testing/tree/2.x)
-- [EntityFrameworkCore.Testing.Moq - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.Moq/2.4.0)
-- [EntityFrameworkCore.Testing.NSubstitute - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.NSubstitute/2.4.0)
+- [EntityFrameworkCore.Testing.Moq - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.Moq/2.4.1)
+- [EntityFrameworkCore.Testing.NSubstitute - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.NSubstitute/2.4.1)
 
-### EntityFrameworkCore >= 2.1.0 && < 3.0.0
+### EntityFrameworkCore 2 (2.1.0+)
 
 - [Source](https://github.com/rgvlee/EntityFrameworkCore.Testing/tree/1.x)
-- [EntityFrameworkCore.Testing.Moq - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.Moq/1.3.0)
-- [EntityFrameworkCore.Testing.NSubstitute - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.NSubstitute/1.3.0)
+- [EntityFrameworkCore.Testing.Moq - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.Moq/1.3.1)
+- [EntityFrameworkCore.Testing.NSubstitute - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.NSubstitute/1.3.1)
 
 ## Prerequisites
 
