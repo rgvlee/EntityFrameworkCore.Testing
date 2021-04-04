@@ -27,4 +27,4 @@ jobs:
       run: dotnet build src --configuration Release --no-restore
 
     - name: Test
-      run: dotnet test src --configuration Release --no-build --verbosity normal /p:CollectCoverage=\"true\" /p:Exclude=\"[*.Tests]*,[rgvlee.Core.*]*\" /p:SkipAutoProps=\"false\" /p:IncludeTestAssembly=\"false\" /p:CoverletOutput=\"../../CoverageResults/\" /p:MergeWith=\"../../CoverageResults/coverage.json\" /p:CoverletOutputFormat=\"opencover,json\" -m:1
+      run: dotnet test src --configuration Release --no-build --verbosity normal /p:CollectCoverage="true"
