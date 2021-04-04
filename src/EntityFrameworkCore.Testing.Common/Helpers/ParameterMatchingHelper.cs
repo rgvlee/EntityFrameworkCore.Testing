@@ -84,7 +84,7 @@ namespace EntityFrameworkCore.Testing.Common.Helpers
 
             if (invocationParameter is string stringInvocationParameterValue &&
                 setUpParameter is string stringSetUpParameterValue &&
-                stringInvocationParameterValue.Equals(stringSetUpParameterValue, StringComparison.CurrentCultureIgnoreCase))
+                stringInvocationParameterValue.Equals(stringSetUpParameterValue, StringComparison.OrdinalIgnoreCase))
             {
                 return true;
             }
@@ -97,7 +97,7 @@ namespace EntityFrameworkCore.Testing.Common.Helpers
             var setUpParameterParameterName = setUpParameter.ParameterName ?? string.Empty;
             var invocationParameterParameterName = invocationParameter.ParameterName ?? string.Empty;
 
-            if (!invocationParameterParameterName.Equals(setUpParameterParameterName, StringComparison.CurrentCultureIgnoreCase))
+            if (!invocationParameterParameterName.Equals(setUpParameterParameterName, StringComparison.OrdinalIgnoreCase))
             {
                 return false;
             }
