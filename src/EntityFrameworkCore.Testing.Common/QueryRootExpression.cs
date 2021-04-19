@@ -5,9 +5,9 @@ using Microsoft.EntityFrameworkCore.Query;
 
 namespace EntityFrameworkCore.Testing.Common
 {
-    internal class QueryRootExpression : Microsoft.EntityFrameworkCore.Query.QueryRootExpression
+    public class FakeQueryRootExpression : QueryRootExpression
     {
-        public QueryRootExpression(IAsyncQueryProvider asyncQueryProvider, IEntityType entityType) : base(asyncQueryProvider, entityType)
+        public FakeQueryRootExpression(IAsyncQueryProvider asyncQueryProvider, IEntityType entityType) : base(asyncQueryProvider, entityType)
         {
             Type = typeof(IOrderedQueryable<>).MakeGenericType(entityType.ClrType);
         }

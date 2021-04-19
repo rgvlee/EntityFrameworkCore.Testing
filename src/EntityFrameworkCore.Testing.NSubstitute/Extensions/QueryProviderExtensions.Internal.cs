@@ -23,8 +23,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
             EnsureArgument.IsNotNull(mockedQueryProvider, nameof(mockedQueryProvider));
             EnsureArgument.IsNotNull(source, nameof(source));
 
-            var queryable = source.AsQueryable();
-            mockedQueryProvider.Configure().Source.Returns(callInfo => queryable);
+            mockedQueryProvider.Source = source.AsQueryable();
         }
     }
 }
