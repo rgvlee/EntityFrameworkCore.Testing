@@ -38,12 +38,15 @@ namespace EntityFrameworkCore.Testing.Moq.Helpers
 
         protected override object GetDefaultValue(Type type, Mock mock)
         {
+            var dbContextMock = mock;
             var lastInvocation = mock.Invocations.Last();
+            var invokedMethod = lastInvocation.Method;
+            var arguments = lastInvocation.Arguments;
 
-            var modelType = GetModelType(lastInvocation);
+            var modelType = GetModelType(invokedMethod);
             if (modelType == null)
             {
-                return type.GetDefaultValue();
+                return invokedMethod.ReturnType.GetDefaultValue();
             }
 
             Logger.LogDebug("Setting up model '{type}'", modelType);
@@ -52,36 +55,36 @@ namespace EntityFrameworkCore.Testing.Moq.Helpers
             if (modelEntityType == null)
             {
                 throw new InvalidOperationException(string.Format(ExceptionMessages.CannotCreateDbSetTypeNotIncludedInModel,
-                    lastInvocation.Method.GetGenericArguments().Single().Name));
+                    invokedMethod.GetGenericArguments().Single().Name));
             }
 
             var setUpModelMethod = typeof(NoSetUpDefaultValueProvider<TDbContext>).GetMethods(BindingFlags.Instance | BindingFlags.NonPublic)
                 .Single(x => x.Name.Equals(!modelEntityType.IsQueryType ? "SetUpModel" : "SetUpReadOnlyModel"));
 
-            setUpModelMethod.MakeGenericMethod(modelType).Invoke(this, new[] { mock });
+            setUpModelMethod.MakeGenericMethod(modelType).Invoke(this, new[] { dbContextMock });
 
-            return lastInvocation.Method.Invoke(mock.Object, lastInvocation.Arguments?.ToArray());
+            return invokedMethod.Invoke(dbContextMock.Object, arguments?.ToArray());
         }
 
-        private Type GetModelType(IInvocation invocation)
+        private Type GetModelType(MethodInfo invokedMethod)
         {
-            var dbContextModelProperty = _dbContextModelProperties.SingleOrDefault(x => x.GetMethod.Name.Equals(invocation.Method.Name));
+            var dbContextModelProperty = _dbContextModelProperties.SingleOrDefault(x => x.GetMethod.Name.Equals(invokedMethod.Name));
             if (dbContextModelProperty != null)
             {
                 return dbContextModelProperty.PropertyType.GetGenericArguments().Single();
             }
 
-            if (!invocation.Method.IsGenericMethod)
+            if (!invokedMethod.IsGenericMethod)
             {
                 return null;
             }
 
             var dbContextMethod = typeof(DbContext).GetMethods(BindingFlags.Instance | BindingFlags.Public)
-                .SingleOrDefault(x => x.IsGenericMethod && x.GetGenericMethodDefinition().Equals(invocation.Method.GetGenericMethodDefinition()));
+                .SingleOrDefault(x => x.IsGenericMethod && x.GetGenericMethodDefinition().Equals(invokedMethod.GetGenericMethodDefinition()));
 
             if (dbContextMethod != null)
             {
-                return invocation.Method.GetGenericArguments().Single();
+                return invokedMethod.GetGenericArguments().Single();
             }
 
             return null;
