@@ -23,7 +23,7 @@
 
   <ItemGroup>
     <PackageReference Include="AutoFixture" Version="4.15.0" />
-    <PackageReference Include="EntityFrameworkCore.Testing.NSubstitute" Version="4.0.0-preview.2" />
+    <PackageReference Include="EntityFrameworkCore.Testing.NSubstitute" Version="4.0.0-net6.preview.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="6.0.0-preview.3.21201.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.0-preview.3.21201.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.0-preview.3.21201.2" />
