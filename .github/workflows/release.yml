@@ -21,7 +21,6 @@ jobs:
       - name: Setup NuGet
         uses: nuget/setup-nuget@v1
         with:
-          nuget-api-key: ${{ secrets.NUGET_API_KEY }}
           nuget-version: latest
 
       - name: Restore dependencies
@@ -37,4 +36,4 @@ jobs:
 
       - name: Push
         run: |
-          nuget push *.nupkg -Verbosity detailed -Source https://api.nuget.org/v3/index.json
+          nuget push *.nupkg -Verbosity detailed -Source https://api.nuget.org/v3/index.json -ApiKey ${{ secrets.NUGET_API_KEY }}
