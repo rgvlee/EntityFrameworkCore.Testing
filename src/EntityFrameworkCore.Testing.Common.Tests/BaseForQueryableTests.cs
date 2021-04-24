@@ -943,5 +943,29 @@ namespace EntityFrameworkCore.Testing.Common.Tests
 
             Assert.That(firstElement, Is.EqualTo(ItemsAddedToQueryableSource.First()));
         }
+
+        [Test]
+        public virtual void WhereWithSelect_Condition_ReturnsIdsThatSatisfyCondition()
+        {
+            SeedQueryableSource();
+
+            var actualResult1 = Queryable.Where(x => !x.Id.Equals(default)).Select(x => x.Id).ToList();
+            var actualResult2 = Queryable.Where(x => !x.Id.Equals(default)).Select(x => x.Id).ToList();
+
+            Assert.Multiple(() =>
+            {
+                for (var i = 0; i < ItemsAddedToQueryableSource.Count; i++)
+                {
+                    var item = ItemsAddedToQueryableSource[i];
+                    Assert.That(item.Id, Is.Not.EqualTo(default(Guid)));
+
+                    Assert.That(actualResult1[i], Is.EqualTo(item.Id));
+                    Assert.That(actualResult1[i], Is.Not.EqualTo(default(Guid)));
+
+                    Assert.That(actualResult2[i], Is.EqualTo(item.Id));
+                    Assert.That(actualResult2[i], Is.Not.EqualTo(default(Guid)));
+                }
+            });
+        }
     }
 }
