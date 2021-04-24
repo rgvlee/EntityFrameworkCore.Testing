@@ -2,11 +2,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 using System.Threading;
 using EntityFrameworkCore.Testing.Common.Helpers;
-using EntityFrameworkCore.Testing.NSubstitute.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.EntityFrameworkCore.Infrastructure;
@@ -16,7 +13,6 @@ using Microsoft.Extensions.Logging;
 using NSubstitute;
 using NSubstitute.Core;
 using NSubstitute.ExceptionExtensions;
-using NSubstitute.Extensions;
 
 namespace EntityFrameworkCore.Testing.NSubstitute.Helpers
 {
@@ -26,13 +22,14 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Helpers
 
         public override TDbContext Create()
         {
-            var mockedDbContext = (TDbContext) Substitute.For(new[] {
+            var mockedDbContext = (TDbContext) Substitute.For(new[]
+                {
                     typeof(TDbContext), typeof(IDbContextDependencies), typeof(IDbSetCache), typeof(IInfrastructure<IServiceProvider>), typeof(IDbContextPoolable)
                 },
                 ConstructorParameters.ToArray());
 
             var router = SubstitutionContext.Current.GetCallRouterFor(mockedDbContext);
-            router.RegisterCustomCallHandlerFactory(state => new NoSetUpHandler());
+            router.RegisterCustomCallHandlerFactory(state => new NoSetUpHandler<TDbContext>(DbContext));
 
             mockedDbContext.Add(Arg.Any<object>()).Returns(callInfo => DbContext.Add(callInfo.Arg<object>()));
             mockedDbContext.AddAsync(Arg.Any<object>(), Arg.Any<CancellationToken>())
@@ -99,20 +96,6 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Helpers
             mockedDbContext.When(x => x.UpdateRange(Arg.Any<object[]>())).Do(callInfo => DbContext.UpdateRange(callInfo.Arg<object[]>()));
             mockedDbContext.When(x => x.UpdateRange(Arg.Any<IEnumerable<object>>())).Do(callInfo => DbContext.UpdateRange(callInfo.Arg<IEnumerable<object>>()));
 
-            foreach (var entity in DbContext.Model.GetEntityTypes().Where(x => x.FindPrimaryKey() != null))
-            {
-                typeof(MockedDbContextFactory<TDbContext>).GetMethod(nameof(SetUpModelEntity), BindingFlags.Instance | BindingFlags.NonPublic)
-                    .MakeGenericMethod(entity.ClrType)
-                    .Invoke(this, new object[] { mockedDbContext });
-            }
-
-            foreach (var entity in DbContext.Model.GetEntityTypes().Where(x => x.FindPrimaryKey() == null))
-            {
-                typeof(MockedDbContextFactory<TDbContext>).GetMethod(nameof(SetUpReadOnlyModelEntity), BindingFlags.Instance | BindingFlags.NonPublic)
-                    .MakeGenericMethod(entity.ClrType)
-                    .Invoke(this, new object[] { mockedDbContext });
-            }
-
             //Relational set up
             var rawSqlCommandBuilder = Substitute.For<IRawSqlCommandBuilder>();
             rawSqlCommandBuilder.Build(Arg.Any<string>(), Arg.Any<IEnumerable<object>>())
@@ -140,60 +123,6 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Helpers
             mockedDbContext.Database.Returns(callInfo => databaseFacade);
 
             return mockedDbContext;
-        }
-
-        private void SetUpModelEntity<TEntity>(TDbContext mockedDbContext) where TEntity : class
-        {
-            var mockedDbSet = DbContext.Set<TEntity>().CreateMockedDbSet();
-
-            var property = typeof(TDbContext).GetProperties().SingleOrDefault(p => p.PropertyType == typeof(DbSet<TEntity>));
-
-            if (property != null)
-            {
-                property.GetValue(mockedDbContext.Configure()).Returns(callInfo => mockedDbSet);
-            }
-            else
-            {
-                Logger.LogDebug("Could not find a DbContext property for type '{type}'", typeof(TEntity));
-            }
-
-            mockedDbContext.Configure().Set<TEntity>().Returns(callInfo => mockedDbSet);
-
-            mockedDbContext.Add(Arg.Any<TEntity>()).Returns(callInfo => DbContext.Add(callInfo.Arg<TEntity>()));
-            mockedDbContext.AddAsync(Arg.Any<TEntity>(), Arg.Any<CancellationToken>())
-                .Returns(callInfo => DbContext.AddAsync(callInfo.Arg<TEntity>(), callInfo.Arg<CancellationToken>()));
-
-            mockedDbContext.Attach(Arg.Any<TEntity>()).Returns(callInfo => DbContext.Attach(callInfo.Arg<TEntity>()));
-
-            mockedDbContext.Entry(Arg.Any<TEntity>()).Returns(callInfo => DbContext.Entry(callInfo.Arg<TEntity>()));
-
-            mockedDbContext.Find<TEntity>(Arg.Any<object[]>()).Returns(callInfo => DbContext.Find<TEntity>(callInfo.Arg<object[]>()));
-
-            mockedDbContext.FindAsync<TEntity>(Arg.Any<object[]>()).Returns(callInfo => DbContext.FindAsync<TEntity>(callInfo.Arg<object[]>()));
-            mockedDbContext.FindAsync<TEntity>(Arg.Any<object[]>(), Arg.Any<CancellationToken>())
-                .Returns(callInfo => DbContext.FindAsync<TEntity>(callInfo.Arg<object[]>(), callInfo.Arg<CancellationToken>()));
-
-            mockedDbContext.Remove(Arg.Any<TEntity>()).Returns(callInfo => DbContext.Remove(callInfo.Arg<TEntity>()));
-
-            mockedDbContext.Update(Arg.Any<TEntity>()).Returns(callInfo => DbContext.Update(callInfo.Arg<TEntity>()));
-        }
-
-        private void SetUpReadOnlyModelEntity<TEntity>(TDbContext mockedDbContext) where TEntity : class
-        {
-            var mockedReadOnlyDbSet = DbContext.Set<TEntity>().CreateMockedReadOnlyDbSet();
-
-            var property = typeof(TDbContext).GetProperties().SingleOrDefault(p => p.PropertyType == typeof(DbSet<TEntity>) || p.PropertyType == typeof(DbQuery<TEntity>));
-            if (property != null)
-            {
-                property.GetValue(mockedDbContext.Configure()).Returns(callInfo => mockedReadOnlyDbSet);
-
-                mockedDbContext.Configure().Set<TEntity>().Returns(callInfo => (DbSet<TEntity>) mockedReadOnlyDbSet);
-                mockedDbContext.Configure().Query<TEntity>().Returns(callInfo => mockedReadOnlyDbSet);
-            }
-            else
-            {
-                Logger.LogDebug("Could not find a DbContext property for type '{type}'", typeof(TEntity));
-            }
         }
     }
 }
