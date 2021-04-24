@@ -7,6 +7,7 @@ using System.Threading;
 using EntityFrameworkCore.Testing.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Query;
 using Moq;
 using rgvlee.Core.Common.Helpers;
 
@@ -20,7 +21,7 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
 
             var readOnlyDbSetMock = new Mock<DbSet<TEntity>>();
 
-            var asyncEnumerable = new AsyncEnumerable<TEntity>(new List<TEntity>());
+            var asyncEnumerable = new AsyncEnumerable<TEntity>(new List<TEntity>(), new FakeQueryRootExpression(Mock.Of<IAsyncQueryProvider>(), readOnlyDbSet.EntityType));
             var mockedQueryProvider = ((IQueryable<TEntity>) readOnlyDbSet).Provider.CreateMockedQueryProvider(asyncEnumerable);
 
             var invalidOperationException = new InvalidOperationException(
@@ -84,7 +85,7 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
 
             var readOnlyDbSetMock = Mock.Get(mockedReadOnlyDbSet);
 
-            var asyncEnumerable = new AsyncEnumerable<TEntity>(source);
+            var asyncEnumerable = new AsyncEnumerable<TEntity>(source, new FakeQueryRootExpression(Mock.Of<IAsyncQueryProvider>(), mockedReadOnlyDbSet.EntityType));
             var mockedQueryProvider = ((IQueryable<TEntity>) mockedReadOnlyDbSet).Provider;
 
             readOnlyDbSetMock.As<IQueryable<TEntity>>().Setup(m => m.Expression).Returns(() => asyncEnumerable.Expression);

@@ -4,43 +4,41 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
+using Microsoft.EntityFrameworkCore.Query;
 
 namespace EntityFrameworkCore.Testing.Common
 {
     public class AsyncEnumerable<T> : IAsyncEnumerable<T>, IOrderedQueryable<T>
     {
-        private readonly IEnumerable<T> _innerEnumerable;
+        private readonly IQueryable<T> _source;
 
         public AsyncEnumerable(IEnumerable<T> enumerable)
         {
-            _innerEnumerable = enumerable;
+            _source = enumerable.AsQueryable();
 
-            var provider = new AsyncQueryProvider<T>(_innerEnumerable);
-            Provider = provider;
+            Provider = new AsyncQueryProvider<T>(_source);
 
-            if (_innerEnumerable is IQueryable<T> queryable && queryable.Expression is Microsoft.EntityFrameworkCore.Query.QueryRootExpression)
-            {
-                Expression = queryable.Expression;
-            }
-            else
-            {
-                Expression = new QueryRootExpression(provider, new FakeEntityType(typeof(T)));
-            }
+            Expression = _source.Expression;
+        }
+
+        public AsyncEnumerable(IEnumerable<T> enumerable, QueryRootExpression expression) : this(enumerable)
+        {
+            Expression = expression;
         }
 
         public IAsyncEnumerator<T> GetAsyncEnumerator(CancellationToken cancellationToken = new())
         {
-            return new AsyncEnumerator<T>(_innerEnumerable);
+            return new AsyncEnumerator<T>(_source);
         }
 
         IEnumerator<T> IEnumerable<T>.GetEnumerator()
         {
-            return _innerEnumerable.GetEnumerator();
+            return _source.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return _innerEnumerable.GetEnumerator();
+            return _source.GetEnumerator();
         }
 
         public Type ElementType => typeof(T);

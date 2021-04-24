@@ -26,7 +26,7 @@ namespace EntityFrameworkCore.Testing.Common
         /// <summary>
         ///     The query provider source.
         /// </summary>
-        public virtual IQueryable<T> Source { get; set; }
+        public IQueryable<T> Source { get; set; }
 
         /// <inheritdoc />
         /// <remarks>In this implementation it is just a wrapper for <see cref="AsyncQueryProvider{T}.CreateQuery{T}(Expression)" /></remarks>
