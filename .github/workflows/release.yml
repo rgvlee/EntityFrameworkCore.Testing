@@ -36,4 +36,5 @@ jobs:
 
       - name: Push
         run: |
-          nuget push *.nupkg -Verbosity detailed -Source https://api.nuget.org/v3/index.json -ApiKey ${{ secrets.NUGET_API_KEY }}
+          nuget push EntityFrameworkCore.Testing.Moq*.nupkg -Verbosity detailed -Source https://api.nuget.org/v3/index.json -ApiKey ${{ secrets.NUGET_API_KEY }}
+          nuget push EntityFrameworkCore.Testing.NSubstitute*.nupkg -Verbosity detailed -Source https://api.nuget.org/v3/index.json -ApiKey ${{ secrets.NUGET_API_KEY }}
