@@ -7,6 +7,7 @@ using System.Threading;
 using EntityFrameworkCore.Testing.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Query;
 using NSubstitute;
 using NSubstitute.ExceptionExtensions;
 using rgvlee.Core.Common.Helpers;
@@ -30,7 +31,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
                 },
                 new object[] { });
 
-            var asyncEnumerable = new AsyncEnumerable<TEntity>(new List<TEntity>());
+            var asyncEnumerable = new AsyncEnumerable<TEntity>(new List<TEntity>(), new FakeQueryRootExpression(Substitute.For<IAsyncQueryProvider>(), readOnlyDbSet.EntityType));
             var mockedQueryProvider = ((IQueryable<TEntity>) readOnlyDbSet).Provider.CreateMockedQueryProvider(asyncEnumerable);
 
             var invalidOperationException = new InvalidOperationException(
@@ -91,7 +92,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
             EnsureArgument.IsNotNull(mockedReadOnlyDbSet, nameof(mockedReadOnlyDbSet));
             EnsureArgument.IsNotNull(source, nameof(source));
 
-            var asyncEnumerable = new AsyncEnumerable<TEntity>(source);
+            var asyncEnumerable = new AsyncEnumerable<TEntity>(source, new FakeQueryRootExpression(Substitute.For<IAsyncQueryProvider>(), mockedReadOnlyDbSet.EntityType));
             var mockedQueryProvider = ((IQueryable<TEntity>) mockedReadOnlyDbSet).Provider;
 
             ((IQueryable<TEntity>) mockedReadOnlyDbSet).Expression.Returns(callInfo => asyncEnumerable.Expression);

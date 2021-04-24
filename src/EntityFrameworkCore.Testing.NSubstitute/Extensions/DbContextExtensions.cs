@@ -135,7 +135,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
                 .RawSqlCommandBuilder;
 
             existingRawSqlCommandBuilder.Build(
-                    Arg.Is<string>(s => s.Contains(sql, StringComparison.CurrentCultureIgnoreCase)),
+                    Arg.Is<string>(s => s.Contains(sql, StringComparison.OrdinalIgnoreCase)),
                     Arg.Is<IEnumerable<object>>(p => ParameterMatchingHelper.DoInvocationParametersMatchSetUpParameters(parameters, p)))
                 .Returns(callInfo => rawSqlCommand)
                 .AndDoes(callInfo =>

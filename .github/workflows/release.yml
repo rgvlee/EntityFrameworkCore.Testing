@@ -1,0 +1,40 @@
+name: Release
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  build-and-test:
+    name: Build, pack and push
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup dotnet
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 5.0.x
+
+      - name: Setup NuGet
+        uses: nuget/setup-nuget@v1
+        with:
+          nuget-version: latest
+
+      - name: Restore dependencies
+        run: dotnet restore src
+
+      - name: Build
+        run: dotnet build src --configuration Release --no-restore
+
+      - name: Pack
+        run: |
+          nuget pack EntityFrameworkCore.Testing.Moq.nuspec -Version ${{ github.event.release.name }} -Symbols -SymbolPackageFormat snupkg
+          nuget pack EntityFrameworkCore.Testing.NSubstitute.nuspec -Version ${{ github.event.release.name }} -Symbols -SymbolPackageFormat snupkg
+
+      - name: Push
+        run: |
+          nuget push EntityFrameworkCore.Testing.Moq*.nupkg -Source https://api.nuget.org/v3/index.json -ApiKey ${{ secrets.NUGET_API_KEY }}
+          nuget push EntityFrameworkCore.Testing.NSubstitute*.nupkg -Source https://api.nuget.org/v3/index.json -ApiKey ${{ secrets.NUGET_API_KEY }}

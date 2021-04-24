@@ -23,10 +23,7 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
             EnsureArgument.IsNotNull(mockedQueryProvider, nameof(mockedQueryProvider));
             EnsureArgument.IsNotNull(source, nameof(source));
 
-            var queryProviderMock = Mock.Get(mockedQueryProvider);
-
-            var queryable = source.AsQueryable();
-            queryProviderMock.Setup(m => m.Source).Returns(() => queryable);
+            mockedQueryProvider.Source = source.AsQueryable();
         }
     }
 }
