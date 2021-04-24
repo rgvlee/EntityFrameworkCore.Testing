@@ -18,8 +18,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Helpers
 {
     internal class NoSetUpHandler<TDbContext> : ICallHandler where TDbContext : DbContext
     {
-        private static readonly ILogger<NoSetUpHandler<TDbContext>> Logger =
-            LoggingHelper.CreateLogger<NoSetUpHandler<TDbContext>>();
+        private static readonly ILogger<NoSetUpHandler<TDbContext>> Logger = LoggingHelper.CreateLogger<NoSetUpHandler<TDbContext>>();
 
         private readonly List<IEntityType> _allModelEntityTypes;
 
