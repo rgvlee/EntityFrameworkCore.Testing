@@ -32,8 +32,8 @@ jobs:
 
       - name: Pack
         run: |
-          nuget pack **/*\.nuspec -Version ${{ github.event.release.name }} -Symbols -SymbolPackageFormat snupkg
+          nuget pack **/*.nuspec -Version ${{ github.event.release.name }} -Symbols -SymbolPackageFormat snupkg
 
       - name: Push
         run: |
-          nuget push **/*\.nupkg -Source https://api.nuget.org/v3/index.json
+          nuget push **/*.nupkg -Source https://api.nuget.org/v3/index.json
