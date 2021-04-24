@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
+using Microsoft.EntityFrameworkCore.Query;
 
 namespace EntityFrameworkCore.Testing.Common
 {
@@ -19,8 +20,8 @@ namespace EntityFrameworkCore.Testing.Common
 
             Expression = _source.Expression;
         }
-        
-        public AsyncEnumerable(IEnumerable<T> enumerable, Microsoft.EntityFrameworkCore.Query.QueryRootExpression expression) : this(enumerable)
+
+        public AsyncEnumerable(IEnumerable<T> enumerable, QueryRootExpression expression) : this(enumerable)
         {
             Expression = expression;
         }
