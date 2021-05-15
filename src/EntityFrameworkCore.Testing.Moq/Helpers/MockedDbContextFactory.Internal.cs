@@ -126,6 +126,7 @@ namespace EntityFrameworkCore.Testing.Moq.Helpers
             var mockedDbContext = dbContextMock.Object;
 
             var databaseFacadeMock = new Mock<DatabaseFacade>(mockedDbContext);
+            databaseFacadeMock.Setup(x => x.BeginTransaction()).Returns(() => Mock.Of<IDbContextTransaction>());
             var databaseFacade = databaseFacadeMock.Object;
 
             dbContextMock.Setup(m => m.Database).Returns(() => databaseFacade);
