@@ -23,20 +23,20 @@ The aim of this library is to allow you use the in-memory database provider in u
 ### EntityFrameworkCore 5
 
 - [Source](https://github.com/rgvlee/EntityFrameworkCore.Testing/tree/3.x)
-- [EntityFrameworkCore.Testing.Moq - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.Moq/3.0.2)
-- [EntityFrameworkCore.Testing.NSubstitute - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.NSubstitute/3.0.2)
+- [EntityFrameworkCore.Testing.Moq - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.Moq/3.0.3)
+- [EntityFrameworkCore.Testing.NSubstitute - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.NSubstitute/3.0.3)
 
 ### EntityFrameworkCore 3
 
 - [Source](https://github.com/rgvlee/EntityFrameworkCore.Testing/tree/2.x)
-- [EntityFrameworkCore.Testing.Moq - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.Moq/2.4.2)
-- [EntityFrameworkCore.Testing.NSubstitute - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.NSubstitute/2.4.2)
+- [EntityFrameworkCore.Testing.Moq - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.Moq/2.4.3)
+- [EntityFrameworkCore.Testing.NSubstitute - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.NSubstitute/2.4.3)
 
 ### EntityFrameworkCore 2 (2.1.0+)
 
 - [Source](https://github.com/rgvlee/EntityFrameworkCore.Testing/tree/1.x)
-- [EntityFrameworkCore.Testing.Moq - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.Moq/1.3.2)
-- [EntityFrameworkCore.Testing.NSubstitute - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.NSubstitute/1.3.2)
+- [EntityFrameworkCore.Testing.Moq - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.Moq/1.3.3)
+- [EntityFrameworkCore.Testing.NSubstitute - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.NSubstitute/1.3.3)
 
 ## Prerequisites
 
