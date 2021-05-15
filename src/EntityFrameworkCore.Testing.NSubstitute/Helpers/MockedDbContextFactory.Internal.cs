@@ -120,6 +120,8 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Helpers
             ((IInfrastructure<IServiceProvider>) mockedDbContext).Instance.Returns(callInfo => serviceProvider);
 
             var databaseFacade = Substitute.For<DatabaseFacade>(mockedDbContext);
+            databaseFacade.BeginTransaction().Returns(callInfo => Substitute.For<IDbContextTransaction>());
+            
             mockedDbContext.Database.Returns(callInfo => databaseFacade);
 
             return mockedDbContext;
