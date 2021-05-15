@@ -127,6 +127,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Helpers
 
             var databaseFacade = Substitute.For(new[] { typeof(DatabaseFacade), typeof(IDatabaseFacadeDependenciesAccessor) }, new[] { mockedDbContext });
             ((IDatabaseFacadeDependenciesAccessor) databaseFacade).Dependencies.Returns(callInfo => dependencies);
+            ((DatabaseFacade)databaseFacade).BeginTransaction().Returns(callInfo => Substitute.For<IDbContextTransaction>());
 
             mockedDbContext.Database.Returns(callInfo => databaseFacade);
 
