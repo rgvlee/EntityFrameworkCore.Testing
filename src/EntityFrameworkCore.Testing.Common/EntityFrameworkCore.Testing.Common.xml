@@ -14,7 +14,10 @@
         </member>
         <member name="M:EntityFrameworkCore.Testing.Common.AsyncQueryProvider`1.CreateQuery(System.Linq.Expressions.Expression)">
             <inheritdoc />
-            <remarks>In this implementation it is just a wrapper for <see cref="M:EntityFrameworkCore.Testing.Common.AsyncQueryProvider`1.CreateQuery``1(System.Linq.Expressions.Expression)" /></remarks>
+            <remarks>
+                In this implementation it is just a wrapper for
+                <see cref="M:EntityFrameworkCore.Testing.Common.AsyncQueryProvider`1.CreateQuery``1(System.Linq.Expressions.Expression)" />
+            </remarks>
         </member>
         <member name="M:EntityFrameworkCore.Testing.Common.AsyncQueryProvider`1.CreateQuery``1(System.Linq.Expressions.Expression)">
             <inheritdoc />

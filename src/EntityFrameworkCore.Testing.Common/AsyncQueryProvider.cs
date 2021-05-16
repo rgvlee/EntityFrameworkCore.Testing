@@ -29,7 +29,10 @@ namespace EntityFrameworkCore.Testing.Common
         public IQueryable<T> Source { get; set; }
 
         /// <inheritdoc />
-        /// <remarks>In this implementation it is just a wrapper for <see cref="AsyncQueryProvider{T}.CreateQuery{T}(Expression)" /></remarks>
+        /// <remarks>
+        ///     In this implementation it is just a wrapper for
+        ///     <see cref="AsyncQueryProvider{T}.CreateQuery{T}(Expression)" />
+        /// </remarks>
         public virtual IQueryable CreateQuery(Expression expression)
         {
             Logger.LogDebug("CreateQuery: invoked");
@@ -67,7 +70,8 @@ namespace EntityFrameworkCore.Testing.Common
 
             ProjectExpressionHelper.ThrowIfExpressionIsNotSupported(expression);
 
-            return new AsyncEnumerable<TElement>(Source.Provider.CreateQuery<TElement>(EnsureExpressionCanBeResolvedBySourceProvider(expression)));
+            var evaluatedSource = Source.ToList().AsQueryable();
+            return new AsyncEnumerable<TElement>(evaluatedSource.Provider.CreateQuery<TElement>(evaluatedSource.EnsureExpressionCanBeEvaluatedByProvider(expression)));
         }
 
         /// <inheritdoc />
@@ -75,7 +79,7 @@ namespace EntityFrameworkCore.Testing.Common
         {
             Logger.LogDebug("Execute: invoked");
             ProjectExpressionHelper.ThrowIfExpressionIsNotSupported(expression);
-            return Source.Provider.Execute(EnsureExpressionCanBeResolvedBySourceProvider(expression));
+            return Source.Provider.Execute(Source.EnsureExpressionCanBeEvaluatedByProvider(expression));
         }
 
         /// <inheritdoc />
@@ -83,7 +87,7 @@ namespace EntityFrameworkCore.Testing.Common
         {
             Logger.LogDebug("Execute<TResult>: invoked");
             ProjectExpressionHelper.ThrowIfExpressionIsNotSupported(expression);
-            return Source.Provider.Execute<TResult>(EnsureExpressionCanBeResolvedBySourceProvider(expression));
+            return Source.Provider.Execute<TResult>(Source.EnsureExpressionCanBeEvaluatedByProvider(expression));
         }
 
         /// <inheritdoc />
@@ -99,28 +103,31 @@ namespace EntityFrameworkCore.Testing.Common
         {
             return Task.FromResult(Execute<TResult>(expression));
         }
+    }
 
-        private Expression EnsureExpressionCanBeResolvedBySourceProvider(Expression expression)
+    internal static class QueryableExtensions
+    {
+        private static readonly ILogger Logger = LoggingHelper.CreateLogger(typeof(QueryableExtensions));
+
+        internal static Expression EnsureExpressionCanBeEvaluatedByProvider<T>(this IQueryable<T> queryable, Expression expression)
         {
-            Logger.LogDebug("EnsureExpressionCanBeResolvedBySourceProvider: invoked");
+            Logger.LogDebug("EnsureExpressionCanBeEvaluatedByProvider: invoked");
 
-            if (expression is MethodCallExpression mce && mce.Arguments[0] is Microsoft.EntityFrameworkCore.Query.QueryRootExpression)
+            if (expression is MethodCallExpression mce && mce.Arguments[0] is QueryRootExpression)
             {
                 for (var i = 0; i < mce.Arguments.Count; i++)
                 {
-                    Logger.LogDebug("argument[{i}]: {argument}", i, mce.Arguments[i].ToString());
+                    Logger.LogDebug("mce.Argument[{i}]: {argument}", i, mce.Arguments[i].ToString());
                 }
 
-                //This ensures that Source provider will always be able to resolve the expression
+                //This ensures that the queryable provider will always be able to evaluate the expression
                 var arguments = new List<Expression>();
-                arguments.Add(Source.Expression);
+                arguments.Add(queryable.Expression);
                 arguments.AddRange(mce.Arguments.Skip(1));
 
-                Logger.LogDebug("sourceExpression: {sourceExpression}", Source.Expression.ToString());
-
-                for (var i = 0; i < mce.Arguments.Count; i++)
+                for (var i = 0; i < arguments.Count; i++)
                 {
-                    Logger.LogDebug("argument[{i}]: {argument}", i, mce.Arguments[i].ToString());
+                    Logger.LogDebug("arguments[{i}]: {argument}", i, arguments[i].ToString());
                 }
 
                 return Expression.Call(mce.Method, arguments);
