@@ -117,7 +117,7 @@ namespace EntityFrameworkCore.Testing.Common
             {
                 for (var i = 0; i < mce.Arguments.Count; i++)
                 {
-                    Logger.LogDebug("mce.Argument[{i}]: {argument}", i, mce.Arguments[i].ToString());
+                    Logger.LogDebug("mce.Arguments[{i}]: {argument}", i, mce.Arguments[i].ToString());
                 }
 
                 //This ensures that the queryable provider will always be able to evaluate the expression
