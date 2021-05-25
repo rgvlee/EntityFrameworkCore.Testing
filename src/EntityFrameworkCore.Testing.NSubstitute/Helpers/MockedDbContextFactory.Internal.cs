@@ -67,7 +67,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Helpers
                 .Returns(callInfo => ((IDbSetCache) DbContext).GetOrAddSet(callInfo.Arg<IDbSetSource>(), callInfo.Arg<Type>()));
             ((IDbContextDependencies) mockedDbContext).InfrastructureLogger.Returns(callInfo => ((IDbContextDependencies) DbContext).InfrastructureLogger);
             ((IInfrastructure<IServiceProvider>) mockedDbContext).Instance.Returns(callInfo => ((IInfrastructure<IServiceProvider>) DbContext).Instance);
-            ((IDbContextDependencies) mockedDbContext).Model.Returns(callInfo => ((IDbContextDependencies) DbContext).Model);
+            //((IDbContextDependencies) mockedDbContext).Model.Returns(callInfo => ((IDbContextDependencies) DbContext).Model);
             ((IDbContextDependencies) mockedDbContext).QueryProvider.Returns(callInfo => ((IDbContextDependencies) DbContext).QueryProvider);
 
             mockedDbContext.Remove(Arg.Any<object>()).Returns(callInfo => DbContext.Remove(callInfo.Arg<object>()));
@@ -116,7 +116,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Helpers
 
             var dependencies = Substitute.For<IRelationalDatabaseFacadeDependencies>();
             dependencies.ConcurrencyDetector.Returns(callInfo => concurrencyDetector);
-            dependencies.CommandLogger.Returns(callInfo => Substitute.For<IDiagnosticsLogger<DbLoggerCategory.Database.Command>>());
+            dependencies.CommandLogger.Returns(callInfo => Substitute.For<IRelationalCommandDiagnosticsLogger>());
             dependencies.RawSqlCommandBuilder.Returns(callInfo => rawSqlCommandBuilder);
             dependencies.RelationalConnection.Returns(callInfo => relationalConnection);
 
