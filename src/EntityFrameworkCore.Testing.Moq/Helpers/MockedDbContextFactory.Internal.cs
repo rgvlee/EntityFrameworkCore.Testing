@@ -62,7 +62,7 @@ namespace EntityFrameworkCore.Testing.Moq.Helpers
                 .Returns((IDbSetSource providedSource, Type providedType) => ((IDbSetCache) DbContext).GetOrAddSet(providedSource, providedType));
             dbContextMock.As<IDbContextDependencies>().Setup(m => m.InfrastructureLogger).Returns(((IDbContextDependencies) DbContext).InfrastructureLogger);
             dbContextMock.As<IInfrastructure<IServiceProvider>>().Setup(m => m.Instance).Returns(((IInfrastructure<IServiceProvider>) DbContext).Instance);
-            dbContextMock.As<IDbContextDependencies>().Setup(m => m.Model).Returns(((IDbContextDependencies) DbContext).Model);
+            //dbContextMock.As<IDbContextDependencies>().Setup(m => m.Model).Returns(((IDbContextDependencies) DbContext).Model);
             dbContextMock.As<IDbContextDependencies>().Setup(m => m.QueryProvider).Returns(((IDbContextDependencies) DbContext).QueryProvider);
 
             dbContextMock.Setup(m => m.Remove(It.IsAny<object>())).Returns((object providedEntity) => DbContext.Remove(providedEntity));
@@ -116,7 +116,7 @@ namespace EntityFrameworkCore.Testing.Moq.Helpers
 
             var dependenciesMock = new Mock<IRelationalDatabaseFacadeDependencies>();
             dependenciesMock.Setup(m => m.ConcurrencyDetector).Returns(() => concurrencyDetector);
-            dependenciesMock.Setup(m => m.CommandLogger).Returns(() => Mock.Of<IDiagnosticsLogger<DbLoggerCategory.Database.Command>>());
+            dependenciesMock.Setup(m => m.CommandLogger).Returns(() => Mock.Of<IRelationalCommandDiagnosticsLogger>());
             dependenciesMock.Setup(m => m.RawSqlCommandBuilder).Returns(() => rawSqlCommandBuilder);
             dependenciesMock.Setup(m => m.RelationalConnection).Returns(() => relationalConnection);
             dependenciesMock.Setup(m => m.CoreOptions.IsConcurrencyDetectionEnabled).Returns(() => true);
