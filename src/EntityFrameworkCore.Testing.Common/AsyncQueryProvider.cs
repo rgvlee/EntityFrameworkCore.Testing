@@ -70,8 +70,8 @@ namespace EntityFrameworkCore.Testing.Common
 
             ProjectExpressionHelper.ThrowIfExpressionIsNotSupported(expression);
 
-            var evaluatedSource = Source.ToList().AsQueryable();
-            return new AsyncEnumerable<TElement>(evaluatedSource.Provider.CreateQuery<TElement>(evaluatedSource.EnsureExpressionCanBeEvaluatedByProvider(expression)));
+            var realizedSource = Source.ToList().AsQueryable();
+            return new AsyncEnumerable<TElement>(realizedSource.Provider.CreateQuery<TElement>(realizedSource.EnsureExpressionCanBeRealizedByProvider(expression)));
         }
 
         /// <inheritdoc />
@@ -79,7 +79,7 @@ namespace EntityFrameworkCore.Testing.Common
         {
             Logger.LogDebug("Execute: invoked");
             ProjectExpressionHelper.ThrowIfExpressionIsNotSupported(expression);
-            return Source.Provider.Execute(Source.EnsureExpressionCanBeEvaluatedByProvider(expression));
+            return Source.Provider.Execute(Source.EnsureExpressionCanBeRealizedByProvider(expression));
         }
 
         /// <inheritdoc />
@@ -87,7 +87,7 @@ namespace EntityFrameworkCore.Testing.Common
         {
             Logger.LogDebug("Execute<TResult>: invoked");
             ProjectExpressionHelper.ThrowIfExpressionIsNotSupported(expression);
-            return Source.Provider.Execute<TResult>(Source.EnsureExpressionCanBeEvaluatedByProvider(expression));
+            return Source.Provider.Execute<TResult>(Source.EnsureExpressionCanBeRealizedByProvider(expression));
         }
 
         /// <inheritdoc />
@@ -109,9 +109,9 @@ namespace EntityFrameworkCore.Testing.Common
     {
         private static readonly ILogger Logger = LoggingHelper.CreateLogger(typeof(QueryableExtensions));
 
-        internal static Expression EnsureExpressionCanBeEvaluatedByProvider<T>(this IQueryable<T> queryable, Expression expression)
+        internal static Expression EnsureExpressionCanBeRealizedByProvider<T>(this IQueryable<T> queryable, Expression expression)
         {
-            Logger.LogDebug("EnsureExpressionCanBeEvaluatedByProvider: invoked");
+            Logger.LogDebug("EnsureExpressionCanBeRealizedByProvider: invoked");
 
             if (expression is MethodCallExpression mce && mce.Arguments[0] is QueryRootExpression)
             {
@@ -120,7 +120,7 @@ namespace EntityFrameworkCore.Testing.Common
                     Logger.LogDebug("mce.Arguments[{i}]: {argument}", i, mce.Arguments[i].ToString());
                 }
 
-                //This ensures that the queryable provider will always be able to evaluate the expression
+                //This ensures that the queryable provider will always be able to realize the expression
                 var arguments = new List<Expression>();
                 arguments.Add(queryable.Expression);
                 arguments.AddRange(mce.Arguments.Skip(1));

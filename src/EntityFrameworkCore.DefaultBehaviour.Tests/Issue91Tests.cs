@@ -16,7 +16,11 @@ namespace EntityFrameworkCore.DefaultBehaviour.Tests
         }
 
         [Test]
-        public override void SelectWithExpressionFunc_ReturnsSequence()
+        [Ignore("This is not supported by the in-memory provider.")]
+        public override void SelectWithExpressionFunc_ReturnsSequence() { }
+
+        [Test]
+        public void SelectWithExpressionFunc_ThrowsException()
         {
             var dbContext = DbContextFactory();
             dbContext.Set<Foo>().AddRange(Foos);
@@ -29,7 +33,11 @@ namespace EntityFrameworkCore.DefaultBehaviour.Tests
         }
 
         [Test]
-        public override void SelectWithAnonymousExpressionFunc_ReturnsSequence()
+        [Ignore("This is not supported by the in-memory provider.")]
+        public override void SelectWithAnonymousExpressionFunc_ReturnsSequence() { }
+
+        [Test]
+        public void SelectWithAnonymousExpressionFunc_ThrowsException()
         {
             var dbContext = DbContextFactory();
             dbContext.Set<Foo>().AddRange(Foos);
