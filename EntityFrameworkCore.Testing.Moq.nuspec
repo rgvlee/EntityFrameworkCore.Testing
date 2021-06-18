@@ -19,9 +19,9 @@ EntityFrameworkCore.Testing v4.x = EntityFrameworkCore 6 (Preview 2+)</descripti
     <repository url="https://github.com/rgvlee/EntityFrameworkCore.Testing" />
     <dependencies>
       <group targetFramework="net6.0">
-        <dependency id="Microsoft.EntityFrameworkCore.InMemory" version="6.0.0-preview.2.21154.2" exclude="Build,Analyzers" />
-        <dependency id="Microsoft.EntityFrameworkCore.SqlServer" version="6.0.0-preview.2.21154.2" exclude="Build,Analyzers" />
-        <dependency id="Microsoft.Extensions.Logging" version="6.0.0-preview.2.21154.6" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.EntityFrameworkCore.InMemory" version="6.0.0-preview.5.21301.9" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.EntityFrameworkCore.SqlServer" version="6.0.0-preview.5.21301.9" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Extensions.Logging" version="6.0.0-preview.5.21301.5" exclude="Build,Analyzers" />
         <dependency id="Moq" version="4.9.0" exclude="Build,Analyzers" />
         <dependency id="rgvlee.Core" version="1.2.0" exclude="Build,Analyzers" />
       </group>
