@@ -108,14 +108,14 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Helpers
                     return new InvalidOperationException();
                 });
 
-            var concurrencyDetector = Substitute.For<IConcurrencyDetector>();
-            concurrencyDetector.EnterCriticalSection().Returns(callInfo => new ConcurrencyDetectorCriticalSectionDisposer(Substitute.For<IConcurrencyDetector>()));
+            // var concurrencyDetector = Substitute.For<IConcurrencyDetector>();
+            // concurrencyDetector.EnterCriticalSection().Returns(callInfo => new ConcurrencyDetectorCriticalSectionDisposer(Substitute.For<IConcurrencyDetector>()));
 
             var relationalConnection = Substitute.For<IRelationalConnection>();
             relationalConnection.CommandTimeout.Returns(callInfo => 0);
 
             var dependencies = Substitute.For<IRelationalDatabaseFacadeDependencies>();
-            dependencies.ConcurrencyDetector.Returns(callInfo => concurrencyDetector);
+            // dependencies.ConcurrencyDetector.Returns(callInfo => concurrencyDetector);
             dependencies.CommandLogger.Returns(callInfo => Substitute.For<IRelationalCommandDiagnosticsLogger>());
             dependencies.RawSqlCommandBuilder.Returns(callInfo => rawSqlCommandBuilder);
             dependencies.RelationalConnection.Returns(callInfo => relationalConnection);

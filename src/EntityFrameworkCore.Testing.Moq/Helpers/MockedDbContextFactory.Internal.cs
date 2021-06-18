@@ -106,20 +106,21 @@ namespace EntityFrameworkCore.Testing.Moq.Helpers
                 .Throws<InvalidOperationException>();
             var rawSqlCommandBuilder = rawSqlCommandBuilderMock.Object;
 
-            var concurrencyDetectorMock = new Mock<IConcurrencyDetector>();
-            concurrencyDetectorMock.Setup(x => x.EnterCriticalSection()).Returns(() => new ConcurrencyDetectorCriticalSectionDisposer(Mock.Of<IConcurrencyDetector>()));
-            var concurrencyDetector = concurrencyDetectorMock.Object;
+            // var concurrencyDetectorMock = new Mock<IConcurrencyDetector>();
+            // concurrencyDetectorMock.Setup(x => x.EnterCriticalSection()).Returns(() => new ConcurrencyDetectorCriticalSectionDisposer(Mock.Of<IConcurrencyDetector>()));
+            // var concurrencyDetector = concurrencyDetectorMock.Object;
 
             var relationalConnectionMock = new Mock<IRelationalConnection>();
             relationalConnectionMock.Setup(x => x.CommandTimeout).Returns(() => 0);
             var relationalConnection = relationalConnectionMock.Object;
 
             var dependenciesMock = new Mock<IRelationalDatabaseFacadeDependencies>();
-            dependenciesMock.Setup(m => m.ConcurrencyDetector).Returns(() => concurrencyDetector);
+            //dependenciesMock.Setup(m => m.ConcurrencyDetector).Returns(() => concurrencyDetector);
             dependenciesMock.Setup(m => m.CommandLogger).Returns(() => Mock.Of<IRelationalCommandDiagnosticsLogger>());
             dependenciesMock.Setup(m => m.RawSqlCommandBuilder).Returns(() => rawSqlCommandBuilder);
             dependenciesMock.Setup(m => m.RelationalConnection).Returns(() => relationalConnection);
-            dependenciesMock.Setup(m => m.CoreOptions.IsConcurrencyDetectionEnabled).Returns(() => true);
+            //dependenciesMock.Setup(m => m.CoreOptions.IsConcurrencyDetectionEnabled).Returns(() => true);
+            dependenciesMock.Setup(m => m.CoreOptions.AreThreadSafetyChecksEnabled).Returns(() => false);
             var dependencies = dependenciesMock.Object;
 
             var serviceProviderMock = new Mock<IServiceProvider>();
