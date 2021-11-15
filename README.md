@@ -14,11 +14,11 @@ The aim of this library is to allow you use the in-memory database provider in u
 
 - JetBrains for providing an all products pack open source licence
 
-### EntityFrameworkCore 6 (Preview 2+)
+### EntityFrameworkCore 6
 
 - [Source](https://github.com/rgvlee/EntityFrameworkCore.Testing/tree/4.x)
-- [EntityFrameworkCore.Testing.Moq - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.Moq/4.0.0-net6.preview.3)
-- [EntityFrameworkCore.Testing.NSubstitute - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.NSubstitute/4.0.0-net6.preview.3)
+- [EntityFrameworkCore.Testing.Moq - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.Moq/4.0.0)
+- [EntityFrameworkCore.Testing.NSubstitute - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.NSubstitute/4.0.0)
 
 ### EntityFrameworkCore 5
 
