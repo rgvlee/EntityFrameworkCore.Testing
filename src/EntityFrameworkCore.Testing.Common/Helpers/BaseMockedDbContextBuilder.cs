@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using rgvlee.Core.Common.Helpers;
+using System.Data;
+using System.Data.Common;
 
 namespace EntityFrameworkCore.Testing.Common.Helpers
 {
@@ -18,6 +20,21 @@ namespace EntityFrameworkCore.Testing.Common.Helpers
         ///     The mocked db context.
         /// </summary>
         public abstract TDbContext MockedDbContext { get; }
+
+
+        /// <summary>
+        ///     The parameter that will be used in direct commands (context.Database.GetDbConnection();).
+        /// </summary>
+        /// <param name="dbConnection">
+        ///    db connection instance.
+        /// </param>
+        /// <returns>The mocked db context builder.</returns>
+        public IMockedDbContextBuilder<TDbContext> UseDbConnection(DbConnection dbConnection)
+        {
+            EnsureArgument.IsNotNull(dbConnection, nameof(dbConnection));
+            Options.DbConnection = dbConnection;
+            return this;
+        }
 
         /// <summary>
         ///     The parameters that will be used to create the mocked db context and, if one is not provided,
