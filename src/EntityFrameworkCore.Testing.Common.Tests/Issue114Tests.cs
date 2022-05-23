@@ -28,7 +28,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
             }
         }
 
-        private class Foo
+        public class Foo
         {
             public string Bar { get; set; }
         }
