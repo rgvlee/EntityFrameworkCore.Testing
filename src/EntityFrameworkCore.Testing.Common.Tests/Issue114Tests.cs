@@ -8,12 +8,6 @@ namespace EntityFrameworkCore.Testing.Common.Tests
 {
     public abstract class Issue114Tests : BaseForTests
     {
-        [SetUp]
-        public override void SetUp()
-        {
-            base.SetUp();
-        }
-
         protected abstract TestDbContext MockedDbContextFactory();
 
         [Test]
