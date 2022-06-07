@@ -10,7 +10,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         protected abstract TestDbContext MockedDbContextFactory();
 
         [Test]
-        public void DbSetToList_DbSetHasNoDbContextProperty_EmptyList()
+        public void ReadOnlyEntityToList_ReadOnlyEntityHasNoDbContextProperty_EmptyList()
         {
             var mockedContext = MockedDbContextFactory();
 
