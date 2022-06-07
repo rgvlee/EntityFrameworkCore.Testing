@@ -35,8 +35,8 @@ The aim of this library is to allow you use the in-memory database provider in u
 ### EntityFrameworkCore 2 (2.1.0+)
 
 - [Source](https://github.com/rgvlee/EntityFrameworkCore.Testing/tree/1.x)
-- [EntityFrameworkCore.Testing.Moq - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.Moq/1.3.3)
-- [EntityFrameworkCore.Testing.NSubstitute - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.NSubstitute/1.3.3)
+- [EntityFrameworkCore.Testing.Moq - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.Moq/1.3.4)
+- [EntityFrameworkCore.Testing.NSubstitute - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.NSubstitute/1.3.4)
 
 ## Prerequisites
 
