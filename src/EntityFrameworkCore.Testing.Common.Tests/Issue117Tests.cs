@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
@@ -13,20 +11,17 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         protected abstract TestDbContext MockedDbContextFactory();
 
         [Test]
-        public void DbSetToList_DbContextCreatedUsingDbContextFactoryWithinUsingBlock_EmptyList()
+        public void DbContextDispose_DbContextCreatedUsingDbContextFactoryWithinUsingBlock_DoesNotThrowException()
         {
             var dbContextFactory = new TestDbContextFactory(MockedDbContextFactory);
-            List<Foo> actualResults;
-            using (var dbContext = dbContextFactory.CreateDbContext())
+            Invoking(() =>
             {
-                actualResults = dbContext.Set<Foo>().ToList();
-            }
-
-            actualResults.Should().BeEmpty();
+                using (dbContextFactory.CreateDbContext()) { }
+            }).Should().NotThrow();
         }
 
         [Test]
-        public void DbContextDispose_DoesNotThrowException()
+        public void DbContextDispose_DbContextCreatedUsingDbContextFactory_DoesNotThrowException()
         {
             Invoking(() => MockedDbContextFactory().Dispose()).Should().NotThrow();
         }
