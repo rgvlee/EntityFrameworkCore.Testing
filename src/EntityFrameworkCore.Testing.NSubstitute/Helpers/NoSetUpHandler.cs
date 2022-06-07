@@ -133,13 +133,13 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Helpers
             if (property != null)
             {
                 property.GetValue(mockedDbContext.Configure()).Returns(callInfo => mockedReadOnlyDbSet);
-
-                mockedDbContext.Configure().Set<TEntity>().Returns(callInfo => mockedReadOnlyDbSet);
             }
             else
             {
                 Logger.LogDebug("Could not find a DbContext property for type '{type}'", typeof(TEntity));
             }
+
+            mockedDbContext.Configure().Set<TEntity>().Returns(callInfo => mockedReadOnlyDbSet);
         }
     }
 }

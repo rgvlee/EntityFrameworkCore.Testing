@@ -1,0 +1,36 @@
+﻿using System.Collections.Generic;
+using System.Linq;
+using FluentAssertions;
+using Microsoft.EntityFrameworkCore;
+using NUnit.Framework;
+
+namespace EntityFrameworkCore.Testing.Common.Tests
+{
+    public abstract class Issue114Tests : BaseForTests
+    {
+        protected abstract TestDbContext MockedDbContextFactory();
+
+        [Test]
+        public void DbSetToList_DbSetHasNoDbContextProperty_EmptyList()
+        {
+            var mockedContext = MockedDbContextFactory();
+
+            mockedContext.Set<Foo>().ToList().Should().BeEquivalentTo(new List<Foo>());
+        }
+
+        public class TestDbContext : DbContext
+        {
+            public TestDbContext(DbContextOptions<TestDbContext> options) : base(options) { }
+
+            protected override void OnModelCreating(ModelBuilder modelBuilder)
+            {
+                modelBuilder.Entity<Foo>().HasNoKey();
+            }
+        }
+
+        public class Foo
+        {
+            public string Bar { get; set; }
+        }
+    }
+}
