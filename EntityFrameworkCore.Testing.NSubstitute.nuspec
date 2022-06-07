@@ -14,7 +14,7 @@ EntityFrameworkCore.Testing v1.x = EntityFrameworkCore 2 (2.1.0+)
 EntityFrameworkCore.Testing v2.x = EntityFrameworkCore 3
 EntityFrameworkCore.Testing v3.x = EntityFrameworkCore 5
 EntityFrameworkCore.Testing v4.x = EntityFrameworkCore 6 (Preview 2+)</description>
-    <copyright>Copyright (c) 2021 Lee Anderson</copyright>
+    <copyright>Copyright (c) 2022 Lee Anderson</copyright>
     <tags>EntityFrameworkCore EFCore NSubstitute nsub mock testing</tags>
     <repository url="https://github.com/rgvlee/EntityFrameworkCore.Testing" />
     <dependencies>
