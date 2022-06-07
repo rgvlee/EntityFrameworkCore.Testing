@@ -15,7 +15,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         {
             var mockedContext = MockedDbContextFactory();
 
-            mockedContext.Set<Foo>().ToList().Should().BeEquivalentTo(new List<Foo>());
+            mockedContext.Set<Foo>().ToList().Should().BeEmpty();
         }
 
         public class TestDbContext : DbContext
