@@ -141,7 +141,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Helpers
                 Logger.LogDebug("Could not find a DbContext property for type '{type}'", typeof(TEntity));
             }
 
-            mockedDbContext.Configure().Query<TEntity>().Returns(callInfo => mockedDbQuery);            
+            mockedDbContext.Configure().Query<TEntity>().Returns(callInfo => mockedDbQuery);
         }
     }
 }
