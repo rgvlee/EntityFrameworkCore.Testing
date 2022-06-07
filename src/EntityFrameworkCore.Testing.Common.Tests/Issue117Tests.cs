@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using AutoFixture;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
@@ -31,6 +32,19 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         public void DbContextAddRange_DoesNotThrowException()
         {
             Invoking(() => MockedDbContextFactory().AddRange(Fixture.CreateMany<Foo>())).Should().NotThrow();
+        }
+
+        [Test]
+        public void DbContextAddRangeTheSaveChanges_DbContextCreatedUsingDbContextFactoryWithinUsingBlock_PersistsMutableEntities()
+        {
+            var dbContextFactory = new TestDbContextFactory(MockedDbContextFactory);
+            using var dbContext = dbContextFactory.CreateDbContext();
+            var entities = Fixture.CreateMany<Foo>();
+
+            dbContext.AddRange(entities);
+            dbContext.SaveChanges();
+
+            dbContext.Set<Foo>().ToList().Should().BeEquivalentTo(entities);
         }
 
         public class TestDbContextFactory : IDbContextFactory<TestDbContext>
