@@ -1,4 +1,5 @@
 ﻿using System;
+using AutoFixture;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
@@ -24,6 +25,12 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         public void DbContextDispose_DbContextCreatedUsingDbContextFactory_DoesNotThrowException()
         {
             Invoking(() => MockedDbContextFactory().Dispose()).Should().NotThrow();
+        }
+
+        [Test]
+        public void DbContextAddRange_DoesNotThrowException()
+        {
+            Invoking(() => MockedDbContextFactory().AddRange(Fixture.CreateMany<Foo>())).Should().NotThrow();
         }
 
         public class TestDbContextFactory : IDbContextFactory<TestDbContext>
