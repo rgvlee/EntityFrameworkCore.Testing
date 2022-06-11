@@ -45,7 +45,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Helpers
             var modelType = GetModelType(invokedMethod);
             if (modelType == null)
             {
-                return RouteAction.Return(invokedMethod.ReturnType.GetDefaultValue());
+                return invokedMethod.ReturnType != typeof(void) ? RouteAction.Return(invokedMethod.ReturnType.GetDefaultValue()) : RouteAction.Continue();
             }
 
             Logger.LogDebug("Setting up model '{type}'", modelType);
