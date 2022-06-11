@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using AutoFixture;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
@@ -13,17 +12,16 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         protected abstract TestDbContext MockedDbContextFactory();
 
         [Test]
-        public void DbContextDispose_DbContextCreatedUsingDbContextFactoryWithinUsingBlock_DoesNotThrowException()
+        public void DbContextDispose_InvokedViaUsingBlock_DoesNotThrowException()
         {
-            var dbContextFactory = new TestDbContextFactory(MockedDbContextFactory);
             Invoking(() =>
             {
-                using (dbContextFactory.CreateDbContext()) { }
+                using (MockedDbContextFactory()) { }
             }).Should().NotThrow();
         }
 
         [Test]
-        public void DbContextDispose_DbContextCreatedUsingDbContextFactory_DoesNotThrowException()
+        public void DbContextDispose_DoesNotThrowException()
         {
             Invoking(() => MockedDbContextFactory().Dispose()).Should().NotThrow();
         }
@@ -35,31 +33,15 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         }
 
         [Test]
-        public void DbContextAddRangeTheSaveChanges_DbContextCreatedUsingDbContextFactoryWithinUsingBlock_PersistsMutableEntities()
+        public void DbContextAddRangeThenSaveChanges_WithinUsingBlock_PersistsMutableEntities()
         {
-            var dbContextFactory = new TestDbContextFactory(MockedDbContextFactory);
-            using var dbContext = dbContextFactory.CreateDbContext();
+            using var dbContext = MockedDbContextFactory();
             var entities = Fixture.CreateMany<Foo>();
 
             dbContext.AddRange(entities);
             dbContext.SaveChanges();
 
             dbContext.Set<Foo>().ToList().Should().BeEquivalentTo(entities);
-        }
-
-        public class TestDbContextFactory : IDbContextFactory<TestDbContext>
-        {
-            private readonly Func<TestDbContext> _mockedDbContextFactory;
-
-            public TestDbContextFactory(Func<TestDbContext> mockedDbContextFactory)
-            {
-                _mockedDbContextFactory = mockedDbContextFactory;
-            }
-
-            public TestDbContext CreateDbContext()
-            {
-                return _mockedDbContextFactory();
-            }
         }
 
         public class TestDbContext : DbContext
