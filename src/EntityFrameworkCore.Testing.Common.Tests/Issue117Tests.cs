@@ -35,13 +35,15 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         [Test]
         public void DbContextAddRangeThenSaveChanges_WithinUsingBlock_PersistsMutableEntities()
         {
-            using var dbContext = MockedDbContextFactory();
-            var entities = Fixture.CreateMany<Foo>();
+            using (var dbContext = MockedDbContextFactory())
+            {
+                var entities = Fixture.CreateMany<Foo>();
 
-            dbContext.AddRange(entities);
-            dbContext.SaveChanges();
+                dbContext.AddRange(entities);
+                dbContext.SaveChanges();
 
-            dbContext.Set<Foo>().ToList().Should().BeEquivalentTo(entities);
+                dbContext.Set<Foo>().ToList().Should().BeEquivalentTo(entities);
+            }
         }
 
         public class TestDbContext : DbContext
