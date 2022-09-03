@@ -24,17 +24,17 @@ jobs:
 
       - name: Update dependencies
         run: |
-          dotnet add src\EntityFrameworkCore.Testing.Common package Microsoft.EntityFrameworkCore.InMemory
-          dotnet add src\EntityFrameworkCore.Testing.Common package Microsoft.EntityFrameworkCore.SqlServer
-          dotnet add src\EntityFrameworkCore.Testing.Common package Microsoft.Extensions.Logging
-          dotnet add src\EntityFrameworkCore.Testing.Common package rgvlee.Core
-          dotnet list src\EntityFrameworkCore.Testing.Common package
+          dotnet add src/EntityFrameworkCore.Testing.Common package Microsoft.EntityFrameworkCore.InMemory
+          dotnet add src/EntityFrameworkCore.Testing.Common package Microsoft.EntityFrameworkCore.SqlServer
+          dotnet add src/EntityFrameworkCore.Testing.Common package Microsoft.Extensions.Logging
+          dotnet add src/EntityFrameworkCore.Testing.Common package rgvlee.Core
+          dotnet list src/EntityFrameworkCore.Testing.Common package
 
-          dotnet add src\EntityFrameworkCore.Testing.Moq package Moq
-          dotnet list src\EntityFrameworkCore.Testing.Moq package
+          dotnet add src/EntityFrameworkCore.Testing.Moq package Moq
+          dotnet list src/EntityFrameworkCore.Testing.Moq package
 
-          dotnet add src\EntityFrameworkCore.Testing.NSubstitute package NSubstitute
-          dotnet list src\EntityFrameworkCore.Testing.NSubstitute package
+          dotnet add src/EntityFrameworkCore.Testing.NSubstitute package NSubstitute
+          dotnet list src/EntityFrameworkCore.Testing.NSubstitute package
 
       - name: Test
         run: dotnet test --configuration Release /p:CollectCoverage=\"false\" /p:Exclude=\"[*.Tests]*,[rgvlee.Core.*]*\" /p:SkipAutoProps=\"false\" /p:IncludeTestAssembly=\"false\" -m:1
