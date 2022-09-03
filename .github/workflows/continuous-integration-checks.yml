@@ -17,10 +17,10 @@ jobs:
           dotnet-version: 6.0.x
 
       - name: Build
-        run: dotnet build src --configuration Release
+        run: dotnet build --configuration Release
 
       - name: Test
-        run: dotnet test src --configuration Release --no-build /p:CollectCoverage=\"true\" /p:Exclude=\"[*.Tests]*,[rgvlee.Core.*]*\" /p:SkipAutoProps=\"false\" /p:IncludeTestAssembly=\"false\" /p:CoverletOutput=\"../../CoverageResults/\" /p:MergeWith=\"../../CoverageResults/coverage.json\" /p:CoverletOutputFormat=\"opencover,json\" -m:1
+        run: dotnet test --configuration Release --no-build /p:CollectCoverage=\"true\" /p:Exclude=\"[*.Tests]*,[rgvlee.Core.*]*\" /p:SkipAutoProps=\"false\" /p:IncludeTestAssembly=\"false\" /p:CoverletOutput=\"../../CoverageResults/\" /p:MergeWith=\"../../CoverageResults/coverage.json\" /p:CoverletOutputFormat=\"opencover,json\" -m:1
 
       - name: Update dependencies
         run: |
@@ -37,7 +37,7 @@ jobs:
           dotnet list src\EntityFrameworkCore.Testing.NSubstitute package
 
       - name: Test
-        run: dotnet test src --configuration Release /p:CollectCoverage=\"false\" /p:Exclude=\"[*.Tests]*,[rgvlee.Core.*]*\" /p:SkipAutoProps=\"false\" /p:IncludeTestAssembly=\"false\" -m:1
+        run: dotnet test --configuration Release /p:CollectCoverage=\"false\" /p:Exclude=\"[*.Tests]*,[rgvlee.Core.*]*\" /p:SkipAutoProps=\"false\" /p:IncludeTestAssembly=\"false\" -m:1
         
       - name: Send coverage results to Codacy
         uses: codacy/codacy-coverage-reporter-action@master
