@@ -36,7 +36,7 @@ jobs:
           dotnet add src/EntityFrameworkCore.Testing.NSubstitute package NSubstitute
           dotnet list src/EntityFrameworkCore.Testing.NSubstitute package
 
-      - name: Test
+      - name: Test with updated dependencies
         run: dotnet test --configuration Release /p:CollectCoverage=\"false\" /p:Exclude=\"[*.Tests]*,[rgvlee.Core.*]*\" /p:SkipAutoProps=\"false\" /p:IncludeTestAssembly=\"false\" -m:1
         
       - name: Send coverage results to Codacy
