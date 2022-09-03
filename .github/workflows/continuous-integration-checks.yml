@@ -22,6 +22,12 @@ jobs:
       - name: Build
         run: dotnet build --configuration Release
 
+      - name: List dependencies
+        run: |
+          dotnet list src/EntityFrameworkCore.Testing.Common package
+          dotnet list src/EntityFrameworkCore.Testing.Moq package
+          dotnet list src/EntityFrameworkCore.Testing.NSubstitute package
+
       - name: Test
         run: dotnet test --configuration Release --no-build /p:CollectCoverage=\"true\" /p:Exclude=\"[*.Tests]*,[rgvlee.Core.*]*\" /p:SkipAutoProps=\"false\" /p:IncludeTestAssembly=\"false\" /p:CoverletOutput=\"../../CoverageResults/\" /p:MergeWith=\"../../CoverageResults/coverage.json\" /p:CoverletOutputFormat=\"opencover,json\" -m:1
 
@@ -31,12 +37,17 @@ jobs:
           dotnet add src/EntityFrameworkCore.Testing.Common package Microsoft.EntityFrameworkCore.SqlServer --version 3.*
           dotnet add src/EntityFrameworkCore.Testing.Common package Microsoft.Extensions.Logging --version 3.*
           dotnet add src/EntityFrameworkCore.Testing.Common package rgvlee.Core
-          dotnet list src/EntityFrameworkCore.Testing.Common package
+
+          dotnet add src/EntityFrameworkCore.Testing.Common.Tests package Microsoft.Extensions.Logging.Console --version 3.*
 
           dotnet add src/EntityFrameworkCore.Testing.Moq package Moq
-          dotnet list src/EntityFrameworkCore.Testing.Moq package
 
           dotnet add src/EntityFrameworkCore.Testing.NSubstitute package NSubstitute
+
+      - name: List dependencies
+        run: |
+          dotnet list src/EntityFrameworkCore.Testing.Common package
+          dotnet list src/EntityFrameworkCore.Testing.Moq package
           dotnet list src/EntityFrameworkCore.Testing.NSubstitute package
 
       - name: Test with updated dependencies
