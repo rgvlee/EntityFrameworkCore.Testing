@@ -27,9 +27,9 @@ jobs:
 
       - name: Update dependencies
         run: |
-          dotnet add src/EntityFrameworkCore.Testing.Common package Microsoft.EntityFrameworkCore.InMemory
-          dotnet add src/EntityFrameworkCore.Testing.Common package Microsoft.EntityFrameworkCore.SqlServer
-          dotnet add src/EntityFrameworkCore.Testing.Common package Microsoft.Extensions.Logging
+          dotnet add src/EntityFrameworkCore.Testing.Common package Microsoft.EntityFrameworkCore.InMemory --version 6.*
+          dotnet add src/EntityFrameworkCore.Testing.Common package Microsoft.EntityFrameworkCore.SqlServer --version 6.*
+          dotnet add src/EntityFrameworkCore.Testing.Common package Microsoft.Extensions.Logging --version 6.*
           dotnet add src/EntityFrameworkCore.Testing.Common package rgvlee.Core
           dotnet list src/EntityFrameworkCore.Testing.Common package
 
