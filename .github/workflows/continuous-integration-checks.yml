@@ -34,10 +34,10 @@ jobs:
         run: |
           dotnet add src/EntityFrameworkCore.Testing.Common package Microsoft.EntityFrameworkCore.InMemory --version 2.1.*
           dotnet add src/EntityFrameworkCore.Testing.Common package Microsoft.EntityFrameworkCore.SqlServer --version 2.1.*
-          dotnet add src/EntityFrameworkCore.Testing.Common package Microsoft.Extensions.Logging --version 2.1.*
+          dotnet add src/EntityFrameworkCore.Testing.Common package Microsoft.Extensions.Logging --version 2.*
           dotnet add src/EntityFrameworkCore.Testing.Common package rgvlee.Core
 
-          dotnet add src/EntityFrameworkCore.Testing.Common.Tests package Microsoft.Extensions.Logging.Console --version 2.1.*
+          dotnet add src/EntityFrameworkCore.Testing.Common.Tests package Microsoft.Extensions.Logging.Console --version 2.*
 
           dotnet add src/EntityFrameworkCore.Testing.Moq package Moq
 
