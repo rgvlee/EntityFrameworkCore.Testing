@@ -1,6 +1,9 @@
 name: Continuous Integration Checks
 
-on: push
+on:
+  push:
+  schedule:
+    - cron: "0 9 * * 3"
 
 jobs:
   build-and-test:
@@ -38,7 +41,7 @@ jobs:
 
       - name: Test with updated dependencies
         run: dotnet test --configuration Release /p:CollectCoverage=\"false\" /p:Exclude=\"[*.Tests]*,[rgvlee.Core.*]*\" /p:SkipAutoProps=\"false\" /p:IncludeTestAssembly=\"false\" -m:1
-        
+
       - name: Send coverage results to Codacy
         uses: codacy/codacy-coverage-reporter-action@master
         with:
