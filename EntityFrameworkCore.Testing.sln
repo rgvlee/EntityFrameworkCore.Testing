@@ -25,19 +25,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EntityFrameworkCore.Testing
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{5B717CD0-96CD-4862-95EB-80ECCDCD1D07}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Package Verification", "Package Verification", "{14FCAAB1-10D9-4211-9389-60310E89D99A}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EntityFrameworkCore.Testing.Common", "src\EntityFrameworkCore.Testing.Common\EntityFrameworkCore.Testing.Common.csproj", "{F2211544-E6EA-439A-9C31-3972B48B9D5E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EntityFrameworkCore.Testing.Common.Tests", "src\EntityFrameworkCore.Testing.Common.Tests\EntityFrameworkCore.Testing.Common.Tests.csproj", "{4B97C16B-E27D-4900-A535-6D5AC116B893}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EntityFrameworkCore.DefaultBehaviour.Tests", "src\EntityFrameworkCore.DefaultBehaviour.Tests\EntityFrameworkCore.DefaultBehaviour.Tests.csproj", "{9C08E46C-C902-473F-93E6-FCB89DEC8C97}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EntityFrameworkCore.Testing.Moq.PackageVerification.Tests", "src\EntityFrameworkCore.Testing.Moq.PackageVerification.Tests\EntityFrameworkCore.Testing.Moq.PackageVerification.Tests.csproj", "{AA3FB1FC-472F-491B-B6D1-C4792B6BB81F}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EntityFrameworkCore.Testing.NSubstitute", "src\EntityFrameworkCore.Testing.NSubstitute\EntityFrameworkCore.Testing.NSubstitute.csproj", "{A70976F0-38EA-461C-9BDE-BEE8232B048D}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EntityFrameworkCore.Testing.NSubstitute.PackageVerification.Tests", "src\EntityFrameworkCore.Testing.NSubstitute.PackageVerification.Tests\EntityFrameworkCore.Testing.NSubstitute.PackageVerification.Tests.csproj", "{1251EFF7-0B26-47F2-8559-C43492B7FBE3}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EntityFrameworkCore.Testing.NSubstitute.Tests", "src\EntityFrameworkCore.Testing.NSubstitute.Tests\EntityFrameworkCore.Testing.NSubstitute.Tests.csproj", "{2F67273D-B7B8-49A5-9A91-E37CBC10F563}"
 EndProject
@@ -67,18 +61,10 @@ Global
 		{9C08E46C-C902-473F-93E6-FCB89DEC8C97}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9C08E46C-C902-473F-93E6-FCB89DEC8C97}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9C08E46C-C902-473F-93E6-FCB89DEC8C97}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AA3FB1FC-472F-491B-B6D1-C4792B6BB81F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AA3FB1FC-472F-491B-B6D1-C4792B6BB81F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AA3FB1FC-472F-491B-B6D1-C4792B6BB81F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AA3FB1FC-472F-491B-B6D1-C4792B6BB81F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A70976F0-38EA-461C-9BDE-BEE8232B048D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A70976F0-38EA-461C-9BDE-BEE8232B048D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A70976F0-38EA-461C-9BDE-BEE8232B048D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A70976F0-38EA-461C-9BDE-BEE8232B048D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1251EFF7-0B26-47F2-8559-C43492B7FBE3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1251EFF7-0B26-47F2-8559-C43492B7FBE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1251EFF7-0B26-47F2-8559-C43492B7FBE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1251EFF7-0B26-47F2-8559-C43492B7FBE3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2F67273D-B7B8-49A5-9A91-E37CBC10F563}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2F67273D-B7B8-49A5-9A91-E37CBC10F563}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2F67273D-B7B8-49A5-9A91-E37CBC10F563}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -91,8 +77,6 @@ Global
 		{6567AA47-8E4D-4E69-8075-B8C25DC7F4A4} = {5B717CD0-96CD-4862-95EB-80ECCDCD1D07}
 		{4B97C16B-E27D-4900-A535-6D5AC116B893} = {5B717CD0-96CD-4862-95EB-80ECCDCD1D07}
 		{9C08E46C-C902-473F-93E6-FCB89DEC8C97} = {5B717CD0-96CD-4862-95EB-80ECCDCD1D07}
-		{AA3FB1FC-472F-491B-B6D1-C4792B6BB81F} = {14FCAAB1-10D9-4211-9389-60310E89D99A}
-		{1251EFF7-0B26-47F2-8559-C43492B7FBE3} = {14FCAAB1-10D9-4211-9389-60310E89D99A}
 		{2F67273D-B7B8-49A5-9A91-E37CBC10F563} = {5B717CD0-96CD-4862-95EB-80ECCDCD1D07}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
