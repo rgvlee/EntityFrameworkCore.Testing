@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Data;
+using System.Data.Common;
 using Microsoft.EntityFrameworkCore;
 
 namespace EntityFrameworkCore.Testing.Common.Helpers
@@ -19,5 +21,10 @@ namespace EntityFrameworkCore.Testing.Common.Helpers
         ///     the in-memory context that the mocked db context will use for in-memory provider supported operations.
         /// </summary>
         public IEnumerable<object> ConstructorParameters { get; set; }
+
+        /// <summary>
+        ///     The db connection will be use in direct commands (context.Database.GetDbConnection();).
+        /// </summary>
+        public DbConnection DbConnection { get; set; }
     }
 }
