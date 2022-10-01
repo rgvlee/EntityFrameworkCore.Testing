@@ -70,6 +70,15 @@
                 The mocked db context.
             </summary>
         </member>
+        <member name="M:EntityFrameworkCore.Testing.Common.Helpers.BaseMockedDbContextBuilder`1.UseDbConnection(System.Data.Common.DbConnection)">
+            <summary>
+                The parameter that will be used in direct commands (context.Database.GetDbConnection();).
+            </summary>
+            <param name="dbConnection">
+               db connection instance.
+            </param>
+            <returns>The mocked db context builder.</returns>
+        </member>
         <member name="M:EntityFrameworkCore.Testing.Common.Helpers.BaseMockedDbContextBuilder`1.UseConstructorWithParameters(System.Object[])">
             <summary>
                 The parameters that will be used to create the mocked db context and, if one is not provided,
@@ -105,6 +114,11 @@
         <member name="F:EntityFrameworkCore.Testing.Common.Helpers.BaseMockedDbContextFactory`1.DbContext">
             <summary>
                 The db context instance that the mocked db context will use for in-memory provider supported operations.
+            </summary>
+        </member>
+        <member name="F:EntityFrameworkCore.Testing.Common.Helpers.BaseMockedDbContextFactory`1.DbConnection">
+            <summary>
+                The db connection instance that the mocked db context will use in direct commands.
             </summary>
         </member>
         <member name="M:EntityFrameworkCore.Testing.Common.Helpers.BaseMockedDbContextFactory`1.#ctor(EntityFrameworkCore.Testing.Common.Helpers.MockedDbContextFactoryOptions{`0})">
@@ -174,6 +188,11 @@
             <summary>
                 The parameters that will be used to create the mocked db context and, if one is not provided,
                 the in-memory context that the mocked db context will use for in-memory provider supported operations.
+            </summary>
+        </member>
+        <member name="P:EntityFrameworkCore.Testing.Common.Helpers.MockedDbContextFactoryOptions`1.DbConnection">
+            <summary>
+                The db connection will be use in direct commands (context.Database.GetDbConnection();).
             </summary>
         </member>
         <member name="T:EntityFrameworkCore.Testing.Common.Helpers.ParameterMatchingHelper">
