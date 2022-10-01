@@ -112,6 +112,8 @@ namespace EntityFrameworkCore.Testing.Moq.Helpers
 
             var relationalConnectionMock = new Mock<IRelationalConnection>();
             relationalConnectionMock.Setup(x => x.CommandTimeout).Returns(() => 0);
+
+            relationalConnectionMock.Setup(x => x.DbConnection).Returns(() => DbConnection);
             var relationalConnection = relationalConnectionMock.Object;
 
             var dependenciesMock = new Mock<IRelationalDatabaseFacadeDependencies>();

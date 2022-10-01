@@ -113,6 +113,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Helpers
 
             var relationalConnection = Substitute.For<IRelationalConnection>();
             relationalConnection.CommandTimeout.Returns(callInfo => 0);
+            relationalConnection.DbConnection.Returns(callInfo => DbConnection);
 
             var dependencies = Substitute.For<IRelationalDatabaseFacadeDependencies>();
             dependencies.ConcurrencyDetector.Returns(callInfo => concurrencyDetector);

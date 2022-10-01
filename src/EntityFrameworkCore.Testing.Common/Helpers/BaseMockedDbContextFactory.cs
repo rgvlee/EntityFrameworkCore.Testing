@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -29,6 +30,11 @@ namespace EntityFrameworkCore.Testing.Common.Helpers
         ///     The db context instance that the mocked db context will use for in-memory provider supported operations.
         /// </summary>
         protected readonly TDbContext DbContext;
+
+        /// <summary>
+        ///     The db connection instance that the mocked db context will use in direct commands.
+        /// </summary>
+        protected readonly DbConnection DbConnection;
 
         /// <summary>
         ///     Constructor.
@@ -68,6 +74,11 @@ namespace EntityFrameworkCore.Testing.Common.Helpers
             if (DbContext == null)
             {
                 DbContext = (TDbContext) Activator.CreateInstance(typeof(TDbContext), ConstructorParameters?.ToArray());
+            }
+
+            if (options.DbConnection != null)
+            {
+                DbConnection = options.DbConnection;
             }
         }
 
