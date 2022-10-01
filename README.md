@@ -14,29 +14,29 @@ The aim of this library is to allow you use the in-memory database provider in u
 
 - JetBrains for providing an all products pack open source licence
 
-### EntityFrameworkCore 6 (Preview 2+)
+### EntityFrameworkCore 6
 
 - [Source](https://github.com/rgvlee/EntityFrameworkCore.Testing/tree/4.x)
-- [EntityFrameworkCore.Testing.Moq - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.Moq/4.0.0-net6.preview.3)
-- [EntityFrameworkCore.Testing.NSubstitute - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.NSubstitute/4.0.0-net6.preview.3)
+- [EntityFrameworkCore.Testing.Moq - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.Moq/4.0.2)
+- [EntityFrameworkCore.Testing.NSubstitute - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.NSubstitute/4.0.2)
 
 ### EntityFrameworkCore 5
 
 - [Source](https://github.com/rgvlee/EntityFrameworkCore.Testing/tree/3.x)
-- [EntityFrameworkCore.Testing.Moq - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.Moq/3.0.3)
-- [EntityFrameworkCore.Testing.NSubstitute - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.NSubstitute/3.0.3)
+- [EntityFrameworkCore.Testing.Moq - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.Moq/3.0.5)
+- [EntityFrameworkCore.Testing.NSubstitute - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.NSubstitute/3.0.5)
 
 ### EntityFrameworkCore 3
 
 - [Source](https://github.com/rgvlee/EntityFrameworkCore.Testing/tree/2.x)
-- [EntityFrameworkCore.Testing.Moq - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.Moq/2.4.3)
-- [EntityFrameworkCore.Testing.NSubstitute - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.NSubstitute/2.4.3)
+- [EntityFrameworkCore.Testing.Moq - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.Moq/2.4.5)
+- [EntityFrameworkCore.Testing.NSubstitute - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.NSubstitute/2.4.5)
 
 ### EntityFrameworkCore 2 (2.1.0+)
 
 - [Source](https://github.com/rgvlee/EntityFrameworkCore.Testing/tree/1.x)
-- [EntityFrameworkCore.Testing.Moq - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.Moq/1.3.3)
-- [EntityFrameworkCore.Testing.NSubstitute - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.NSubstitute/1.3.3)
+- [EntityFrameworkCore.Testing.Moq - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.Moq/1.3.5)
+- [EntityFrameworkCore.Testing.NSubstitute - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.NSubstitute/1.3.5)
 
 ## Prerequisites
 

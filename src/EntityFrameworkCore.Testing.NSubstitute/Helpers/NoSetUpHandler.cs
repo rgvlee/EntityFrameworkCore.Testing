@@ -45,7 +45,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Helpers
             var modelType = GetModelType(invokedMethod);
             if (modelType == null)
             {
-                return RouteAction.Return(invokedMethod.ReturnType.GetDefaultValue());
+                return invokedMethod.ReturnType != typeof(void) ? RouteAction.Return(invokedMethod.ReturnType.GetDefaultValue()) : RouteAction.Continue();
             }
 
             Logger.LogDebug("Setting up model '{type}'", modelType);
@@ -133,13 +133,13 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Helpers
             if (property != null)
             {
                 property.GetValue(mockedDbContext.Configure()).Returns(callInfo => mockedReadOnlyDbSet);
-
-                mockedDbContext.Configure().Set<TEntity>().Returns(callInfo => mockedReadOnlyDbSet);
             }
             else
             {
                 Logger.LogDebug("Could not find a DbContext property for type '{type}'", typeof(TEntity));
             }
+
+            mockedDbContext.Configure().Set<TEntity>().Returns(callInfo => mockedReadOnlyDbSet);
         }
     }
 }
