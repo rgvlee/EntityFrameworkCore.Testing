@@ -23,11 +23,8 @@ jobs:
         with:
           nuget-version: latest
 
-      - name: Restore dependencies
-        run: dotnet restore src
-
       - name: Build
-        run: dotnet build src --configuration Release --no-restore
+        run: dotnet build --configuration Release
 
       - name: Pack
         run: |
