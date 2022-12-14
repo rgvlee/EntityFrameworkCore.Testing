@@ -17,7 +17,7 @@ jobs:
       - name: Setup dotnet
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: 6.0.x
+          dotnet-version: 7.0.x
 
       - name: Build
         run: dotnet build --configuration Release
@@ -30,12 +30,12 @@ jobs:
 
       - name: Update dependencies
         run: |
-          dotnet add src/EntityFrameworkCore.Testing.Common package Microsoft.EntityFrameworkCore.InMemory --version 6.*
-          dotnet add src/EntityFrameworkCore.Testing.Common package Microsoft.EntityFrameworkCore.SqlServer --version 6.*
-          dotnet add src/EntityFrameworkCore.Testing.Common package Microsoft.Extensions.Logging --version 6.*
+          dotnet add src/EntityFrameworkCore.Testing.Common package Microsoft.EntityFrameworkCore.InMemory --version 7.*
+          dotnet add src/EntityFrameworkCore.Testing.Common package Microsoft.EntityFrameworkCore.SqlServer --version 7.*
+          dotnet add src/EntityFrameworkCore.Testing.Common package Microsoft.Extensions.Logging --version 7.*
           dotnet add src/EntityFrameworkCore.Testing.Common package rgvlee.Core
 
-          dotnet add src/EntityFrameworkCore.Testing.Common.Tests package Microsoft.Extensions.Logging.Console --version 6.*
+          dotnet add src/EntityFrameworkCore.Testing.Common.Tests package Microsoft.Extensions.Logging.Console --version 7.*
 
           dotnet add src/EntityFrameworkCore.Testing.Moq package Moq
 

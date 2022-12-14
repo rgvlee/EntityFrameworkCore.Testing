@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata>
     <id>EntityFrameworkCore.Testing.Moq</id>
-    <version>4.0.2</version>
+    <version>5.0.0</version>
     <authors>rgvlee</authors>
     <owners>rgvlee</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
@@ -19,9 +19,9 @@ EntityFrameworkCore.Testing v4.x = EntityFrameworkCore 6</description>
     <repository url="https://github.com/rgvlee/EntityFrameworkCore.Testing" />
     <dependencies>
       <group targetFramework="net6.0">
-        <dependency id="Microsoft.EntityFrameworkCore.InMemory" version="[6,7)" exclude="Build,Analyzers" />
-        <dependency id="Microsoft.EntityFrameworkCore.SqlServer" version="[6,7)" exclude="Build,Analyzers" />
-        <dependency id="Microsoft.Extensions.Logging" version="[6,7)" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.EntityFrameworkCore.InMemory" version="[7,8)" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.EntityFrameworkCore.SqlServer" version="[7,8)" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Extensions.Logging" version="[7,8)" exclude="Build,Analyzers" />
         <dependency id="Moq" version="4.9.0" exclude="Build,Analyzers" />
         <dependency id="rgvlee.Core" version="1.2.1" exclude="Build,Analyzers" />
       </group>
