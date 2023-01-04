@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Query;
 
 namespace EntityFrameworkCore.Testing.Common
 {
-    public class FakeQueryRootExpression : QueryRootExpression
+    public class FakeQueryRootExpression : EntityQueryRootExpression
     {
         public FakeQueryRootExpression(IAsyncQueryProvider asyncQueryProvider, IEntityType entityType) : base(asyncQueryProvider, entityType)
         {
