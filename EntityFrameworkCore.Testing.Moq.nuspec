@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata>
     <id>EntityFrameworkCore.Testing.Moq</id>
-    <version>5.0.0</version>
+    <version>8.0.0</version>
     <authors>rgvlee</authors>
     <owners>rgvlee</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
@@ -14,27 +14,28 @@ EntityFrameworkCore.Testing v1.x = EntityFrameworkCore 2 (2.1.0+)
 EntityFrameworkCore.Testing v2.x = EntityFrameworkCore 3
 EntityFrameworkCore.Testing v3.x = EntityFrameworkCore 5
 EntityFrameworkCore.Testing v4.x = EntityFrameworkCore 6
-EntityFrameworkCore.Testing v5.x = EntityFrameworkCore 7</description>
+EntityFrameworkCore.Testing v5.x = EntityFrameworkCore 7
+EntityFrameworkCore.Testing v8.x = EntityFrameworkCore 8</description>
     <copyright>Copyright (c) 2022 Lee Anderson</copyright>
     <tags>EntityFrameworkCore EFCore Moq mock testing</tags>
     <repository url="https://github.com/rgvlee/EntityFrameworkCore.Testing" />
     <dependencies>
-      <group targetFramework="net6.0">
-        <dependency id="Microsoft.EntityFrameworkCore.InMemory" version="[7,8)" exclude="Build,Analyzers" />
-        <dependency id="Microsoft.EntityFrameworkCore.SqlServer" version="[7,8)" exclude="Build,Analyzers" />
-        <dependency id="Microsoft.Extensions.Logging" version="[7,8)" exclude="Build,Analyzers" />
+      <group targetFramework="net8.0">
+        <dependency id="Microsoft.EntityFrameworkCore.InMemory" version="[8,9)" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.EntityFrameworkCore.SqlServer" version="[8,9)" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Extensions.Logging" version="[8,9)" exclude="Build,Analyzers" />
         <dependency id="Moq" version="4.9.0" exclude="Build,Analyzers" />
         <dependency id="rgvlee.Core" version="1.2.1" exclude="Build,Analyzers" />
       </group>
     </dependencies>
   </metadata>
   <files>
-    <file src="src\EntityFrameworkCore.Testing.Common\bin\Release\net6.0\EntityFrameworkCore.Testing.Common.dll" target="lib\net6.0" />
-    <file src="src\EntityFrameworkCore.Testing.Common\bin\Release\net6.0\EntityFrameworkCore.Testing.Common.xml" target="lib\net6.0" />
-    <file src="src\EntityFrameworkCore.Testing.Common\bin\Release\net6.0\EntityFrameworkCore.Testing.Common.pdb" target="lib\net6.0" />
-    <file src="src\EntityFrameworkCore.Testing.Moq\bin\Release\net6.0\EntityFrameworkCore.Testing.Moq.dll" target="lib\net6.0" />
-    <file src="src\EntityFrameworkCore.Testing.Moq\bin\Release\net6.0\EntityFrameworkCore.Testing.Moq.xml" target="lib\net6.0" />
-    <file src="src\EntityFrameworkCore.Testing.Moq\bin\Release\net6.0\EntityFrameworkCore.Testing.Moq.pdb" target="lib\net6.0" />
+    <file src="src\EntityFrameworkCore.Testing.Common\bin\Release\net8.0\EntityFrameworkCore.Testing.Common.dll" target="lib\net8.0" />
+    <file src="src\EntityFrameworkCore.Testing.Common\bin\Release\net8.0\EntityFrameworkCore.Testing.Common.xml" target="lib\net8.0" />
+    <file src="src\EntityFrameworkCore.Testing.Common\bin\Release\net8.0\EntityFrameworkCore.Testing.Common.pdb" target="lib\net8.0" />
+    <file src="src\EntityFrameworkCore.Testing.Moq\bin\Release\net8.0\EntityFrameworkCore.Testing.Moq.dll" target="lib\net8.0" />
+    <file src="src\EntityFrameworkCore.Testing.Moq\bin\Release\net8.0\EntityFrameworkCore.Testing.Moq.xml" target="lib\net8.0" />
+    <file src="src\EntityFrameworkCore.Testing.Moq\bin\Release\net8.0\EntityFrameworkCore.Testing.Moq.pdb" target="lib\net8.0" />
     <file src="LICENSE" />
   </files>
 </package>

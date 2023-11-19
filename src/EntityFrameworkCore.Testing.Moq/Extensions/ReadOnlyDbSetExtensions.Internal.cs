@@ -44,9 +44,9 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
             readOnlyDbSetMock.Setup(m => m.EntityType).Returns(() => readOnlyDbSet.EntityType);
             readOnlyDbSetMock.As<IQueryable<TEntity>>().Setup(m => m.Expression).Returns(() => asyncEnumerable.Expression);
 
-            readOnlyDbSetMock.Setup(m => m.Find(It.IsAny<object[]>())).Throws(new NullReferenceException());
-            readOnlyDbSetMock.Setup(m => m.FindAsync(It.IsAny<object[]>())).Throws(new NullReferenceException());
-            readOnlyDbSetMock.Setup(m => m.FindAsync(It.IsAny<object[]>(), It.IsAny<CancellationToken>())).Throws(new NullReferenceException());
+            readOnlyDbSetMock.Setup(m => m.Find(It.IsAny<object[]>())).Throws(new InvalidOperationException($"The invoked method cannot be used for the entity type '{typeof(TEntity).Name}' because it does not have a primary key. For more information on keyless entity types, see https://go.microsoft.com/fwlink/?linkid=2141943."));
+            readOnlyDbSetMock.Setup(m => m.FindAsync(It.IsAny<object[]>())).Throws(new InvalidOperationException($"The invoked method cannot be used for the entity type '{typeof(TEntity).Name}' because it does not have a primary key. For more information on keyless entity types, see https://go.microsoft.com/fwlink/?linkid=2141943."));
+            readOnlyDbSetMock.Setup(m => m.FindAsync(It.IsAny<object[]>(), It.IsAny<CancellationToken>())).Throws(new InvalidOperationException($"The invoked method cannot be used for the entity type '{typeof(TEntity).Name}' because it does not have a primary key. For more information on keyless entity types, see https://go.microsoft.com/fwlink/?linkid=2141943."));
 
             readOnlyDbSetMock.As<IAsyncEnumerable<TEntity>>()
                 .Setup(m => m.GetAsyncEnumerator(It.IsAny<CancellationToken>()))
@@ -60,7 +60,7 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
             readOnlyDbSetMock.As<IInfrastructure<IServiceProvider>>().Setup(m => m.Instance).Returns(() => ((IInfrastructure<IServiceProvider>) readOnlyDbSet).Instance);
 
             readOnlyDbSetMock.Setup(m => m.Local)
-                .Throws(new InvalidOperationException($"The invoked method cannot be used for the entity type '{typeof(TEntity).Name}' because it does not have a primary key."));
+                .Throws(new InvalidOperationException($"The invoked method cannot be used for the entity type '{typeof(TEntity).Name}' because it does not have a primary key. For more information on keyless entity types, see https://go.microsoft.com/fwlink/?linkid=2141943."));
 
             readOnlyDbSetMock.Setup(m => m.Remove(It.IsAny<TEntity>())).Throws(invalidOperationException);
             readOnlyDbSetMock.Setup(m => m.RemoveRange(It.IsAny<IEnumerable<TEntity>>())).Throws(invalidOperationException);
