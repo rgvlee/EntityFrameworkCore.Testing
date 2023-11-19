@@ -54,9 +54,9 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
             mockedReadOnlyDbSet.EntityType.Returns(callInfo => readOnlyDbSet.EntityType);
             ((IQueryable<TEntity>) mockedReadOnlyDbSet).Expression.Returns(callInfo => asyncEnumerable.Expression);
 
-            mockedReadOnlyDbSet.Find(Arg.Any<object[]>()).Throws(callInfo => new NullReferenceException());
-            mockedReadOnlyDbSet.FindAsync(Arg.Any<object[]>()).Throws(callInfo => new NullReferenceException());
-            mockedReadOnlyDbSet.FindAsync(Arg.Any<object[]>(), Arg.Any<CancellationToken>()).Throws(callInfo => new NullReferenceException());
+            mockedReadOnlyDbSet.Find(Arg.Any<object[]>()).Throws(callInfo => new InvalidOperationException($"The invoked method cannot be used for the entity type '{typeof(TEntity).Name}' because it does not have a primary key. For more information on keyless entity types, see https://go.microsoft.com/fwlink/?linkid=2141943."));
+            mockedReadOnlyDbSet.FindAsync(Arg.Any<object[]>()).Throws(callInfo => new InvalidOperationException($"The invoked method cannot be used for the entity type '{typeof(TEntity).Name}' because it does not have a primary key. For more information on keyless entity types, see https://go.microsoft.com/fwlink/?linkid=2141943."));
+            mockedReadOnlyDbSet.FindAsync(Arg.Any<object[]>(), Arg.Any<CancellationToken>()).Throws(callInfo => new InvalidOperationException($"The invoked method cannot be used for the entity type '{typeof(TEntity).Name}' because it does not have a primary key. For more information on keyless entity types, see https://go.microsoft.com/fwlink/?linkid=2141943."));
 
             ((IAsyncEnumerable<TEntity>) mockedReadOnlyDbSet).GetAsyncEnumerator(Arg.Any<CancellationToken>())
                 .Returns(callInfo => asyncEnumerable.GetAsyncEnumerator(callInfo.Arg<CancellationToken>()));
@@ -68,8 +68,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
 
             ((IInfrastructure<IServiceProvider>) mockedReadOnlyDbSet).Instance.Returns(callInfo => ((IInfrastructure<IServiceProvider>) readOnlyDbSet).Instance);
 
-            mockedReadOnlyDbSet.Local.Throws(callInfo =>
-                new InvalidOperationException($"The invoked method cannot be used for the entity type '{typeof(TEntity).Name}' because it does not have a primary key."));
+            mockedReadOnlyDbSet.Local.Throws(callInfo => new InvalidOperationException($"The invoked method cannot be used for the entity type '{typeof(TEntity).Name}' because it does not have a primary key. For more information on keyless entity types, see https://go.microsoft.com/fwlink/?linkid=2141943."));
 
             mockedReadOnlyDbSet.Remove(Arg.Any<TEntity>()).Throws(callInfo => invalidOperationException);
             mockedReadOnlyDbSet.When(x => x.RemoveRange(Arg.Any<IEnumerable<TEntity>>())).Do(callInfo => throw invalidOperationException);

@@ -85,22 +85,22 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         public void Find_Item_ThrowsException()
         {
             var itemToFind = Fixture.Create<TEntity>();
-            var ex = Assert.Throws<NullReferenceException>(() =>
+            var ex = Assert.Throws<InvalidOperationException>(() =>
             {
                 DbSet.Find(itemToFind.Id);
             });
-            Assert.That(ex.Message, Is.EqualTo("Object reference not set to an instance of an object."));
+            Assert.That(ex.Message, Is.EqualTo($"The invoked method cannot be used for the entity type '{typeof(TEntity).Name}' because it does not have a primary key. For more information on keyless entity types, see https://go.microsoft.com/fwlink/?linkid=2141943."));
         }
 
         [Test]
         public void Find_Items_ThrowsException()
         {
             var itemsToFind = Fixture.CreateMany<TEntity>();
-            var ex = Assert.ThrowsAsync<NullReferenceException>(async () =>
+            var ex = Assert.ThrowsAsync<InvalidOperationException>(async () =>
             {
                 await DbSet.FindAsync(itemsToFind);
             });
-            Assert.That(ex.Message, Is.EqualTo("Object reference not set to an instance of an object."));
+            Assert.That(ex.Message, Is.EqualTo($"The invoked method cannot be used for the entity type '{typeof(TEntity).Name}' because it does not have a primary key. For more information on keyless entity types, see https://go.microsoft.com/fwlink/?linkid=2141943."));
         }
 
         [Test]
@@ -110,7 +110,7 @@ namespace EntityFrameworkCore.Testing.Common.Tests
             {
                 var localView = DbSet.Local;
             });
-            Assert.That(ex.Message, Is.EqualTo($"The invoked method cannot be used for the entity type '{typeof(TEntity).Name}' because it does not have a primary key."));
+            Assert.That(ex.Message, Is.EqualTo($"The invoked method cannot be used for the entity type '{typeof(TEntity).Name}' because it does not have a primary key. For more information on keyless entity types, see https://go.microsoft.com/fwlink/?linkid=2141943."));
         }
 
         [Test]
