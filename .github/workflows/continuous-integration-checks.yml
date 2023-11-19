@@ -22,8 +22,8 @@ jobs:
       - name: Build
         run: dotnet build --configuration Release
 
-      - name: List dependencies
-        run: dotnet list EntityFrameworkCore.Testing.sln package
+#      - name: List dependencies
+#        run: dotnet list EntityFrameworkCore.Testing.sln package
 
       - name: Test
         run: dotnet test --configuration Release --no-build /p:CollectCoverage=\"true\" /p:Exclude=\"[*.Tests]*,[rgvlee.Core.*]*\" /p:SkipAutoProps=\"false\" /p:IncludeTestAssembly=\"false\" /p:CoverletOutput=\"../../CoverageResults/\" /p:MergeWith=\"../../CoverageResults/coverage.json\" /p:CoverletOutputFormat=\"opencover,json\" -m:1
@@ -41,8 +41,8 @@ jobs:
 
           dotnet add src/EntityFrameworkCore.Testing.NSubstitute package NSubstitute
 
-      - name: List dependencies
-        run: dotnet list EntityFrameworkCore.Testing.sln package
+#      - name: List dependencies
+#        run: dotnet list EntityFrameworkCore.Testing.sln package
 
       - name: Test with updated dependencies
         run: dotnet test --configuration Release /p:CollectCoverage=\"false\" /p:Exclude=\"[*.Tests]*,[rgvlee.Core.*]*\" /p:SkipAutoProps=\"false\" /p:IncludeTestAssembly=\"false\" -m:1
