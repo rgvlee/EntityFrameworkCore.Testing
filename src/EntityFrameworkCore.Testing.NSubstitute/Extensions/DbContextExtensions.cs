@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using EntityFrameworkCore.Testing.Common.Helpers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
@@ -136,7 +137,8 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Extensions
 
             existingRawSqlCommandBuilder.Build(
                     Arg.Is<string>(s => s.Contains(sql, StringComparison.OrdinalIgnoreCase)),
-                    Arg.Is<IEnumerable<object>>(p => ParameterMatchingHelper.DoInvocationParametersMatchSetUpParameters(parameters, p)))
+                    Arg.Is<IEnumerable<object>>(p => ParameterMatchingHelper.DoInvocationParametersMatchSetUpParameters(parameters, p)),
+                    Arg.Any<IModel>())
                 .Returns(callInfo => rawSqlCommand)
                 .AndDoes(callInfo =>
                 {

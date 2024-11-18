@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Internal;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Logging;
 using Moq;
@@ -101,8 +102,8 @@ namespace EntityFrameworkCore.Testing.Moq.Helpers
 
             //Relational set up
             var rawSqlCommandBuilderMock = new Mock<IRawSqlCommandBuilder>();
-            rawSqlCommandBuilderMock.Setup(m => m.Build(It.IsAny<string>(), It.IsAny<IEnumerable<object>>()))
-                .Callback((string providedSql, IEnumerable<object> providedParameters) => Logger.LogDebug("Catch all exception invoked"))
+            rawSqlCommandBuilderMock.Setup(m => m.Build(It.IsAny<string>(), It.IsAny<IEnumerable<object>>(), It.IsAny<IModel>()))
+                .Callback((string providedSql, IEnumerable<object> providedParameters, IModel model) => Logger.LogDebug("Catch all exception invoked"))
                 .Throws<InvalidOperationException>();
             var rawSqlCommandBuilder = rawSqlCommandBuilderMock.Object;
 
@@ -125,6 +126,7 @@ namespace EntityFrameworkCore.Testing.Moq.Helpers
 
             var serviceProviderMock = new Mock<IServiceProvider>();
             serviceProviderMock.Setup(m => m.GetService(It.Is<Type>(t => t == typeof(IDatabaseFacadeDependencies)))).Returns((Type providedType) => dependencies);
+            serviceProviderMock.Setup(m => m.GetService(It.Is<Type>(t => t == typeof(IModel)))).Returns((Type providedType) => new Mock<IModel>().Object);
             var serviceProvider = serviceProviderMock.Object;
 
             dbContextMock.As<IInfrastructure<IServiceProvider>>().Setup(m => m.Instance).Returns(() => serviceProvider);
