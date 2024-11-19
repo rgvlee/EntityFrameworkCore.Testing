@@ -103,7 +103,7 @@ namespace EntityFrameworkCore.Testing.Moq.Helpers
             //Relational set up
             var rawSqlCommandBuilderMock = new Mock<IRawSqlCommandBuilder>();
             rawSqlCommandBuilderMock.Setup(m => m.Build(It.IsAny<string>(), It.IsAny<IEnumerable<object>>(), It.IsAny<IModel>()))
-                .Callback((string providedSql, IEnumerable<object> providedParameters, IModel _) => Logger.LogDebug("Catch all exception invoked"))
+                .Callback((string _, IEnumerable<object> _, IModel _) => Logger.LogDebug("Catch all exception invoked"))
                 .Throws<InvalidOperationException>();
             var rawSqlCommandBuilder = rawSqlCommandBuilderMock.Object;
 

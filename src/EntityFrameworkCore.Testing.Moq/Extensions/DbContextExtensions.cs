@@ -144,7 +144,7 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
                     It.Is<string>(s => s.Contains(sql, StringComparison.OrdinalIgnoreCase)),
                     It.Is<IEnumerable<object>>(p => ParameterMatchingHelper.DoInvocationParametersMatchSetUpParameters(parameters, p)),
                     It.IsAny<IModel>()))
-                .Returns((string providedSql, IEnumerable<object> providedParameters, IModel _) => rawSqlCommand)
+                .Returns((string _, IEnumerable<object> _, IModel _) => rawSqlCommand)
                 .Callback((string providedSql, IEnumerable<object> providedParameters, IModel _) =>
                 {
                     callback?.Invoke(providedSql, providedParameters);
