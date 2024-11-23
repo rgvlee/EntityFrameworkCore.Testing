@@ -21,6 +21,14 @@ namespace EntityFrameworkCore.Testing.Common.Tests
             MockedDbContext = CreateMockedDbContext();
         }
 
+        [TearDown]
+        public override void TearDown()
+        {
+            MockedDbContext.Dispose();
+            
+            base.TearDown();
+        }
+
         protected override void SeedQueryableSource()
         {
             var itemsToAdd = Fixture.Build<TEntity>().With(p => p.CreatedAt, DateTime.Today).With(p => p.LastModifiedAt, DateTime.Today).CreateMany().ToList();
