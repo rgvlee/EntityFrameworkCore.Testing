@@ -20,7 +20,7 @@ public abstract class Issue126Tests<TDbContext> : BaseForTests where TDbContext 
 
     [TestCase(true)]
     [TestCase(false)]
-    public async Task BeginTransactionAsync_ReturnsMockTransaction(bool withCancellationTokenParameter)
+    public virtual async Task BeginTransactionAsync_ReturnsMockTransaction(bool withCancellationTokenParameter)
     {
         await using var transaction = withCancellationTokenParameter
             ? await DbContextFactory().Database.BeginTransactionAsync(CancellationToken.None)
