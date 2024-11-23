@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using EntityFrameworkCore.Testing.Common.Helpers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Logging;
 using Moq;
@@ -139,10 +140,12 @@ namespace EntityFrameworkCore.Testing.Moq.Extensions
                 .RawSqlCommandBuilder;
 
             Mock.Get(existingRawSqlCommandBuilder)
-                .Setup(m => m.Build(It.Is<string>(s => s.Contains(sql, StringComparison.OrdinalIgnoreCase)),
-                    It.Is<IEnumerable<object>>(p => ParameterMatchingHelper.DoInvocationParametersMatchSetUpParameters(parameters, p))))
-                .Returns((string providedSql, IEnumerable<object> providedParameters) => rawSqlCommand)
-                .Callback((string providedSql, IEnumerable<object> providedParameters) =>
+                .Setup(m => m.Build(
+                    It.Is<string>(s => s.Contains(sql, StringComparison.OrdinalIgnoreCase)),
+                    It.Is<IEnumerable<object>>(p => ParameterMatchingHelper.DoInvocationParametersMatchSetUpParameters(parameters, p)),
+                    It.IsAny<IModel>()))
+                .Returns((string _, IEnumerable<object> _, IModel _) => rawSqlCommand)
+                .Callback((string providedSql, IEnumerable<object> providedParameters, IModel _) =>
                 {
                     callback?.Invoke(providedSql, providedParameters);
 
