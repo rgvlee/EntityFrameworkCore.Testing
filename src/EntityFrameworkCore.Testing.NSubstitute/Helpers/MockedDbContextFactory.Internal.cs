@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
+using System.Threading.Tasks;
 using EntityFrameworkCore.Testing.Common.Helpers;
 using EntityFrameworkCore.Testing.NSubstitute.Extensions;
 using Microsoft.EntityFrameworkCore;
@@ -131,6 +132,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Helpers
             var databaseFacade = Substitute.For(new[] { typeof(DatabaseFacade), typeof(IDatabaseFacadeDependenciesAccessor) }, new[] { mockedDbContext });
             ((IDatabaseFacadeDependenciesAccessor) databaseFacade).Dependencies.Returns(callInfo => dependencies);
             ((DatabaseFacade)databaseFacade).BeginTransaction().Returns(callInfo => Substitute.For<IDbContextTransaction>());
+            ((DatabaseFacade)databaseFacade).BeginTransactionAsync(Arg.Any<CancellationToken>()).Returns(callInfo => Task.FromResult(Substitute.For<IDbContextTransaction>()));
 
             mockedDbContext.Database.Returns(callInfo => databaseFacade);
 
