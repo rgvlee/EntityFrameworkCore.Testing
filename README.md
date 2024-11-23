@@ -13,8 +13,8 @@ The aim of this library is to allow you use the in-memory database provider in u
 ### EntityFrameworkCore 8
 
 - [Source](https://github.com/rgvlee/EntityFrameworkCore.Testing/tree/8.x)
-- [EntityFrameworkCore.Testing.Moq - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.Moq/8.0.0)
-- [EntityFrameworkCore.Testing.NSubstitute - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.NSubstitute/8.0.0)
+- [EntityFrameworkCore.Testing.Moq - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.Moq/8.1.0)
+- [EntityFrameworkCore.Testing.NSubstitute - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.NSubstitute/8.1.0)
 
 ### EntityFrameworkCore 7
 
