@@ -11,12 +11,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Internal;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
 using NSubstitute.Core;
 using NSubstitute.ExceptionExtensions;
 using NSubstitute.Extensions;
+using NSubstitute.ReturnsExtensions;
 
 namespace EntityFrameworkCore.Testing.NSubstitute.Helpers
 {
@@ -101,7 +103,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Helpers
 
             //Relational set up
             var rawSqlCommandBuilder = Substitute.For<IRawSqlCommandBuilder>();
-            rawSqlCommandBuilder.Build(Arg.Any<string>(), Arg.Any<IEnumerable<object>>())
+            rawSqlCommandBuilder.Build(Arg.Any<string>(), Arg.Any<IEnumerable<object>>(), Arg.Any<IModel>())
                 .Throws(callInfo =>
                 {
                     Logger.LogDebug("Catch all exception invoked");
@@ -122,6 +124,7 @@ namespace EntityFrameworkCore.Testing.NSubstitute.Helpers
 
             var serviceProvider = Substitute.For<IServiceProvider>();
             serviceProvider.GetService(Arg.Is<Type>(t => t == typeof(IDatabaseFacadeDependencies))).Returns(callInfo => dependencies);
+            serviceProvider.GetService(Arg.Is<Type>(t => t == typeof(IModel))).Returns(callInfo => Substitute.For<IModel>());
 
             ((IInfrastructure<IServiceProvider>) mockedDbContext).Instance.Returns(callInfo => serviceProvider);
 
