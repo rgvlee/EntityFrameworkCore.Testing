@@ -180,7 +180,7 @@ Assert.Multiple(() =>
 });
 ```
 
-SQL query text matching supports partial, case insensitive matches. Individual parameter name and value matching is also case insentive. Case insensitive interpolated strings are also supported:
+SQL query text matching supports partial, case insensitive matches. Individual parameter name and value matching is also case insensitive. Case insensitive interpolated strings are also supported:
 
 ```c#
 var expectedResult = _fixture.CreateMany<TestEntity>().ToList();
