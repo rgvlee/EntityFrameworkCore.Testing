@@ -21,7 +21,7 @@ EntityFrameworkCore.Testing v9.x = EntityFrameworkCore 9</description>
     <tags>EntityFrameworkCore EFCore NSubstitute nsub mock testing</tags>
     <repository url="https://github.com/rgvlee/EntityFrameworkCore.Testing" />
     <dependencies>
-      <group targetFramework="net9.0">
+      <group targetFramework="net8.0">
         <dependency id="Microsoft.EntityFrameworkCore.InMemory" version="[9,10)" exclude="Build,Analyzers" />
         <dependency id="Microsoft.EntityFrameworkCore.Relational" version="[9,10)" exclude="Build,Analyzers" />
         <dependency id="Microsoft.Extensions.Logging" version="[9,10)" exclude="Build,Analyzers" />
@@ -31,12 +31,12 @@ EntityFrameworkCore.Testing v9.x = EntityFrameworkCore 9</description>
     </dependencies>
   </metadata>
   <files>
-    <file src="src\EntityFrameworkCore.Testing.Common\bin\Release\net9.0\EntityFrameworkCore.Testing.Common.dll" target="lib\net9.0" />
-    <file src="src\EntityFrameworkCore.Testing.Common\bin\Release\net9.0\EntityFrameworkCore.Testing.Common.pdb" target="lib\net9.0" />
-    <file src="src\EntityFrameworkCore.Testing.Common\bin\Release\net9.0\EntityFrameworkCore.Testing.Common.xml" target="lib\net9.0" />
-    <file src="src\EntityFrameworkCore.Testing.NSubstitute\bin\Release\net9.0\EntityFrameworkCore.Testing.NSubstitute.dll" target="lib\net9.0" />
-    <file src="src\EntityFrameworkCore.Testing.NSubstitute\bin\Release\net9.0\EntityFrameworkCore.Testing.NSubstitute.pdb" target="lib\net9.0" />
-    <file src="src\EntityFrameworkCore.Testing.NSubstitute\bin\Release\net9.0\EntityFrameworkCore.Testing.NSubstitute.xml" target="lib\net9.0" />
+    <file src="src\EntityFrameworkCore.Testing.Common\bin\Release\net8.0\EntityFrameworkCore.Testing.Common.dll" target="lib\net8.0" />
+    <file src="src\EntityFrameworkCore.Testing.Common\bin\Release\net8.0\EntityFrameworkCore.Testing.Common.pdb" target="lib\net8.0" />
+    <file src="src\EntityFrameworkCore.Testing.Common\bin\Release\net8.0\EntityFrameworkCore.Testing.Common.xml" target="lib\net8.0" />
+    <file src="src\EntityFrameworkCore.Testing.NSubstitute\bin\Release\net8.0\EntityFrameworkCore.Testing.NSubstitute.dll" target="lib\net8.0" />
+    <file src="src\EntityFrameworkCore.Testing.NSubstitute\bin\Release\net8.0\EntityFrameworkCore.Testing.NSubstitute.pdb" target="lib\net8.0" />
+    <file src="src\EntityFrameworkCore.Testing.NSubstitute\bin\Release\net8.0\EntityFrameworkCore.Testing.NSubstitute.xml" target="lib\net8.0" />
     <file src="LICENSE" />
   </files>
 </package>
