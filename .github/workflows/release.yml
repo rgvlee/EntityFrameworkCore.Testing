@@ -18,6 +18,8 @@ jobs:
         with:
           dotnet-version: 10.0.x
 
+      - run: sudo apt install mono-devel
+
       - name: Setup NuGet
         uses: nuget/setup-nuget@v2
         with:
