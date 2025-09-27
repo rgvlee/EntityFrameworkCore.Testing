@@ -10,6 +10,12 @@ The aim of this library is to allow you use the in-memory database provider in u
 
 [Microsoft does not recommend mocking a db context](https://docs.microsoft.com/en-us/ef/core/testing/#unit-testing) and EntityFrameworkCore.Testing follows this advice by sending operations supported by the in-memory database provider to the in-memory database provider.
 
+### EntityFrameworkCore 10
+
+- [Source](https://github.com/rgvlee/EntityFrameworkCore.Testing/tree/10.x)
+- [EntityFrameworkCore.Testing.Moq - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.Moq/10.0.0)
+- [EntityFrameworkCore.Testing.NSubstitute - NuGet](https://www.nuget.org/packages/EntityFrameworkCore.Testing.NSubstitute/10.0.0)
+
 ### EntityFrameworkCore 9
 
 - [Source](https://github.com/rgvlee/EntityFrameworkCore.Testing/tree/9.x)
