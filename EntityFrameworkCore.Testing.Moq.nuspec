@@ -23,9 +23,9 @@ EntityFrameworkCore.Testing v10.x = EntityFrameworkCore 10</description>
     <repository url="https://github.com/rgvlee/EntityFrameworkCore.Testing" />
     <dependencies>
       <group targetFramework="net10.0">
-        <dependency id="Microsoft.EntityFrameworkCore.InMemory" version="[10.0.0-0,11)" exclude="Build,Analyzers" />
-        <dependency id="Microsoft.EntityFrameworkCore.Relational" version="[10.0.0-0,11)" exclude="Build,Analyzers" />
-        <dependency id="Microsoft.Extensions.Logging" version="[10.0.0-0,11)" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.EntityFrameworkCore.InMemory" version="[10.0.0-a,11)" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.EntityFrameworkCore.Relational" version="[10.0.0-a,11)" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Extensions.Logging" version="[10.0.0-a,11)" exclude="Build,Analyzers" />
         <dependency id="Moq" version="4.9.0" exclude="Build,Analyzers" />
         <dependency id="rgvlee.Core" version="1.2.1" exclude="Build,Analyzers" />
       </group>
