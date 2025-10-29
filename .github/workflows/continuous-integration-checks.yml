@@ -21,7 +21,7 @@ jobs:
 
       - name: Build
         run: dotnet build --configuration Release
-      
+
 #      - name: List dependencies
 #        run: dotnet list EntityFrameworkCore.Testing.sln package
 
@@ -40,7 +40,7 @@ jobs:
           dotnet add src/EntityFrameworkCore.Testing.Moq package Moq
 
           dotnet add src/EntityFrameworkCore.Testing.NSubstitute package NSubstitute
-      
+
 #      - name: List dependencies
 #        run: dotnet list EntityFrameworkCore.Testing.sln package
 
