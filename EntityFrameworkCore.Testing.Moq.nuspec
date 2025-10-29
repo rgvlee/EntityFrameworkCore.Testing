@@ -23,7 +23,7 @@ EntityFrameworkCore.Testing v8.x = EntityFrameworkCore 8</description>
       <group targetFramework="net8.0">
         <dependency id="Microsoft.EntityFrameworkCore.InMemory" version="[8,9)" exclude="Build,Analyzers" />
         <dependency id="Microsoft.EntityFrameworkCore.Relational" version="[8,9)" exclude="Build,Analyzers" />
-        <dependency id="Microsoft.Extensions.Logging" version="[8,9)" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Extensions.Logging" version="[8,)" exclude="Build,Analyzers" />
         <dependency id="Moq" version="4.9.0" exclude="Build,Analyzers" />
         <dependency id="rgvlee.Core" version="1.2.1" exclude="Build,Analyzers" />
       </group>
