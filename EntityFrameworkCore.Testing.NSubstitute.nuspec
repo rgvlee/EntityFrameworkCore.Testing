@@ -17,14 +17,14 @@ EntityFrameworkCore.Testing v4.x = EntityFrameworkCore 6
 EntityFrameworkCore.Testing v5.x = EntityFrameworkCore 7
 EntityFrameworkCore.Testing v8.x = EntityFrameworkCore 8
 EntityFrameworkCore.Testing v9.x = EntityFrameworkCore 9</description>
-    <copyright>Copyright (c) 2024 Lee Anderson</copyright>
+    <copyright>Copyright (c) 2025 Lee Anderson</copyright>
     <tags>EntityFrameworkCore EFCore NSubstitute nsub mock testing</tags>
     <repository url="https://github.com/rgvlee/EntityFrameworkCore.Testing" />
     <dependencies>
       <group targetFramework="net8.0">
         <dependency id="Microsoft.EntityFrameworkCore.InMemory" version="[9,10)" exclude="Build,Analyzers" />
         <dependency id="Microsoft.EntityFrameworkCore.Relational" version="[9,10)" exclude="Build,Analyzers" />
-        <dependency id="Microsoft.Extensions.Logging" version="[9,10)" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Extensions.Logging" version="[9,)" exclude="Build,Analyzers" />
         <dependency id="NSubstitute" version="4.1.0" exclude="Build,Analyzers" />
         <dependency id="rgvlee.Core" version="1.2.1" exclude="Build,Analyzers" />
       </group>
