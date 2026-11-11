@@ -21,7 +21,7 @@ jobs:
       - run: sudo apt install mono-devel
 
       - name: Setup NuGet
-        uses: nuget/setup-nuget@v2
+        uses: nuget/setup-nuget@v3
         with:
           nuget-version: latest
 
