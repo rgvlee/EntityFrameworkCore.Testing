@@ -189,13 +189,13 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         }
 
         [Test]
-        public void ExecuteSqlInterpolatedAsync_SpecifiedSqlThatDoesNotMatchSetUp_ThrowsException()
+        public async Task ExecuteSqlInterpolatedAsync_SpecifiedSqlThatDoesNotMatchSetUp_ThrowsException()
         {
             var sql = (FormattableString) $"asdf";
             var expectedResult = 1;
             AddExecuteSqlInterpolatedResult(MockedDbContext, sql, expectedResult);
 
-            Assert.ThrowsAsync<InvalidOperationException>(async () =>
+            await Assert.ThrowsAsync<InvalidOperationException>(async () =>
             {
                 var actualResult = await MockedDbContext.Database.ExecuteSqlInterpolatedAsync($"sp_NoParams");
             });
@@ -400,13 +400,13 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         }
 
         [Test]
-        public void ExecuteSqlRawAsync_SpecifiedSqlThatDoesNotMatchSetUp_ThrowsException()
+        public async Task ExecuteSqlRawAsync_SpecifiedSqlThatDoesNotMatchSetUp_ThrowsException()
         {
             var sql = "asdf";
             var expectedResult = 1;
             AddExecuteSqlRawResult(MockedDbContext, sql, expectedResult);
 
-            Assert.ThrowsAsync<InvalidOperationException>(async () =>
+            await Assert.ThrowsAsync<InvalidOperationException>(async () =>
             {
                 var actualResult = await MockedDbContext.Database.ExecuteSqlRawAsync("sp_NoParams");
             });
