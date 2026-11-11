@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using AutoFixture;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
@@ -22,9 +23,9 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         }
 
         [Test]
-        public void AddAsync_Item_ThrowsException()
+        public async Task AddAsync_Item_ThrowsException()
         {
-            var ex = Assert.ThrowsAsync<InvalidOperationException>(async () =>
+            var ex = await Assert.ThrowsAsync<InvalidOperationException>(async () =>
             {
                 await DbSet.AddAsync(Fixture.Create<TEntity>());
             });
@@ -46,9 +47,9 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         }
 
         [Test]
-        public void AddRangeAsync_Items_ThrowsException()
+        public async Task AddRangeAsync_Items_ThrowsException()
         {
-            var ex = Assert.ThrowsAsync<InvalidOperationException>(async () =>
+            var ex = await Assert.ThrowsAsync<InvalidOperationException>(async () =>
             {
                 await DbSet.AddRangeAsync(Fixture.CreateMany<TEntity>());
             });
@@ -93,10 +94,10 @@ namespace EntityFrameworkCore.Testing.Common.Tests
         }
 
         [Test]
-        public void Find_Items_ThrowsException()
+        public async Task Find_Items_ThrowsException()
         {
             var itemsToFind = Fixture.CreateMany<TEntity>();
-            var ex = Assert.ThrowsAsync<InvalidOperationException>(async () =>
+            var ex = await Assert.ThrowsAsync<InvalidOperationException>(async () =>
             {
                 await DbSet.FindAsync(itemsToFind);
             });
