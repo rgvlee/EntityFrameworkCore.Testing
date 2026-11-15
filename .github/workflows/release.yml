@@ -1,39 +1,76 @@
+
 name: Release
 
 on:
   release:
     types: [published]
 
+permissions:
+  contents: read
+
 jobs:
-  build-and-test:
-    name: Build, pack and push
+  build-and-publish:
+    name: Build and publish  
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      id-token: write
 
     steps:
       - name: Checkout
         uses: actions/checkout@v5
 
-      - name: Setup dotnet
+      - name: Setup .NET
         uses: actions/setup-dotnet@v5
         with:
           dotnet-version: 11.0.x
 
-      - run: sudo apt install mono-devel
-
-      - name: Setup NuGet
-        uses: nuget/setup-nuget@v3
-        with:
-          nuget-version: latest
-
       - name: Build
         run: dotnet build --configuration Release
 
-      - name: Pack
+      - name: Create NuGet packages
+        env:
+          RELEASE_VERSION: ${{ github.event.release.name }}
         run: |
-          nuget pack EntityFrameworkCore.Testing.Moq.nuspec -Version ${{ github.event.release.name }} -Symbols -SymbolPackageFormat snupkg
-          nuget pack EntityFrameworkCore.Testing.NSubstitute.nuspec -Version ${{ github.event.release.name }} -Symbols -SymbolPackageFormat snupkg
+          mkdir -p artifacts
 
-      - name: Push
+          dotnet pack EntityFrameworkCore.Testing.Moq.nuspec \
+            --version "$RELEASE_VERSION" \
+            --include-symbols \
+            --output ./artifacts
+
+          dotnet pack EntityFrameworkCore.Testing.NSubstitute.nuspec \
+            --version "$RELEASE_VERSION" \
+            --include-symbols \
+            --output ./artifacts
+
+      - name: NuGet Login
+        id: nuget-login
+        uses: NuGet/login@v1
+        with:
+          user: rgvlee
+
+      - name: Publish NuGet packages
+        env:
+          NUGET_API_KEY: ${{ steps.nuget-login.outputs.NUGET_API_KEY }}
         run: |
-          nuget push EntityFrameworkCore.Testing.Moq*.nupkg -Source https://api.nuget.org/v3/index.json -ApiKey ${{ secrets.NUGET_API_KEY }}
-          nuget push EntityFrameworkCore.Testing.NSubstitute*.nupkg -Source https://api.nuget.org/v3/index.json -ApiKey ${{ secrets.NUGET_API_KEY }}
+          for package in artifacts/*.nupkg; do
+            echo "Publishing $package"
+
+            dotnet nuget push "$package" \
+              --source https://api.nuget.org/v3/index.json \
+              --api-key "$NUGET_API_KEY" \
+              --skip-duplicate
+
+            symbols="${package%.nupkg}.snupkg"
+
+            if [ -f "$symbols" ]; then
+              echo "Publishing symbols: $symbols"
+
+              dotnet nuget push "$symbols" \
+                --source https://api.nuget.org/v3/index.json \
+                --api-key "$NUGET_API_KEY" \
+                --skip-duplicate
+            fi
+          done
